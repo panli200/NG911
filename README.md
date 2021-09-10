@@ -4,8 +4,8 @@
 
 ## Table of contents
 - [Introduction](#introduction)
-- [Video Links](video-links)
-- [Project Development]()
+- [Video Links](#video-links)
+- [Project Development](#project-development)
 
 
 ## Introduction
@@ -15,3 +15,5 @@ ENSE 400/477 Capstone Project - University of Regina
 
 ## Video Links
 - [Introduction Vlog]()
+
+## Project Development
