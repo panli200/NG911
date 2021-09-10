@@ -1,5 +1,5 @@
 <h1 align="center" style="font-size:100px" >
-  HealthApp
+  SOS App
 </h1>
 
 ## Table of contents
