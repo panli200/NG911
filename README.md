@@ -11,7 +11,7 @@
 ## Introduction
 ENSE 400/477 Capstone Project - University of Regina 
 - **Team Name** : Bugs
-- **Team member**: Abdelrahman Rabaa, Renz Arram Rivero, Li Pan
+- **Team member**: Abdelrahman Rabaa, Li Pan, Renz Arram Rivero
 
 ## Video Links
 - [Introduction Vlog]()
