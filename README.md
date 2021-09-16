@@ -3,6 +3,7 @@
 </h1>
 
 ## Table of contents
+- [Table of contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Video Links](#video-links)
 - [Project Development](#project-development)
@@ -14,6 +15,6 @@ ENSE 400/477 Capstone Project - University of Regina
 - **Team member**: Abdelrahman Rabaa, Li Pan, Renz Arram Rivero
 
 ## Video Links
-- [Introduction Vlog]()
+- [Team Introduction: Vlog # 1](https://youtu.be/ziVtzf-9uPU)
 
 ## Project Development
