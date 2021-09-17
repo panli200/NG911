@@ -18,7 +18,7 @@ ENSE 400/477 Capstone Project - University of Regina
 - [Team Introduction: Vlog # 1](https://youtu.be/ziVtzf-9uPU)
 
 ## Project Development
-##Project idea
+## Project idea
 
 SOS mobile application to strengthen steps of emergency’s announcement, response time, and response efficiency.
 
@@ -29,7 +29,7 @@ Main scenarios:
     Fire emergency.
     Car accident.
 
-##Project background, need, opportunity
+## Project background, need, opportunity
 
 
 Why? Technology has grown more advanced than ever, with all the power and capabilities of an individual’s mobile device, it should be deployed to save his life in serious situations by all means. We are looking to dedicate a rescue algorithm for each different scenario, and take advantage of the patient’s medical history in the process.
