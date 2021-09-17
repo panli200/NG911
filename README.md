@@ -19,5 +19,7 @@ ENSE 400/477 Capstone Project - University of Regina
 
 ## Project Development
 
+## Installation
+
 
 
