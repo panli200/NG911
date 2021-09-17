@@ -18,6 +18,6 @@ ENSE 400/477 Capstone Project - University of Regina
 - [Team Introduction: Vlog # 1](https://youtu.be/ziVtzf-9uPU)
 
 ## Project Development
-## Project idea
+
 
 
