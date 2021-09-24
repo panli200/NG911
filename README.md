@@ -6,7 +6,7 @@
 - [Table of contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Video Links](#video-links)
-- [Scrum Presentations](#scrum-presentations)
+- [Scrum](#scrum)
 - [Design Documentation](#design-documentation)
 - [Installation](#installation)
 
@@ -19,8 +19,8 @@ ENSE 400/477 Capstone Project - University of Regina
 ## Video Links
 - [Team Introduction: Vlog # 1](https://youtu.be/ziVtzf-9uPU)
 
-## Scrum Presentations
-- [Instructor Scrum # 1](https://github.com/panli200/SOSApp/blob/main/Documentation/Scrum-Presentations/Instructor%20scrum%231.pdf)
+## Scrum
+- [Team/Instructor Scrum # 1](https://github.com/panli200/SOSApp/blob/main/Documentation/Scrums/Scrum%231.pdf)
 ## Design Documentation
 
 ## Installation
