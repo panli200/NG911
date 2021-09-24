@@ -6,7 +6,9 @@
 - [Table of contents](#table-of-contents)
 - [Introduction](#introduction)
 - [Video Links](#video-links)
-- [Project Development](#project-development)
+- [Scrum Presentations](#scrum-presentations)
+- [Design Documentation](#design-documentation)
+- [Installation](#installation)
 
 
 ## Introduction
@@ -17,9 +19,8 @@ ENSE 400/477 Capstone Project - University of Regina
 ## Video Links
 - [Team Introduction: Vlog # 1](https://youtu.be/ziVtzf-9uPU)
 
-## Project Development
+## Scrum Presentations
+
+## Design Documentation
 
 ## Installation
-
-
-
