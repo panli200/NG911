@@ -14,7 +14,7 @@
 ## Introduction
 ENSE 400/477 Capstone Project - University of Regina 
 - **Team Name** : Bugs
-- **Team member**: Abdelrahman Rabaa, Li Pan, Renz Arram Rivero
+- **Team member**: :octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha) :octocat:[Li Pan](https://github.com/panli200) :octocat:[Renz Arram Rivero](https://github.com/renzrivero)
 
 ## Video Links
 - [Team Introduction: Vlog # 1](https://youtu.be/ziVtzf-9uPU)
