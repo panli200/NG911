@@ -17,7 +17,7 @@ class SOS_State extends State<SOS> {
   ];
 
   void _callNumber() async{
-    const number = '01154703796'; //set the number here
+    const number = '01154703711'; //set the number here
     bool? res = await FlutterPhoneDirectCaller.callNumber(number);
   }
 
