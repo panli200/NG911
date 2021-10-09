@@ -21,6 +21,8 @@ ENSE 400/477 Capstone Project - University of Regina
 
 ## Scrum
 - [Team/Instructor Scrum # 1](https://github.com/panli200/SOSApp/blob/main/Documentation/Scrums/Scrum%231.pdf)
+- - [Team/Instructor Scrum # 1](https://github.com/panli200/SOSApp/blob/main/Documentation/Scrums/Scrum%232.pdf)
+
 ## Design Documentation
 
 ## Installation
