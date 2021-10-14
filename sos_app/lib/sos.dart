@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:flutter/services.dart';
 import 'dart:async';
 import 'profile.dart';
 
@@ -207,7 +206,7 @@ class ShimmerList extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 15),
               child: Shimmer.fromColors(
                 highlightColor: Colors.white,
-                baseColor: Colors.grey[300],
+                baseColor: Colors.grey,
                 child: ShimmerLayout(),
                 period: Duration(milliseconds: time),
               ));
