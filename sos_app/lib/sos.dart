@@ -3,8 +3,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'profile.dart';
-import 'activities.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+
 class SOS extends StatefulWidget {
   @override
   SOS_State createState() => SOS_State();
