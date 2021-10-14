@@ -3,7 +3,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:camera/camera.dart';
 import 'dart:async';
 import 'profile.dart';
-
+import 'activities.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 class SOS extends StatefulWidget {
   @override
   SOS_State createState() => SOS_State();
@@ -13,11 +14,16 @@ class SOS_State extends State<SOS> {
   int _currentIndex = 1;
 
   final tabs = [
-    Center(child: Text('Activities')),
+    activities(),
     Home(),
     Profile(),
   ];
-
+  
+  void _callNumber() async{
+    const number = '01154703796'; //set the number here
+    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +53,12 @@ class SOS_State extends State<SOS> {
               _currentIndex = index;
             });
           },
-        )        
+        )
+      floatingActionButton: FloatingActionButton(
+      onPressed: _callNumber,
+      tooltip: 'Increment',
+      child: const Icon(Icons.call_rounded),
+    ),
     );
   }
 }
