@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
-
+import 'activities.dart';
+import 'activity_detail.dart';
 class SOS extends StatefulWidget {
   @override
   SOS_State createState() => SOS_State();
@@ -11,13 +12,13 @@ class SOS_State extends State<SOS> {
   int _currentIndex = 1;
 
   final tabs = [
-    Center(child: Text('Activities')),
+    activities(),
     Center(child: Text('SOS')),
     Center(child: Text('Profile')),
   ];
 
   void _callNumber() async{
-    const number = '01154703711'; //set the number here
+    const number = '01154703796'; //set the number here
     bool? res = await FlutterPhoneDirectCaller.callNumber(number);
   }
 
