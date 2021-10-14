@@ -14,15 +14,12 @@ class SOS_State extends State<SOS> {
   int _currentIndex = 1;
 
   final tabs = [
-    activities(),
+    Center(child: Text('activities')),
     Home(),
     Profile(),
   ];
   
-  void _callNumber() async{
-    const number = '01154703796'; //set the number here
-    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
-  }
+
   
   @override
   Widget build(BuildContext context) {
@@ -54,11 +51,7 @@ class SOS_State extends State<SOS> {
             });
           },
         )
-      floatingActionButton: FloatingActionButton(
-      onPressed: _callNumber,
-      tooltip: 'Increment',
-      child: const Icon(Icons.call_rounded),
-    ),
+     
     );
   }
 }
