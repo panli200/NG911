@@ -3,7 +3,8 @@ import 'package:sos_app/sos.dart';
 import 'package:sos_app/sos_extended_pages/how_to_use_app_page.dart';
 import 'package:sos_app/sos_extended_pages/in_call_page.dart';
 import 'package:sos_app/sos_extended_pages/sos_home_page.dart';
-import 'package:sos_app/activities.dart';
+import 'package:sos_app/activities_extended_pages/activities.dart';
+import 'package:sos_app/activities_extended_pages/activity_detail.dart';
 import 'package:sos_app/profile_extended_pages/profile.dart';
 
 
@@ -47,9 +48,21 @@ import 'package:sos_app/profile_extended_pages/profile.dart';
         
       ),
       AutoRoute(
-        path: 'activities',
+        path: 'activities_extended_pages',
         name: 'ActivitiesRouter',
-        page: ActivitiesPage,
+        page: EmptyRouterPage,
+
+        // FUTURE EXTENDED/POP-UP PAGES FOR PROFILE PAGE
+        children: [
+          AutoRoute(
+            path: '',
+            page: ActivitiesPage,
+          ),
+          AutoRoute(
+            path: '',
+            page: ActivityDetailPage,
+          ),
+        ],
       )
     ]),
   ],
