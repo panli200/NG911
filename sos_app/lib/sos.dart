@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:async';
 import 'profile.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'activities.dart';
 
 class SOS extends StatefulWidget {
   @override
@@ -12,18 +14,21 @@ class SOS_State extends State<SOS> {
   int _currentIndex = 1;
 
   final tabs = [
-    Center(child: Text('activities')),
+    activities(),
     Home(),
     Profile(),
   ];
-  
 
-  
+  void _callNumber() async{
+    const number = '01154703777'; //set the number here
+    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('SOS '),
+        appBar: AppBar(
+          title: Text('SOS '),
           centerTitle: true,
         ),
         body: tabs[_currentIndex],
@@ -48,8 +53,13 @@ class SOS_State extends State<SOS> {
               _currentIndex = index;
             });
           },
-        )
-     
+        ),
+
+      floatingActionButton: FloatingActionButton(
+        onPressed: _callNumber,
+        tooltip: 'Increment',
+        child: const Icon(Icons.call_rounded),
+      ),
     );
   }
 }
@@ -94,95 +104,95 @@ class DataList extends StatelessWidget {
   Widget build(BuildContext context) {
     timer.cancel();
     return Scaffold(
-      body:
+        body:
         Container(
-        margin: EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Container(
-              height: 40,
-              width: 40,
-              margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                shape: BoxShape.circle
+          margin: EdgeInsets.symmetric(vertical: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                height: 40,
+                width: 40,
+                margin: const EdgeInsets.only(left: 20.0, right: 20.0),
+                decoration: BoxDecoration(
+                    color: Colors.grey,
+                    shape: BoxShape.circle
+                ),
+              ),// How To Use App Placeholder
+
+              SizedBox(height: 20), // Spacing visuals
+
+              Center(
+                child: Container(
+                  height: 100,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  alignment: Alignment.center,
+                  color: Colors.grey,
+                ), // Soundwave Placeholder
               ),
-            ),// How To Use App Placeholder  
 
-            SizedBox(height: 20), // Spacing visuals
 
-            Center(
-              child: Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width * 0.8,
-                alignment: Alignment.center,
-                color: Colors.grey,
-              ), // Soundwave Placeholder
-            ),
-            
+              SizedBox(height: 20), // Spacing visuals
 
-            SizedBox(height: 20), // Spacing visuals
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
 
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              
-              children: <Widget>[
-                Container(
-                  height: 150,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  color: Colors.grey,
-                ), // Front Camera Preview Placeholder
-
-                Container(
-                  height: 150,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  color: Colors.grey,
-                ), // Back Camera Preview Placeholder
-              ],
-            ), // Front/Back camera placheolders
-
-            SizedBox(height: 20), // Spacing visuals
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget> [
-                Center(
-                    child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    alignment: Alignment.center,
+                children: <Widget>[
+                  Container(
+                    height: 150,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     color: Colors.grey,
-                  ), 
-                ), // Scenario One Button Placeholder (GENERIC MEDICAL SCENARIO)
+                  ), // Front Camera Preview Placeholder
 
-                Center(
-                    child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    alignment: Alignment.center,
+                  Container(
+                    height: 150,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     color: Colors.grey,
-                  ), 
-                ), // Scenario Two Button Placeholder
+                  ), // Back Camera Preview Placeholder
+                ],
+              ), // Front/Back camera placheolders
 
-                Center(
+              SizedBox(height: 20), // Spacing visuals
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget> [
+                  Center(
                     child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    alignment: Alignment.center,
-                    color: Colors.grey,
-                  ), 
-                ), // Scenario Three 
-              ],
-            ) // SOS Scenario Button Placeholders
-          ],
-        ),
-      ) 
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      alignment: Alignment.center,
+                      color: Colors.grey,
+                    ),
+                  ), // Scenario One Button Placeholder (GENERIC MEDICAL SCENARIO)
+
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      alignment: Alignment.center,
+                      color: Colors.grey,
+                    ),
+                  ), // Scenario Two Button Placeholder
+
+                  Center(
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 8),
+                      height: 50,
+                      width: MediaQuery.of(context).size.width * 0.8,
+                      alignment: Alignment.center,
+                      color: Colors.grey,
+                    ),
+                  ), // Scenario Three
+                ],
+              ) // SOS Scenario Button Placeholders
+            ],
+          ),
+        )
     );
   }
 }
@@ -229,10 +239,10 @@ class ShimmerLayout extends StatelessWidget {
             height: 40,
             width: 40,
             decoration: BoxDecoration(
-              color: Colors.grey,
-              shape: BoxShape.circle
+                color: Colors.grey,
+                shape: BoxShape.circle
             ),
-          ),// How To Use App Placeholder  
+          ),// How To Use App Placeholder
 
           SizedBox(height: 20), // Spacing visuals
 
@@ -244,14 +254,14 @@ class ShimmerLayout extends StatelessWidget {
               color: Colors.grey,
             ), // Soundwave Placeholder
           ),
-          
+
 
           SizedBox(height: 20), // Spacing visuals
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            
+
             children: <Widget>[
               Container(
                 height: 150,
@@ -273,43 +283,43 @@ class ShimmerLayout extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget> [
               Center(
-                  child: Container(
+                child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8),
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.8,
                   alignment: Alignment.center,
                   color: Colors.grey,
-                ), 
+                ),
               ), // Scenario One Button Placeholder (GENERIC MEDICAL SCENARIO)
 
               Center(
-                  child: Container(
+                child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8),
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.8,
                   alignment: Alignment.center,
                   color: Colors.grey,
-                ), 
+                ),
               ), // Scenario Two Button Placeholder
 
               Center(
-                  child: Container(
+                child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8),
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.8,
                   alignment: Alignment.center,
                   color: Colors.grey,
-                ), 
+                ),
               ), // Scenario Three Button Placeholder
 
               Center(
-                  child: Container(
+                child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8),
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.8,
                   alignment: Alignment.center,
                   color: Colors.grey,
-                ), 
+                ),
               ) // Scenario Four Button Placeholder
             ],
           ) // SOS Scenario Button Placeholders
@@ -318,4 +328,3 @@ class ShimmerLayout extends StatelessWidget {
     );
   }
 }
-
