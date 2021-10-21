@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:auto_route/auto_route.dart';
-import 'package:sos_app/routes/router.gr.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:async';
+import 'package:camera/camera.dart';
+import 'package:sos_app/main.dart';
 
 class SosHomePage extends StatelessWidget {
 
@@ -87,12 +87,14 @@ class DataList extends StatelessWidget {
                   height: 150,
                   width: MediaQuery.of(context).size.width * 0.4,
                   color: Colors.grey,
+                  // child: FrontCameraPreview(),
                 ), // Front Camera Preview Placeholder
 
                 Container(
                   height: 150,
                   width: MediaQuery.of(context).size.width * 0.4,
-                  color: Colors.grey,
+                  // color: Colors.grey,
+                  child: BackCameraPreview(),
                 ), // Back Camera Preview Placeholder
               ],
             ), // Front/Back camera placheolders
@@ -139,6 +141,95 @@ class DataList extends StatelessWidget {
     );
   }
 }
+
+/************** FRONT CAMERA LOGIC START **************/
+// class FrontCameraPreview extends StatefulWidget {
+//   final color;
+//   final size;
+
+//   FrontCameraPreview({this.color, this.size});
+
+//   @override
+//   _FrontCameraPreview createState() => _FrontCameraPreview();
+// }
+
+// class _FrontCameraPreview extends State<FrontCameraPreview> {
+//   late CameraController controller;
+
+//   @override
+//   void initState() {
+//     super.initState();
+//     controller = CameraController(cameras[1], ResolutionPreset.medium);
+//     controller.initialize().then((_) {
+//       if (!mounted) {
+//         return;
+//       }
+//       setState(() {});
+//     });
+//   }
+
+//   @override
+//   void dispose() {
+//     controller.dispose();
+//     super.dispose();
+//   }
+
+//   @override
+//   Widget build(BuildContext context) {
+//     if (!controller.value.isInitialized) {
+//       return Container();
+//     }
+//     return AspectRatio(
+//         aspectRatio: controller.value.aspectRatio,
+//         child: CameraPreview(controller));
+//   }
+// }
+/************** BACK CAMERA LOGIC START **************/
+
+
+/************** BACK CAMERA LOGIC START **************/
+class BackCameraPreview extends StatefulWidget {
+  final color;
+  final size;
+
+  BackCameraPreview({this.color, this.size});
+
+  @override
+  _BackCameraPreview createState() => _BackCameraPreview();
+}
+
+class _BackCameraPreview extends State<BackCameraPreview> {
+  late CameraController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = CameraController(cameras[0], ResolutionPreset.medium);
+    controller.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!controller.value.isInitialized) {
+      return Container();
+    }
+    return AspectRatio(
+        aspectRatio: controller.value.aspectRatio,
+        child: CameraPreview(controller));
+  }
+}
+ /************** BACK CAMERA LOGIC END **************/
 
 class ShimmerList extends StatelessWidget {
   @override
