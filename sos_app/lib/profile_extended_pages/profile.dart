@@ -72,6 +72,24 @@ class ProfilePage extends StatelessWidget {
             Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
                 child: Text(
+                  'Uploading related files:',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                )),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: () {
+
+                  },
+                  child: const Text('Select File'),
+                ),
+              ),
+            ),
+            Padding(
+                padding: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+                child: Text(
                   'Please be aware your information will be only used with your permission!',
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontWeight: FontWeight.bold),
@@ -108,8 +126,13 @@ showAlert(BuildContext context) {
     content:
         Text("Would you like to share your information with us in emergency?"),
     actions: [
-      cancelButton,
-      continueButton,
+      TextButton(
+      onPressed: () => Navigator.pop(context, false), // passing false
+      child: Text('No'),),
+      TextButton(
+        onPressed: () => Navigator.pop(context, true), // passing true
+        child: Text('Yes'),
+      ),
     ],
   );
   // show the dialog
