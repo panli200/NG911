@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'activity_detail.dart';
+import 'package:shimmer/shimmer.dart';
+import 'dart:async';
 class activities extends StatelessWidget {
   @override
   Widget build(BuildContext context){
@@ -30,7 +32,10 @@ class activities extends StatelessWidget {
           ),
         ),
               onTap: (){
-                  activity_detail();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => activity_detail()),
+                  );
               },
             ),
     InkWell(
@@ -56,7 +61,10 @@ class activities extends StatelessWidget {
           ),
         ),
       onTap: (){
-        activity_detail();
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => activity_detail()),
+        );
       },
     ),
 
@@ -69,3 +77,7 @@ class activities extends StatelessWidget {
   }
 
 }
+
+
+
+
