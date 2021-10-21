@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:auto_route/annotations.dart';
 
-class Profile extends StatelessWidget {
+class ProfilePage extends StatelessWidget {
+
+  const ProfilePage({Key? key}) : super(key: key);
+
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
