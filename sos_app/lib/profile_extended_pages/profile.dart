@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_route/annotations.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:sos_app/sos_extended_pages/sos_home_page.dart';
 
 class ProfilePage extends StatelessWidget {
-
   const ProfilePage({Key? key}) : super(key: key);
 
   Widget build(BuildContext context) {
@@ -80,9 +81,7 @@ class ProfilePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: Center(
                 child: ElevatedButton(
-                  onPressed: () {
-
-                  },
+                  onPressed: () => selectFile(),
                   child: const Text('Select File'),
                 ),
               ),
@@ -98,6 +97,10 @@ class ProfilePage extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 8, vertical: 16),
               child: Center(
                 child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                  ),
                   onPressed: () {
                     showAlert(context);
                   },
@@ -113,22 +116,18 @@ class ProfilePage extends StatelessWidget {
 }
 
 showAlert(BuildContext context) {
-  Widget cancelButton = TextButton(
-    child: Text("Cancel"),
-    onPressed: () {},
-  );
-  Widget continueButton = TextButton(
-    child: Text("Continue"),
-    onPressed: () { Navigator.of(context).pop();},
-  );
   AlertDialog alert = AlertDialog(
     title: Text("AlertDialog"),
     content:
         Text("Would you like to share your information with us in emergency?"),
     actions: [
       TextButton(
-      onPressed: () => Navigator.pop(context, false), // passing false
-      child: Text('No'),),
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SosHomePage()),
+        ), // passing false
+        child: Text('No'),
+      ),
       TextButton(
         onPressed: () => Navigator.pop(context, true), // passing true
         child: Text('Yes'),
@@ -142,4 +141,30 @@ showAlert(BuildContext context) {
       return alert;
     },
   );
+}
+
+void selectFile() async {
+  //String? _fileName;
+  List<PlatformFile>? _paths;
+  String? _directoryPath;
+  String? _extension;
+  //bool _loadingPath = false;
+  bool _multiPick = false;
+  FileType _pickingType = FileType.any;
+  //setState(() => _loadingPath = true);
+  try {
+    _directoryPath = null;
+    _paths = (await FilePicker.platform.pickFiles(
+      type: _pickingType,
+      allowMultiple: _multiPick,
+      allowedExtensions: (_extension?.isNotEmpty ?? false)
+          ? _extension?.replaceAll(' ', '').split(',')
+          : null,
+    ))
+        ?.files;
+  } on PlatformException catch (e) {
+    print("Unsupported operation" + e.toString());
+  } catch (ex) {
+    print(ex);
+  }
 }
