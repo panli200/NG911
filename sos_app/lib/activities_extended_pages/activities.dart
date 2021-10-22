@@ -8,6 +8,39 @@ class ActivitiesPage extends StatelessWidget {
   const ActivitiesPage({Key? key}) : super(key: key);
 
   @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: DelayedList(),
+      ),
+    );
+  }
+}
+class DelayedList extends StatefulWidget {
+  @override
+  _DelayedListState createState() => _DelayedListState();
+}
+
+class _DelayedListState extends State<DelayedList> {
+  bool isLoading = true;
+
+  @override
+  Widget build(BuildContext context) {
+    Timer timer = Timer(Duration(seconds: 3), () {
+      setState(() {
+        isLoading = false;
+      });
+    });
+
+    return isLoading ? ShimmerList() : DataList(timer);
+  }
+}
+
+class DataList extends StatelessWidget {
+
+  final Timer timer;
+  DataList(this.timer);
+  @override
   Widget build(BuildContext context){
 
       return Container(
@@ -78,4 +111,60 @@ class ActivitiesPage extends StatelessWidget {
 
   }
 
+}
+
+class ShimmerList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    int offset = 0;
+    int time = 800;
+
+    return SafeArea(
+      child: ListView.builder(
+        itemCount: 2,
+        itemBuilder: (BuildContext context, int index) {
+          offset += 5;
+          time = 800 + offset;
+
+          print(time);
+
+          return Padding(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Shimmer.fromColors(
+                highlightColor: Colors.white,
+                baseColor: Colors.grey,
+                child: ShimmerLayout(),
+                period: Duration(milliseconds: time),
+              ));
+        },
+      ),
+    );
+  }
+}
+
+class ShimmerLayout extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      child: Column(
+        children: <Widget>[
+          Container(
+
+        padding: EdgeInsets.all(20.0),
+        margin: EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        color: Colors.grey,
+        ),
+        ),// How To Use App Placeholder
+
+        Container(
+        padding: EdgeInsets.all(20.0),
+        margin: EdgeInsets.all(20.0),
+        decoration: BoxDecoration(
+        shape: BoxShape.rectangle,
+        color: Colors.grey,
+        ),
+        )]));
+  }
 }
