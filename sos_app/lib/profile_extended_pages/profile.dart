@@ -122,7 +122,10 @@ showAlert(BuildContext context) {
         Text("Would you like to share your information with us in emergency?"),
     actions: [
       TextButton(
-        onPressed: () => Navigator.pop(context, false), // passing false
+        onPressed: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SosHomePage()),
+        ), // passing false
         child: Text('No'),
       ),
       TextButton(
