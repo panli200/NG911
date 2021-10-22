@@ -26,5 +26,9 @@ ENSE 400/477 Capstone Project - University of Regina
 - [Team/Instructor Scrum # 3](https://github.com/panli200/SOSApp/blob/main/Documentation/Scrums/Scrum%233.pdf)
 
 ## Design Documentation
+- [Project Definition](https://github.com/panli200/SOSApp/tree/main/Documentation/Project-Definition)
+- [Empathy Map](https://github.com/panli200/SOSApp/tree/main/Documentation/Empathy%20Map)
+- [Story Map](https://github.com/panli200/SOSApp/tree/main/Documentation/Story%20Maps)
+- [Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes)
 
 ## Installation
