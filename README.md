@@ -18,10 +18,12 @@ ENSE 400/477 Capstone Project - University of Regina
 
 ## Video Links
 - [Team Introduction: Vlog # 1](https://youtu.be/ziVtzf-9uPU)
+- [Team Introduction: Vlog # 2](https://youtu.be/kcOifqv1obA)
 
 ## Scrum
 - [Team/Instructor Scrum # 1](https://github.com/panli200/SOSApp/blob/main/Documentation/Scrums/Scrum%231.pdf)
 - [Team/Instructor Scrum # 2](https://github.com/panli200/SOSApp/blob/main/Documentation/Scrums/Scrum%232.pdf)
+- [Team/Instructor Scrum # 3](https://github.com/panli200/SOSApp/blob/main/Documentation/Scrums/Scrum%233.pdf)
 
 ## Design Documentation
 
