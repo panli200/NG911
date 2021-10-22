@@ -58,10 +58,15 @@ class DataList extends StatelessWidget {
               height: 40,
               width: 40,
               margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                shape: BoxShape.circle
-              ),
+              // decoration: BoxDecoration(
+              //   color: Colors.grey,
+              //   shape: BoxShape.circle
+              // ),
+              child: 
+                  Image.asset(
+                    "assets/images/HowToUsePlaceholder.png",
+                  ),
+              
             ),// How To Use App Placeholder  
 
             SizedBox(height: 20), // Spacing visuals
@@ -72,6 +77,11 @@ class DataList extends StatelessWidget {
                 width: MediaQuery.of(context).size.width * 0.8,
                 alignment: Alignment.center,
                 color: Colors.grey,
+                child: 
+                  Image.asset(
+                    "assets/images/SoundwavePlaceholder.png",
+                    fit: BoxFit.fitWidth
+                  ),
               ), // Soundwave Placeholder
             ),
             
@@ -87,6 +97,11 @@ class DataList extends StatelessWidget {
                   height: 150,
                   width: MediaQuery.of(context).size.width * 0.4,
                   color: Colors.grey,
+                  child: 
+                    Image.asset(
+                    "assets/images/CameraPlaceholder.jpg",
+                    fit: BoxFit.cover
+                  ),
                   // child: FrontCameraPreview(),
                 ), // Front Camera Preview Placeholder
 
@@ -111,8 +126,9 @@ class DataList extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.8,
                     alignment: Alignment.center,
                     color: Colors.grey,
+                    child: Text('MVP Scenario Call Button')
                   ), 
-                ), // Scenario One Button Placeholder (GENERIC MEDICAL SCENARIO)
+                ), // Scenario MVP Button Placeholder (GENERIC MEDICAL SCENARIO)
 
                 Center(
                     child: Container(
@@ -121,18 +137,20 @@ class DataList extends StatelessWidget {
                     width: MediaQuery.of(context).size.width * 0.8,
                     alignment: Alignment.center,
                     color: Colors.grey,
+                    child: Text('Scenario Call Button # 2')
                   ), 
                 ), // Scenario Two Button Placeholder
 
-                Center(
-                    child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    alignment: Alignment.center,
-                    color: Colors.grey,
-                  ), 
-                ), // Scenario Three 
+                // Center(
+                //     child: Container(
+                //     margin: EdgeInsets.symmetric(vertical: 8),
+                //     height: 50,
+                //     width: MediaQuery.of(context).size.width * 0.8,
+                //     alignment: Alignment.center,
+                //     color: Colors.grey,
+                //     child: Text('Scenario Call Button # 3')
+                //   ), 
+                // ), // Scenario Three 
               ],
             ) // SOS Scenario Button Placeholders
           ],
@@ -184,7 +202,7 @@ class DataList extends StatelessWidget {
 //         child: CameraPreview(controller));
 //   }
 // }
-/************** BACK CAMERA LOGIC START **************/
+/************** FRONT CAMERA LOGIC START **************/
 
 
 /************** BACK CAMERA LOGIC START **************/
