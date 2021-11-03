@@ -4,9 +4,12 @@ import 'package:auto_route/annotations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:sos_app/sos_extended_pages/sos_home_page.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
+  _ProfilePageState createState() => _ProfilePageState();
+}
 
+class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
