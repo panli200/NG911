@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sos_app/activities_extended_pages/activity_detail.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:async';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ActivitiesPage extends StatelessWidget {
 
@@ -68,7 +71,9 @@ class DataList extends StatelessWidget {
             color: Colors.blue,
           ),
         ),
-              onTap: (){
+              onTap: () {
+                  Map <String,dynamic> data = {"field1": "Some dataa"};
+                  FirebaseFirestore.instance.collection("test").add(data);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => ActivityDetailPage()),
