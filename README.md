@@ -27,8 +27,8 @@ ENSE 400/477 Capstone Project - University of Regina
 
 ## Design Documentation
 - [Project Definition](https://github.com/panli200/SOSApp/tree/main/Documentation/Project-Definition)
-- [Empathy Map](https://github.com/panli200/SOSApp/tree/main/Documentation/Empathy%20Map)
-- [Story Map](https://github.com/panli200/SOSApp/tree/main/Documentation/Story%20Maps)
+- [Empathy Map](https://github.com/panli200/SOSApp/tree/main/Documentation/Empathy-Maps)
+- [Story Map](https://github.com/panli200/SOSApp/tree/main/Documentation/Story-Maps)
 - [Prototype](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes)
 
 ## Installation
