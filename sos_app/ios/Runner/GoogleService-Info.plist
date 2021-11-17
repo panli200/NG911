@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>728757332541-br4e3rrgqg4no1sjs1lo40h97u4gc12u.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.728757332541-br4e3rrgqg4no1sjs1lo40h97u4gc12u</string>
+	<key>API_KEY</key>
+	<string>AIzaSyCxhhLyfzJE-A3_fIZXrAPoNcAooIUQg2A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>728757332541</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.sosApp</string>
+	<key>PROJECT_ID</key>
+	<string>sos-app-3af53</string>
+	<key>STORAGE_BUCKET</key>
+	<string>sos-app-3af53.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:728757332541:ios:ba2718bb9589f9c78e5854</string>
+	<key>DATABASE_URL</key>
+	<string>https://sos-app-3af53-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>
