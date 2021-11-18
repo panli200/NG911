@@ -66,10 +66,6 @@ class AppRouter extends _i2.RootStackRouter {
     ActivitiesRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i7.ActivitiesPage());
-    },
-    ActivityDetailRoute.name: (routeData) {
-      return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i8.ActivityDetailPage());
     }
   };
 

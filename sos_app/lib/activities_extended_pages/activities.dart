@@ -45,70 +45,67 @@ class DataList extends StatelessWidget {
   DataList(this.timer);
   @override
   Widget build(BuildContext context){
-
+    final Stream<QuerySnapshot> users = FirebaseFirestore.instance.collection('testCalls').snapshots();
       return Container(
 
         child: Column(
           children: <Widget>[
-            InkWell(
-        child: Container(
-          child: Row(
-            children: <Widget>[
-              Icon(Icons.add_alert_outlined),
-              Container(
-                child: Text('  Log 2  10 October 2021',style: TextStyle(
-                  color: Colors.white,
-                ),),
-              )
+            Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                    stream: users,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot,
+                        ){
 
-          ]
+                      if(snapshot.hasError){
+                        return Text('Something went wrong');
+                      }
+                      if(snapshot.connectionState == ConnectionState.waiting){
+                        return Text('Loading');
+                      }
 
-          ),
-          padding: EdgeInsets.all(20.0),
-          margin: EdgeInsets.all(20.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: Colors.blue,
-          ),
-        ),
-              onTap: () {
-                  Map <String,dynamic> data = {"field1": "Some dataa"};
-                  FirebaseFirestore.instance.collection("test").add(data);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ActivityDetailPage()),
-                  );
-              },
-            ),
-    InkWell(
-    child:
-        Container(
-            child: Row(
-                children: <Widget>[
-                  Icon(Icons.add_alert_outlined),
-                  Container(
-                    child: Text('  Log 1  15 March 2021',style: TextStyle(
-                      color: Colors.white,
-                    ),),
-                  )
+                      final data = snapshot.requireData;
+                      return ListView.builder(
+                          itemCount: data.size,
+                          itemBuilder: (context, index){
+                            return  InkWell(
+                              child: Container(
+                                child: Row(
+                                    children: <Widget>[
+                                      Icon(Icons.add_alert_outlined),
+                                      Container(
+                                        child: Text(' Date: ${data.docs[index]['Date']}',style: TextStyle(
+                                          color: Colors.white,
+                                        ),),
+                                      )
 
-                ]
+                                    ]
 
-            ),
-          padding: EdgeInsets.all(20.0),
-          margin: EdgeInsets.all(20.0),
-          decoration: BoxDecoration(
-            shape: BoxShape.rectangle,
-            color: Colors.blue,
-          ),
-        ),
-      onTap: (){
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ActivityDetailPage()),
-        );
-      },
-    ),
+                                ),
+                                padding: EdgeInsets.all(20.0),
+                                margin: EdgeInsets.all(20.0),
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  color: Colors.blue,
+                                ),
+                              ),
+                              onTap: () {
+                                //Map <String,dynamic> data = {"Date": "2 January 2021", "StartTime" : "12:05pm","EndTime" : "12:13pm", "Status" : "Ended" };
+                                //FirebaseFirestore.instance.collection("testCalls").add(data);
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => ActivityDetailPage(Snapshot: data.docs[index])),
+                                );
+                              },
+                            );
+                            //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
+
+                          }
+                      );
+                    }
+                )
+            )
+
 
           ],
         ),
