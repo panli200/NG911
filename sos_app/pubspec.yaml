@@ -28,13 +28,14 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  firebase_core: ^1.10.0
-  firebase_analytics: ^8.3.4
+  sliding_switch: ^1.0.0
 
   # Add the dependencies for any other Firebase products you want to use in your app
   # For example, to use Firebase Authentication and Cloud Firestore
   firebase_auth: ^3.2.0
   cloud_firestore: ^3.1.0
+  firebase_core: ^1.10.0
+  firebase_analytics: ^8.3.4
 
   shimmer:
   auto_route: ^3.0.1
