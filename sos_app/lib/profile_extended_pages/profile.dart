@@ -57,10 +57,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   ),
                 ),
-                Expanded(
-                  child: SlidingSwitch(
+               SlidingSwitch(
                     value: false,
-                    width: 60,
+                    width: 100,
                     onChanged: (bool value) {
                       print(value);
                     },
@@ -78,7 +77,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     buttonColor : const Color(0xfff7f5f7),
                     inactiveColor : const Color(0xff636f7b),
                   ),
-                )
               ],
             ),
             Row(
@@ -141,10 +139,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
                   ),
                 ),
-                Expanded(
-                  child: SlidingSwitch(
+                SlidingSwitch(
                     value: false,
-                    width: 60,
+                    width: 100,
                     onChanged: (bool value) {
                       print(value);
                     },
@@ -162,7 +159,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     buttonColor : const Color(0xfff7f5f7),
                     inactiveColor : const Color(0xff636f7b),
                   ),
-                )
               ],
             ),
             Row(
@@ -174,7 +170,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Expanded(
                   child: TextField(
                     onChanged: (value) {
-                      emergencyNum = value;
+                      healthNum = value;
                     },
                   ),
                 ),
