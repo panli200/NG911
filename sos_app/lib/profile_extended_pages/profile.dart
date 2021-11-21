@@ -13,6 +13,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   late String emergencyNum;
   late String healthNum;
+  late String message;
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,180 +21,304 @@ class _ProfilePageState extends State<ProfilePage> {
         title: Text(
           'Profile',
           style:
-          const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
+              const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
         ),
         backgroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-
-            Row(
-              children: [
-                IconButton(
-                    icon: Icon(Icons.comment_rounded),
-                    onPressed: () {
-                      //Implement logout functionality
-                    }),
-                Expanded(
-                  child: Text(
-                    'General Information',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              Row(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.comment_rounded),
+                      onPressed: () {
+                        //Implement logout functionality
+                      }),
+                  Expanded(
+                    child: Text(
+                      'General Information',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
+                  )
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Permission to Share: ',
+                    style: const TextStyle(),
                   ),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Permission to Share: ',
-                  style: const TextStyle(
-
-                  ),
-                ),
-               SlidingSwitch(
+                  SlidingSwitch(
                     value: false,
                     width: 100,
                     onChanged: (bool value) {
                       print(value);
                     },
-                    height : 30,
-                    animationDuration : const Duration(milliseconds: 400),
-                    onTap:(){},
-                    onDoubleTap:(){},
-                    onSwipe:(){
-                    },
-                    textOff : "No",
-                    textOn : "Yes",
-                    colorOn : const Color(0xffdc6c73),
-                    colorOff : const Color(0xff6682c0),
-                    background : const Color(0xffe4e5eb),
-                    buttonColor : const Color(0xfff7f5f7),
-                    inactiveColor : const Color(0xff636f7b),
+                    height: 30,
+                    animationDuration: const Duration(milliseconds: 400),
+                    onTap: () {},
+                    onDoubleTap: () {},
+                    onSwipe: () {},
+                    textOff: "No",
+                    textOn: "Yes",
+                    colorOn: const Color(0xffdc6c73),
+                    colorOff: const Color(0xff6682c0),
+                    background: const Color(0xffe4e5eb),
+                    buttonColor: const Color(0xfff7f5f7),
+                    inactiveColor: const Color(0xff636f7b),
                   ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Emergency Contract:',
-                  style: const TextStyle(
-
-                  ),
-                ),
-
-                Expanded(
-                  child: TextField(
-                    onChanged: (value) {
-                      emergencyNum = value;
-                    },
-                  ),
-                ),
-              ],
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                ],
               ),
-              onPressed: () {
-
-              },
-              child: const Text('EDIT GENERAL INFORMATION'),
-            ),
-            Divider(
-              color: Colors.black54,
-              height: 5,
-              thickness: 2,
-            ),
-            Row(
-              children: [
-                IconButton(
-                    icon: Icon(Icons.comment_rounded),
-                    onPressed: () {
-                      //Implement logout functionality
-                    }
+              SizedBox(
+                height: 8.0,
+              ),
+              RichText(
+                text: TextSpan(
+                  text: 'Full Legal Name: ',
+                  style: DefaultTextStyle.of(context).style,
+                  children: const <TextSpan>[
+                    TextSpan(
+                        text: 'Bugs Capstone',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                  ],
                 ),
-                SizedBox(width: 2),
-                Expanded(
-                  child: Text(
-                    'Medical Information',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Mobile:',
+                    style: const TextStyle(),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      onChanged: (value) {
+
+                      },
                     ),
                   ),
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Permission to Share: ',
-                  style: const TextStyle(
-
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Text-to-Speech Message:',
+                    style: const TextStyle(),
                   ),
+                  Expanded(
+                    child: TextField(
+                      onChanged: (value) {
+                        message = value;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Emergency Contract:',
+                    style: const TextStyle(),
+                  ),
+                  Expanded(
+                    child: TextField(
+                      onChanged: (value) {
+                        emergencyNum = value;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
-                SlidingSwitch(
+                onPressed: () {},
+                child: const Text('EDIT GENERAL INFORMATION'),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              const Divider(
+                height: 10,
+                thickness: 5,
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Row(
+                children: [
+                  IconButton(
+                      icon: Icon(Icons.comment_rounded),
+                      onPressed: () {
+                        //Implement logout functionality
+                      }),
+                  SizedBox(width: 2),
+                  Expanded(
+                    child: Text(
+                      'Medical Information',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Text(
+                'Personal ',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Permission to Share: ',
+                    style: const TextStyle(),
+                  ),
+                  SlidingSwitch(
                     value: false,
                     width: 100,
                     onChanged: (bool value) {
                       print(value);
                     },
-                    height : 30,
-                    animationDuration : const Duration(milliseconds: 400),
-                    onTap:(){},
-                    onDoubleTap:(){},
-                    onSwipe:(){
-                    },
-                    textOff : "No",
-                    textOn : "Yes",
-                    colorOn : const Color(0xffdc6c73),
-                    colorOff : const Color(0xff6682c0),
-                    background : const Color(0xffe4e5eb),
-                    buttonColor : const Color(0xfff7f5f7),
-                    inactiveColor : const Color(0xff636f7b),
+                    height: 30,
+                    animationDuration: const Duration(milliseconds: 400),
+                    onTap: () {},
+                    onDoubleTap: () {},
+                    onSwipe: () {},
+                    textOff: "No",
+                    textOn: "Yes",
+                    colorOn: const Color(0xffdc6c73),
+                    colorOff: const Color(0xff6682c0),
+                    background: const Color(0xffe4e5eb),
+                    buttonColor: const Color(0xfff7f5f7),
+                    inactiveColor: const Color(0xff636f7b),
                   ),
-              ],
-            ),
-            Row(
-              children: [
-                Text(
-                  'Health Card No:',
-                ),
-
-                Expanded(
-                  child: TextField(
-                    onChanged: (value) {
-                      healthNum = value;
-                    },
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Health Card No:',
                   ),
+                  Expanded(
+                    child: TextField(
+                      onChanged: (value) {
+                        healthNum = value;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Text(
+                'Medical History:',
+                style: const TextStyle(),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              ElevatedButton(
+                onPressed: () => selectFile(),
+                child: const Text('Select File'),
+              ),
+              SizedBox(
+                height: 18.0,
+              ),
+              Text(
+                'Emergency Contact #1 ',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold,
                 ),
-              ],
-            ),
-            Text(
-              'Medical History:',
-              style: const TextStyle(
-
               ),
-            ),
-            ElevatedButton(
-              onPressed: () => selectFile(),
-              child: const Text('Select File'),
-            ),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              SizedBox(
+                height: 8.0,
               ),
-              onPressed: () {},
-              child: const Text('EDIT MEDICAL INFORMATION'),
-            ),
-          ],
+              Row(
+                children: [
+                  Text(
+                    'Permission to Share: ',
+                    style: const TextStyle(),
+                  ),
+                  SlidingSwitch(
+                    value: false,
+                    width: 100,
+                    onChanged: (bool value) {
+                      print(value);
+                    },
+                    height: 30,
+                    animationDuration: const Duration(milliseconds: 400),
+                    onTap: () {},
+                    onDoubleTap: () {},
+                    onSwipe: () {},
+                    textOff: "No",
+                    textOn: "Yes",
+                    colorOn: const Color(0xffdc6c73),
+                    colorOff: const Color(0xff6682c0),
+                    background: const Color(0xffe4e5eb),
+                    buttonColor: const Color(0xfff7f5f7),
+                    inactiveColor: const Color(0xff636f7b),
+                  ),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Health Card No:',
+                  ),
+                  Expanded(
+                    child: TextField(
+                      onChanged: (value) {
+                        healthNum = value;
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Text(
+                'Medical History:',
+                style: const TextStyle(),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              ElevatedButton(
+                onPressed: () => selectFile(),
+                child: const Text('Select File'),
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                ),
+                onPressed: () {},
+                child: const Text('EDIT MEDICAL INFORMATION'),
+              ),
+            ],
+          ),
         ),
       ),
     );
