@@ -33,21 +33,39 @@ class _ProfilePageState extends State<ProfilePage> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                      icon: Icon(Icons.comment_rounded),
-                      onPressed: () {
-                        //Implement logout functionality
-                      }),
-                  Expanded(
-                    child: Text(
-                      'General Information',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                    icon: Icon(
+                      Icons.comment_rounded,
+                      size: 26,
+                    ),
+                    onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('General Information Use',
+                            textAlign: TextAlign.center),
+                        content: const Text(
+                            'General information will be use for 911 emergency. '
+                            'Your information only be used with your permission.'
+                            'You have the responsibility to keep your information safe. '
+                            'Your can select "No" for not giving your information to 911'),
+                        actions: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.close),
+                            onPressed: () => Navigator.of(context).pop(null),
+                          ),
+                        ],
                       ),
                     ),
-                  )
+                  ),
+                  Text(
+                    'General Information',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                  ),
                 ],
               ),
               Row(
@@ -99,9 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Expanded(
                     child: TextField(
-                      onChanged: (value) {
-
-                      },
+                      onChanged: (value) {},
                     ),
                   ),
                 ],
@@ -154,22 +170,39 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 8.0,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                      icon: Icon(Icons.comment_rounded),
-                      onPressed: () {
-                        //Implement logout functionality
-                      }),
-                  SizedBox(width: 2),
-                  Expanded(
-                    child: Text(
-                      'Medical Information',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                    icon: Icon(
+                      Icons.comment_rounded,
+                      size: 26,
+                    ),
+                    onPressed: () => showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Medical Information Use',
+                            textAlign: TextAlign.center),
+                        content: const Text(
+                            'Medical information will be use for 911 emergency. '
+                            'Your information only be used with your permission.'
+                            'You have the responsibility to keep your information safe. '
+                            'Your can select "No" for not giving your information to 911'),
+                        actions: <Widget>[
+                          new IconButton(
+                            icon: new Icon(Icons.close),
+                            onPressed: () => Navigator.of(context).pop(null),
+                          ),
+                        ],
                       ),
                     ),
-                  )
+                  ),
+                  Text(
+                    'Medical Information',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17,
+                    ),
+                  ),
                 ],
               ),
               Text(
