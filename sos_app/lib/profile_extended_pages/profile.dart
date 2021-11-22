@@ -1,9 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:sliding_switch/sliding_switch.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
+
+
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -14,8 +20,12 @@ class _ProfilePageState extends State<ProfilePage> {
   late String emergencyNum;
   late String healthNum;
   late String message;
+  File? file;
 
   Widget build(BuildContext context) {
+    final fileName = file != null ? basename(file!.path) : 'No File Selected';
+   // final fileNameSecond = file != null ? basename(file!.path) : 'No File Selected';
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -260,22 +270,33 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 8.0,
               ),
-              Text(
-                'Medical History:',
-                style: const TextStyle(),
+              Row(
+                children: [
+                  Text(
+                    'Medical History: ',
+                    style: const TextStyle(),
+                  ),
+                  Text(
+                    fileName,
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 8.0,
               ),
-              ElevatedButton(
-                onPressed: () => selectFile(),
-                child: const Text('Select File'),
+              SizedBox(
+                width: 80,
+                child: ElevatedButton(
+                  onPressed: () => selectFile(),
+                  child: const Text('Select File'),
+                ),
               ),
               SizedBox(
                 height: 18.0,
               ),
               Text(
-                'Emergency Contact #1 ',
+                'Emergency Contact',
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   color: Colors.blue,
@@ -329,15 +350,24 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 8.0,
               ),
-              Text(
-                'Medical History:',
-                style: const TextStyle(),
+              Row(
+                children: [
+                  Text(
+                    'Medical History: ',
+                    style: const TextStyle(),
+                  ),
+                  Text(//need
+                   // fileNameSecond,
+                    'No File Selected',
+                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  ),
+                ],
               ),
               SizedBox(
                 height: 8.0,
               ),
               ElevatedButton(
-                onPressed: () => selectFile(),
+                onPressed: () => selectFile,
                 child: const Text('Select File'),
               ),
               SizedBox(
@@ -356,30 +386,16 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
+  Future selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) return;
+    final path = result.files.single.path!;
+
+    setState(() => file = File(path));
+  }
+
 }
 
-void selectFile() async {
-  //String? _fileName;
-  List<PlatformFile>? _paths;
-  String? _directoryPath;
-  String? _extension;
-  //bool _loadingPath = false;
-  bool _multiPick = false;
-  FileType _pickingType = FileType.any;
-  //setState(() => _loadingPath = true);
-  try {
-    _directoryPath = null;
-    _paths = (await FilePicker.platform.pickFiles(
-      type: _pickingType,
-      allowMultiple: _multiPick,
-      allowedExtensions: (_extension?.isNotEmpty ?? false)
-          ? _extension?.replaceAll(' ', '').split(',')
-          : null,
-    ))
-        ?.files;
-  } on PlatformException catch (e) {
-    print("Unsupported operation" + e.toString());
-  } catch (ex) {
-    print(ex);
-  }
-}
+
