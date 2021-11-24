@@ -10,7 +10,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 
 
-
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
   _ProfilePageState createState() => _ProfilePageState();
@@ -20,11 +19,12 @@ class _ProfilePageState extends State<ProfilePage> {
   late String emergencyNum;
   late String healthNum;
   late String message;
-  File? file;
+  UploadTask? task, taskT;//
+  File? file, fileT;
 
   Widget build(BuildContext context) {
     final fileName = file != null ? basename(file!.path) : 'No File Selected';
-   // final fileNameSecond = file != null ? basename(file!.path) : 'No File Selected';
+    final fileNameT = fileT != null ? basename(fileT!.path) : 'No File Selected';
 
     return Scaffold(
       appBar: AppBar(
@@ -278,20 +278,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Text(
                     fileName,
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                    style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
               SizedBox(
                 height: 8.0,
               ),
-              SizedBox(
-                width: 80,
-                child: ElevatedButton(
+              ElevatedButton(
                   onPressed: () => selectFile(),
                   child: const Text('Select File'),
                 ),
-              ),
               SizedBox(
                 height: 18.0,
               ),
@@ -356,10 +353,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     'Medical History: ',
                     style: const TextStyle(),
                   ),
-                  Text(//need
-                   // fileNameSecond,
-                    'No File Selected',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+                  Text(
+                    fileNameT,
+                    style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
                   ),
                 ],
               ),
@@ -367,7 +363,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 8.0,
               ),
               ElevatedButton(
-                onPressed: () => selectFile,
+                onPressed: () => selectFileT(),
                 child: const Text('Select File'),
               ),
               SizedBox(
@@ -395,6 +391,15 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() => file = File(path));
   }
+  Future selectFileT() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+
+    if (result == null) return;
+    final path = result.files.single.path!;
+
+    setState(() => fileT = File(path));
+  }
+
 
 }
 
