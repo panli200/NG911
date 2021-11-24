@@ -16,9 +16,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  late String mobileNum;
+  late String message;
   late String emergencyNum;
   late String healthNum;
-  late String message;
+  late String healthNumT;
   UploadTask? task, taskT;//
   File? file, fileT;
 
@@ -122,12 +124,14 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 children: [
                   Text(
-                    'Mobile:',
+                    'Mobile: ',
                     style: const TextStyle(),
                   ),
                   Expanded(
                     child: TextField(
-                      onChanged: (value) {},
+                      onChanged: (value) {
+                        mobileNum=value;
+                      },
                     ),
                   ),
                 ],
@@ -135,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 children: [
                   Text(
-                    'Text-to-Speech Message:',
+                    'Text-to-Speech Message: ',
                     style: const TextStyle(),
                   ),
                   Expanded(
@@ -150,7 +154,7 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 children: [
                   Text(
-                    'Emergency Contract:',
+                    'Emergency Contract: ',
                     style: const TextStyle(),
                   ),
                   Expanded(
@@ -166,7 +170,38 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
-                onPressed: () {},
+                //EDIT GENERAL INFORMATION DIALOG
+                onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Edit General Information'),
+                    content:
+                      SingleChildScrollView(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: <Widget>[
+                            const Text('Mobile'),
+                            Text(mobileNum),
+                            const Text('Text-to-Speech Message'),
+                            Text(message),
+                            const Text('Emergency'),
+                            Text(emergencyNum),
+                          ],
+                        ),
+                      ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'OK'),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                ),
                 child: const Text('EDIT GENERAL INFORMATION'),
               ),
               SizedBox(
@@ -338,7 +373,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Expanded(
                     child: TextField(
                       onChanged: (value) {
-                        healthNum = value;
+                        healthNumT = value;
                       },
                     ),
                   ),
@@ -373,7 +408,39 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
-                onPressed: () {},
+                onPressed: () => showDialog<String>(
+                  context: context,
+                  builder: (BuildContext context) => AlertDialog(
+                    title: const Text('Edit MedicalInformation'),
+                    content:
+                    SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          const Text('Health Card No:'),
+                          Text(healthNum),
+                          const Text('Medical History:'),
+                          Text(fileName),
+                          const Text('Health Card No:'),
+                          Text(healthNumT),
+                          const Text('Medical History:'),
+                          Text(fileNameT),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'OK'),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ),
+                ),
                 child: const Text('EDIT MEDICAL INFORMATION'),
               ),
             ],
@@ -400,7 +467,4 @@ class _ProfilePageState extends State<ProfilePage> {
     setState(() => fileT = File(path));
   }
 
-
 }
-
-
