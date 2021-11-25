@@ -42,7 +42,7 @@ ENSE 400/477(2021/2022) SSE Capstone Project - University of Regina
 
 # Scrum Scripts/Slides
 ## September 24 — Scrum #1
-- [Scrum #1 Script](https://github.com/panli200/SOSApp/Presentations/Scrums/Scrum-Scripts/Scrum#1-Script.pdf)
+- [Scrum #1 Script](https://github.com/panli200/SOSApp/Presentations/Scrums/Scrum-Scripts/"Scrum#1-Script.pdf")
 - [Scrum #1 Slide](https://github.com/panli200/SOSApp/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%231-Slide.pdf)
 ## October 8 — Scrum #2
 - [Scrum #2 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%232.pdf)
