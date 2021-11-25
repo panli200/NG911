@@ -26,8 +26,10 @@ jobs:
       with:
         channel: 'stable'  
     # Get flutter packages
+    - name:  set    
+      working-directory: sos_app
+      run: flutter pub get
+    # Build :D 
     - name:  build    
       working-directory: sos_app
-    - run: flutter pub get
-    # Build :D 
-    - run: flutter build aot
+      run: flutter build aot
