@@ -17,12 +17,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-
+      - name: login
       # Note: This workflow uses the latest stable version of the Dart SDK.
       # You can specify other versions if desired, see documentation here:
       # https://github.com/dart-lang/setup-dart/blob/main/README.md
       # - uses: dart-lang/setup-dart@v1
       - uses: actions/setup-java@v1
+      - name: setup
         with:
           java-version: '12.x'
 
@@ -30,6 +31,7 @@ jobs:
         working-directory: sos_app
         
       - uses: subosito/flutter-action@v1
+      - name: build
         with:
           channel: 'stable' 
       - run: flutter pub get
