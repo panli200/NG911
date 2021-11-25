@@ -45,6 +45,7 @@ class _DelayedListState extends State<DelayedList> {
 class DataList extends StatelessWidget {
   final Timer timer;
   final howToUsePopUp = HowToUseData.howToUsePopUp;
+  final medicalCallPopUp = MedicalCallPopUpData.medicalCallPopUp;
 
   DataList(this.timer);
 
@@ -75,7 +76,6 @@ class DataList extends StatelessWidget {
                   ) // onTileTap
                 ),
             ), // How To Use App Placeholder  
-            
 
             SizedBox(height: 20), // Spacing visuals
 
@@ -127,16 +127,21 @@ class DataList extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget> [
-                Center(
-                    child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    alignment: Alignment.center,
-                    color: Colors.grey,
-                    child: Text('MVP Scenario Call Button')
-                  ), 
-                ), // Scenario MVP Button Placeholder (GENERIC MEDICAL SCENARIO)
+                Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  margin: EdgeInsets.symmetric(vertical: 8),
+
+                  child:  MedicalScenarioButton(
+                    tileColor: medicalCallPopUp.color,
+                    pageTitle: medicalCallPopUp.title,
+                    onTileTap: () => context.router.push(
+                      MedicalCallPopUpRoute(
+                        medicalCallPopUpID: medicalCallPopUp.id,
+                      ),
+                    ) // onTileTap
+                  ),
+                ),
 
                 Center(
                     child: Container(

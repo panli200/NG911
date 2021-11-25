@@ -9,3 +9,13 @@ class HowToUseData {
 
   HowToUseData(this.color, this.title, this.id);
 }
+
+class MedicalCallPopUpData {
+  static final medicalCallPopUp = MedicalCallPopUpData(Colors.white, 'Medical Emergency Call', 2);
+
+  final Color color;
+  final String title;
+  final int id;
+
+  MedicalCallPopUpData(this.color, this.title, this.id);
+}
