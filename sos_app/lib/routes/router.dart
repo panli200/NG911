@@ -24,7 +24,7 @@ import 'package:sos_app/profile_extended_pages/profile.dart';
             page: SosHomePage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
           ),
           AutoRoute(
-            path: '',
+            path: ':howToUseID',
             page: HowToUsePage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
           ),
           AutoRoute(

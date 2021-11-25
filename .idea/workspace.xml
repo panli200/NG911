@@ -23,69 +23,13 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
-  <component name="FUSProjectUsageTrigger">
-    <session id="-639881742">
-      <usages-collector id="statistics.file.extensions.open">
-        <counts>
-          <entry key="dart" value="48" />
-          <entry key="gradle" value="9" />
-          <entry key="json" value="1" />
-          <entry key="yaml" value="7" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.open">
-        <counts>
-          <entry key="Dart" value="48" />
-          <entry key="Groovy" value="9" />
-          <entry key="JSON" value="1" />
-          <entry key="YAML" value="7" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.extensions.edit">
-        <counts>
-          <entry key="dart" value="2345" />
-          <entry key="gradle" value="3" />
-          <entry key="txt" value="32" />
-          <entry key="yaml" value="8" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.file.types.edit">
-        <counts>
-          <entry key="Dart" value="2345" />
-          <entry key="Groovy" value="3" />
-          <entry key="PLAIN_TEXT" value="32" />
-          <entry key="YAML" value="8" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.vcs.git.usages">
-        <counts>
-          <entry key="git.branch.checkout.local" value="6" />
-          <entry key="git.branch.checkout.remote" value="3" />
-          <entry key="git.branch.compare" value="1" />
-          <entry key="git.branch.create.new" value="5" />
-          <entry key="git.branch.delete.local" value="1" />
-          <entry key="git.branch.delete.remote" value="3" />
-          <entry key="git.branch.merge" value="1" />
-        </counts>
-      </usages-collector>
-      <usages-collector id="statistics.lifecycle.project">
-        <counts>
-          <entry key="project.closed" value="4" />
-          <entry key="project.open.time.22" value="3" />
-          <entry key="project.open.time.23" value="1" />
-          <entry key="project.open.time.26" value="1" />
-          <entry key="project.opened" value="5" />
-        </counts>
-      </usages-collector>
-    </session>
-  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1305">
-              <caret line="87" column="60" lean-forward="true" selection-start-line="87" selection-start-column="60" selection-end-line="87" selection-end-column="60" />
+            <state relative-caret-position="1377">
+              <caret line="87" column="60" selection-start-line="87" selection-start-column="60" selection-end-line="87" selection-end-column="60" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -96,8 +40,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+            <state relative-caret-position="408">
+              <caret line="24" selection-start-line="24" selection-end-line="24" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -108,7 +52,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
+            <state relative-caret-position="867">
               <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
             </state>
           </provider>
@@ -150,8 +94,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/sos_home_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3780">
-              <caret line="256" selection-start-line="256" selection-end-line="256" />
+            <state relative-caret-position="4284">
+              <caret line="258" selection-start-line="258" selection-end-line="258" />
             </state>
           </provider>
         </entry>
@@ -159,11 +103,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/main.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="375">
-              <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="323">
+              <caret line="22" column="40" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -208,7 +149,7 @@
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6" fullScreen="true">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="x" value="210" />
     <option name="y" value="8" />
     <option name="width" value="755" />
@@ -263,8 +204,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -281,160 +222,6 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
     <property name="show.migrate.to.gradle.popup" value="false" />
-  </component>
-  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
-    <UpdatedFiles>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Updated from server" />
-        <option name="myStatusName" value="Changed on server" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="CHANGED_ON_SERVER" />
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Updated" />
-          <option name="myStatusName" value="Changed" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/README.md</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/ios/Podfile</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/ios/Podfile.lock</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/ios/Runner.xcodeproj/project.pbxproj</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/pubspec.yaml</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Created" />
-          <option name="myStatusName" value="Created" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Architecture/UI Architecture.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/PSAP-Admin-Side/LoFi Prototypes/Li - 911 PSAP Control Panel.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/PSAP-Admin-Side/LoFi Prototypes/Rabaa-PSAP-LoFi.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/PSAP-Admin-Side/LoFi Prototypes/Renz-PSAP-Dashboard-LoFi-Design.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/User-Client-Side/Hifi-Prototypes/HifiRabaa2Nov.xd</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes/CombinedLoFi-1st-Iteration.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes/CombinedLoFi-2nd-Iteration.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes/LiLofiPrototype.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes/RabaaLofiPrototype.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes/RenzCapstoneLofiPrototype.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Empathy-Maps/Empathy Map - Emergency 911 Communication Specialists.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Empathy-Maps/Empathy Map - Mobile Users.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Sprint-Logs/WeekOfNovember7-Logs.JPG</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Sprint-Logs/WeekOfOctober31-Logs.JPG</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Story-Maps/MedicalEmergencyStoryMap.png</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Scrums/Scrum-Scripts/Scrum#1.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Scrums/Scrum-Scripts/Scrum#2.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Scrums/Scrum-Scripts/Scrum#3.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Scrums/Scrum-Slides/Capstone-Scrum#1.pptx</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Scrums/Scrum-Slides/Capstone-Scrum#2.pptx</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Vlogs/Vlog-Scripts/Capstone-Vlog#1-Script.docx</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Vlogs/Vlog-Scripts/Capstone-Vlog#2-Script.docx</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Vlogs/Vlogs-Slides/Vlog#2.pptx</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/ios/Runner/GoogleService-Info.plist</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Deleted" />
-          <option name="myStatusName" value="Deleted" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="true" />
-          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/CombinedLoFi-1st-Iteration.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/CombinedLoFi-2nd-Iteration.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/HifiRabaa2Nov.xd</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/LiLofiPrototype.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/RabaaLofiPrototype.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/RenzCapstoneLofiPrototype.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Design-Prototypes/UI Architecture.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Empathy Map/Empathy Map - Emergency 911 Communication Specialists.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Empathy Map/Empathy Map - Mobile Users.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Scrums/Scrum#1.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Scrums/Scrum#2.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Scrums/Scrum#3.pdf</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Documentation/Story Maps/MedicalEmergencyStoryMap.png</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Scrums/Capstone-Scrum#1.pptx</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Scrums/Capstone-Scrum#2.pptx</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/Presentations/Vlog Scripts/Project vlog #1 Script.docx</PATH>
-        </FILE-GROUP>
-        <FILE-GROUP>
-          <option name="myUpdateName" value="Restored" />
-          <option name="myStatusName" value="Will be restored" />
-          <option name="mySupportsDeletion" value="false" />
-          <option name="myCanBeAbsent" value="false" />
-          <option name="myId" value="RESTORED" />
-        </FILE-GROUP>
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Modified" />
-        <option name="myStatusName" value="Modified" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MODIFIED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Skipped" />
-        <option name="myStatusName" value="Skipped" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SKIPPED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with conflicts" />
-        <option name="myStatusName" value="Will be merged with conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_CONFLICTS" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with tree conflicts" />
-        <option name="myStatusName" value="Merged with tree conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged with property conflicts" />
-        <option name="myStatusName" value="Will be merged with property conflicts" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Merged" />
-        <option name="myStatusName" value="Will be merged" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="MERGED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Not in repository" />
-        <option name="myStatusName" value="Not in repository" />
-        <option name="mySupportsDeletion" value="true" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="UNKNOWN" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally added" />
-        <option name="myStatusName" value="Locally added" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_ADDED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Locally removed" />
-        <option name="myStatusName" value="Locally removed" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="LOCALLY_REMOVED" />
-      </FILE-GROUP>
-      <FILE-GROUP>
-        <option name="myUpdateName" value="Switched" />
-        <option name="myStatusName" value="Switched" />
-        <option name="mySupportsDeletion" value="false" />
-        <option name="myCanBeAbsent" value="false" />
-        <option name="myId" value="SWITCHED" />
-      </FILE-GROUP>
-    </UpdatedFiles>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -457,15 +244,6 @@
       <option name="filePath" value="$PROJECT_DIR$/sos_app/lib/main.dart" />
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Flutter.main.dart" />
-        <item itemvalue="Flutter.main.dart" />
-        <item itemvalue="Flutter.main.dart" />
-        <item itemvalue="Flutter.main.dart" />
-        <item itemvalue="Flutter.main.dart" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
@@ -499,10 +277,11 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1366" height="768" extended-state="6" />
+    <frame x="-8" y="-8" width="2576" height="1056" extended-state="7" />
+    <editor active="true" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.22205438" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.15484634" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -526,9 +305,6 @@
       <window_info anchor="right" id="Flutter Inspector" order="4" />
       <window_info anchor="right" id="Flutter Outline" order="5" weight="0.32930514" />
     </layout>
-  </component>
-  <component name="VcsContentAnnotationSettings">
-    <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Loading effect for Activities" />
@@ -563,8 +339,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1305">
-          <caret line="87" column="60" lean-forward="true" selection-start-line="87" selection-start-column="60" selection-end-line="87" selection-end-column="60" />
+        <state relative-caret-position="1377">
+          <caret line="87" column="60" selection-start-line="87" selection-start-column="60" selection-end-line="87" selection-end-column="60" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
@@ -573,7 +349,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
+        <state relative-caret-position="867">
           <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
         </state>
       </provider>
@@ -607,18 +383,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/sos_home_page.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3780">
-          <caret line="256" selection-start-line="256" selection-end-line="256" />
+        <state relative-caret-position="4284">
+          <caret line="258" selection-start-line="258" selection-end-line="258" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/main.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="25" column="45" selection-start-line="25" selection-start-column="45" selection-end-line="25" selection-end-column="45" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="323">
+          <caret line="22" column="40" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -627,8 +400,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="23" lean-forward="true" selection-start-line="23" selection-end-line="23" />
+        <state relative-caret-position="408">
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
