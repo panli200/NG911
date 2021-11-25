@@ -7,9 +7,9 @@ name: Dart
 
 on:
   push:
-    branches: [ Workflow_initiation ]
+    branches: [ main ]
   pull_request:
-    branches: [ Workflow_initiation ]
+    branches: [ main ]
 
 jobs:
   build:
