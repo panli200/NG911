@@ -3,6 +3,10 @@ import 'package:shimmer/shimmer.dart';
 import 'dart:async';
 import 'package:camera/camera.dart';
 import 'package:sos_app/main.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:sos_app/routes/router.gr.dart';
+import 'package:sos_app/data/application_data.dart';
+import 'package:sos_app/widgets.dart';
 
 class SosHomePage extends StatelessWidget {
 
@@ -40,6 +44,7 @@ class _DelayedListState extends State<DelayedList> {
 
 class DataList extends StatelessWidget {
   final Timer timer;
+  final howToUsePopUp = HowToUseData.howToUsePopUp;
 
   DataList(this.timer);
 
@@ -53,30 +58,33 @@ class DataList extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
+          // children: <Widget>[
+          children: <Widget>[ 
             Container(
               height: 40,
               width: 40,
               margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-              // decoration: BoxDecoration(
-              //   color: Colors.grey,
-              //   shape: BoxShape.circle
-              // ),
-              child: 
-                  Image.asset(
-                    "assets/images/HowToUsePlaceholder.png",
-                  ),
               
-            ),// How To Use App Placeholder  
+              child:  HowToUseButton(
+                  tileColor: howToUsePopUp.color,
+                  pageTitle: howToUsePopUp.title,
+                  onTileTap: () => context.router.push(
+                    HowToUseRoute(
+                      howToUseID: howToUsePopUp.id,
+                    ),
+                  ) // onTileTap
+                ),
+            ), // How To Use App Placeholder  
+            
 
             SizedBox(height: 20), // Spacing visuals
 
             Center(
               child: Container(
                 height: 100,
-                width: MediaQuery.of(context).size.width * 0.8,
-                alignment: Alignment.center,
-                color: Colors.grey,
+                width: MediaQuery.of(context).size.width * 0.35,
+                // alignment: Alignment.center,
+                // color: Colors.grey,
                 child: 
                   Image.asset(
                     "assets/images/SoundwavePlaceholder.png",

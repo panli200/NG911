@@ -10,6 +10,7 @@
 
 import 'package:auto_route/auto_route.dart' as _i2;
 import 'package:flutter/material.dart' as _i9;
+import 'package:flutter/widgets.dart' as _i10;
 
 import '../activities_extended_pages/activities.dart' as _i7;
 import '../activities_extended_pages/activity_detail.dart' as _i8;
@@ -48,10 +49,13 @@ class AppRouter extends _i2.RootStackRouter {
           routeData: routeData, child: _i3.SosHomePage(key: args.key));
     },
     HowToUseRoute.name: (routeData) {
+      final pathParams = routeData.pathParams;
       final args = routeData.argsAs<HowToUseRouteArgs>(
-          orElse: () => const HowToUseRouteArgs());
+          orElse: () =>
+              HowToUseRouteArgs(howToUseID: pathParams.getInt('howToUseID')));
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i4.HowToUsePage(key: args.key));
+          routeData: routeData,
+          child: _i4.HowToUsePage(key: args.key, howToUseID: args.howToUseID));
     },
     InCallRoute.name: (routeData) {
       final args = routeData.argsAs<InCallRouteArgs>(
@@ -66,6 +70,13 @@ class AppRouter extends _i2.RootStackRouter {
     ActivitiesRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i7.ActivitiesPage());
+    },
+    ActivityDetailRoute.name: (routeData) {
+      final args = routeData.argsAs<ActivityDetailRouteArgs>();
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child:
+              _i8.ActivityDetailPage(key: args.key, Snapshot: args.Snapshot));
     }
   };
 
@@ -79,7 +90,7 @@ class AppRouter extends _i2.RootStackRouter {
                 _i2.RouteConfig(SosHomeRoute.name,
                     path: '', parent: SosRouter.name),
                 _i2.RouteConfig(HowToUseRoute.name,
-                    path: '', parent: SosRouter.name),
+                    path: ':howToUseID', parent: SosRouter.name),
                 _i2.RouteConfig(InCallRoute.name,
                     path: '', parent: SosRouter.name)
               ]),
@@ -138,7 +149,7 @@ class ActivitiesRouter extends _i2.PageRouteInfo<void> {
 
 /// generated route for [_i3.SosHomePage]
 class SosHomeRoute extends _i2.PageRouteInfo<SosHomeRouteArgs> {
-  SosHomeRoute({_i9.Key? key})
+  SosHomeRoute({_i10.Key? key})
       : super(name, path: '', args: SosHomeRouteArgs(key: key));
 
   static const String name = 'SosHomeRoute';
@@ -147,26 +158,31 @@ class SosHomeRoute extends _i2.PageRouteInfo<SosHomeRouteArgs> {
 class SosHomeRouteArgs {
   const SosHomeRouteArgs({this.key});
 
-  final _i9.Key? key;
+  final _i10.Key? key;
 }
 
 /// generated route for [_i4.HowToUsePage]
 class HowToUseRoute extends _i2.PageRouteInfo<HowToUseRouteArgs> {
-  HowToUseRoute({_i9.Key? key})
-      : super(name, path: '', args: HowToUseRouteArgs(key: key));
+  HowToUseRoute({_i10.Key? key, required int howToUseID})
+      : super(name,
+            path: ':howToUseID',
+            args: HowToUseRouteArgs(key: key, howToUseID: howToUseID),
+            rawPathParams: {'howToUseID': howToUseID});
 
   static const String name = 'HowToUseRoute';
 }
 
 class HowToUseRouteArgs {
-  const HowToUseRouteArgs({this.key});
+  const HowToUseRouteArgs({this.key, required this.howToUseID});
 
-  final _i9.Key? key;
+  final _i10.Key? key;
+
+  final int howToUseID;
 }
 
 /// generated route for [_i5.InCallPage]
 class InCallRoute extends _i2.PageRouteInfo<InCallRouteArgs> {
-  InCallRoute({_i9.Key? key})
+  InCallRoute({_i10.Key? key})
       : super(name, path: '', args: InCallRouteArgs(key: key));
 
   static const String name = 'InCallRoute';
@@ -175,7 +191,7 @@ class InCallRoute extends _i2.PageRouteInfo<InCallRouteArgs> {
 class InCallRouteArgs {
   const InCallRouteArgs({this.key});
 
-  final _i9.Key? key;
+  final _i10.Key? key;
 }
 
 /// generated route for [_i6.ProfilePage]
@@ -193,8 +209,19 @@ class ActivitiesRoute extends _i2.PageRouteInfo<void> {
 }
 
 /// generated route for [_i8.ActivityDetailPage]
-class ActivityDetailRoute extends _i2.PageRouteInfo<void> {
-  const ActivityDetailRoute() : super(name, path: '');
+class ActivityDetailRoute extends _i2.PageRouteInfo<ActivityDetailRouteArgs> {
+  ActivityDetailRoute({_i10.Key? key, required dynamic Snapshot})
+      : super(name,
+            path: '',
+            args: ActivityDetailRouteArgs(key: key, Snapshot: Snapshot));
 
   static const String name = 'ActivityDetailRoute';
+}
+
+class ActivityDetailRouteArgs {
+  const ActivityDetailRouteArgs({this.key, required this.Snapshot});
+
+  final _i10.Key? key;
+
+  final dynamic Snapshot;
 }
