@@ -32,4 +32,4 @@ jobs:
     # Build :D 
     - name:  build    
       working-directory: sos_app
-      run: flutter build aot
+      run: flutter build apk
