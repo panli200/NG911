@@ -9,19 +9,19 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i2;
-import 'package:flutter/material.dart' as _i9;
-import 'package:flutter/widgets.dart' as _i10;
+import 'package:flutter/material.dart' as _i10;
 
-import '../activities_extended_pages/activities.dart' as _i7;
-import '../activities_extended_pages/activity_detail.dart' as _i8;
-import '../profile_extended_pages/profile.dart' as _i6;
+import '../activities_extended_pages/activities.dart' as _i8;
+import '../activities_extended_pages/activity_detail.dart' as _i9;
+import '../profile_extended_pages/profile.dart' as _i7;
 import '../sos.dart' as _i1;
 import '../sos_extended_pages/how_to_use_app_page.dart' as _i4;
-import '../sos_extended_pages/in_call_page.dart' as _i5;
+import '../sos_extended_pages/in_call_page.dart' as _i6;
+import '../sos_extended_pages/medical_call_popup_page.dart' as _i5;
 import '../sos_extended_pages/sos_home_page.dart' as _i3;
 
 class AppRouter extends _i2.RootStackRouter {
-  AppRouter([_i9.GlobalKey<_i9.NavigatorState>? navigatorKey])
+  AppRouter([_i10.GlobalKey<_i10.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -57,26 +57,36 @@ class AppRouter extends _i2.RootStackRouter {
           routeData: routeData,
           child: _i4.HowToUsePage(key: args.key, howToUseID: args.howToUseID));
     },
+    MedicalCallPopUpRoute.name: (routeData) {
+      final pathParams = routeData.pathParams;
+      final args = routeData.argsAs<MedicalCallPopUpRouteArgs>(
+          orElse: () => MedicalCallPopUpRouteArgs(
+              medicalCallPopUpID: pathParams.getInt('medicalCallPopUpID')));
+      return _i2.MaterialPageX<dynamic>(
+          routeData: routeData,
+          child: _i5.MedicalCallPopUpPage(
+              key: args.key, medicalCallPopUpID: args.medicalCallPopUpID));
+    },
     InCallRoute.name: (routeData) {
       final args = routeData.argsAs<InCallRouteArgs>(
           orElse: () => const InCallRouteArgs());
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i5.InCallPage(key: args.key));
+          routeData: routeData, child: _i6.InCallPage(key: args.key));
     },
     ProfileRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i6.ProfilePage());
+          routeData: routeData, child: const _i7.ProfilePage());
     },
     ActivitiesRoute.name: (routeData) {
       return _i2.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i7.ActivitiesPage());
+          routeData: routeData, child: const _i8.ActivitiesPage());
     },
     ActivityDetailRoute.name: (routeData) {
       final args = routeData.argsAs<ActivityDetailRouteArgs>();
       return _i2.MaterialPageX<dynamic>(
           routeData: routeData,
           child:
-              _i8.ActivityDetailPage(key: args.key, Snapshot: args.Snapshot));
+              _i9.ActivityDetailPage(key: args.key, Snapshot: args.Snapshot));
     }
   };
 
@@ -91,6 +101,8 @@ class AppRouter extends _i2.RootStackRouter {
                     path: '', parent: SosRouter.name),
                 _i2.RouteConfig(HowToUseRoute.name,
                     path: ':howToUseID', parent: SosRouter.name),
+                _i2.RouteConfig(MedicalCallPopUpRoute.name,
+                    path: ':medicalCallPopUpID', parent: SosRouter.name),
                 _i2.RouteConfig(InCallRoute.name,
                     path: '', parent: SosRouter.name)
               ]),
@@ -180,7 +192,28 @@ class HowToUseRouteArgs {
   final int howToUseID;
 }
 
-/// generated route for [_i5.InCallPage]
+/// generated route for [_i5.MedicalCallPopUpPage]
+class MedicalCallPopUpRoute
+    extends _i2.PageRouteInfo<MedicalCallPopUpRouteArgs> {
+  MedicalCallPopUpRoute({_i10.Key? key, required int medicalCallPopUpID})
+      : super(name,
+            path: ':medicalCallPopUpID',
+            args: MedicalCallPopUpRouteArgs(
+                key: key, medicalCallPopUpID: medicalCallPopUpID),
+            rawPathParams: {'medicalCallPopUpID': medicalCallPopUpID});
+
+  static const String name = 'MedicalCallPopUpRoute';
+}
+
+class MedicalCallPopUpRouteArgs {
+  const MedicalCallPopUpRouteArgs({this.key, required this.medicalCallPopUpID});
+
+  final _i10.Key? key;
+
+  final int medicalCallPopUpID;
+}
+
+/// generated route for [_i6.InCallPage]
 class InCallRoute extends _i2.PageRouteInfo<InCallRouteArgs> {
   InCallRoute({_i10.Key? key})
       : super(name, path: '', args: InCallRouteArgs(key: key));
@@ -194,21 +227,21 @@ class InCallRouteArgs {
   final _i10.Key? key;
 }
 
-/// generated route for [_i6.ProfilePage]
+/// generated route for [_i7.ProfilePage]
 class ProfileRoute extends _i2.PageRouteInfo<void> {
   const ProfileRoute() : super(name, path: '');
 
   static const String name = 'ProfileRoute';
 }
 
-/// generated route for [_i7.ActivitiesPage]
+/// generated route for [_i8.ActivitiesPage]
 class ActivitiesRoute extends _i2.PageRouteInfo<void> {
   const ActivitiesRoute() : super(name, path: '');
 
   static const String name = 'ActivitiesRoute';
 }
 
-/// generated route for [_i8.ActivityDetailPage]
+/// generated route for [_i9.ActivityDetailPage]
 class ActivityDetailRoute extends _i2.PageRouteInfo<ActivityDetailRouteArgs> {
   ActivityDetailRoute({_i10.Key? key, required dynamic Snapshot})
       : super(name,
