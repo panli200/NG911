@@ -4,12 +4,13 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9eb5226-8f03-4a0d-a315-7b53fa36dd24" name="Default Changelist" comment="Loading effect for Activities">
+    <list default="true" id="e9eb5226-8f03-4a0d-a315-7b53fa36dd24" name="Default Changelist" comment="Accelerometer">
+      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sos_app/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/android/app/src/main/AndroidManifest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sos_app/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/sos_app/.pub/" />
     <ignored path="$PROJECT_DIR$/sos_app/build/" />
@@ -23,13 +24,58 @@
     <option name="testRunner" value="GRADLE" />
     <option name="delegatedBuild" value="true" />
   </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="-639881742">
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="dart" value="6" />
+          <entry key="flutter-plugins" value="2" />
+          <entry key="yaml" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="Dart" value="6" />
+          <entry key="PLAIN_TEXT" value="2" />
+          <entry key="YAML" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.closed" value="1" />
+          <entry key="project.open.time.40" value="1" />
+          <entry key="project.opened" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="dart" value="149" />
+          <entry key="txt" value="14" />
+          <entry key="yaml" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="Dart" value="149" />
+          <entry key="PLAIN_TEXT" value="14" />
+          <entry key="YAML" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.vcs.git.usages">
+        <counts>
+          <entry key="git.branch.checkout.local" value="1" />
+          <entry key="git.branch.create.new" value="2" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1377">
-              <caret line="87" column="60" selection-start-line="87" selection-start-column="60" selection-end-line="87" selection-end-column="60" />
+            <state relative-caret-position="690">
+              <caret line="46" column="37" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -40,8 +86,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="24" selection-start-line="24" selection-end-line="24" />
+            <state relative-caret-position="945">
+              <caret line="63" column="75" lean-forward="true" selection-start-line="63" selection-start-column="75" selection-end-line="63" selection-end-column="75" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -50,68 +96,34 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart">
+        <entry file="file://$PROJECT_DIR$/sos_app/lib/services/weather.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="867">
-              <caret line="68" column="5" selection-start-line="68" selection-start-column="5" selection-end-line="68" selection-end-column="5" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="390">
+              <caret line="26" selection-start-line="26" selection-end-line="26" />
               <folding>
-                <element signature="e#0#44#0" expanded="true" />
+                <element signature="e#0#38#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/in_call_page.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/how_to_use_app_page.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <folding>
-                <element signature="e#0#39#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/sos_home_page.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4284">
-              <caret line="258" selection-start-line="258" selection-end-line="258" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sos_app/lib/main.dart">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="22" column="40" selection-start-line="22" selection-start-column="40" selection-end-line="22" selection-end-column="40" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sos_app/lib/sos.dart">
+        <entry file="file://$PROJECT_DIR$/sos_app/lib/services/location.dart">
           <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sos_app/.flutter-plugins">
+          <provider selected="true" editor-type-id="text-editor" />
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sos_app/pubspec.yaml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="735">
+              <caret line="49" selection-start-line="49" selection-end-line="49" />
+            </state>
+          </provider>
         </entry>
       </file>
     </leaf>
@@ -127,7 +139,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="Accelerometer" />
       </map>
     </option>
   </component>
@@ -139,20 +151,18 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/sos_app/pubspec.yaml" />
         <option value="$PROJECT_DIR$/sos_app/android/build.gradle" />
         <option value="$PROJECT_DIR$/sos_app/lib/main.dart" />
         <option value="$PROJECT_DIR$/sos_app/android/app/build.gradle" />
         <option value="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart" />
         <option value="$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart" />
+        <option value="$PROJECT_DIR$/sos_app/pubspec.yaml" />
         <option value="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="210" />
-    <option name="y" value="8" />
-    <option name="width" value="755" />
+  <component name="ProjectFrameBounds">
+    <option name="width" value="1366" />
     <option name="height" value="768" />
   </component>
   <component name="ProjectId" id="1zSvmeDsXoHVhSYD4eZD0vrxd2L" />
@@ -161,6 +171,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -173,39 +185,10 @@
               <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
               <item name="sos_app" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="SOSApp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
-              <item name="sos_app" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SOSApp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
-              <item name="sos_app" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="activities_extended_pages" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SOSApp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
-              <item name="sos_app" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="routes" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SOSApp" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
-              <item name="sos_app" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-              <item name="sos_extended_pages" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -220,7 +203,7 @@
     <property name="dart.analysis.tool.window.visible" value="false" />
     <property name="io.flutter.reload.alreadyRun" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RunDashboard">
@@ -244,6 +227,12 @@
       <option name="filePath" value="$PROJECT_DIR$/sos_app/lib/main.dart" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Flutter.main.dart" />
+        <item itemvalue="Flutter.main.dart" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" BundledDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
@@ -277,11 +266,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1056" extended-state="7" />
-    <editor active="true" />
+    <frame x="0" y="0" width="1366" height="768" extended-state="0" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.15484634" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.23716012" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -293,11 +281,11 @@
       <window_info anchor="bottom" id="Terminal" order="2" weight="0.21037038" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="4" weight="0.34666666" />
-      <window_info active="true" anchor="bottom" id="Run" order="5" visible="true" weight="0.13925926" />
+      <window_info anchor="bottom" id="Run" order="5" weight="0.10719755" />
       <window_info anchor="bottom" id="Debug" order="6" />
       <window_info anchor="bottom" id="Flutter Performance" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="8" />
-      <window_info anchor="bottom" id="Messages" order="9" weight="0.05185185" />
+      <window_info active="true" anchor="bottom" id="Messages" order="9" visible="true" weight="0.050535988" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Theme Preview" order="1" />
       <window_info anchor="right" id="Assistant" order="2" weight="0.33507463" />
@@ -306,9 +294,13 @@
       <window_info anchor="right" id="Flutter Outline" order="5" weight="0.32930514" />
     </layout>
   </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Loading effect for Activities" />
-    <option name="LAST_COMMIT_MESSAGE" value="Loading effect for Activities" />
+    <MESSAGE value="Accelerometer" />
+    <option name="LAST_COMMIT_MESSAGE" value="Accelerometer" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/sos_app/lib/generated_plugin_registrant.dart">
@@ -318,9 +310,6 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/profile_extended_pages/profile.dart">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sos_app/pubspec.yaml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/android/build.gradle">
@@ -337,16 +326,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1377">
-          <caret line="87" column="60" selection-start-line="87" selection-start-column="60" selection-end-line="87" selection-end-column="60" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="867">
@@ -355,31 +334,13 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#44#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/in_call_page.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/how_to_use_app_page.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/sos_home_page.dart">
       <provider selected="true" editor-type-id="text-editor">
@@ -398,10 +359,43 @@
     <entry file="file://$PROJECT_DIR$/sos_app/lib/sos.dart">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="690">
+          <caret line="46" column="37" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/services/weather.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="26" selection-start-line="26" selection-end-line="26" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/services/location.dart">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/.flutter-plugins">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/pubspec.yaml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="735">
+          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="24" selection-start-line="24" selection-end-line="24" />
+        <state relative-caret-position="945">
+          <caret line="63" column="75" lean-forward="true" selection-start-line="63" selection-start-column="75" selection-end-line="63" selection-end-column="75" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
