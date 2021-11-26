@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:sos_app/services/weather.dart';
+import 'package:sensors/sensors.dart';
 
 class ActivityDetailPage extends StatefulWidget {
   final Snapshot;
@@ -19,11 +20,20 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   Location location = Location(); // For display, can be delete in the future
   WeatherModel weather =
       WeatherModel(); //For display, can be delete in the future
-
+      double x = 0.0;
+      double y = 0.0;
+      double z = 0.0;
   void initState() {
     //For display, can be delete in the future
     super.initState();
     getLocationData();
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      setState(() {
+        x = event.x;
+        y = event.y;
+        z = event.z;
+      });
+    });
   }
 
   Future<void> getLocationData() async {
@@ -42,6 +52,13 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             child: Text(
                 'Date: ${widget.Snapshot['Date']}\n Start time: ${widget.Snapshot['StartTime']}\n End Time: ${widget.Snapshot['EndTime']}\n Status: ${widget.Snapshot['Status']}')),
         //This for display sensors information, can be delete in the future------
+        Row(children: [
+          Text('Accelerometer: ',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+          Text(
+            'X: ' + x.toStringAsFixed(2) + 'Y: ' + y.toStringAsFixed(2) + 'Z: ' + z.toStringAsFixed(2)
+          ),
+        ]),
         Row(children: [
           Text('Latitude: ',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
