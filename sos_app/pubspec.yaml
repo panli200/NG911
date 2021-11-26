@@ -38,6 +38,10 @@ dependencies:
   firebase_analytics: ^8.3.4
   firebase_storage: ^10.1.0
 
+  # Sensors
+  geolocator: ^7.7.1
+  weather: ^2.0.1
+
   shimmer:
   auto_route: ^3.0.1
   camera: ^0.9.4+3
