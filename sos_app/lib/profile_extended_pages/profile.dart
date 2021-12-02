@@ -8,6 +8,7 @@ import 'package:sliding_switch/sliding_switch.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
+import 'dialog.dart';
 
 
 class ProfilePage extends StatefulWidget {
@@ -52,24 +53,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       Icons.comment_rounded,
                       size: 26,
                     ),
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('General Information Use',
-                            textAlign: TextAlign.center),
-                        content: const Text(
-                            'General information will be use for 911 emergency. '
-                            'Your information only be used with your permission.'
-                            'You have the responsibility to keep your information safe. '
-                            'Your can select "No" for not giving your information to 911'),
-                        actions: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.close),
-                            onPressed: () => Navigator.of(context).pop(null),
-                          ),
-                        ],
-                      ),
-                    ),
+                    onPressed: () {
+                      showGeneralDialogBox(context);
+                    }
                   ),
                   Text(
                     'General Information',
@@ -224,24 +210,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       Icons.comment_rounded,
                       size: 26,
                     ),
-                    onPressed: () => showDialog<String>(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        title: const Text('Medical Information Use',
-                            textAlign: TextAlign.center),
-                        content: const Text(
-                            'Medical information will be use for 911 emergency. '
-                            'Your information only be used with your permission.'
-                            'You have the responsibility to keep your information safe. '
-                            'Your can select "No" for not giving your information to 911'),
-                        actions: <Widget>[
-                          new IconButton(
-                            icon: new Icon(Icons.close),
-                            onPressed: () => Navigator.of(context).pop(null),
-                          ),
-                        ],
-                      ),
-                    ),
+                    onPressed: () {
+                      showMedicalDialogBox(context);
+                    }
                   ),
                   Text(
                     'Medical Information',
