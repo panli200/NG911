@@ -23,7 +23,7 @@
   - [Prototypes](#prototypes)
 - [Project Demos](#project-demos)
   - [Client Side Hi-fidelity Prototype](#client-side-hi-fidelity-prototype)
-  - [PASP Hi-fidelity Prototype](#psap-side-hi-fidelity-prototype)
+  - [PASP Side Hi-fidelity Prototype](#psap-side-hi-fidelity-prototype)
 
 ---
 
