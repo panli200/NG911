@@ -4,12 +4,17 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e9eb5226-8f03-4a0d-a315-7b53fa36dd24" name="Default Changelist" comment="Accelerometer">
-      <change beforePath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/codeStyles/Project.xml" afterDir="false" />
+    <list default="true" id="e9eb5226-8f03-4a0d-a315-7b53fa36dd24" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/sos_app/lib/services/acceleration.dart" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/sos_app/lib/services/health.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sos_app/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sos_app/lib/services/location.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/services/location.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sos_app/lib/services/weather.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/services/weather.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/sos_app/lib/sos_extended_pages/medical_call_popup_page.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/sos_extended_pages/medical_call_popup_page.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sos_app/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/pubspec.yaml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/sos_app/.pub/" />
@@ -28,43 +33,45 @@
     <session id="-639881742">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="dart" value="6" />
-          <entry key="flutter-plugins" value="2" />
-          <entry key="yaml" value="2" />
+          <entry key="dart" value="17" />
+          <entry key="flutter-plugins" value="5" />
+          <entry key="yaml" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Dart" value="6" />
-          <entry key="PLAIN_TEXT" value="2" />
-          <entry key="YAML" value="2" />
+          <entry key="Dart" value="17" />
+          <entry key="PLAIN_TEXT" value="5" />
+          <entry key="YAML" value="5" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="1" />
+          <entry key="project.closed" value="3" />
+          <entry key="project.open.time.11" value="1" />
+          <entry key="project.open.time.33" value="1" />
           <entry key="project.open.time.40" value="1" />
-          <entry key="project.opened" value="1" />
+          <entry key="project.opened" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="dart" value="149" />
+          <entry key="dart" value="1572" />
           <entry key="txt" value="14" />
-          <entry key="yaml" value="2" />
+          <entry key="yaml" value="39" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Dart" value="149" />
+          <entry key="Dart" value="1572" />
           <entry key="PLAIN_TEXT" value="14" />
-          <entry key="YAML" value="2" />
+          <entry key="YAML" value="39" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
         <counts>
-          <entry key="git.branch.checkout.local" value="1" />
-          <entry key="git.branch.create.new" value="2" />
+          <entry key="git.branch.checkout.local" value="2" />
+          <entry key="git.branch.create.new" value="3" />
         </counts>
       </usages-collector>
     </session>
@@ -72,10 +79,31 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="280">
+              <caret line="70" column="138" selection-start-line="70" selection-start-column="138" selection-end-line="70" selection-end-column="138" />
+              <folding>
+                <element signature="e#0#39#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/sos_app/lib/profile_extended_pages/profile.dart">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="174">
+              <caret line="46" column="12" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="690">
-              <caret line="46" column="37" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
+            <state relative-caret-position="570">
+              <caret line="97" column="52" selection-start-line="97" selection-start-column="52" selection-end-line="97" selection-end-column="52" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -84,10 +112,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart">
+        <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/medical_call_popup_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="945">
-              <caret line="63" column="75" lean-forward="true" selection-start-line="63" selection-start-column="75" selection-end-line="63" selection-end-column="75" />
+            <state relative-caret-position="431">
+              <caret line="70" column="56" selection-start-line="70" selection-start-column="56" selection-end-line="70" selection-end-column="56" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
               </folding>
@@ -96,10 +124,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/sos_app/lib/services/weather.dart">
+        <entry file="file://$PROJECT_DIR$/sos_app/lib/services/acceleration.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="390">
-              <caret line="26" selection-start-line="26" selection-end-line="26" />
+            <state relative-caret-position="345">
+              <caret line="23" column="5" selection-start-line="21" selection-start-column="4" selection-end-line="23" selection-end-column="5" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -109,7 +137,11 @@
       </file>
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/services/location.dart">
-          <provider selected="true" editor-type-id="text-editor" />
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="45">
+              <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
+            </state>
+          </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
@@ -120,8 +152,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/pubspec.yaml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="735">
-              <caret line="49" selection-start-line="49" selection-end-line="49" />
+            <state relative-caret-position="117">
+              <caret line="52" column="37" selection-start-line="52" selection-start-column="37" selection-end-line="52" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -139,7 +171,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Accelerometer" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
   </component>
@@ -154,14 +186,19 @@
         <option value="$PROJECT_DIR$/sos_app/android/build.gradle" />
         <option value="$PROJECT_DIR$/sos_app/lib/main.dart" />
         <option value="$PROJECT_DIR$/sos_app/android/app/build.gradle" />
-        <option value="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart" />
         <option value="$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart" />
-        <option value="$PROJECT_DIR$/sos_app/pubspec.yaml" />
+        <option value="$PROJECT_DIR$/sos_app/lib/services/health.dart" />
+        <option value="$PROJECT_DIR$/sos_app/lib/services/weather.dart" />
+        <option value="$PROJECT_DIR$/sos_app/lib/services/location.dart" />
+        <option value="$PROJECT_DIR$/sos_app/lib/services/acceleration.dart" />
         <option value="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart" />
+        <option value="$PROJECT_DIR$/sos_app/pubspec.yaml" />
+        <option value="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart" />
+        <option value="$PROJECT_DIR$/sos_app/lib/sos_extended_pages/medical_call_popup_page.dart" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="1366" />
     <option name="height" value="768" />
   </component>
@@ -172,7 +209,6 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -185,10 +221,45 @@
               <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
               <item name="sos_app" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="SOSApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
+              <item name="sos_app" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SOSApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
+              <item name="sos_app" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="activities_extended_pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SOSApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
+              <item name="sos_app" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="profile_extended_pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SOSApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
+              <item name="sos_app" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SOSApp" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SOSApp" type="462c0819:PsiDirectoryNode" />
+              <item name="sos_app" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+              <item name="sos_extended_pages" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -205,6 +276,194 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="settings.github" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RestoreUpdateTree" date="Moments ago" ActionInfo="_Update">
+    <UpdatedFiles>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Updated from server" />
+        <option name="myStatusName" value="Changed on server" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="CHANGED_ON_SERVER" />
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Updated" />
+          <option name="myStatusName" value="Changed" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="UPDATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/ios/Podfile.lock</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/profile.dart</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Created" />
+          <option name="myStatusName" value="Created" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="CREATED" />
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/.gitignore</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/.metadata</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/README.md</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/analysis_options.yaml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/.gitignore</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/build.gradle</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/debug/AndroidManifest.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/AndroidManifest.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/kotlin/com/example/psap_dashboard/MainActivity.kt</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/res/drawable-v21/launch_background.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/res/drawable/launch_background.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/res/mipmap-hdpi/ic_launcher.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/res/mipmap-mdpi/ic_launcher.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/res/mipmap-xhdpi/ic_launcher.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/res/mipmap-xxhdpi/ic_launcher.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/res/mipmap-xxxhdpi/ic_launcher.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/res/values-night/styles.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/main/res/values/styles.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/app/src/profile/AndroidManifest.xml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/build.gradle</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/gradle.properties</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/gradle/wrapper/gradle-wrapper.properties</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/android/settings.gradle</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/assets/images/sk.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/.gitignore</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Flutter/AppFrameworkInfo.plist</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Flutter/Debug.xcconfig</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Flutter/Release.xcconfig</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner.xcodeproj/project.pbxproj</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner.xcodeproj/project.xcworkspace/contents.xcworkspacedata</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner.xcworkspace/contents.xcworkspacedata</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/AppDelegate.swift</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Contents.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-1024x1024@1x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@1x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@2x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-20x20@3x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@1x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@2x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-29x29@3x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@1x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@2x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-40x40@3x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@2x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-60x60@3x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@1x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-76x76@2x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-83.5x83.5@2x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/LaunchImage.imageset/Contents.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@2x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/LaunchImage.imageset/LaunchImage@3x.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Assets.xcassets/LaunchImage.imageset/README.md</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Base.lproj/LaunchScreen.storyboard</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Base.lproj/Main.storyboard</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Info.plist</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/ios/Runner/Runner-Bridging-Header.h</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/lib/main.dart</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/lib/pages/maps_home_page.dart</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/lib/pages/overview_home_page.dart</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/lib/pages/settings_home_page.dart</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/lib/pages/user_data_page.dart</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/lib/widget/navigation_drawer_widget.dart</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/pubspec.yaml</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/web/favicon.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/web/icons/Icon-192.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/web/icons/Icon-512.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/web/icons/Icon-maskable-192.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/web/icons/Icon-maskable-512.png</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/web/index.html</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/psap_dashboard/web/manifest.json</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/dialog.dart</PATH>
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Deleted" />
+          <option name="myStatusName" value="Deleted" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="true" />
+          <option name="myId" value="REMOVED_FROM_REPOSITORY" />
+        </FILE-GROUP>
+        <FILE-GROUP>
+          <option name="myUpdateName" value="Restored" />
+          <option name="myStatusName" value="Will be restored" />
+          <option name="mySupportsDeletion" value="false" />
+          <option name="myCanBeAbsent" value="false" />
+          <option name="myId" value="RESTORED" />
+        </FILE-GROUP>
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Modified" />
+        <option name="myStatusName" value="Modified" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MODIFIED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Skipped" />
+        <option name="myStatusName" value="Skipped" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SKIPPED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with conflicts" />
+        <option name="myStatusName" value="Will be merged with conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_CONFLICTS" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with tree conflicts" />
+        <option name="myStatusName" value="Merged with tree conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_TREE_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged with property conflicts" />
+        <option name="myStatusName" value="Will be merged with property conflicts" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED_WITH_PROPERTY_CONFLICT" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Merged" />
+        <option name="myStatusName" value="Will be merged" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="MERGED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Not in repository" />
+        <option name="myStatusName" value="Not in repository" />
+        <option name="mySupportsDeletion" value="true" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="UNKNOWN" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally added" />
+        <option name="myStatusName" value="Locally added" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_ADDED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Locally removed" />
+        <option name="myStatusName" value="Locally removed" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="LOCALLY_REMOVED" />
+      </FILE-GROUP>
+      <FILE-GROUP>
+        <option name="myUpdateName" value="Switched" />
+        <option name="myStatusName" value="Switched" />
+        <option name="mySupportsDeletion" value="false" />
+        <option name="myCanBeAbsent" value="false" />
+        <option name="myId" value="SWITCHED" />
+      </FILE-GROUP>
+    </UpdatedFiles>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -231,6 +490,7 @@
       <list>
         <item itemvalue="Flutter.main.dart" />
         <item itemvalue="Flutter.main.dart" />
+        <item itemvalue="Flutter.main.dart" />
       </list>
     </recent_temporary>
   </component>
@@ -253,7 +513,14 @@
       <option name="project" value="LOCAL" />
       <updated>1634909318375</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Accelerometer">
+      <created>1637913519725</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1637913519725</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TodoView">
@@ -269,7 +536,33 @@
     <frame x="0" y="0" width="1366" height="768" extended-state="0" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.23716012" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.18051359" />
+      <window_info id="Structure" order="2" side_tool="true" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Designer" order="4" />
+      <window_info id="Resources Explorer" order="5" />
+      <window_info id="Capture Tool" order="6" />
+      <window_info id="Favorites" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="0" weight="0.3288889" />
+      <window_info anchor="bottom" id="TODO" order="1" weight="0.3288889" />
+      <window_info anchor="bottom" id="Terminal" order="2" weight="0.21037038" />
+      <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
+      <window_info anchor="bottom" id="Dart Analysis" order="4" weight="0.34666666" />
+      <window_info active="true" anchor="bottom" id="Run" order="5" visible="true" weight="0.1762963" />
+      <window_info anchor="bottom" id="Debug" order="6" />
+      <window_info anchor="bottom" id="Flutter Performance" order="7" side_tool="true" />
+      <window_info anchor="bottom" id="Find" order="8" />
+      <window_info anchor="bottom" id="Messages" order="9" weight="0.3748148" />
+      <window_info anchor="right" id="Capture Analysis" order="0" />
+      <window_info anchor="right" id="Theme Preview" order="1" />
+      <window_info anchor="right" id="Assistant" order="2" weight="0.33507463" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info anchor="right" id="Flutter Inspector" order="4" />
+      <window_info anchor="right" id="Flutter Outline" order="5" weight="0.32930514" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Captures" order="0" weight="0.25" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.2439577" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -285,14 +578,14 @@
       <window_info anchor="bottom" id="Debug" order="6" />
       <window_info anchor="bottom" id="Flutter Performance" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="8" />
-      <window_info active="true" anchor="bottom" id="Messages" order="9" visible="true" weight="0.050535988" />
+      <window_info anchor="bottom" id="Messages" order="9" visible="true" weight="0.3506891" />
       <window_info anchor="right" id="Capture Analysis" order="0" />
       <window_info anchor="right" id="Theme Preview" order="1" />
       <window_info anchor="right" id="Assistant" order="2" weight="0.33507463" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info anchor="right" id="Flutter Inspector" order="4" />
       <window_info anchor="right" id="Flutter Outline" order="5" weight="0.32930514" />
-    </layout>
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -307,9 +600,6 @@
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/android/app/google-services.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sos_app/lib/profile_extended_pages/profile.dart">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/android/build.gradle">
@@ -359,43 +649,78 @@
     <entry file="file://$PROJECT_DIR$/sos_app/lib/sos.dart">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
+    <entry file="file://$PROJECT_DIR$/sos_app/.flutter-plugins">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/services/location.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="690">
-          <caret line="46" column="37" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="45">
+          <caret line="3" column="28" selection-start-line="3" selection-start-column="28" selection-end-line="3" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/services/health.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/services/weather.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="390">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
+        <state>
+          <caret column="38" selection-start-column="38" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/services/acceleration.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="5" selection-start-line="21" selection-start-column="4" selection-end-line="23" selection-end-column="5" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sos_app/lib/services/location.dart">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/sos_app/.flutter-plugins">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/pubspec.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="735">
-          <caret line="49" selection-start-line="49" selection-end-line="49" />
+        <state relative-caret-position="117">
+          <caret line="52" column="37" selection-start-line="52" selection-start-column="37" selection-end-line="52" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="945">
-          <caret line="63" column="75" lean-forward="true" selection-start-line="63" selection-start-column="75" selection-end-line="63" selection-end-column="75" />
+        <state relative-caret-position="280">
+          <caret line="70" column="138" selection-start-line="70" selection-start-column="138" selection-end-line="70" selection-end-column="138" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/profile_extended_pages/profile.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="174">
+          <caret line="46" column="12" selection-start-line="46" selection-start-column="12" selection-end-line="46" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="97" column="52" selection-start-line="97" selection-start-column="52" selection-end-line="97" selection-end-column="52" />
+          <folding>
+            <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/medical_call_popup_page.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="431">
+          <caret line="70" column="56" selection-start-line="70" selection-start-column="56" selection-end-line="70" selection-end-column="56" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
           </folding>
