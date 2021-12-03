@@ -10,6 +10,7 @@
 - [Project Vlogs](#project-vlogs)
   - [September 17 — Vlog #1](#september-17--vlog-1)
   - [October 15 — Vlog #2](#october-15--vlog-2)
+  - [December 3 — Vlog #3](#december-3--vlog-3)
 - [Scrum Scripts/Slides](#scrum-scriptsslides)
   - [September 24 — Scrum #1](#september-24--scrum-1)
   - [October 8 — Scrum #2](#october-8--scrum-2)
@@ -37,6 +38,8 @@ ENSE 400/477(2021/2022) SSE Capstone Project - University of Regina
 - [Vlog #1: Team and Project Introduction](https://youtu.be/ziVtzf-9uPU)
 ## October 15 — Vlog #2
 - [Vlog #2: Project Update](https://youtu.be/kcOifqv1obA)
+## December 3 — Vlog #3
+- [Vlog #3: Project Update — Needed PSAP-side complementary application with our original idea](ToBeUpdated)
 
 ---
 
