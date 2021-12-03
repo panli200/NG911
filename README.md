@@ -87,3 +87,6 @@ Hi-fidelity Prototypes - Made in Adobe XD
 
 ## Client Side Hi-fidelity Prototype
 This [video](https://drive.google.com/file/d/1QpDGlHGbElFlKYlJ61Bs_GObXn-j4FUU/view?usp=sharing) demonstrates and explains our Hi-fidelity design for the client side. It will be our reference for implementing the client side application.
+
+## PSAP Side Hi-fidelity Prototype
+This [video](https://drive.google.com/file/d/1XkkQXJtban5dI-80QY2J30C3lRvdlfQs/view?usp=sharing) demonstrates and explains our Hi-fidelity design for the PSAP side. It will be our reference for implementing the PSAP side application.
