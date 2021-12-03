@@ -78,6 +78,7 @@ Lo-fidelity Prototypes — Handrawn
 
 Hi-fidelity Prototypes - Made in Adobe XD
 - [Client Side Hi-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/User-Client-Side/Hifi-Prototypes)
+- [PSAP/Admin Side Side Hi-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/HiFi-Prototypes)
 
 ---
   
