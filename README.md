@@ -75,11 +75,11 @@ ENSE 400/477(2021/2022) SSE Capstone Project - University of Regina
 
 Lo-fidelity Prototypes — Handrawn
 - [Client Side Lo-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes)
-- [PSAP/Admin Side Lo-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/Lofi-Prototypes)
+- [PSAP Side Lo-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/Lofi-Prototypes)
 
 Hi-fidelity Prototypes - Made in Adobe XD
 - [Client Side Hi-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/User-Client-Side/Hifi-Prototypes)
-- [PSAP/Admin Side Side Hi-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/HiFi-Prototypes)
+- [PSAP Side Side Hi-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/HiFi-Prototypes)
 
 ---
   
