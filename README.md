@@ -39,7 +39,7 @@ ENSE 400/477(2021/2022) SSE Capstone Project - University of Regina
 ## October 15 — Vlog #2
 - [Vlog #2: Project Update](https://youtu.be/kcOifqv1obA)
 ## December 3 — Vlog #3
-- [Vlog #3: Project Update — Needed PSAP-side complementary application with our original idea](ToBeUpdated)
+- [Vlog #3: Project Update — Needed PSAP-side complementary application with our original idea](https://youtu.be/2lo1vUUzE8Y)
 
 ---
 
