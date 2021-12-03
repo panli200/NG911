@@ -50,7 +50,7 @@ class MedicalCallPopUpPage extends StatelessWidget {
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.5,
                   alignment: Alignment.center,
-                  color: Colors.grey,
+                  //color: Colors.grey,
                       child:ElevatedButton(
                           child: Text("Yourself"),
                           onPressed: _callNumber // this will the method for your rejected Button
@@ -66,9 +66,22 @@ class MedicalCallPopUpPage extends StatelessWidget {
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.5,
                   alignment: Alignment.center,
-                  color: Colors.grey,
+                  //color: Colors.grey,
                       child:ElevatedButton(
                           child: Text("Emergency Contact"),
+                          onPressed: _callNumber // this will the method for your rejected Button
+                      )
+                ), 
+              ), 
+              Center(
+                  child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 8),
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  alignment: Alignment.center,
+                  //color: Colors.grey,
+                      child:ElevatedButton(
+                          child: Text("Third Party (Bystander)"),
                           onPressed: _callNumber // this will the method for your rejected Button
                       )
                 ), 
