@@ -284,9 +284,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     'Medical History: ',
                     style: const TextStyle(),
                   ),
-                  Text(
-                    fileName,
-                    style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
+                  Expanded(
+                    child: Text(
+                      fileName,
+                      style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ],
               ),
@@ -361,9 +363,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     'Medical History: ',
                     style: const TextStyle(),
                   ),
-                  Text(
-                    fileNameT,
-                    style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
+                  Expanded(
+                    child: Text(
+                      fileNameT,
+                      style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ],
               ),
