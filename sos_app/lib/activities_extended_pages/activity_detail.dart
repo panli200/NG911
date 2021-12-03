@@ -4,8 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:sos_app/services/weather.dart';
+import 'package:sos_app/services/acceleration.dart';
 import 'package:sensors/sensors.dart';
-
+import 'dart:math';
 class ActivityDetailPage extends StatefulWidget {
   final Snapshot;
 
@@ -18,23 +19,34 @@ class ActivityDetailPage extends StatefulWidget {
 
 class _ActivityDetailPageState extends State<ActivityDetailPage> {
   Location location = Location(); // For display, can be delete in the future
-  WeatherModel weather =
-      WeatherModel(); //For display, can be delete in the future
-      double x = 0.0;
-      double y = 0.0;
-      double z = 0.0;
+  WeatherModel weather = WeatherModel(); //For display, can be delete in the future
+  double x = 0.0;
+  double y = 0.0;
+  double z = 0.0;
+  bool Danger = false;
   void initState() {
     //For display, can be delete in the future
     super.initState();
     getLocationData();
+
+
     accelerometerEvents.listen((AccelerometerEvent event) {
-      setState(() {
+        setState(() {
         x = event.x;
         y = event.y;
         z = event.z;
+        double AccelerationMagnitude = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
+        if (AccelerationMagnitude > 10.0) {
+          Danger =  true;
+        }else{
+          Danger = false;
+        }
+
       });
     });
-  }
+    }
+
+
 
   Future<void> getLocationData() async {
     //For display, can be delete in the future
@@ -56,7 +68,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
           Text('Accelerometer: ',
               style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
           Text(
-            'X: ' + x.toStringAsFixed(2) + 'Y: ' + y.toStringAsFixed(2) + 'Z: ' + z.toStringAsFixed(2)
+            'X: ' + x.toStringAsFixed(2) + ' Y: ' + y.toStringAsFixed(2) + ' Z: ' + z.toStringAsFixed(2) + " Danger: " + Danger.toString()
           ),
         ]),
         Row(children: [

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/data/application_data.dart';
 import 'package:sos_app/routes/router.gr.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class MedicalCallPopUpPage extends StatelessWidget {
 
@@ -11,6 +12,11 @@ class MedicalCallPopUpPage extends StatelessWidget {
     Key? key,
     @PathParam() required this.medicalCallPopUpID,
   }) : super(key: key);
+
+  void _callNumber() async{
+    const number = '01154703796'; //set the number here
+    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +51,12 @@ class MedicalCallPopUpPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.5,
                   alignment: Alignment.center,
                   color: Colors.grey,
-                  child: Text('Yourself')
+                      child:ElevatedButton(
+                          child: Text("Yourself"),
+                          onPressed: _callNumber // this will the method for your rejected Button
+                      )
+
+                  //child: Text('Yourself')
                 ), 
               ), 
 
@@ -56,7 +67,10 @@ class MedicalCallPopUpPage extends StatelessWidget {
                   width: MediaQuery.of(context).size.width * 0.5,
                   alignment: Alignment.center,
                   color: Colors.grey,
-                  child: Text('Emergency Contact')
+                      child:ElevatedButton(
+                          child: Text("Emergency Contact"),
+                          onPressed: _callNumber // this will the method for your rejected Button
+                      )
                 ), 
               ), 
             ],

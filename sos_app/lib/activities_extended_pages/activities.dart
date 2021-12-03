@@ -43,6 +43,7 @@ class DataList extends StatelessWidget {
 
   final Timer timer;
   DataList(this.timer);
+
   @override
   Widget build(BuildContext context){
     final Stream<QuerySnapshot> users = FirebaseFirestore.instance.collection('testCalls').snapshots();

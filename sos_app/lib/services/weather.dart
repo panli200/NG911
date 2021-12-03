@@ -2,11 +2,11 @@ import 'package:weather/weather.dart';
 import 'location.dart';
 
 class WeatherModel {
-  late double humidity;
-  late int temperature;
-  late double windSpeed;
+  late double humidity = 0.0;
+  late int temperature = 0;
+  late double windSpeed = 0.0;
 
-  late String weatherDescription;
+  late String weatherDescription = '';
 
 
   Future<void> getLocationWeather() async {
