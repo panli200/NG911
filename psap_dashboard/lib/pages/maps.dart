@@ -13,6 +13,9 @@ class GoogleMap extends StatelessWidget {
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
       final myLatlng = LatLng(50.4452, -104.6189);
 
+     // another location
+      final myLatlng2 = LatLng(50.3916, -105.5349);
+
       final mapOptions = MapOptions()
         ..zoom = 6
         ..center = LatLng(53.2, -104.70);
@@ -25,13 +28,22 @@ class GoogleMap extends StatelessWidget {
 
       final map = GMap(elem, mapOptions);
 
-      final marker = Marker(MarkerOptions()
+      final marker = Marker(
+          MarkerOptions()
         ..position = myLatlng
         ..map = map
-        ..title = 'Hello World!');
+        ..title = 'caller'
+        );
 
-      final infoWindow =
-      InfoWindow(InfoWindowOptions()..content = 'caller');
+      // Another marker
+      Marker(
+        MarkerOptions()
+          ..position = myLatlng2
+          ..map = map
+          ..icon = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
+      );
+
+      final infoWindow = InfoWindow(InfoWindowOptions()..content = 'caller');
       marker.onClick.listen((event) => infoWindow.open(map, marker));
       return elem;
     });
