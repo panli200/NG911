@@ -17,11 +17,11 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late String mobileNum;
-  late String message;
-  late String emergencyNum;
-  late String healthNum;
-  late String healthNumT;
+  late String mobileNum='';
+  late String message='';
+  late String emergencyNum='';
+  late String healthNum='';
+  late String healthNumT='';
   UploadTask? task, taskT;//
   File? file, fileT;
 
@@ -115,6 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Expanded(
                     child: TextField(
+                      keyboardType: TextInputType.phone,
                       onChanged: (value) {
                         mobileNum=value;
                       },
@@ -145,6 +146,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Expanded(
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       onChanged: (value) {
                         emergencyNum = value;
                       },
@@ -268,6 +270,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Expanded(
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       onChanged: (value) {
                         healthNum = value;
                       },
@@ -345,6 +348,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   Expanded(
                     child: TextField(
+                      keyboardType: TextInputType.number,
                       onChanged: (value) {
                         healthNumT = value;
                       },
