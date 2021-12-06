@@ -8,8 +8,8 @@ import 'package:sliding_switch/sliding_switch.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
+import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'dialog.dart';
-
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -17,20 +17,24 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late String mobileNum='';
-  late String message='';
-  late String emergencyNum='';
-  late String healthNum='';
-  late String healthNumT='';
-  UploadTask? task, taskT;//
+  late String mobileNum = '';
+  late String message = '';
+  late String healthNum = '';
+  late String healthNumT = '';
+  UploadTask? task, taskT; //
   File? file, fileT;
+  PhoneContact? _phoneContact;
 
   Widget build(BuildContext context) {
     final fileName = file != null ? basename(file!.path) : 'No File Selected';
-    final fileNameT = fileT != null ? basename(fileT!.path) : 'No File Selected';
+    final fileNameT =
+        fileT != null ? basename(fileT!.path) : 'No File Selected';
+    final contactNum =
+        _phoneContact != null ? _phoneContact!.phoneNumber!.number : '';
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: Text(
           'Profile',
           style:
@@ -49,14 +53,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: Icon(
-                      Icons.comment_rounded,
-                      size: 26,
-                    ),
-                    onPressed: () {
-                      showGeneralDialogBox(context);
-                    }
-                  ),
+                      icon: Icon(
+                        Icons.comment_rounded,
+                        size: 26,
+                      ),
+                      onPressed: () {
+                        showGeneralDialogBox(context);
+                      }),
                   Text(
                     'General Information',
                     style: const TextStyle(
@@ -70,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     'Permission to Share: ',
-                    style: const TextStyle(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   SlidingSwitch(
                     value: false,
@@ -99,11 +102,13 @@ class _ProfilePageState extends State<ProfilePage> {
               RichText(
                 text: TextSpan(
                   text: 'Full Legal Name: ',
-                  style: DefaultTextStyle.of(context).style,
+                  style: const TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.black),
                   children: const <TextSpan>[
                     TextSpan(
-                        text: 'Bugs Capstone',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                      text: 'Bugs Capstone',
+                      style: TextStyle(color: Colors.redAccent),
+                    )
                   ],
                 ),
               ),
@@ -111,13 +116,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     'Mobile: ',
-                    style: const TextStyle(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Expanded(
                     child: TextField(
                       keyboardType: TextInputType.phone,
                       onChanged: (value) {
-                        mobileNum=value;
+                        mobileNum = value;
                       },
                     ),
                   ),
@@ -127,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     'Text-to-Speech Message: ',
-                    style: const TextStyle(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Expanded(
                     child: TextField(
@@ -142,17 +147,46 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     'Emergency Contract: ',
-                    style: const TextStyle(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Expanded(
-                    child: TextField(
-                      keyboardType: TextInputType.number,
-                      onChanged: (value) {
-                        emergencyNum = value;
-                      },
+                    child: Text(
+                      contactNum.toString(),
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                     ),
                   ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.account_circle,
+                      color: Colors.teal,
+                      size: 26,
+                    ),
+                    onPressed: () async {
+                      final PhoneContact contact =
+                      await FlutterContactPicker.pickPhoneContact();
+                      print(contact);
+                      setState(() {
+                        _phoneContact = contact;
+                      });
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(
+                      Icons.do_not_disturb_on,
+                      color: Colors.red,
+                      size: 26,
+                    ),
+                    onPressed: () async {
+                      setState(() {
+                        _phoneContact = null;
+                      });
+                    },
+                  ),
                 ],
+              ),
+              SizedBox(
+                height: 8.0,
               ),
               ElevatedButton(
                 style: ButtonStyle(
@@ -163,23 +197,45 @@ class _ProfilePageState extends State<ProfilePage> {
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                     title: const Text('Edit General Information'),
-                    content:
-                      SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            const Text('Mobile:'),
-                            Text(mobileNum,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.brown),textAlign: TextAlign.center,),
-                            SizedBox(height: 8.0,),
-                            const Text('Text-to-Speech Message:'),
-                            Text(message,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.brown),textAlign: TextAlign.center,),
-                            SizedBox(height: 8.0,),
-                            const Text('Emergency:'),
-                            Text(emergencyNum,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.brown),textAlign: TextAlign.center,),
-                          ],
-                        ),
+                    content: SingleChildScrollView(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          const Text('Mobile: '),
+                          Text(
+                            mobileNum,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.brown),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
+                          const Text('Text-to-Speech Message: '),
+                          Text(
+                            message,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.brown),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
+                          const Text('Emergency Contact: '),
+                          Text(
+                            //emergencyNum,
+                            contactNum.toString(),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.brown),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
                       ),
+                    ),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => Navigator.pop(context, 'Cancel'),
@@ -208,14 +264,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    icon: Icon(
-                      Icons.comment_rounded,
-                      size: 26,
-                    ),
-                    onPressed: () {
-                      showMedicalDialogBox(context);
-                    }
-                  ),
+                      icon: Icon(
+                        Icons.comment_rounded,
+                        size: 26,
+                      ),
+                      onPressed: () {
+                        showMedicalDialogBox(context);
+                      }),
                   Text(
                     'Medical Information',
                     style: const TextStyle(
@@ -231,6 +286,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: const TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
+                  fontSize: 17,
                 ),
               ),
               SizedBox(
@@ -240,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     'Permission to Share: ',
-                    style: const TextStyle(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   SlidingSwitch(
                     value: false,
@@ -266,7 +322,8 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 children: [
                   Text(
-                    'Health Card No:',
+                    'Health Card No: ',
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Expanded(
                     child: TextField(
@@ -285,12 +342,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     'Medical History: ',
-                    style: const TextStyle(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                   Expanded(
                     child: Text(
                       fileName,
-                      style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],
@@ -299,9 +357,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 8.0,
               ),
               ElevatedButton(
-                  onPressed: () => selectFile(),
-                  child: const Text('Select File'),
-                ),
+                onPressed: () => selectFile(),
+                child: const Text('Select File'),
+              ),
               SizedBox(
                 height: 18.0,
               ),
@@ -311,6 +369,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 style: const TextStyle(
                   color: Colors.blue,
                   fontWeight: FontWeight.bold,
+                  fontSize: 17,
                 ),
               ),
               SizedBox(
@@ -320,7 +379,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     'Permission to Share: ',
-                    style: const TextStyle(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   SlidingSwitch(
                     value: false,
@@ -346,7 +407,10 @@ class _ProfilePageState extends State<ProfilePage> {
               Row(
                 children: [
                   Text(
-                    'Health Card No:',
+                    'Health Card No: ',
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Expanded(
                     child: TextField(
@@ -365,12 +429,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   Text(
                     'Medical History: ',
-                    style: const TextStyle(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   Expanded(
                     child: Text(
                       fileNameT,
-                      style: TextStyle(fontSize: 12,fontWeight: FontWeight.w500),
+                      style:
+                          TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
                     ),
                   ),
                 ],
@@ -393,23 +460,52 @@ class _ProfilePageState extends State<ProfilePage> {
                   context: context,
                   builder: (BuildContext context) => AlertDialog(
                     title: const Text('Edit Medical Information'),
-                    content:
-                    SingleChildScrollView(
+                    content: SingleChildScrollView(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           const Text('Personal Health Card No:'),
-                          Text(healthNum,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.brown),textAlign: TextAlign.center,),
-                          SizedBox(height: 8.0,),
+                          Text(
+                            healthNum,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.brown),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
                           const Text('Personal Medical History:'),
-                          Text(fileName,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.brown),textAlign: TextAlign.center,),
-                          SizedBox(height: 8.0,),
+                          Text(
+                            fileName,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.brown),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
                           const Text('Emergency Contact Health Card No:'),
-                          Text(healthNumT,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.brown),textAlign: TextAlign.center,),
-                          SizedBox(height: 8.0,),
+                          Text(
+                            healthNumT,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.brown),
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(
+                            height: 8.0,
+                          ),
                           const Text('Emergency Contact Medical History:'),
-                          Text(fileNameT,style: TextStyle(fontWeight: FontWeight.bold,color: Colors.brown),textAlign: TextAlign.center,),
+                          Text(
+                            fileNameT,
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.brown),
+                            textAlign: TextAlign.center,
+                          ),
                         ],
                       ),
                     ),
@@ -442,6 +538,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() => file = File(path));
   }
+
   Future selectFileT() async {
     final result = await FilePicker.platform.pickFiles(allowMultiple: false);
 
@@ -450,5 +547,4 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() => fileT = File(path));
   }
-
 }
