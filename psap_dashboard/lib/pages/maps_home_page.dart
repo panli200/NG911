@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'maps.dart';
+import 'package:psap_dashboard/pages/maps.dart';
 import 'call_control_page.dart';
 
 class MapsHomePage extends StatefulWidget {
