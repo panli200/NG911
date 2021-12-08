@@ -98,5 +98,29 @@
     }
   </script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDw8ejRnLtsxGhQojZSsUKzkzaR93K-xZA&callback=initMap"></script>
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyB5Z8MWrQ5ZZJCUJBZhL6r_Axf_OiZGdEc",
+    authDomain: "sos-app-3af53.firebaseapp.com",
+    databaseURL: "https://sos-app-3af53-default-rtdb.firebaseio.com",
+    projectId: "sos-app-3af53",
+    storageBucket: "sos-app-3af53.appspot.com",
+    messagingSenderId: "728757332541",
+    appId: "1:728757332541:web:22b0f46cb91234e88e5854",
+    measurementId: "${config.measurementId}"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </body>
 </html>
