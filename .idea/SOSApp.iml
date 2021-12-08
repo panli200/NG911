@@ -3,6 +3,7 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/psap_dashboard/.dart_tool" />
       <excludeFolder url="file://$MODULE_DIR$/psap_dashboard/.pub" />
       <excludeFolder url="file://$MODULE_DIR$/psap_dashboard/build" />
       <excludeFolder url="file://$MODULE_DIR$/sos_app/.dart_tool" />
