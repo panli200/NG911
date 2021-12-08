@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+import 'package:psap_dashboard/pages/maps_street.dart';
 
 class CallControlPanel extends StatefulWidget {
   const CallControlPanel({Key? key}) : super(key: key);
@@ -40,7 +40,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                    SizedBox(
                                        height: MediaQuery.of(context).size.height * 0.45,
                                        width: MediaQuery.of(context).size.width * 0.45,
-                                      child: Text("Map here")
+                                      child: StreetMap(),
                                     )
                                   ]
                                 ),
