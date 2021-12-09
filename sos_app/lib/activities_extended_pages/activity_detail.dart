@@ -7,6 +7,8 @@ import 'package:sos_app/services/weather.dart';
 import 'package:sos_app/services/acceleration.dart';
 import 'package:sensors/sensors.dart';
 import 'dart:math';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 class ActivityDetailPage extends StatefulWidget {
   final Snapshot;
 
@@ -24,6 +26,10 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   double y = 0.0;
   double z = 0.0;
   bool Danger = false;
+  String _email='';
+  String _password='';
+  FirebaseAuth auth = FirebaseAuth.instance;
+
   void initState() {
     //For display, can be delete in the future
     super.initState();
@@ -130,9 +136,65 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
             Text(
               weather.weatherDescription,
             ),
+
           ],
         ),//Delete until here
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: TextField(
+                keyboardType: TextInputType.emailAddress,
+                decoration: InputDecoration(
+                hintText: 'Email'
+              ),
+                onChanged: (value) {
+                  setState(() {
+                    _email = value.trim();
+                  });
+                },
+            )
+            )
+        ]),
+
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Expanded(
+                  child: TextField(
+                    obscureText: true,
+                    decoration: InputDecoration(hintText: 'Password'),
+                    onChanged: (value) {
+                      setState(() {
+                        _password = value.trim();
+                      });
+                    },
+                  )
+              )
+            ]),
+
+        Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children:[
+              ElevatedButton(
+                  child: Text('Signin'),
+                  onPressed: (){
+                    auth.signInWithEmailAndPassword(email: _email, password: _password);
+
+                  }),
+              ElevatedButton(
+                child: Text('Signup'),
+                onPressed: (){
+                  auth.createUserWithEmailAndPassword(email: _email, password: _password);
+
+                },
+              )
+            ])
+
       ],
     ));
   }
+
+
+
 }

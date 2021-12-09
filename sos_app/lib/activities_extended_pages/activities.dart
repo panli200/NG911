@@ -6,6 +6,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+
 class ActivitiesPage extends StatelessWidget {
 
   const ActivitiesPage({Key? key}) : super(key: key);
@@ -43,6 +44,7 @@ class DataList extends StatelessWidget {
 
   final Timer timer;
   DataList(this.timer);
+
 
   @override
   Widget build(BuildContext context){
