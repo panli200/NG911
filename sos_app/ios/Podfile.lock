@@ -475,6 +475,9 @@ PODS:
     - Flutter
   - fluttercontactpicker (4.5.1):
     - Flutter
+  - fluttertoast (0.0.2):
+    - Flutter
+    - Toast
   - geolocator_apple (1.2.0):
     - Flutter
   - GoogleAppMeasurement (8.9.1):
@@ -559,7 +562,10 @@ PODS:
   - SDWebImage/Core (5.12.1)
   - sensors (0.0.1):
     - Flutter
+  - shared_preferences_ios (0.0.1):
+    - Flutter
   - SwiftyGif (5.4.0)
+  - Toast (4.0.0)
 
 DEPENDENCIES:
   - camera (from `.symlinks/plugins/camera/ios`)
@@ -573,9 +579,11 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_phone_direct_caller (from `.symlinks/plugins/flutter_phone_direct_caller/ios`)
   - fluttercontactpicker (from `.symlinks/plugins/fluttercontactpicker/ios`)
+  - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - health (from `.symlinks/plugins/health/ios`)
   - sensors (from `.symlinks/plugins/sensors/ios`)
+  - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
 
 SPEC REPOS:
   trunk:
@@ -602,6 +610,7 @@ SPEC REPOS:
     - PromisesObjC
     - SDWebImage
     - SwiftyGif
+    - Toast
 
 EXTERNAL SOURCES:
   camera:
@@ -626,12 +635,16 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_phone_direct_caller/ios"
   fluttercontactpicker:
     :path: ".symlinks/plugins/fluttercontactpicker/ios"
+  fluttertoast:
+    :path: ".symlinks/plugins/fluttertoast/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
   health:
     :path: ".symlinks/plugins/health/ios"
   sensors:
     :path: ".symlinks/plugins/sensors/ios"
+  shared_preferences_ios:
+    :path: ".symlinks/plugins/shared_preferences_ios/ios"
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -657,6 +670,7 @@ SPEC CHECKSUMS:
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_phone_direct_caller: bd2ffd297f371a8a6c7bfbba0196964ffe3c4358
   fluttercontactpicker: 141493596bfca4a786d695d2572c65885bc4f088
+  fluttertoast: 6122fa75143e992b1d3470f61000f591a798cc58
   geolocator_apple: b741765c55dc21950e3e106e8b3584e55cf81ce5
   GoogleAppMeasurement: 837649ad3987936c232f6717c5680216f6243d24
   GoogleDataTransport: 629c20a4d363167143f30ea78320d5a7eb8bd940
@@ -670,7 +684,9 @@ SPEC CHECKSUMS:
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
   sensors: 84eb7a30e47a649e4172b71d6e81be614c280336
+  shared_preferences_ios: aef470a42dc4675a1cdd50e3158b42e3d1232b32
   SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
+  Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
 
 PODFILE CHECKSUM: fe0e1ee7f3d1f7d00b11b474b62dd62134535aea
 
