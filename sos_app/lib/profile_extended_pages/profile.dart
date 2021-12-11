@@ -92,15 +92,6 @@ class _ProfilePageState extends State<ProfilePage> {
     final fileNameT = fileT != null ? basename(fileT!.path) : 'No File Selected';
 
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text(
-          'Profile',
-          style:
-              const TextStyle(fontWeight: FontWeight.bold, color: Colors.black),
-        ),
-        backgroundColor: Colors.white,
-      ),
       body: Scrollbar(
         child: SingleChildScrollView(
           child: Padding(
