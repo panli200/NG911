@@ -9,7 +9,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
+import 'package:sos_app/profile_extended_pages/user_info.dart';
 import 'dialog.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -17,21 +19,77 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  late String mobileNum = '';
-  late String message = '';
-  late String healthNum = '';
-  late String healthNumT = '';
   UploadTask? task, taskT; //
   File? file, fileT;
   PhoneContact? _phoneContact;
+  SOSUser _user = SOSUser();
+  final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+ late SharedPreferences prefs;
 
+  getGeneralValue() async {
+    prefs = await _prefs;
+
+    setState(() {
+      _user.generalPermission = (prefs.containsKey("GeneralPermission")
+          ? prefs.getBool("GeneralPermission")
+          : false)!;
+      _user.message =
+          (prefs.containsKey("Message") ? prefs.getString("Message") : '')!;
+      _user.contactNum =
+          (prefs.containsKey("Contact") ? prefs.getString("Contact") : '')!;
+    });
+  }
+
+  getMedicalValue() async {
+    prefs = await _prefs;
+
+    setState(() {
+      _user.medicalPermission = (prefs.containsKey("MedicalPermission")
+          ? prefs.getBool("MedicalPermission")
+          : false)!;
+      _user.personalHealthNum =
+          (prefs.containsKey("HealthNum") ? prefs.getString("HealthNum") : '')!;
+      _user.personalMedicalFile = (prefs.containsKey("PersonalFile")
+          ? prefs.getString("PersonalFile")
+          : '')!;
+      _user.contactMedicalPermission = (prefs.containsKey("contactMedicalPermission")
+          ? prefs.getBool("contactMedicalPermission")
+          : false)!;
+      _user.contactHealthNum = (prefs.containsKey("ContactHealthNum")
+          ? prefs.getString("ContactHealthNum")
+          : '')!;
+      _user.contactMedicalFile = (prefs.containsKey("ContactFile")
+          ? prefs.getString("ContactFile")
+          : '')!;
+    });
+  }
+
+  saveGeneralValue() async {
+    prefs.setBool("GeneralPermission", _user.generalPermission);
+    prefs.setString("Message", _user.message);
+    prefs.setString("Contact", _user.contactNum);
+  }
+
+  saveMedicalValue() async {
+    prefs.setBool("MedicalPermission", _user.medicalPermission);
+    prefs.setString("HealthNum", _user.personalHealthNum);
+    prefs.setString("PersonalFile", _user.personalMedicalFile);
+    prefs.setBool("contactMedicalPermission", _user.contactMedicalPermission);
+    prefs.setString("ContactHealthNum", _user.contactHealthNum);
+    prefs.setString("ContactFile", _user.contactMedicalFile);
+  }
+
+  void initState() {
+    super.initState();
+    getGeneralValue();
+    getMedicalValue();
+  }
 
   Widget build(BuildContext context) {
-    final fileName = file != null ? basename(file!.path) : 'No File Selected';
-    final fileNameT =
-        fileT != null ? basename(fileT!.path) : 'No File Selected';
     final contactNum =
         _phoneContact != null ? _phoneContact!.phoneNumber!.number : '';
+    final fileName = file != null ? basename(file!.path) : 'No File Selected';
+    final fileNameT = fileT != null ? basename(fileT!.path) : 'No File Selected';
 
     return Scaffold(
       appBar: AppBar(
@@ -81,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       value: false,
                       width: 100,
                       onChanged: (bool value) {
-                        print(value);
+                        _user.generalPermission = value;
                       },
                       height: 30,
                       animationDuration: const Duration(milliseconds: 400),
@@ -117,29 +175,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 Row(
                   children: [
                     Text(
-                      'Mobile: ',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Expanded(
-                      child: TextField(
-                        keyboardType: TextInputType.phone,
-                        onChanged: (value) {
-                          mobileNum = value;
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
                       'Text-to-Speech Message: ',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Expanded(
                       child: TextField(
                         onChanged: (value) {
-                          message = value;
+                          _user.message = value;
                         },
                       ),
                     ),
@@ -153,9 +195,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Expanded(
                       child: Text(
-                        contactNum.toString(),
-                        style:
-                            TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                        _user.contactNum,
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w500),
                       ),
                     ),
                     IconButton(
@@ -166,10 +208,10 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       onPressed: () async {
                         final PhoneContact contact =
-                        await FlutterContactPicker.pickPhoneContact();
-                        print(contact);
+                            await FlutterContactPicker.pickPhoneContact();
                         setState(() {
                           _phoneContact = contact;
+                          _user.contactNum = contactNum!;
                         });
                       },
                     ),
@@ -182,6 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       onPressed: () async {
                         setState(() {
                           _phoneContact = null;
+                          _user.contactNum = '';
                         });
                       },
                     ),
@@ -192,7 +235,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
                   ),
                   //EDIT GENERAL INFORMATION DIALOG
                   onPressed: () => showDialog<String>(
@@ -204,9 +248,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
-                            const Text('Mobile: '),
+                            const Text('Permission: '),
                             Text(
-                              mobileNum,
+                              _user.generalPermission.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.brown),
@@ -217,7 +261,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const Text('Text-to-Speech Message: '),
                             Text(
-                              message,
+                              _user.message,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.brown),
@@ -228,8 +272,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const Text('Emergency Contact: '),
                             Text(
-                              //emergencyNum,
-                              contactNum.toString(),
+                              _user.contactNum,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.brown),
@@ -244,7 +287,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: const Text('Cancel'),
                         ),
                         TextButton(
-                          onPressed: () => Navigator.pop(context, 'OK'),
+                          onPressed: () {
+                            saveGeneralValue();
+                            Navigator.pop(context,'OK');
+                          },
                           child: const Text('OK'),
                         ),
                       ],
@@ -304,7 +350,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       value: false,
                       width: 100,
                       onChanged: (bool value) {
-                        print(value);
+                        _user.medicalPermission = value;
                       },
                       height: 30,
                       animationDuration: const Duration(milliseconds: 400),
@@ -331,7 +377,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: TextField(
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
-                          healthNum = value;
+                          _user.personalHealthNum = value;
                         },
                       ),
                     ),
@@ -348,9 +394,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Expanded(
                       child: Text(
-                        fileName,
-                        style:
-                            TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                        _user.personalMedicalFile,
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w500),
                       ),
                     ),
                     IconButton(
@@ -361,7 +407,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       onPressed: () async {
                         setState(() {
-                          file = null;// File is null
+                          file = null;
+                          _user.personalMedicalFile='No File Selected';// File is null
                         });
                       },
                     ),
@@ -371,7 +418,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 8.0,
                 ),
                 ElevatedButton(
-                  onPressed: () => selectFile(),
+                  onPressed: () {
+                    selectFile();
+                    _user.personalMedicalFile = fileName;
+                  } ,
                   child: const Text('Select File'),
                 ),
                 SizedBox(
@@ -401,7 +451,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       value: false,
                       width: 100,
                       onChanged: (bool value) {
-                        print(value);
+                        _user.contactMedicalPermission=value;
                       },
                       height: 30,
                       animationDuration: const Duration(milliseconds: 400),
@@ -430,7 +480,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: TextField(
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
-                          healthNumT = value;
+                          _user.contactHealthNum = value;
                         },
                       ),
                     ),
@@ -449,9 +499,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Expanded(
                       child: Text(
-                        fileNameT,
-                        style:
-                            TextStyle(fontSize: 12, fontWeight: FontWeight.w500),
+                        _user.contactMedicalFile,
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w500),
                       ),
                     ),
                     IconButton(
@@ -462,7 +512,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       onPressed: () async {
                         setState(() {
-                          fileT = null;// File is null
+                          fileT = null;
+                          _user.contactMedicalFile ='No File Selected';// File is null
                         });
                       },
                     ),
@@ -472,7 +523,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 8.0,
                 ),
                 ElevatedButton(
-                  onPressed: () => selectFileT(),
+                  onPressed: () {
+                    selectFileT();
+                    _user.contactMedicalFile = fileNameT;
+                  } ,
                   child: const Text('Select File'),
                 ),
                 SizedBox(
@@ -480,7 +534,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
                   ),
                   onPressed: () => showDialog<String>(
                     context: context,
@@ -491,9 +546,20 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: <Widget>[
+                            const Text('Personal Permission: '),
+                            Text(
+                              _user.medicalPermission.toString(),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.brown),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 8.0,
+                            ),
                             const Text('Personal Health Card No:'),
                             Text(
-                              healthNum,
+                              _user.personalHealthNum,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.brown),
@@ -504,7 +570,18 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const Text('Personal Medical History:'),
                             Text(
-                              fileName,
+                              _user.personalMedicalFile,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.brown),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              height: 8.0,
+                            ),
+                            const Text('Emergency Contact Permission: '),
+                            Text(
+                              _user.contactMedicalPermission.toString(),
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.brown),
@@ -515,7 +592,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const Text('Emergency Contact Health Card No:'),
                             Text(
-                              healthNumT,
+                              _user.contactHealthNum,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.brown),
@@ -526,7 +603,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const Text('Emergency Contact Medical History:'),
                             Text(
-                              fileNameT,
+                              _user.contactMedicalFile,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold,
                                   color: Colors.brown),
@@ -541,7 +618,10 @@ class _ProfilePageState extends State<ProfilePage> {
                           child: const Text('Cancel'),
                         ),
                         TextButton(
-                          onPressed: () => Navigator.pop(context, 'OK'),
+                          onPressed: () {
+                            saveMedicalValue();
+                            Navigator.pop(context,'OK');
+                          },
                           child: const Text('OK'),
                         ),
                       ],

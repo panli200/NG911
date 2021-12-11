@@ -40,6 +40,9 @@ dependencies:
   firebase_analytics: ^8.3.4
   firebase_storage: ^10.1.0
 
+  # Save data locally
+  shared_preferences: ^2.0.10
+
   # Sensors
   geolocator: ^7.7.1
   weather: ^2.0.1
