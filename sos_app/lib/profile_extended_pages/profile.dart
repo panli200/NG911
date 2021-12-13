@@ -22,9 +22,15 @@ class _ProfilePageState extends State<ProfilePage> {
   UploadTask? task, taskT; //
   File? file, fileT;
   PhoneContact? _phoneContact;
+  TextEditingController ctlMessage = TextEditingController();
+  TextEditingController ctlHealthCard = TextEditingController();
+  TextEditingController ctlHealthCard2 = TextEditingController();
+  bool sw1 = false;
+  bool sw2 = false;
+  bool sw3 = false;
   SOSUser _user = SOSUser();
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
- late SharedPreferences prefs;
+  late SharedPreferences prefs;
 
   getGeneralValue() async {
     prefs = await _prefs;
@@ -52,9 +58,10 @@ class _ProfilePageState extends State<ProfilePage> {
       _user.personalMedicalFile = (prefs.containsKey("PersonalFile")
           ? prefs.getString("PersonalFile")
           : '')!;
-      _user.contactMedicalPermission = (prefs.containsKey("contactMedicalPermission")
-          ? prefs.getBool("contactMedicalPermission")
-          : false)!;
+      _user.contactMedicalPermission =
+          (prefs.containsKey("contactMedicalPermission")
+              ? prefs.getBool("contactMedicalPermission")
+              : false)!;
       _user.contactHealthNum = (prefs.containsKey("ContactHealthNum")
           ? prefs.getString("ContactHealthNum")
           : '')!;
@@ -85,11 +92,18 @@ class _ProfilePageState extends State<ProfilePage> {
     getMedicalValue();
   }
 
+  void dispose() {
+    ctlMessage.dispose();
+    ctlHealthCard.dispose();
+    ctlHealthCard2.dispose();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     final contactNum =
         _phoneContact != null ? _phoneContact!.phoneNumber!.number : '';
-    final fileName = file != null ? basename(file!.path) : 'No File Selected';
-    final fileNameT = fileT != null ? basename(fileT!.path) : 'No File Selected';
+    final fileName = file != null ? basename(file!.path) : '';
+    final fileNameT = fileT != null ? basename(fileT!.path) : '';
 
     return Scaffold(
       body: Scrollbar(
@@ -130,7 +144,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       value: false,
                       width: 100,
                       onChanged: (bool value) {
-                        _user.generalPermission = value;
+                        sw1 = value;
                       },
                       height: 30,
                       animationDuration: const Duration(milliseconds: 400),
@@ -170,10 +184,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Expanded(
-                      child: TextField(
-                        onChanged: (value) {
-                          _user.message = value;
-                        },
+                      child: TextFormField(
+                        controller: ctlMessage,
                       ),
                     ),
                   ],
@@ -230,63 +242,69 @@ class _ProfilePageState extends State<ProfilePage> {
                         MaterialStateProperty.all<Color>(Colors.red),
                   ),
                   //EDIT GENERAL INFORMATION DIALOG
-                  onPressed: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Edit General Information'),
-                      content: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            const Text('Permission: '),
-                            Text(
-                              _user.generalPermission.toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            const Text('Text-to-Speech Message: '),
-                            Text(
-                              _user.message,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            const Text('Emergency Contact: '),
-                            Text(
-                              _user.contactNum,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                  onPressed: () {
+                    setState(() {
+                      _user.generalPermission = sw1;
+                      _user.message = ctlMessage.text;
+                    });
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Edit General Information'),
+                        content: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              const Text('Permission: '),
+                              Text(
+                                _user.generalPermission.toString(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8.0,
+                              ),
+                              const Text('Text-to-Speech Message: '),
+                              Text(
+                                _user.message,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8.0,
+                              ),
+                              const Text('Emergency Contact: '),
+                              Text(
+                                _user.contactNum,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              saveGeneralValue();
+                              Navigator.pop(context, 'OK');
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
                       ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            saveGeneralValue();
-                            Navigator.pop(context,'OK');
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  ),
+                    );
+                  },
                   child: const Text('EDIT GENERAL INFORMATION'),
                 ),
                 SizedBox(
@@ -341,7 +359,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       value: false,
                       width: 100,
                       onChanged: (bool value) {
-                        _user.medicalPermission = value;
+                        sw2 = value;
                       },
                       height: 30,
                       animationDuration: const Duration(milliseconds: 400),
@@ -365,11 +383,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Expanded(
-                      child: TextField(
+                      child: TextFormField(
                         keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          _user.personalHealthNum = value;
-                        },
+                        controller: ctlHealthCard,
                       ),
                     ),
                   ],
@@ -399,7 +415,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       onPressed: () async {
                         setState(() {
                           file = null;
-                          _user.personalMedicalFile='No File Selected';// File is null
+                          _user.personalMedicalFile = ''; // File is null
                         });
                       },
                     ),
@@ -412,7 +428,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     selectFile();
                     _user.personalMedicalFile = fileName;
-                  } ,
+                  },
                   child: const Text('Select File'),
                 ),
                 SizedBox(
@@ -442,7 +458,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       value: false,
                       width: 100,
                       onChanged: (bool value) {
-                        _user.contactMedicalPermission=value;
+                        sw3 = value;
                       },
                       height: 30,
                       animationDuration: const Duration(milliseconds: 400),
@@ -468,11 +484,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ),
                     Expanded(
-                      child: TextField(
+                      child: TextFormField(
                         keyboardType: TextInputType.number,
-                        onChanged: (value) {
-                          _user.contactHealthNum = value;
-                        },
+                        controller: ctlHealthCard2,
                       ),
                     ),
                   ],
@@ -504,7 +518,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       onPressed: () async {
                         setState(() {
                           fileT = null;
-                          _user.contactMedicalFile ='No File Selected';// File is null
+                          _user.contactMedicalFile = ''; // File is null
                         });
                       },
                     ),
@@ -517,7 +531,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     selectFileT();
                     _user.contactMedicalFile = fileNameT;
-                  } ,
+                  },
                   child: const Text('Select File'),
                 ),
                 SizedBox(
@@ -528,96 +542,104 @@ class _ProfilePageState extends State<ProfilePage> {
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.red),
                   ),
-                  onPressed: () => showDialog<String>(
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      title: const Text('Edit Medical Information'),
-                      content: SingleChildScrollView(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: <Widget>[
-                            const Text('Personal Permission: '),
-                            Text(
-                              _user.medicalPermission.toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            const Text('Personal Health Card No:'),
-                            Text(
-                              _user.personalHealthNum,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            const Text('Personal Medical History:'),
-                            Text(
-                              _user.personalMedicalFile,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            const Text('Emergency Contact Permission: '),
-                            Text(
-                              _user.contactMedicalPermission.toString(),
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            const Text('Emergency Contact Health Card No:'),
-                            Text(
-                              _user.contactHealthNum,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              height: 8.0,
-                            ),
-                            const Text('Emergency Contact Medical History:'),
-                            Text(
-                              _user.contactMedicalFile,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.brown),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
+                  onPressed: () {
+                    setState(() {
+                      _user.personalHealthNum = ctlHealthCard.text;
+                      _user.contactHealthNum = ctlHealthCard2.text;
+                      _user.medicalPermission = sw2;
+                      _user.contactMedicalPermission = sw3;
+                    });
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('Edit Medical Information'),
+                        content: SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: <Widget>[
+                              const Text('Personal Permission: '),
+                              Text(
+                                _user.medicalPermission.toString(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8.0,
+                              ),
+                              const Text('Personal Health Card No:'),
+                              Text(
+                                _user.personalHealthNum,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8.0,
+                              ),
+                              const Text('Personal Medical History:'),
+                              Text(
+                                _user.personalMedicalFile,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8.0,
+                              ),
+                              const Text('Emergency Contact Permission: '),
+                              Text(
+                                _user.contactMedicalPermission.toString(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8.0,
+                              ),
+                              const Text('Emergency Contact Health Card No:'),
+                              Text(
+                                _user.contactHealthNum,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                                textAlign: TextAlign.center,
+                              ),
+                              SizedBox(
+                                height: 8.0,
+                              ),
+                              const Text('Emergency Contact Medical History:'),
+                              Text(
+                                _user.contactMedicalFile,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.brown),
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
                         ),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              saveMedicalValue();
+                              Navigator.pop(context, 'OK');
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
                       ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, 'Cancel'),
-                          child: const Text('Cancel'),
-                        ),
-                        TextButton(
-                          onPressed: () {
-                            saveMedicalValue();
-                            Navigator.pop(context,'OK');
-                          },
-                          child: const Text('OK'),
-                        ),
-                      ],
-                    ),
-                  ),
+                    );
+                  },
                   child: const Text('EDIT MEDICAL INFORMATION'),
                 ),
               ],
