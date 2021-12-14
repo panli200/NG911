@@ -7,12 +7,17 @@ import 'package:sos_app/sos_extended_pages/sos_home_page.dart';
 import 'package:sos_app/activities_extended_pages/activities.dart';
 import 'package:sos_app/activities_extended_pages/activity_detail.dart';
 import 'package:sos_app/profile_extended_pages/profile.dart';
+import 'package:sos_app/Initial.dart';
 
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: [
     AutoRoute(path: '/', page: SosPage, children: [
+      AutoRoute(
+        path: '',
+        page: InitializerWidgetPage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
+      ),
       AutoRoute(
         path: 'sos_extended_pages',
         name: 'SosRouter',

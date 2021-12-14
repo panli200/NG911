@@ -1,6 +1,9 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sos_app/activities_extended_pages/activities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:sos_app/services/weather.dart';
@@ -9,6 +12,12 @@ import 'package:sensors/sensors.dart';
 import 'dart:math';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+enum MobileVerificationState {
+  SHOW_MOBILE_FORM_STATE,
+  SHOW_OTP_FORM_STATE,
+}
+
 class ActivityDetailPage extends StatefulWidget {
   final Snapshot;
 
@@ -20,181 +29,144 @@ class ActivityDetailPage extends StatefulWidget {
 }
 
 class _ActivityDetailPageState extends State<ActivityDetailPage> {
-  Location location = Location(); // For display, can be delete in the future
-  WeatherModel weather = WeatherModel(); //For display, can be delete in the future
-  double x = 0.0;
-  double y = 0.0;
-  double z = 0.0;
-  bool Danger = false;
-  String _email='';
-  String _password='';
-  FirebaseAuth auth = FirebaseAuth.instance;
+  MobileVerificationState currentState =
+      MobileVerificationState.SHOW_MOBILE_FORM_STATE;
 
-  void initState() {
-    //For display, can be delete in the future
-    super.initState();
-    getLocationData();
+  final phoneController = TextEditingController();
+  final otpController = TextEditingController();
 
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
-    accelerometerEvents.listen((AccelerometerEvent event) {
-        setState(() {
-        x = event.x;
-        y = event.y;
-        z = event.z;
-        double AccelerationMagnitude = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
-        if (AccelerationMagnitude > 10.0) {
-          Danger =  true;
-        }else{
-          Danger = false;
-        }
+  late String verificationId;
 
-      });
+  bool showLoading = false;
+
+  void signInWithPhoneAuthCredential(
+      PhoneAuthCredential phoneAuthCredential) async {
+    setState(() {
+      showLoading = true;
     });
+
+    try {
+      final authCredential =
+      await _auth.signInWithCredential(phoneAuthCredential);
+
+      setState(() {
+        showLoading = false;
+      });
+
+      if(authCredential?.user != null){
+        MaterialPageRoute(builder: (context) => ActivitiesPage());
+      }
+
+    } on FirebaseAuthException catch (e) {
+      setState(() {
+        showLoading = false;
+      });
+
+      _scaffoldKey.currentState
+          ?.showSnackBar(SnackBar(content: Text(e.message!)));
     }
-
-
-
-  Future<void> getLocationData() async {
-    //For display, can be delete in the future
-
-    await location.getCurrentLocation();
-    await weather.getLocationWeather();
   }
+
+  getMobileFormWidget(context) {
+    return Column(
+      children: [
+        Spacer(),
+        TextField(
+          controller: phoneController,
+          decoration: InputDecoration(
+            hintText: "Phone Number",
+          ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        FlatButton(
+          onPressed: () async {
+            setState(() {
+              showLoading = true;
+            });
+
+            await _auth.verifyPhoneNumber(
+              phoneNumber: phoneController.text,
+              verificationCompleted: (phoneAuthCredential) async {
+                setState(() {
+                  showLoading = false;
+                });
+                //signInWithPhoneAuthCredential(phoneAuthCredential);
+              },
+              verificationFailed: (verificationFailed) async {
+                setState(() {
+                  showLoading = false;
+                });
+                _scaffoldKey.currentState?.showSnackBar(
+                    SnackBar(content: Text(verificationFailed.message!)));
+              },
+              codeSent: (verificationId, resendingToken) async {
+                setState(() {
+                  showLoading = false;
+                  currentState = MobileVerificationState.SHOW_OTP_FORM_STATE;
+                  this.verificationId = verificationId;
+                });
+              },
+              codeAutoRetrievalTimeout: (verificationId) async {},
+            );
+          },
+          child: Text("SEND"),
+          color: Colors.blue,
+          textColor: Colors.white,
+        ),
+        Spacer(),
+      ],
+    );
+  }
+
+  getOtpFormWidget(context) {
+    return Column(
+      children: [
+        Spacer(),
+        TextField(
+          controller: otpController,
+          decoration: InputDecoration(
+            hintText: "Enter OTP",
+          ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        FlatButton(
+          onPressed: () async {
+            PhoneAuthCredential phoneAuthCredential =
+            PhoneAuthProvider.credential(
+                verificationId: verificationId, smsCode: otpController.text);
+
+            signInWithPhoneAuthCredential(phoneAuthCredential);
+          },
+          child: Text("VERIFY"),
+          color: Colors.blue,
+          textColor: Colors.white,
+        ),
+        Spacer(),
+      ],
+    );
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: Column(
-      children: [
-        Center(
-            child: Text(
-                'Date: ${widget.Snapshot['Date']}\n Start time: ${widget.Snapshot['StartTime']}\n End Time: ${widget.Snapshot['EndTime']}\n Status: ${widget.Snapshot['Status']}')),
-        //This for display sensors information, can be delete in the future------
-        Row(children: [
-          Text('Accelerometer: ',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-          Text(
-            'X: ' + x.toStringAsFixed(2) + ' Y: ' + y.toStringAsFixed(2) + ' Z: ' + z.toStringAsFixed(2) + " Danger: " + Danger.toString()
-          ),
-        ]),
-        Row(children: [
-          Text('Latitude: ',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-          Text(
-            location.latitude.toString(),
-          ),
-        ]),
-        Row(children: [
-          Text('Longitude: ',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-          Text(
-            location.longitude.toString(),
-          ),
-        ]),
-        Row(
-          children: [
-            Text('Current Speed: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            Text(
-              location.speed.toString(),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Text('Humidity: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            Text(
-              weather.humidity.toString(),
-            ),
-          ],
-        ),
-        Row(
-          children: [
-            Text('WindSpeed: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            Text(
-              weather.windSpeed.toString(),
-            ),
-            Text (' km/h'),
-          ],
-        ),
-        Row(
-          children: [
-            Text('Temperature: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            Text(
-              weather.temperature.toString(),
-            ),
-            Text (' celsius'),
-          ],
-        ),
-        Row(
-          children: [
-            Text('Weather Description: ',
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-            Text(
-              weather.weatherDescription,
-            ),
-
-          ],
-        ),//Delete until here
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: TextField(
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                hintText: 'Email'
-              ),
-                onChanged: (value) {
-                  setState(() {
-                    _email = value.trim();
-                  });
-                },
-            )
-            )
-        ]),
-
-        Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Expanded(
-                  child: TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(hintText: 'Password'),
-                    onChanged: (value) {
-                      setState(() {
-                        _password = value.trim();
-                      });
-                    },
-                  )
-              )
-            ]),
-
-        Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children:[
-              ElevatedButton(
-                  child: Text('Signin'),
-                  onPressed: (){
-                    auth.signInWithEmailAndPassword(email: _email, password: _password);
-
-                  }),
-              ElevatedButton(
-                child: Text('Signup'),
-                onPressed: (){
-                  auth.createUserWithEmailAndPassword(email: _email, password: _password);
-
-                },
-              )
-            ])
-
-      ],
-    ));
+    return Scaffold(
+        key: _scaffoldKey,
+        body: Container(
+          child: showLoading
+              ? Center(
+            child: CircularProgressIndicator(),
+          )
+              : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
+              ? getMobileFormWidget(context)
+              : getOtpFormWidget(context),
+          padding: const EdgeInsets.all(16),
+        ));
   }
-
-
-
 }
