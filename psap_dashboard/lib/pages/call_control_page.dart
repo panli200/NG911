@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps_street.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CallControlPanel extends StatefulWidget {
   const CallControlPanel({Key? key}) : super(key: key);
@@ -9,6 +10,7 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
+  final Stream<QuerySnapshot> users = FirebaseFirestore.instance.collection('testCalls').snapshots();
   void _callPolice() async{
     const number = '01154703796'; //set the number here
   }
@@ -278,6 +280,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         ),
                         Column( // Third Column -----> Speed Dialing
                             children: <Widget>[
+
+
                               Row( // Police
                                   children: <Widget>[
                                     ElevatedButton(
