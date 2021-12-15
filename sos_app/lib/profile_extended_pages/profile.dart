@@ -275,7 +275,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     );
                   },
-                  child: const Text('EDIT GENERAL INFORMATION'),
+                  child: const Text('SAVE GENERAL INFORMATION'),
                 ),
                 SizedBox(
                   height: 8.0,
@@ -589,7 +589,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     );
                   },
-                  child: const Text('EDIT MEDICAL INFORMATION'),
+                  child: const Text('SAVE MEDICAL INFORMATION'),
                 ),
               ],
             ),
