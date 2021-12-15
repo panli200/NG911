@@ -154,18 +154,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 Row(
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        text: 'Full Legal Name: ',
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, color: Colors.black),
-                        children: const <TextSpan>[
-                          TextSpan(
-                            text: 'Bugs Capstone',
-                            style: TextStyle(color: Colors.redAccent),
-                          )
-                        ],
-                      ),
+                    Text(
+                      'Full Legal Name: ',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+
+                    Text(
+                      'Bugs Capstone ',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -343,6 +339,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Expanded(
                       child: TextFormField(
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                          LengthLimitingTextInputFormatter(9),
+                        ],
+                        decoration: const InputDecoration(
+                          hintText: '9 digital ',
+                          border: OutlineInputBorder(),
+                        ),
                         keyboardType: TextInputType.number,
                         controller: ctlHealthCard,
                       ),
@@ -433,6 +437,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Expanded(
                       child: TextFormField(
+                        inputFormatters: <TextInputFormatter>[
+                          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                          LengthLimitingTextInputFormatter(9),
+                        ],
+                        decoration: const InputDecoration(
+                          hintText: '9 digital ',
+                          border: OutlineInputBorder(),
+                        ),
                         keyboardType: TextInputType.number,
                         controller: ctlHealthCard2,
                       ),
