@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 late List<CameraDescription> cameras;
 Future<void> main() async {
@@ -20,6 +21,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      theme: ThemeData(
+        textTheme: GoogleFonts.poppinsTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
       debugShowCheckedModeBanner: false,
       title: 'SOS App',
       routerDelegate: appRouter.delegate(),
