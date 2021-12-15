@@ -4,14 +4,15 @@ import 'package:flutter/services.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
-import 'package:sliding_switch/sliding_switch.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:sos_app/profile_extended_pages/user_info.dart';
-import 'dialog.dart';
+import 'package:sos_app/profile_extended_pages/dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sos_app/profile_extended_pages/sliding_switch_widget.dart';
+import 'package:sos_app/profile_extended_pages/button_widget.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   UploadTask? task, taskT; //
   File? file, fileT;
   PhoneContact? _phoneContact;
-  TextEditingController ctlMessage = TextEditingController();
+
   TextEditingController ctlHealthCard = TextEditingController();
   TextEditingController ctlHealthCard2 = TextEditingController();
   bool sw1 = false;
@@ -39,8 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
       _user.generalPermission = (prefs.containsKey("GeneralPermission")
           ? prefs.getBool("GeneralPermission")
           : false)!;
-      _user.message =
-          (prefs.containsKey("Message") ? prefs.getString("Message") : '')!;
+
       _user.contactNum =
           (prefs.containsKey("Contact") ? prefs.getString("Contact") : '')!;
     });
@@ -73,7 +73,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   saveGeneralValue() async {
     prefs.setBool("GeneralPermission", _user.generalPermission);
-    prefs.setString("Message", _user.message);
     prefs.setString("Contact", _user.contactNum);
   }
 
@@ -93,7 +92,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void dispose() {
-    ctlMessage.dispose();
     ctlHealthCard.dispose();
     ctlHealthCard2.dispose();
     super.dispose();
@@ -109,10 +107,10 @@ class _ProfilePageState extends State<ProfilePage> {
       body: Scrollbar(
         child: SingleChildScrollView(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 24.0),
+            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.stretch,
+              // crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -134,61 +132,45 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
+                SizedBox(
+                  height: 8.0,
+                ),
                 Row(
                   children: [
                     Text(
                       'Permission to Share: ',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SlidingSwitch(
-                      value: false,
-                      width: 100,
-                      onChanged: (bool value) {
-                        sw1 = value;
+                    SlidingSwitchWidget(
+                      choice: false,
+                      onClicked: (bool systemOverlaysAreVisible) async {
+                        sw1 = systemOverlaysAreVisible;
                       },
-                      height: 30,
-                      animationDuration: const Duration(milliseconds: 400),
-                      onTap: () {},
-                      onDoubleTap: () {},
-                      onSwipe: () {},
-                      textOff: "No",
-                      textOn: "Yes",
-                      colorOn: const Color(0xffdc6c73),
-                      colorOff: const Color(0xff6682c0),
-                      background: const Color(0xffe4e5eb),
-                      buttonColor: const Color(0xfff7f5f7),
-                      inactiveColor: const Color(0xff636f7b),
                     ),
                   ],
                 ),
                 SizedBox(
-                  height: 8.0,
-                ),
-                RichText(
-                  text: TextSpan(
-                    text: 'Full Legal Name: ',
-                    style: const TextStyle(
-                        fontWeight: FontWeight.bold, color: Colors.black),
-                    children: const <TextSpan>[
-                      TextSpan(
-                        text: 'Bugs Capstone',
-                        style: TextStyle(color: Colors.redAccent),
-                      )
-                    ],
-                  ),
+                  height: 24.0,
                 ),
                 Row(
                   children: [
-                    Text(
-                      'Text-to-Speech Message: ',
-                      style: const TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    Expanded(
-                      child: TextFormField(
-                        controller: ctlMessage,
+                    RichText(
+                      text: TextSpan(
+                        text: 'Full Legal Name: ',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold, color: Colors.black),
+                        children: const <TextSpan>[
+                          TextSpan(
+                            text: 'Bugs Capstone',
+                            style: TextStyle(color: Colors.redAccent),
+                          )
+                        ],
                       ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 16.0,
                 ),
                 Row(
                   children: [
@@ -245,7 +227,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   onPressed: () {
                     setState(() {
                       _user.generalPermission = sw1;
-                      _user.message = ctlMessage.text;
                     });
                     showDialog(
                       context: context,
@@ -259,17 +240,6 @@ class _ProfilePageState extends State<ProfilePage> {
                               const Text('Permission: '),
                               Text(
                                 _user.generalPermission.toString(),
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.brown),
-                                textAlign: TextAlign.center,
-                              ),
-                              SizedBox(
-                                height: 8.0,
-                              ),
-                              const Text('Text-to-Speech Message: '),
-                              Text(
-                                _user.message,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.brown),
@@ -341,13 +311,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   'Personal ',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Colors.blue,
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
                   ),
                 ),
                 SizedBox(
-                  height: 8.0,
+                  height: 16.0,
                 ),
                 Row(
                   children: [
@@ -355,26 +324,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       'Permission to Share: ',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    SlidingSwitch(
-                      value: false,
-                      width: 100,
-                      onChanged: (bool value) {
-                        sw2 = value;
+                    SlidingSwitchWidget(
+                      choice: false,
+                      onClicked: (bool systemOverlaysAreVisible) async {
+                        sw2 = systemOverlaysAreVisible;
                       },
-                      height: 30,
-                      animationDuration: const Duration(milliseconds: 400),
-                      onTap: () {},
-                      onDoubleTap: () {},
-                      onSwipe: () {},
-                      textOff: "No",
-                      textOn: "Yes",
-                      colorOn: const Color(0xffdc6c73),
-                      colorOff: const Color(0xff6682c0),
-                      background: const Color(0xffe4e5eb),
-                      buttonColor: const Color(0xfff7f5f7),
-                      inactiveColor: const Color(0xff636f7b),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 16.0,
                 ),
                 Row(
                   children: [
@@ -424,13 +383,13 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 8.0,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    selectFile();
-                    _user.personalMedicalFile = fileName;
-                  },
-                  child: const Text('Select File'),
-                ),
+                ButtonWidget(
+                    text: 'Select File',
+                    icon: Icons.attach_file,
+                    onClicked: () async {
+                      selectFile();
+                      _user.personalMedicalFile = fileName;
+                    }),
                 SizedBox(
                   height: 18.0,
                 ),
@@ -438,13 +397,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   'Emergency Contact',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Colors.blue,
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
                   ),
                 ),
                 SizedBox(
-                  height: 8.0,
+                  height: 16.0,
                 ),
                 Row(
                   children: [
@@ -454,26 +412,16 @@ class _ProfilePageState extends State<ProfilePage> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SlidingSwitch(
-                      value: false,
-                      width: 100,
-                      onChanged: (bool value) {
-                        sw3 = value;
+                    SlidingSwitchWidget(
+                      choice: false,
+                      onClicked: (bool systemOverlaysAreVisible) async {
+                        sw3 = systemOverlaysAreVisible;
                       },
-                      height: 30,
-                      animationDuration: const Duration(milliseconds: 400),
-                      onTap: () {},
-                      onDoubleTap: () {},
-                      onSwipe: () {},
-                      textOff: "No",
-                      textOn: "Yes",
-                      colorOn: const Color(0xffdc6c73),
-                      colorOff: const Color(0xff6682c0),
-                      background: const Color(0xffe4e5eb),
-                      buttonColor: const Color(0xfff7f5f7),
-                      inactiveColor: const Color(0xff636f7b),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 16.0,
                 ),
                 Row(
                   children: [
@@ -527,15 +475,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 8.0,
                 ),
-                ElevatedButton(
-                  onPressed: () {
-                    selectFileT();
-                    _user.contactMedicalFile = fileNameT;
-                  },
-                  child: const Text('Select File'),
-                ),
+                ButtonWidget(
+                    text: 'Select File',
+                    icon: Icons.attach_file,
+                    onClicked: () async {
+                      selectFileT();
+                      _user.contactMedicalFile = fileNameT;
+                    }),
                 SizedBox(
-                  height: 8.0,
+                  height: 16.0,
                 ),
                 ElevatedButton(
                   style: ButtonStyle(
