@@ -1,17 +1,18 @@
+import 'package:firebase_auth/firebase_auth.dart';
+
 class SOSUser {
   bool generalPermission = false;
-  String message = '';
   String contactNum = '';
   bool medicalPermission = false;
   String personalHealthNum = '';
-  String personalMedicalFile = 'No File Selected';
+  String personalMedicalFile = '';
   bool contactMedicalPermission = false;
   String contactHealthNum = '';
-  String contactMedicalFile = 'No File Selected';
+  String contactMedicalFile = '';
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   SOSUser(){
     this.generalPermission = generalPermission;
-    this.message = message;
     this.contactNum = contactNum;
     this.medicalPermission = medicalPermission;
     this.personalHealthNum = personalHealthNum;
