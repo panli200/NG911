@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/widgets.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
@@ -13,6 +12,7 @@ import 'package:sos_app/profile_extended_pages/dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sos_app/profile_extended_pages/sliding_switch_widget.dart';
 import 'package:sos_app/profile_extended_pages/button_widget.dart';
+import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -275,7 +275,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     );
                   },
-                  child: const Text('EDIT GENERAL INFORMATION'),
+                  child: const Text('SAVE GENERAL INFORMATION'),
                 ),
                 SizedBox(
                   height: 8.0,
@@ -581,6 +581,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               saveMedicalValue();
                               Navigator.pop(context, 'OK');
+                              sendUserDate();
                             },
                             child: const Text('OK'),
                           ),
@@ -588,7 +589,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     );
                   },
-                  child: const Text('EDIT MEDICAL INFORMATION'),
+                  child: const Text('SAVE MEDICAL INFORMATION'),
                 ),
               ],
             ),
