@@ -3,16 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/widgets.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
-import 'package:sos_app/profile_extended_pages/user_info.dart';
-import 'package:sos_app/profile_extended_pages/dialog.dart';
+import 'package:sos_app/profile_extended_pages/sos_user.dart';
+import 'package:sos_app/profile_extended_pages/dialog_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sos_app/profile_extended_pages/sliding_switch_widget.dart';
-import 'package:sos_app/profile_extended_pages/button_widget.dart';
 import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
+import 'package:sos_app/profile_extended_pages/upload_file.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -20,10 +18,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  UploadTask? task, taskT; //
   File? file, fileT;
   PhoneContact? _phoneContact;
-
   TextEditingController ctlHealthCard = TextEditingController();
   TextEditingController ctlHealthCard2 = TextEditingController();
   bool sw1 = false;
@@ -50,9 +46,10 @@ class _ProfilePageState extends State<ProfilePage> {
     prefs = await _prefs;
 
     setState(() {
-      _user.medicalPermission = (prefs.containsKey("MedicalPermission")
-          ? prefs.getBool("MedicalPermission")
-          : false)!;
+      _user.personalMedicalPermission =
+          (prefs.containsKey("PersonalMedicalPermission")
+              ? prefs.getBool("PersonalMedicalPermission")
+              : false)!;
       _user.personalHealthNum =
           (prefs.containsKey("HealthNum") ? prefs.getString("HealthNum") : '')!;
       _user.personalMedicalFile = (prefs.containsKey("PersonalFile")
@@ -77,12 +74,14 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   saveMedicalValue() async {
-    prefs.setBool("MedicalPermission", _user.medicalPermission);
+    prefs.setBool("PersonalMedicalPermission", _user.personalMedicalPermission);
     prefs.setString("HealthNum", _user.personalHealthNum);
     prefs.setString("PersonalFile", _user.personalMedicalFile);
+    prefs.setString("PersonalFilePath", _user.personalMedicalFilePath);
     prefs.setBool("contactMedicalPermission", _user.contactMedicalPermission);
     prefs.setString("ContactHealthNum", _user.contactHealthNum);
     prefs.setString("ContactFile", _user.contactMedicalFile);
+    prefs.setString("ContactFilePath", _user.contactMedicalFilePath);
   }
 
   void initState() {
@@ -98,9 +97,9 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget build(BuildContext context) {
-    final contactNum =
-        _phoneContact != null ? _phoneContact!.phoneNumber!.number : '';
-    final fileName = file != null ? basename(file!.path) : '';
+    // final contactNum =
+    //     _phoneContact != null ? _phoneContact!.phoneNumber!.number : '';
+    // final fileName = file != null ? basename(file!.path) : '';
     final fileNameT = fileT != null ? basename(fileT!.path) : '';
 
     return Scaffold(
@@ -159,7 +158,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       'Full Legal Name: ',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
-
                     Text(
                       'Bugs Capstone ',
                       style: const TextStyle(fontWeight: FontWeight.bold),
@@ -193,7 +191,9 @@ class _ProfilePageState extends State<ProfilePage> {
                             await FlutterContactPicker.pickPhoneContact();
                         setState(() {
                           _phoneContact = contact;
-                          _user.contactNum = contactNum!;
+                          _user.contactNum = (_phoneContact != null
+                              ? _phoneContact!.phoneNumber!.number
+                              : '')!;
                         });
                       },
                     ),
@@ -275,7 +275,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: const Text('SAVE GENERAL INFORMATION'),
                 ),
                 SizedBox(
-                  height: 8.0,
+                  height: 16.0,
                 ),
                 const Divider(
                   height: 10,
@@ -374,6 +374,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
+                        Icons.attach_file,
+                        color: Colors.teal,
+                        size: 26,
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          selectFile();
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
                         Icons.do_not_disturb_on,
                         color: Colors.red,
                         size: 26,
@@ -387,16 +399,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 8.0,
-                ),
-                ButtonWidget(
-                    text: 'Select File',
-                    icon: Icons.attach_file,
-                    onClicked: () async {
-                      selectFile();
-                      _user.personalMedicalFile = fileName;
-                    }),
                 SizedBox(
                   height: 18.0,
                 ),
@@ -475,6 +477,18 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
+                        Icons.attach_file,
+                        color: Colors.teal,
+                        size: 26,
+                      ),
+                      onPressed: () async {
+                        setState(() {
+                          selectFileT();
+                        });
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(
                         Icons.do_not_disturb_on,
                         color: Colors.red,
                         size: 26,
@@ -491,13 +505,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 SizedBox(
                   height: 8.0,
                 ),
-                ButtonWidget(
-                    text: 'Select File',
-                    icon: Icons.attach_file,
-                    onClicked: () async {
-                      selectFileT();
-                      _user.contactMedicalFile = fileNameT;
-                    }),
+
                 SizedBox(
                   height: 16.0,
                 ),
@@ -510,7 +518,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     setState(() {
                       _user.personalHealthNum = ctlHealthCard.text;
                       _user.contactHealthNum = ctlHealthCard2.text;
-                      _user.medicalPermission = sw2;
+                      _user.personalMedicalPermission = sw2;
                       _user.contactMedicalPermission = sw3;
                     });
                     showDialog(
@@ -524,7 +532,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: <Widget>[
                               const Text('Personal Permission: '),
                               Text(
-                                _user.medicalPermission.toString(),
+                                _user.personalMedicalPermission.toString(),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.brown),
@@ -597,7 +605,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               saveMedicalValue();
                               Navigator.pop(context, 'OK');
-                              sendUserDate();//calling send the user profile function
+                              sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                              uploadFile(); //TEST upload files to the firebase storage
                             },
                             child: const Text('OK'),
                           ),
@@ -616,20 +625,27 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future selectFile() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: false);
 
     if (result == null) return;
     final path = result.files.single.path!;
 
     setState(() => file = File(path));
+
+    _user.personalMedicalFile = file != null ? basename(file!.path) : '';
+    _user.personalMedicalFilePath = path;
   }
 
   Future selectFileT() async {
-    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    final result2 = await FilePicker.platform.pickFiles(allowMultiple: false);
 
-    if (result == null) return;
-    final path = result.files.single.path!;
+    if (result2 == null) return;
+    final path2 = result2.files.single.path!;
 
-    setState(() => fileT = File(path));
+    setState(() => fileT = File(path2));
+
+    _user.contactMedicalFile = fileT != null ? basename(fileT!.path) : '';
+    _user.contactMedicalFilePath = path2;
   }
 }

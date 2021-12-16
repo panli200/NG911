@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-void showGeneralDialogBox(BuildContext context) {
+showGeneralDialogBox(BuildContext context) {
   showDialog<String>(
     context: context,
     builder: (BuildContext context) {
@@ -25,8 +25,7 @@ void showGeneralDialogBox(BuildContext context) {
     },
   );
 }
-
-void showMedicalDialogBox(BuildContext context) {
+ showMedicalDialogBox(BuildContext context) {
   showDialog<String>(
     context: context,
     builder: (BuildContext context) {
