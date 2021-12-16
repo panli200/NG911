@@ -97,11 +97,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Widget build(BuildContext context) {
-    // final contactNum =
-    //     _phoneContact != null ? _phoneContact!.phoneNumber!.number : '';
-    // final fileName = file != null ? basename(file!.path) : '';
-    final fileNameT = fileT != null ? basename(fileT!.path) : '';
-
     return Scaffold(
       body: Scrollbar(
         child: SingleChildScrollView(
