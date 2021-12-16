@@ -556,6 +556,8 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
+  - path_provider_ios (0.0.1):
+    - Flutter
   - PromisesObjC (2.0.0)
   - SDWebImage (5.12.1):
     - SDWebImage/Core (= 5.12.1)
@@ -582,6 +584,7 @@ DEPENDENCIES:
   - fluttertoast (from `.symlinks/plugins/fluttertoast/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
   - health (from `.symlinks/plugins/health/ios`)
+  - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
   - sensors (from `.symlinks/plugins/sensors/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
 
@@ -641,6 +644,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/geolocator_apple/ios"
   health:
     :path: ".symlinks/plugins/health/ios"
+  path_provider_ios:
+    :path: ".symlinks/plugins/path_provider_ios/ios"
   sensors:
     :path: ".symlinks/plugins/sensors/ios"
   shared_preferences_ios:
@@ -681,6 +686,7 @@ SPEC CHECKSUMS:
   health: e7a5807e45ec58fe6b89a730c97abc6caafe94a0
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
+  path_provider_ios: 7d7ce634493af4477d156294792024ec3485acd5
   PromisesObjC: 68159ce6952d93e17b2dfe273b8c40907db5ba58
   SDWebImage: 4dc3e42d9ec0c1028b960a33ac6b637bb432207b
   sensors: 84eb7a30e47a649e4172b71d6e81be614c280336

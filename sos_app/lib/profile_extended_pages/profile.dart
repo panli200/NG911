@@ -118,7 +118,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     IconButton(
                         icon: Icon(
                           Icons.comment_rounded,
-                          size: 26,
+                          color: Colors.amber,
+                          size: 30,
                         ),
                         onPressed: () {
                           showGeneralDialogBox(context);
@@ -289,7 +290,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     IconButton(
                         icon: Icon(
                           Icons.comment_rounded,
-                          size: 26,
+                          color: Colors.amber,
+                          size: 30,
                         ),
                         onPressed: () {
                           showMedicalDialogBox(context);
@@ -339,12 +341,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Expanded(
                       child: TextFormField(
+                        maxLength: 9,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                          FilteringTextInputFormatter.digitsOnly,
                           LengthLimitingTextInputFormatter(9),
                         ],
                         decoration: const InputDecoration(
-                          hintText: '9 digital ',
+                          labelText: '9 digital ',
                           border: OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.number,
@@ -437,12 +440,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     Expanded(
                       child: TextFormField(
+                        maxLength: 9,
                         inputFormatters: <TextInputFormatter>[
-                          FilteringTextInputFormatter.allow(RegExp('[0-9]')),
+                          FilteringTextInputFormatter.digitsOnly,
                           LengthLimitingTextInputFormatter(9),
                         ],
                         decoration: const InputDecoration(
-                          hintText: '9 digital ',
+                          labelText: '9 digital ',
                           border: OutlineInputBorder(),
                         ),
                         keyboardType: TextInputType.number,
