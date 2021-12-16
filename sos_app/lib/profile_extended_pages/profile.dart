@@ -597,7 +597,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             onPressed: () {
                               saveMedicalValue();
                               Navigator.pop(context, 'OK');
-                              sendUserDate();
+                              sendUserDate();//calling send the user profile function
                             },
                             child: const Text('OK'),
                           ),
