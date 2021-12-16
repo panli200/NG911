@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'user_info.dart';
+import 'sos_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 void sendUserDate() async {
@@ -15,9 +15,10 @@ void sendUserDate() async {
 
   user.contactNum =
       (prefs.containsKey("Contact") ? prefs.getString("Contact") : '')!;
-  user.medicalPermission = (prefs.containsKey("MedicalPermission")
-      ? prefs.getBool("MedicalPermission")
-      : false)!;
+  user.personalMedicalPermission =
+      (prefs.containsKey("PersonalMedicalPermission")
+          ? prefs.getBool("PersonalMedicalPermission")
+          : false)!;
   user.personalHealthNum =
       (prefs.containsKey("HealthNum") ? prefs.getString("HealthNum") : '')!;
   user.personalMedicalFile = (prefs.containsKey("PersonalFile")
@@ -32,6 +33,7 @@ void sendUserDate() async {
   user.contactMedicalFile =
       (prefs.containsKey("ContactFile") ? prefs.getString("ContactFile") : '')!;
 
+//send user emergency contact number with user permission
   if (user.generalPermission == true) {
     await users
         .doc(user.uid)
@@ -61,14 +63,14 @@ void sendUserDate() async {
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to add user: $error"));
   }
-
-  if (user.medicalPermission == true) {
+  //send user Ehealth card number with permission
+  if (user.personalMedicalPermission == true) {
     await users
         .doc(user.uid)
         .collection('Profile Information')
         .doc('Medical Info')
         .set({
-          'medical permission': user.medicalPermission,
+          'medical permission': user.personalMedicalPermission,
           'personal health card': user.personalHealthNum,
           'personal medical file': user.personalMedicalFile,
         })
@@ -80,14 +82,14 @@ void sendUserDate() async {
         .collection('Profile Information')
         .doc('Medical Info')
         .set({
-          'medical permission': user.medicalPermission,
+          'medical permission': user.personalMedicalPermission,
           'personal health card': '',
           'personal medical file': '',
         })
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to add user: $error"));
   }
-
+  //send user Ehealth card number with permission
   if (user.contactMedicalPermission == true) {
     await users
         .doc(user.uid)
