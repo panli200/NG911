@@ -8,72 +8,86 @@ import 'package:sos_app/activities_extended_pages/activities.dart';
 import 'package:sos_app/activities_extended_pages/activity_detail.dart';
 import 'package:sos_app/profile_extended_pages/profile.dart';
 import 'package:sos_app/Initial.dart';
+import 'package:sos_app/SignUp.dart';
 
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
   routes: [
-    AutoRoute(path: '/', page: SosPage, children: [
-      AutoRoute(
-        path: '',
-        page: InitializerWidgetPage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
-      ),
-      AutoRoute(
-        path: 'sos_extended_pages',
-        name: 'SosRouter',
-        page: EmptyRouterPage,
-        
-        // FUTURE PAGE ROUTING FOR SOS PAGE
-        children: [
-          AutoRoute(
-            path: '',
-            page: SosHomePage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
-          ),
-          AutoRoute(
-            path: ':howToUseID',
-            page: HowToUsePage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
-          ),
-          AutoRoute(
-            path: ':medicalCallPopUpID',
-            page: MedicalCallPopUpPage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
-          ),
-          AutoRoute(
-            path: '',
-            page: InCallPage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
-          )
-        ],
-      ),
-      AutoRoute(
-        path: 'profile_extended_pages',
-        name: 'ProfileRouter',
-        page: EmptyRouterPage,
 
-         // FUTURE EXTENDED/POP-UP PAGES FOR PROFILE PAGE
+    AutoRoute(page: EmptyRouterPage, initial: true,
         children: [
           AutoRoute(
             path: '',
-            page: ProfilePage,
+            page: InitializerWidgetPage,
           ),
-        ],
-        
-      ),
-      AutoRoute(
-        path: 'activities_extended_pages',
-        name: 'ActivitiesRouter',
-        page: EmptyRouterPage,
+          AutoRoute(
+            path: '',
+            page: SignUpPage,
+          ),
+          AutoRoute(
+            path: '',
+            page: SosPage,
+            children: [
+              AutoRoute(
+                path: 'sos_extended_pages',
+                name: 'SosRouter',
+                page: EmptyRouterPage,
 
-        // FUTURE EXTENDED/POP-UP PAGES FOR PROFILE PAGE
-        children: [
-          AutoRoute(
-            path: '',
-            page: ActivitiesPage,
+                // FUTURE PAGE ROUTING FOR SOS PAGE
+                children: [
+                  AutoRoute(
+                    path: '',
+                    page: SosHomePage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
+                  ),
+                  AutoRoute(
+                    path: ':howToUseID',
+                    page: HowToUsePage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
+                  ),
+                  AutoRoute(
+                    path: ':medicalCallPopUpID',
+                    page: MedicalCallPopUpPage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
+                  ),
+                  AutoRoute(
+                    path: '',
+                    page: InCallPage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
+                  )
+                ],
+              ),
+              AutoRoute(
+                path: 'profile_extended_pages',
+                name: 'ProfileRouter',
+                page: EmptyRouterPage,
+
+                // FUTURE EXTENDED/POP-UP PAGES FOR PROFILE PAGE
+                children: [
+                  AutoRoute(
+                    path: '',
+                    page: ProfilePage,
+                  ),
+                ],
+
+              ),
+              AutoRoute(
+                path: 'activities_extended_pages',
+                name: 'ActivitiesRouter',
+                page: EmptyRouterPage,
+
+                // FUTURE EXTENDED/POP-UP PAGES FOR PROFILE PAGE
+                children: [
+                  AutoRoute(
+                    path: '',
+                    page: ActivitiesPage,
+                  ),
+                  AutoRoute(
+                    path: '',
+                    page: ActivityDetailPage,
+                  ),
+                ],
+              )
+            ]
           ),
-          AutoRoute(
-            path: '',
-            page: ActivityDetailPage,
-          ),
-        ],
-      )
+
     ]),
   ],
 )
