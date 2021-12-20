@@ -1,27 +1,86 @@
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps_street.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'maps_home_page.dart';
 
 class CallControlPanel extends StatefulWidget {
-  const CallControlPanel({Key? key}) : super(key: key);
+  final CallerId;
+  final Snapshot;
+  const CallControlPanel({Key? key, required this.CallerId, required this.Snapshot}) : super(key: key);
 
   @override
   State<CallControlPanel> createState() => _CallControlPanelState();
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
+
+
+  final FirebaseDatabase database = FirebaseDatabase.instance;
+  DatabaseReference ref = FirebaseDatabase.instance.ref();
   final Stream<QuerySnapshot> users = FirebaseFirestore.instance.collection('testCalls').snapshots();
+  var FriendID;
+  var snapshot;
+  var realTimeSnapshot;
+  var path;
+  var MobileChargeString;
+  var LongitudeString;
+  var LatitudeString;
+
+  DatabaseReference? _db;
   void _callPolice() async{
-    const number = '01154703796'; //set the number here
+    const number = '01154703794'; //set the number here
   }
   void _callFireDepartment() async{
-    const number = '01154703796'; //set the number here
+    const number = '01154703795'; //set the number here
   }
   void _callEMS() async{
     const number = '01154703796'; //set the number here
   }
   void _EndCall() async{
-    const number = '01154703796'; //set the number here
+    FirebaseFirestore.instance.collection('SOSEmergencies').doc(FriendID).update({'Online': false});
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (
+                context) =>const MapsHomePage()));
+  }
+
+  void activateListeners(){
+    ref.child('sensors').child(FriendID).child('MobileCharge').onValue.listen((event) {
+      String MobileCharge = event.snapshot.value.toString();
+      setState((){
+        MobileChargeString = 'Mobile Charge: ' + MobileCharge;
+      });
+    });
+
+    ref.child('sensors').child(FriendID).child('Longitude').onValue.listen((event) {
+      String Longitude = event.snapshot.value.toString();
+      setState((){
+        LongitudeString = 'Longitude: ' + Longitude;
+      });
+    });
+
+    ref.child('sensors').child(FriendID).child('Latitude').onValue.listen((event) {
+      String Latitude = event.snapshot.value.toString();
+      setState((){
+        LatitudeString = 'Latitude: ' + Latitude;
+      });
+    });
+  }
+
+
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    FriendID = widget.CallerId; //Getting user ID from the previous page..
+    activateListeners();
+    
+    snapshot = widget.Snapshot;
+    FirebaseFirestore.instance.collection('SOSEmergencies').doc(FriendID).update({'Waiting': false}); // Changing the caller's Waiting state to be False
+    FirebaseFirestore.instance.collection('SOSEmergencies').doc(FriendID).update({'Online': true}); // Changing the caller's Online state to be True
   }
   @override
   Widget build(BuildContext context) {
@@ -161,7 +220,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 child: Row(
                                                   children: [
                                                     Text(
-                                                      'FirstName: Rabaa',
+                                                      'Phone: ${snapshot['Phone']}',
 
                                                     ),
                                                   ],
@@ -172,7 +231,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 child: Row(
                                                   children: [
                                                     Text(
-                                                      'Address: 1234 5th Street, Regina, SK',
+                                                      '$MobileChargeString',
                                                     ),
                                                   ],
                                                 ),
@@ -182,7 +241,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 child: Row(
                                                   children: [
                                                     Text(
-                                                      'Device Charge: 89%',
+                                                      '$LongitudeString',
                                                     ),
                                                   ],
                                                 ),
@@ -192,7 +251,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 child: Row(
                                                   children: [
                                                     Text(
-                                                      'Device Speed: 0 kph',
+                                                      '$LatitudeString',
                                                     ),
                                                   ],
                                                 ),

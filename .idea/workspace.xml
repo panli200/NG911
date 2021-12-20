@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9eb5226-8f03-4a0d-a315-7b53fa36dd24" name="Default Changelist" comment="">
+<<<<<<< Updated upstream
       <change afterPath="$PROJECT_DIR$/sos_app/lib/Initial.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -16,6 +17,9 @@
       <change beforePath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sos_app/lib/routes/router.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/routes/router.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart" beforeDir="false" />
+=======
+      <change beforePath="$PROJECT_DIR$/sos_app/lib/sos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/sos.dart" afterDir="false" />
+>>>>>>> Stashed changes
     </list>
     <ignored path="$PROJECT_DIR$/sos_app/.pub/" />
     <ignored path="$PROJECT_DIR$/sos_app/build/" />
@@ -47,8 +51,13 @@
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages">
         <counts>
+<<<<<<< Updated upstream
           <entry key="git.branch.checkout.local" value="16" />
           <entry key="git.branch.create.new" value="3" />
+=======
+          <entry key="git.branch.checkout.local" value="17" />
+          <entry key="git.branch.create.new" value="4" />
+>>>>>>> Stashed changes
           <entry key="git.branch.delete.local" value="1" />
         </counts>
       </usages-collector>
@@ -56,6 +65,10 @@
         <counts>
           <entry key="dart" value="379" />
           <entry key="html" value="5" />
+<<<<<<< Updated upstream
+=======
+          <entry key="txt" value="91" />
+>>>>>>> Stashed changes
           <entry key="yaml" value="48" />
         </counts>
       </usages-collector>
@@ -63,6 +76,10 @@
         <counts>
           <entry key="Dart" value="379" />
           <entry key="HTML" value="5" />
+<<<<<<< Updated upstream
+=======
+          <entry key="PLAIN_TEXT" value="91" />
+>>>>>>> Stashed changes
           <entry key="YAML" value="48" />
         </counts>
       </usages-collector>
@@ -318,7 +335,25 @@
       <option name="project" value="LOCAL" />
       <updated>1639144846703</updated>
     </task>
+<<<<<<< Updated upstream
     <option name="localTasksCounter" value="4" />
+=======
+    <task id="LOCAL-00004" summary="PSAP_Firebase_and_Phone_Registration">
+      <created>1639517767877</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1639517767877</updated>
+    </task>
+    <task id="LOCAL-00005" summary="SignUp navigation error after the OTP">
+      <created>1639954627724</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1639954627725</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+>>>>>>> Stashed changes
     <servers />
   </component>
   <component name="TodoView">
@@ -347,7 +382,11 @@
       <window_info anchor="bottom" id="Terminal" order="2" weight="0.2474074" />
       <window_info anchor="bottom" id="Event Log" order="3" side_tool="true" />
       <window_info anchor="bottom" id="Dart Analysis" order="4" weight="0.34666666" />
+<<<<<<< Updated upstream
       <window_info active="true" anchor="bottom" id="Run" order="5" visible="true" weight="0.3288889" />
+=======
+      <window_info active="true" anchor="bottom" id="Run" order="5" sideWeight="0.49924472" visible="true" weight="0.053333335" />
+>>>>>>> Stashed changes
       <window_info anchor="bottom" id="Debug" order="6" />
       <window_info anchor="bottom" id="Flutter Performance" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Find" order="8" />
@@ -392,7 +431,13 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Loading effect for Activities" />
     <MESSAGE value="Accelerometer" />
+<<<<<<< Updated upstream
     <option name="LAST_COMMIT_MESSAGE" value="Accelerometer" />
+=======
+    <MESSAGE value="PSAP_Firebase_and_Phone_Registration" />
+    <MESSAGE value="SignUp navigation error after the OTP" />
+    <option name="LAST_COMMIT_MESSAGE" value="SignUp navigation error after the OTP" />
+>>>>>>> Stashed changes
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/sos_app/lib/generated_plugin_registrant.dart">
