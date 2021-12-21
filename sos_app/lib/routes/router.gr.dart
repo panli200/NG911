@@ -54,7 +54,7 @@ class AppRouter extends _i3.RootStackRouter {
           routeData: routeData, child: _i4.SosHomePage(key: args.key));
     },
     HowToUseRoute.name: (routeData) {
-      final pathParams = routeData.pathParams;
+      final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<HowToUseRouteArgs>(
           orElse: () =>
               HowToUseRouteArgs(howToUseID: pathParams.getInt('howToUseID')));
@@ -63,7 +63,7 @@ class AppRouter extends _i3.RootStackRouter {
           child: _i5.HowToUsePage(key: args.key, howToUseID: args.howToUseID));
     },
     EmergencyCallPopUpRoute.name: (routeData) {
-      final pathParams = routeData.pathParams;
+      final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<EmergencyCallPopUpRouteArgs>(
           orElse: () => EmergencyCallPopUpRouteArgs(
               emergencyCallPopUpID: pathParams.getInt('emergencyCallPopUpID')));
@@ -73,7 +73,7 @@ class AppRouter extends _i3.RootStackRouter {
               key: args.key, emergencyCallPopUpID: args.emergencyCallPopUpID));
     },
     ConnectPsapRoute.name: (routeData) {
-      final pathParams = routeData.pathParams;
+      final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ConnectPsapRouteArgs>(
           orElse: () => ConnectPsapRouteArgs(
               connectPsapPageID: pathParams.getInt('connectPsapPageID')));
@@ -188,6 +188,11 @@ class SosHomeRouteArgs {
   const SosHomeRouteArgs({this.key});
 
   final _i11.Key? key;
+
+  @override
+  String toString() {
+    return 'SosHomeRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for [_i5.HowToUsePage]
@@ -207,6 +212,11 @@ class HowToUseRouteArgs {
   final _i11.Key? key;
 
   final int howToUseID;
+
+  @override
+  String toString() {
+    return 'HowToUseRouteArgs{key: $key, howToUseID: $howToUseID}';
+  }
 }
 
 /// generated route for [_i6.EmergencyCallPopUpPage]
@@ -229,6 +239,11 @@ class EmergencyCallPopUpRouteArgs {
   final _i11.Key? key;
 
   final int emergencyCallPopUpID;
+
+  @override
+  String toString() {
+    return 'EmergencyCallPopUpRouteArgs{key: $key, emergencyCallPopUpID: $emergencyCallPopUpID}';
+  }
 }
 
 /// generated route for [_i7.ConnectPsapPage]
@@ -249,6 +264,11 @@ class ConnectPsapRouteArgs {
   final _i11.Key? key;
 
   final int connectPsapPageID;
+
+  @override
+  String toString() {
+    return 'ConnectPsapRouteArgs{key: $key, connectPsapPageID: $connectPsapPageID}';
+  }
 }
 
 /// generated route for [_i8.ProfilePage]
@@ -281,4 +301,9 @@ class ActivityDetailRouteArgs {
   final _i11.Key? key;
 
   final dynamic Snapshot;
+
+  @override
+  String toString() {
+    return 'ActivityDetailRouteArgs{key: $key, Snapshot: $Snapshot}';
+  }
 }

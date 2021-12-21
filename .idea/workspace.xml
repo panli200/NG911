@@ -289,7 +289,7 @@
       <method v="2" />
     </configuration>
     <configuration name="main.dart" type="FlutterRunConfigurationType" factoryName="Flutter" temporary="true" nameIsGenerated="true">
-      <option name="filePath" value="$PROJECT_DIR$/sos_app/lib/main.dart" />
+      <option name="filePath" value="$PROJECT_DIR$/psap_dashboard/lib/main.dart" />
       <method v="2" />
     </configuration>
     <recent_temporary>
