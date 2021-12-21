@@ -29,3 +29,9 @@ class ConnectPsapData {
 
   ConnectPsapData(this.color, this.title, this.id);
 }
+
+class EmergencySMS{
+  String? messageContent;
+  String? messageType;
+  EmergencySMS({@required this.messageContent, @required this.messageType});
+}
