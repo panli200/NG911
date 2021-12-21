@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:camera/camera.dart';
@@ -13,10 +14,12 @@ Future<void> main() async {
 }
 
 class MyApp extends StatelessWidget {
-
   MyApp({Key? key}) : super(key: key);
 
   final appRouter = AppRouter();
+
+  // @override
+  // _MyAppState createState() => _MyAppState();
 
   @override
   Widget build(BuildContext context) {

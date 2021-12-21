@@ -21,7 +21,7 @@ class _InitializerWidgetStatePage extends State<InitializerWidgetPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-     _auth = FirebaseAuth.instance;
+    _auth = FirebaseAuth.instance;
     _user = _auth.currentUser!;
     isLoading = false;
   }

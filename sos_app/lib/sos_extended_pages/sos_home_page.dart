@@ -45,7 +45,7 @@ class _DelayedListState extends State<DelayedList> {
 class DataList extends StatelessWidget {
   final Timer timer;
   final howToUsePopUp = HowToUseData.howToUsePopUp;
-  final medicalCallPopUp = MedicalCallPopUpData.medicalCallPopUp;
+  final emergencyCallPopUp = EmergencyCallPopUpData.emergencyCallPopUp;
 
   DataList(this.timer);
 
@@ -81,46 +81,11 @@ class DataList extends StatelessWidget {
 
             Center(
               child: Container(
-                height: 100,
-                width: MediaQuery.of(context).size.width * 0.35,
-                // alignment: Alignment.center,
-                // color: Colors.grey,
-                child: 
-                  Image.asset(
-                    "assets/images/SoundwavePlaceholder.png",
-                    fit: BoxFit.fitWidth
-                  ),
-              ), // Soundwave Placeholder
-            ),
-            
-
-            SizedBox(height: 20), // Spacing visuals
-
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              
-              children: <Widget>[
-                Container(
-                  height: 150,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  color: Colors.grey,
-                  child: 
-                    Image.asset(
-                    "assets/images/CameraPlaceholder.jpg",
-                    fit: BoxFit.cover
-                  ),
-                  // child: FrontCameraPreview(),
-                ), // Front Camera Preview Placeholder
-
-                Container(
-                  height: 150,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  // color: Colors.grey,
+                  height: 250,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   child: BackCameraPreview(),
-                ), // Back Camera Preview Placeholder
-              ],
-            ), // Front/Back camera placheolders
+                ),
+            ),
 
             SizedBox(height: 20), // Spacing visuals
 
@@ -133,11 +98,11 @@ class DataList extends StatelessWidget {
                   margin: EdgeInsets.symmetric(vertical: 8),
 
                   child:  MedicalScenarioButton(
-                    tileColor: medicalCallPopUp.color,
-                    pageTitle: medicalCallPopUp.title,
+                    tileColor: emergencyCallPopUp.color,
+                    pageTitle: emergencyCallPopUp.title,
                     onTileTap: () => context.router.push(
-                      MedicalCallPopUpRoute(
-                        medicalCallPopUpID: medicalCallPopUp.id,
+                      EmergencyCallPopUpRoute(
+                        emergencyCallPopUpID: emergencyCallPopUp.id,
                       ),
                     ) // onTileTap
                   ),
@@ -172,51 +137,6 @@ class DataList extends StatelessWidget {
     );
   }
 }
-
-/************** FRONT CAMERA LOGIC START **************/
-// class FrontCameraPreview extends StatefulWidget {
-//   final color;
-//   final size;
-
-//   FrontCameraPreview({this.color, this.size});
-
-//   @override
-//   _FrontCameraPreview createState() => _FrontCameraPreview();
-// }
-
-// class _FrontCameraPreview extends State<FrontCameraPreview> {
-//   late CameraController controller;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     controller = CameraController(cameras[1], ResolutionPreset.medium);
-//     controller.initialize().then((_) {
-//       if (!mounted) {
-//         return;
-//       }
-//       setState(() {});
-//     });
-//   }
-
-//   @override
-//   void dispose() {
-//     controller.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     if (!controller.value.isInitialized) {
-//       return Container();
-//     }
-//     return AspectRatio(
-//         aspectRatio: controller.value.aspectRatio,
-//         child: CameraPreview(controller));
-//   }
-// }
-/************** FRONT CAMERA LOGIC START **************/
-
 
 /************** BACK CAMERA LOGIC START **************/
 class BackCameraPreview extends StatefulWidget {
@@ -313,37 +233,15 @@ class ShimmerLayout extends StatelessWidget {
 
           Center(
             child: Container(
-              height: 100,
+              height: 250,
               width: MediaQuery.of(context).size.width * 0.8,
               alignment: Alignment.center,
               color: Colors.grey,
             ), // Soundwave Placeholder
           ),
           
-
           SizedBox(height: 20), // Spacing visuals
-
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            
-            children: <Widget>[
-              Container(
-                height: 150,
-                width: MediaQuery.of(context).size.width * 0.4,
-                color: Colors.grey,
-              ), // Front Camera Preview Placeholder
-
-              Container(
-                height: 150,
-                width: MediaQuery.of(context).size.width * 0.4,
-                color: Colors.grey,
-              ), // Back Camera Preview Placeholder
-            ],
-          ), // Front/Back camera placheolders
-
-          SizedBox(height: 20), // Spacing visuals
-
+          
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget> [

@@ -16,9 +16,9 @@ import '../activities_extended_pages/activity_detail.dart' as _i10;
 import '../Initial.dart' as _i2;
 import '../profile_extended_pages/profile.dart' as _i8;
 import '../sos.dart' as _i1;
+import '../sos_extended_pages/connect_psap_page.dart' as _i7;
+import '../sos_extended_pages/emergency_call_popup_page.dart' as _i6;
 import '../sos_extended_pages/how_to_use_app_page.dart' as _i5;
-import '../sos_extended_pages/in_call_page.dart' as _i7;
-import '../sos_extended_pages/medical_call_popup_page.dart' as _i6;
 import '../sos_extended_pages/sos_home_page.dart' as _i4;
 
 class AppRouter extends _i3.RootStackRouter {
@@ -31,7 +31,7 @@ class AppRouter extends _i3.RootStackRouter {
       return _i3.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i1.SosPage());
     },
-    InitializerWidgetRoute.name: (routeData) {
+    SignInRouter.name: (routeData) {
       return _i3.MaterialPageX<dynamic>(
           routeData: routeData, child: _i2.InitializerWidgetPage());
     },
@@ -54,7 +54,7 @@ class AppRouter extends _i3.RootStackRouter {
           routeData: routeData, child: _i4.SosHomePage(key: args.key));
     },
     HowToUseRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
+      final pathParams = routeData.pathParams;
       final args = routeData.argsAs<HowToUseRouteArgs>(
           orElse: () =>
               HowToUseRouteArgs(howToUseID: pathParams.getInt('howToUseID')));
@@ -62,21 +62,25 @@ class AppRouter extends _i3.RootStackRouter {
           routeData: routeData,
           child: _i5.HowToUsePage(key: args.key, howToUseID: args.howToUseID));
     },
-    MedicalCallPopUpRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<MedicalCallPopUpRouteArgs>(
-          orElse: () => MedicalCallPopUpRouteArgs(
-              medicalCallPopUpID: pathParams.getInt('medicalCallPopUpID')));
+    EmergencyCallPopUpRoute.name: (routeData) {
+      final pathParams = routeData.pathParams;
+      final args = routeData.argsAs<EmergencyCallPopUpRouteArgs>(
+          orElse: () => EmergencyCallPopUpRouteArgs(
+              emergencyCallPopUpID: pathParams.getInt('emergencyCallPopUpID')));
       return _i3.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i6.MedicalCallPopUpPage(
-              key: args.key, medicalCallPopUpID: args.medicalCallPopUpID));
+          child: _i6.EmergencyCallPopUpPage(
+              key: args.key, emergencyCallPopUpID: args.emergencyCallPopUpID));
     },
-    InCallRoute.name: (routeData) {
-      final args = routeData.argsAs<InCallRouteArgs>(
-          orElse: () => const InCallRouteArgs());
+    ConnectPsapRoute.name: (routeData) {
+      final pathParams = routeData.pathParams;
+      final args = routeData.argsAs<ConnectPsapRouteArgs>(
+          orElse: () => ConnectPsapRouteArgs(
+              connectPsapPageID: pathParams.getInt('connectPsapPageID')));
       return _i3.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i7.InCallPage(key: args.key));
+          routeData: routeData,
+          child: _i7.ConnectPsapPage(
+              key: args.key, connectPsapPageID: args.connectPsapPageID));
     },
     ProfileRoute.name: (routeData) {
       return _i3.MaterialPageX<dynamic>(
@@ -98,8 +102,7 @@ class AppRouter extends _i3.RootStackRouter {
   @override
   List<_i3.RouteConfig> get routes => [
         _i3.RouteConfig(SosRoute.name, path: '/', children: [
-          _i3.RouteConfig(InitializerWidgetRoute.name,
-              path: '', parent: SosRoute.name),
+          _i3.RouteConfig(SignInRouter.name, path: '', parent: SosRoute.name),
           _i3.RouteConfig(SosRouter.name,
               path: 'sos_extended_pages',
               parent: SosRoute.name,
@@ -108,10 +111,10 @@ class AppRouter extends _i3.RootStackRouter {
                     path: '', parent: SosRouter.name),
                 _i3.RouteConfig(HowToUseRoute.name,
                     path: ':howToUseID', parent: SosRouter.name),
-                _i3.RouteConfig(MedicalCallPopUpRoute.name,
-                    path: ':medicalCallPopUpID', parent: SosRouter.name),
-                _i3.RouteConfig(InCallRoute.name,
-                    path: '', parent: SosRouter.name)
+                _i3.RouteConfig(EmergencyCallPopUpRoute.name,
+                    path: ':emergencyCallPopUpID', parent: SosRouter.name),
+                _i3.RouteConfig(ConnectPsapRoute.name,
+                    path: ':connectPsapPageID', parent: SosRouter.name)
               ]),
           _i3.RouteConfig(ProfileRouter.name,
               path: 'profile_extended_pages',
@@ -142,10 +145,10 @@ class SosRoute extends _i3.PageRouteInfo<void> {
 }
 
 /// generated route for [_i2.InitializerWidgetPage]
-class InitializerWidgetRoute extends _i3.PageRouteInfo<void> {
-  const InitializerWidgetRoute() : super(name, path: '');
+class SignInRouter extends _i3.PageRouteInfo<void> {
+  const SignInRouter() : super(name, path: '');
 
-  static const String name = 'InitializerWidgetRoute';
+  static const String name = 'SignInRouter';
 }
 
 /// generated route for [_i3.EmptyRouterPage]
@@ -185,11 +188,6 @@ class SosHomeRouteArgs {
   const SosHomeRouteArgs({this.key});
 
   final _i11.Key? key;
-
-  @override
-  String toString() {
-    return 'SosHomeRouteArgs{key: $key}';
-  }
 }
 
 /// generated route for [_i5.HowToUsePage]
@@ -209,56 +207,48 @@ class HowToUseRouteArgs {
   final _i11.Key? key;
 
   final int howToUseID;
-
-  @override
-  String toString() {
-    return 'HowToUseRouteArgs{key: $key, howToUseID: $howToUseID}';
-  }
 }
 
-/// generated route for [_i6.MedicalCallPopUpPage]
-class MedicalCallPopUpRoute
-    extends _i3.PageRouteInfo<MedicalCallPopUpRouteArgs> {
-  MedicalCallPopUpRoute({_i11.Key? key, required int medicalCallPopUpID})
+/// generated route for [_i6.EmergencyCallPopUpPage]
+class EmergencyCallPopUpRoute
+    extends _i3.PageRouteInfo<EmergencyCallPopUpRouteArgs> {
+  EmergencyCallPopUpRoute({_i11.Key? key, required int emergencyCallPopUpID})
       : super(name,
-            path: ':medicalCallPopUpID',
-            args: MedicalCallPopUpRouteArgs(
-                key: key, medicalCallPopUpID: medicalCallPopUpID),
-            rawPathParams: {'medicalCallPopUpID': medicalCallPopUpID});
+            path: ':emergencyCallPopUpID',
+            args: EmergencyCallPopUpRouteArgs(
+                key: key, emergencyCallPopUpID: emergencyCallPopUpID),
+            rawPathParams: {'emergencyCallPopUpID': emergencyCallPopUpID});
 
-  static const String name = 'MedicalCallPopUpRoute';
+  static const String name = 'EmergencyCallPopUpRoute';
 }
 
-class MedicalCallPopUpRouteArgs {
-  const MedicalCallPopUpRouteArgs({this.key, required this.medicalCallPopUpID});
+class EmergencyCallPopUpRouteArgs {
+  const EmergencyCallPopUpRouteArgs(
+      {this.key, required this.emergencyCallPopUpID});
 
   final _i11.Key? key;
 
-  final int medicalCallPopUpID;
-
-  @override
-  String toString() {
-    return 'MedicalCallPopUpRouteArgs{key: $key, medicalCallPopUpID: $medicalCallPopUpID}';
-  }
+  final int emergencyCallPopUpID;
 }
 
-/// generated route for [_i7.InCallPage]
-class InCallRoute extends _i3.PageRouteInfo<InCallRouteArgs> {
-  InCallRoute({_i11.Key? key})
-      : super(name, path: '', args: InCallRouteArgs(key: key));
+/// generated route for [_i7.ConnectPsapPage]
+class ConnectPsapRoute extends _i3.PageRouteInfo<ConnectPsapRouteArgs> {
+  ConnectPsapRoute({_i11.Key? key, required int connectPsapPageID})
+      : super(name,
+            path: ':connectPsapPageID',
+            args: ConnectPsapRouteArgs(
+                key: key, connectPsapPageID: connectPsapPageID),
+            rawPathParams: {'connectPsapPageID': connectPsapPageID});
 
-  static const String name = 'InCallRoute';
+  static const String name = 'ConnectPsapRoute';
 }
 
-class InCallRouteArgs {
-  const InCallRouteArgs({this.key});
+class ConnectPsapRouteArgs {
+  const ConnectPsapRouteArgs({this.key, required this.connectPsapPageID});
 
   final _i11.Key? key;
 
-  @override
-  String toString() {
-    return 'InCallRouteArgs{key: $key}';
-  }
+  final int connectPsapPageID;
 }
 
 /// generated route for [_i8.ProfilePage]
@@ -291,9 +281,4 @@ class ActivityDetailRouteArgs {
   final _i11.Key? key;
 
   final dynamic Snapshot;
-
-  @override
-  String toString() {
-    return 'ActivityDetailRouteArgs{key: $key, Snapshot: $Snapshot}';
-  }
 }
