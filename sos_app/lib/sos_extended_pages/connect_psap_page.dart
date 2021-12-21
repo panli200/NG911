@@ -38,19 +38,6 @@ class _ConnectPsapPageState extends State<ConnectPsapPage> {
 
   @override
   Widget build(BuildContext context) {
-    
-    setWritingTo(bool val) {
-      setState(() {
-        isWriting = val;
-      });
-    }
-
-    sendMessage() {
-      var text = textFieldController.text;
-
-      textFieldController.text = "";
-    }
-
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -123,6 +110,7 @@ class _ConnectPsapPageState extends State<ConnectPsapPage> {
               );
             },
           ),
+
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
@@ -145,7 +133,9 @@ class _ConnectPsapPageState extends State<ConnectPsapPage> {
                       child: Icon(Icons.add, color: Colors.white, size: 20, ),
                     ),
                   ),
-                  SizedBox(width: 15,),
+
+                  SizedBox(width: 15,), // Spacing Visuals
+
                   Expanded(
                     child: TextField(
                       decoration: InputDecoration(
@@ -155,7 +145,9 @@ class _ConnectPsapPageState extends State<ConnectPsapPage> {
                       ),
                     ),
                   ),
-                  SizedBox(width: 15,),
+
+                  SizedBox(width: 15,), // Spacing Visuals
+
                   FloatingActionButton(
                     onPressed: (){},
                     child: Icon(Icons.send,color: Colors.white,size: 18,),
