@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps_street.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'maps_home_page.dart';
 
 class CallControlPanel extends StatefulWidget {
@@ -26,6 +27,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
   var MobileChargeString;
   var LongitudeString;
   var LatitudeString;
+  var xAccString;
+  var yAccString;
+  var zAccString;
+  var endTime;
 
   DatabaseReference? _db;
   void _callPolice() async{
@@ -38,7 +43,17 @@ class _CallControlPanelState extends State<CallControlPanel> {
     const number = '01154703796'; //set the number here
   }
   void _EndCall() async{
+
+    var now = new DateTime.now();
+    var date = now.toString();
+
     FirebaseFirestore.instance.collection('SOSEmergencies').doc(FriendID).update({'Online': false});
+
+    FirebaseFirestore.instance.collection('SOSUsers').doc(FriendID).collection('Emergencies').doc('Emergency' + date).update(
+      {
+        'endTime: ': FieldValue.serverTimestamp(),
+      }
+    );
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -65,6 +80,27 @@ class _CallControlPanelState extends State<CallControlPanel> {
       String Latitude = event.snapshot.value.toString();
       setState((){
         LatitudeString = 'Latitude: ' + Latitude;
+      });
+    });
+
+    ref.child('sensors').child(FriendID).child('x-Acc').onValue.listen((event) {
+      String xAcc = event.snapshot.value.toString();
+      setState((){
+        xAccString = 'Acceleration x: ' + xAcc;
+      });
+    });
+
+    ref.child('sensors').child(FriendID).child('y-Acc').onValue.listen((event) {
+      String yAcc = event.snapshot.value.toString();
+      setState((){
+        yAccString = 'Acceleration y: ' + yAcc;
+      });
+    });
+
+    ref.child('sensors').child(FriendID).child('z-Acc').onValue.listen((event) {
+      String zAcc = event.snapshot.value.toString();
+      setState((){
+        zAccString = 'Acceleration z: ' + zAcc;
       });
     });
   }
@@ -252,6 +288,36 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                   children: [
                                                     Text(
                                                       '$LatitudeString',
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 20,
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      '$xAccString',
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 20,
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      '$yAccString',
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                              Container(
+                                                height: 20,
+                                                child: Row(
+                                                  children: [
+                                                    Text(
+                                                      '$zAccString',
                                                     ),
                                                   ],
                                                 ),
