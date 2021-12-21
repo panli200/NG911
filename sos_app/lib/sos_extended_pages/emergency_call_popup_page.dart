@@ -24,9 +24,17 @@ class EmergencyCallPopUpPage extends StatelessWidget {
 
   void _callNumber() async{
     _updateSensors();
+    Location location = Location();
+    location.getCurrentLocation();
 
-
-
+    FirebaseFirestore.instance.collection('SOSEmergencies').doc('kgYjwJEbFNPP8JvD1PM8vcgxMxh2').update(
+        {'Online': false,
+          'Phone': "+1234567890",
+          'StartLocation': GeoPoint(location.latitude, location.longitude),
+          'StartTime': FieldValue.serverTimestamp(),
+          'Waiting': true,
+        }
+        );
     const number = '01154703796'; //set the number here
     bool? res = await FlutterPhoneDirectCaller.callNumber(number);
 
