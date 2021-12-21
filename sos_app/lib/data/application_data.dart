@@ -10,12 +10,22 @@ class HowToUseData {
   HowToUseData(this.color, this.title, this.id);
 }
 
-class MedicalCallPopUpData {
-  static final medicalCallPopUp = MedicalCallPopUpData(Colors.white, 'Medical Emergency Call', 2);
+class EmergencyCallPopUpData {
+  static final emergencyCallPopUp = EmergencyCallPopUpData(Colors.white, 'Emergency Call', 2);
 
   final Color color;
   final String title;
   final int id;
 
-  MedicalCallPopUpData(this.color, this.title, this.id);
+  EmergencyCallPopUpData(this.color, this.title, this.id);
+}
+
+class ConnectPsapData {
+  static final connectPsapData = ConnectPsapData(Colors.white, 'Emergency Call', 3);
+
+  final Color color;
+  final String title;
+  final int id;
+
+  ConnectPsapData(this.color, this.title, this.id);
 }

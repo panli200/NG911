@@ -4,13 +4,13 @@ import 'package:sos_app/data/application_data.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
-class MedicalCallPopUpPage extends StatelessWidget {
+class EmergencyCallPopUpPage extends StatelessWidget {
 
-  final int medicalCallPopUpID;
+  final int emergencyCallPopUpID;
 
-  const MedicalCallPopUpPage({
+  const EmergencyCallPopUpPage({
     Key? key,
-    @PathParam() required this.medicalCallPopUpID,
+    @PathParam() required this.emergencyCallPopUpID,
   }) : super(key: key);
 
   void _callNumber() async{
@@ -20,7 +20,8 @@ class MedicalCallPopUpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final medicalCallPopUp = MedicalCallPopUpData.medicalCallPopUp;
+    final emergencyCallPopUp = EmergencyCallPopUpData.emergencyCallPopUp;
+    final connectPsapData = ConnectPsapData.connectPsapData;
 
     return Scaffold (
       backgroundColor: Colors.white,
@@ -31,7 +32,7 @@ class MedicalCallPopUpPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                medicalCallPopUp.title,
+                emergencyCallPopUp.title,
                 style: Theme.of(context).textTheme.headline4,
               ),
 
@@ -50,13 +51,15 @@ class MedicalCallPopUpPage extends StatelessWidget {
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.5,
                   alignment: Alignment.center,
-                  //color: Colors.grey,
                       child:ElevatedButton(
                           child: Text("Yourself"),
-                          onPressed: _callNumber // this will the method for your rejected Button
+                          onPressed: () => context.router.push(
+                            ConnectPsapRoute(
+                              connectPsapPageID: connectPsapData.id,
+                            ),
+                          )
                       )
 
-                  //child: Text('Yourself')
                 ), 
               ), 
 

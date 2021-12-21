@@ -55,7 +55,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
         showLoading = false;
       });
 
-      if(authCredential?.user != null){
+      if(authCredential.user != null){
         MaterialPageRoute(builder: (context) => ActivitiesPage());
       }
 
