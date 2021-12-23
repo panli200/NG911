@@ -43,7 +43,7 @@ class AppRouter extends _i1.RootStackRouter {
       return _i1.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i3.SignUpPage());
     },
-    SosRoute.name: (routeData) {
+    HomeRouter.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i4.SosPage());
     },
@@ -114,13 +114,13 @@ class AppRouter extends _i1.RootStackRouter {
               path: '', parent: EmptyRouterRoute.name),
           _i1.RouteConfig(SignUpRoute.name,
               path: '', parent: EmptyRouterRoute.name),
-          _i1.RouteConfig(SosRoute.name,
+          _i1.RouteConfig(HomeRouter.name,
               path: '',
               parent: EmptyRouterRoute.name,
               children: [
                 _i1.RouteConfig(SosRouter.name,
                     path: 'sos_extended_pages',
-                    parent: SosRoute.name,
+                    parent: HomeRouter.name,
                     children: [
                       _i1.RouteConfig(SosHomeRoute.name,
                           path: '', parent: SosRouter.name),
@@ -133,14 +133,14 @@ class AppRouter extends _i1.RootStackRouter {
                     ]),
                 _i1.RouteConfig(ProfileRouter.name,
                     path: 'profile_extended_pages',
-                    parent: SosRoute.name,
+                    parent: HomeRouter.name,
                     children: [
                       _i1.RouteConfig(ProfileRoute.name,
                           path: '', parent: ProfileRouter.name)
                     ]),
                 _i1.RouteConfig(ActivitiesRouter.name,
                     path: 'activities_extended_pages',
-                    parent: SosRoute.name,
+                    parent: HomeRouter.name,
                     children: [
                       _i1.RouteConfig(ActivitiesRoute.name,
                           path: '', parent: ActivitiesRouter.name),
@@ -188,11 +188,11 @@ class SignUpRoute extends _i1.PageRouteInfo<void> {
 }
 
 /// generated route for [_i4.SosPage]
-class SosRoute extends _i1.PageRouteInfo<void> {
-  const SosRoute({List<_i1.PageRouteInfo>? children})
+class HomeRouter extends _i1.PageRouteInfo<void> {
+  const HomeRouter({List<_i1.PageRouteInfo>? children})
       : super(name, path: '', initialChildren: children);
 
-  static const String name = 'SosRoute';
+  static const String name = 'HomeRouter';
 }
 
 /// generated route for [_i1.EmptyRouterPage]

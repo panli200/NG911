@@ -1,10 +1,12 @@
 // ignore_for_file: deprecated_member_use
 
+import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sos_app/activities_extended_pages/activities.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sos_app/routes/router.gr.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:sos_app/services/weather.dart';
 import 'package:sos_app/services/acceleration.dart';
@@ -58,7 +60,9 @@ class SignUpPageState extends State<SignUpPage> {
       });
 
       if(authCredential?.user != null){
-        Navigator.push(context, MaterialPageRoute(builder: (context)=> SosPage()));
+        context.router.pushAndPopUntil(
+            HomeRouter(),
+            predicate: (route) => false);
         print("hello, I'm pressed");
       }
 

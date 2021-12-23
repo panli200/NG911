@@ -27,6 +27,7 @@ import 'package:sos_app/SignUp.dart';
           ),
           AutoRoute(
             path: '',
+            name: "HomeRouter",
             page: SosPage,
             children: [
               AutoRoute(
