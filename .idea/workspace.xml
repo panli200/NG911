@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e9eb5226-8f03-4a0d-a315-7b53fa36dd24" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/sos_app/lib/SignUp.dart" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/Dart_Packages.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sos_app/lib/Initial.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/Initial.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sos_app/lib/routes/router.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/routes/router.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/sos_app/lib/sos.dart" beforeDir="false" afterPath="$PROJECT_DIR$/sos_app/lib/sos.dart" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/sos_app/.pub/" />
     <ignored path="$PROJECT_DIR$/sos_app/build/" />
@@ -29,14 +23,14 @@
     <session id="1911303855">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="dart" value="105" />
+          <entry key="dart" value="113" />
           <entry key="html" value="7" />
           <entry key="yaml" value="18" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="Dart" value="105" />
+          <entry key="Dart" value="113" />
           <entry key="HTML" value="7" />
           <entry key="YAML" value="18" />
         </counts>
@@ -85,7 +79,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="167">
+            <state relative-caret-position="705">
               <caret line="58" column="7" selection-start-line="58" selection-start-column="7" selection-end-line="58" selection-end-column="66" />
               <folding>
                 <element signature="e#43#82#0" expanded="true" />
@@ -97,7 +91,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="393">
+            <state relative-caret-position="675">
               <caret line="51" column="23" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="23" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -121,7 +115,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/Initial.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
+            <state relative-caret-position="330">
               <caret line="28" column="6" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -145,8 +139,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="116">
-              <caret line="24" column="21" lean-forward="true" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
+            <state relative-caret-position="210">
+              <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
               <folding>
                 <element signature="e#0#44#0" expanded="true" />
               </folding>
@@ -157,7 +151,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/sos_home_page.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="770">
+            <state relative-caret-position="1935">
               <caret line="137" column="57" selection-start-line="137" selection-start-column="57" selection-end-line="137" selection-end-column="57" />
               <folding>
                 <element signature="e#0#39#0" expanded="true" />
@@ -169,8 +163,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/sos_app/lib/SignUp.dart">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="172">
-              <caret line="60" column="79" selection-start-line="60" selection-start-column="79" selection-end-line="60" selection-end-column="79" />
+            <state relative-caret-position="735">
+              <caret line="62" column="39" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
               <folding>
                 <element signature="e#43#82#0" expanded="true" />
               </folding>
@@ -202,7 +196,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="Backend_with_PSAP_+_Phone_Register" />
+        <entry key="$PROJECT_DIR$" value="main" />
       </map>
     </option>
   </component>
@@ -250,7 +244,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -288,6 +281,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="ProjectViewState">
@@ -326,9 +320,9 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="UPDATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/ios/Podfile.lock</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/profile.dart</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/send_profile_data.dart</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/SignUp.dart</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/routes/router.dart</PATH>
+          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Created" />
@@ -336,10 +330,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="false" />
           <option name="myId" value="CREATED" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/dialog_widget.dart</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/firebase_storage_API.dart</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/sos_user.dart</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/upload_file.dart</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Deleted" />
@@ -347,9 +337,6 @@
           <option name="mySupportsDeletion" value="false" />
           <option name="myCanBeAbsent" value="true" />
           <option name="myId" value="REMOVED_FROM_REPOSITORY" />
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/button_widget.dart</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/dialog.dart</PATH>
-          <PATH vcs="Git" revision="">$PROJECT_DIR$/sos_app/lib/profile_extended_pages/user_info.dart</PATH>
         </FILE-GROUP>
         <FILE-GROUP>
           <option name="myUpdateName" value="Restored" />
@@ -518,7 +505,7 @@
     <frame x="0" y="0" width="1366" height="768" extended-state="6" />
     <layout>
       <window_info id="Captures" order="0" weight="0.25" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.17296073" />
+      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.32930514" />
       <window_info id="Structure" order="2" side_tool="true" />
       <window_info id="Image Layers" order="3" />
       <window_info id="Designer" order="4" />
@@ -661,13 +648,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/psap_dashboard/lib/pages/call_control_page.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="55" lean-forward="true" selection-start-line="14" selection-start-column="55" selection-end-line="14" selection-end-column="55" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/psap_dashboard/pubspec.yaml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="256">
@@ -686,22 +666,33 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="368">
           <caret line="33" column="11" selection-start-line="33" selection-start-column="11" selection-end-line="33" selection-end-column="11" />
-          <folding>
-            <element signature="e#0#39#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/pubspec.yaml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="22" lean-forward="true" selection-start-line="28" selection-start-column="22" selection-end-line="28" selection-end-column="22" />
+        <state relative-caret-position="810">
+          <caret line="54" column="17" selection-start-line="54" selection-start-column="17" selection-end-line="54" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="161" lean-forward="true" selection-start-line="161" selection-end-line="161" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/psap_dashboard/lib/pages/call_control_page.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="315">
+          <caret line="24" column="3" selection-start-line="24" selection-start-column="3" selection-end-line="24" selection-end-column="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activity_detail.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
+        <state relative-caret-position="705">
           <caret line="58" column="7" selection-start-line="58" selection-start-column="7" selection-end-line="58" selection-end-column="66" />
           <folding>
             <element signature="e#43#82#0" expanded="true" />
@@ -711,7 +702,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/activities_extended_pages/activities.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="393">
+        <state relative-caret-position="675">
           <caret line="51" column="23" selection-start-line="51" selection-start-column="23" selection-end-line="51" selection-end-column="23" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
@@ -729,16 +720,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.gr.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="161" lean-forward="true" selection-start-line="161" selection-end-line="161" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/Initial.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
+        <state relative-caret-position="330">
           <caret line="28" column="6" selection-start-line="28" selection-start-column="6" selection-end-line="28" selection-end-column="6" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
@@ -746,20 +730,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/sos_app/lib/SignUp.dart">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="172">
-          <caret line="60" column="79" selection-start-line="60" selection-start-column="79" selection-end-line="60" selection-end-column="79" />
-          <folding>
-            <element signature="e#43#82#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/routes/router.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="116">
-          <caret line="24" column="21" lean-forward="true" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
+        <state relative-caret-position="210">
+          <caret line="24" column="21" selection-start-line="24" selection-start-column="21" selection-end-line="24" selection-end-column="21" />
           <folding>
             <element signature="e#0#44#0" expanded="true" />
           </folding>
@@ -768,10 +742,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sos_app/lib/sos_extended_pages/sos_home_page.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="770">
+        <state relative-caret-position="1935">
           <caret line="137" column="57" selection-start-line="137" selection-start-column="57" selection-end-line="137" selection-end-column="57" />
           <folding>
             <element signature="e#0#39#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/sos_app/lib/SignUp.dart">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="735">
+          <caret line="62" column="39" selection-start-line="62" selection-start-column="39" selection-end-line="62" selection-end-column="39" />
+          <folding>
+            <element signature="e#43#82#0" expanded="true" />
           </folding>
         </state>
       </provider>
