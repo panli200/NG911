@@ -1,53 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sos_app/sos_extended_pages/sos_home_page.dart';
+import 'package:sos_app/SignUp.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:sos_app/routes/router.gr.dart';
+import 'package:sos_app/sos.dart';
 
 
-class InitializerWidgetPage extends StatefulWidget {
-  @override
-  _InitializerWidgetStatePage createState() => _InitializerWidgetStatePage();
-}
+class InitializerWidgetPage extends StatelessWidget {
+  InitializerWidgetPage({Key? key}) : super(key: key);
 
-class _InitializerWidgetStatePage extends State<InitializerWidgetPage> {
+  FirebaseAuth? _auth;
 
-  late FirebaseAuth _auth;
-
-  late User _user;
+  User? _user;
 
   bool isLoading = true;
-
-
   @override
   void initState() {
-    // TODO: implement initState
-    super.initState();
     _auth = FirebaseAuth.instance;
-    _user = _auth.currentUser!;
+    _user!= _auth?.currentUser;
     isLoading = false;
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isLoading) {
-      return Scaffold(
-      body: Center(
-        child: CircularProgressIndicator(),
-      ),
-    );
+
+    if (_user == null) {
+      MaterialPageRoute(builder: (context) => SignUpPage());
+      return SignUpPage();
     } else {
-      // ignore: unnecessary_null_comparison
-      if (_user == null) {
-        MaterialPageRoute(builder: (context) => SosHomePage());
-        return Scaffold(
-
-        );
-
-      } else {
-         MaterialPageRoute(builder: (context) => SosHomePage());
-         return Scaffold(
-
-         );
-      }
+      MaterialPageRoute(builder: (context) => SosPage());
+      return SosPage();
     }
   }
 }
