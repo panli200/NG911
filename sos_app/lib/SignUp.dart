@@ -23,10 +23,7 @@ enum MobileVerificationState {
 }
 
 class SignUpPage extends StatefulWidget {
-
-
-  const SignUpPage({Key? key})
-      : super(key: key);
+  const SignUpPage({Key? key}) : super(key: key);
 
   @override
   State<SignUpPage> createState() => SignUpPageState();
@@ -53,19 +50,16 @@ class SignUpPageState extends State<SignUpPage> {
 
     try {
       final authCredential =
-      await _auth.signInWithCredential(phoneAuthCredential);
+          await _auth.signInWithCredential(phoneAuthCredential);
 
       setState(() {
         showLoading = false;
       });
 
-      if(authCredential?.user != null){
-        context.router.pushAndPopUntil(
-            HomeRouter(),
-            predicate: (route) => false);
-        print("hello, I'm pressed");
+      if (authCredential?.user != null) {
+        context.router
+            .pushAndPopUntil(HomeRouter(), predicate: (route) => false);
       }
-
     } on FirebaseAuthException catch (e) {
       setState(() {
         showLoading = false;
@@ -83,13 +77,14 @@ class SignUpPageState extends State<SignUpPage> {
         TextField(
           controller: phoneController,
           decoration: InputDecoration(
-            hintText: "Phone Number",
+            labelText: '[+][Country Code][Phone Number]',
+            hintText: "+1XXXXXXXXXX",
           ),
         ),
         SizedBox(
           height: 16,
         ),
-        FlatButton(
+        ElevatedButton(
           onPressed: () async {
             setState(() {
               showLoading = true;
@@ -121,8 +116,6 @@ class SignUpPageState extends State<SignUpPage> {
             );
           },
           child: Text("SEND"),
-          color: Colors.blue,
-          textColor: Colors.white,
         ),
         Spacer(),
       ],
@@ -142,17 +135,16 @@ class SignUpPageState extends State<SignUpPage> {
         SizedBox(
           height: 16,
         ),
-        FlatButton(
+        ElevatedButton(
           onPressed: () async {
             PhoneAuthCredential phoneAuthCredential =
-            PhoneAuthProvider.credential(
-                verificationId: verificationId, smsCode: otpController.text);
+                PhoneAuthProvider.credential(
+                    verificationId: verificationId,
+                    smsCode: otpController.text);
 
             signInWithPhoneAuthCredential(phoneAuthCredential);
           },
           child: Text("VERIFY"),
-          color: Colors.blue,
-          textColor: Colors.white,
         ),
         Spacer(),
       ],
@@ -168,11 +160,11 @@ class SignUpPageState extends State<SignUpPage> {
         body: Container(
           child: showLoading
               ? Center(
-            child: CircularProgressIndicator(),
-          )
+                  child: CircularProgressIndicator(),
+                )
               : currentState == MobileVerificationState.SHOW_MOBILE_FORM_STATE
-              ? getMobileFormWidget(context)
-              : getOtpFormWidget(context),
+                  ? getMobileFormWidget(context)
+                  : getOtpFormWidget(context),
           padding: const EdgeInsets.all(16),
         ));
   }
