@@ -55,9 +55,11 @@ class _Message extends State<Message> {
               controller: _peerMessageController,
               decoration: InputDecoration(hintText: 'Input peer message'))),
       new ElevatedButton(
-        child: Text('Send'),
-        onPressed: _toggleSendPeerMessage,
-      )
+          child: Text('Send'),
+          onPressed: () {
+            _toggleSendPeerMessage();
+            _peerMessageController.clear();
+          })
     ]);
   }
 
