@@ -45,6 +45,9 @@ dependencies:
   # Save data locally
   shared_preferences: ^2.0.10
 
+  # Agora Video and Text
+  agora_rtm: ^1.0.1
+
   # Sensors
   geolocator: ^7.7.1
   weather: ^2.0.1
