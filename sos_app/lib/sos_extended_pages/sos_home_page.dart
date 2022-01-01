@@ -1,7 +1,3 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:async';
@@ -10,7 +6,6 @@ import 'package:sos_app/main.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:sos_app/data/application_data.dart';
-import 'package:sos_app/sos_extended_pages/general_emergency.dart';
 import 'package:sos_app/widgets.dart';
 
 class SosHomePage extends StatelessWidget {
@@ -97,53 +92,32 @@ class DataList extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget> [
-                Center(
-                  child: Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    margin: EdgeInsets.symmetric(vertical: 8),
+                Container(
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.8,
+                  margin: EdgeInsets.symmetric(vertical: 8),
 
-                    child:  MedicalScenarioButton(
-                      tileColor: emergencyCallPopUp.color,
-                      pageTitle: emergencyCallPopUp.title,
-                      onTileTap: () => context.router.push(
-                        EmergencyCallPopUpRoute(
-                          emergencyCallPopUpID: emergencyCallPopUp.id,
-                        ),
-                      ) // onTileTap
-                    ),
+                  child:  MedicalScenarioButton(
+                    tileColor: emergencyCallPopUp.color,
+                    pageTitle: emergencyCallPopUp.title,
+                    onTileTap: () => context.router.push(
+                      EmergencyCallPopUpRoute(
+                        emergencyCallPopUpID: emergencyCallPopUp.id,
+                      ),
+                    ) // onTileTap
                   ),
                 ),
 
-                // command the unused container
-                // Center(
-                //     child: Container(
-                //     margin: EdgeInsets.symmetric(vertical: 8),
-                //     height: 50,
-                //     width: MediaQuery.of(context).size.width * 0.8,
-                //     alignment: Alignment.center,
-                //     color: Colors.grey,
-                //     child: Text('Scenario Call Button # 2')
-                //   ),
-                // ), // Scenario Two Button Placeholder
-
-                //adding general call scene
-                Container(
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.grey),
-                        foregroundColor: MaterialStateProperty.all<Color>(Colors.black),
-                        fixedSize:  MaterialStateProperty.all<Size>(Size(316,40)),
-                      ),
-                      onPressed: (){
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => GeneralEmergency()),
-                        );
-                      },
-                      child: Text('General Emergency Call')
-                  ),
-                )
+                Center(
+                    child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    alignment: Alignment.center,
+                    color: Colors.grey,
+                    child: Text('Scenario Call Button # 2')
+                  ), 
+                ), // Scenario Two Button Placeholder
 
                 // Center(
                 //     child: Container(

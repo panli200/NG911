@@ -1,1 +1,0 @@
-const APP_ID = '39915917374f425f8aad8a0acf4976c3';
