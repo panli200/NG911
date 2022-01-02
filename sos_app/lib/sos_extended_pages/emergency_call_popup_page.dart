@@ -4,6 +4,7 @@ import 'package:sos_app/data/application_data.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:sos_app/services/location.dart';
+import 'package:sos_app/services/send_realtime_info.dart';
 import 'package:sos_app/services/weather.dart';
 import 'package:sos_app/services/acceleration.dart';
 import 'package:sensors/sensors.dart';
@@ -147,7 +148,10 @@ class EmergencyCallPopUpPage extends StatelessWidget {
                   //color: Colors.grey,
                       child:ElevatedButton(
                           child: Text("Emergency Contact"),
-                          onPressed: _callNumber // this will the method for your rejected Button
+                          onPressed:(){
+                            _callNumber();
+                            sendRealTimeInfo();//Test sending real time function
+                          } // this will the method for your rejected Button
                       )
                 ), 
               ), 
