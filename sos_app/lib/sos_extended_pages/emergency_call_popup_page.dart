@@ -7,12 +7,14 @@ import 'package:sos_app/services/location.dart';
 import 'package:sos_app/services/send_realtime_info.dart';
 import 'package:sos_app/services/weather.dart';
 import 'package:sos_app/services/acceleration.dart';
-import 'package:sensors/sensors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:battery/battery.dart';
-import 'dart:math';
+import 'package:flutter_background/flutter_background.dart';
+import 'package:sos_app/sos_extended_pages/call.dart';
+import 'package:sos_app/services/send_realtime_info.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class EmergencyCallPopUpPage extends StatelessWidget {
 
@@ -24,75 +26,26 @@ class EmergencyCallPopUpPage extends StatelessWidget {
   }) : super(key: key);
 
   void _callNumber() async{
-    _updateSensors();
+
     Location location = Location();
     location.getCurrentLocation();
-
-    FirebaseFirestore.instance.collection('SOSEmergencies').doc('kgYjwJEbFNPP8JvD1PM8vcgxMxh2').update(
+    String user = FirebaseAuth.instance.currentUser!.uid.toString();
+    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set(
         {'Online': false,
-          'Phone': "+1234567890",
+          'Phone': mobile,
+          'User' : user,
           'StartLocation': GeoPoint(location.latitude, location.longitude),
           'StartTime': FieldValue.serverTimestamp(),
           'Waiting': true,
         }
         );
-    const number = '01154703796'; //set the number here
-    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+
+    //const number = '01154703798'; //set the number to call here
+    //bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+
 
   }
-
-  void _updateSensors(){
-    Location location = Location();
-    location.getCurrentLocation();
-
-    var _battery = Battery();
-    final FirebaseDatabase database = FirebaseDatabase.instance;
-    DatabaseReference ref = FirebaseDatabase.instance.ref();
-    final databaseReal = ref.child('sensors').child('kgYjwJEbFNPP8JvD1PM8vcgxMxh2');
-
-    // For display, can be delete in the future
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-    String Longitude = location.longitude.toString();
-    String Latitude = location.latitude.toString();
-    bool Danger = false;
-    accelerometerEvents.listen((AccelerometerEvent event) {
-      x = event.x;
-      y = event.y;
-      z = event.z;
-      double AccelerationMagnitude = sqrt(
-          pow(x, 2) + pow(y, 2) + pow(z, 2));
-      if (AccelerationMagnitude > 10.0) {
-        Danger = true;
-      } else {
-        Danger = false;
-      }
-      String batLevel= _battery.batteryLevel.toString();
-      databaseReal.update(
-          {
-            'Latitude': location.latitude.toString(),
-            'Longitude': location.longitude.toString(),
-            'x-Acc': x,
-            'y-Acc': y,
-            'z-Acc': z,
-            'MobileCharge': batLevel,
-          }
-      );
-
-
-    });
-    _battery.onBatteryStateChanged.listen((BatteryState state) {
-      databaseReal.update(
-          {
-            'MobileCharge': _battery.batteryLevel.toString(),
-
-          }
-      );
-    });
-  }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +104,11 @@ class EmergencyCallPopUpPage extends StatelessWidget {
                           onPressed:(){
                             _callNumber();
                             sendRealTimeInfo();//Test sending real time function
+                            updateSensors();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CallPage()),
+                            );
                           } // this will the method for your rejected Button
                       )
                 ), 
@@ -164,7 +122,16 @@ class EmergencyCallPopUpPage extends StatelessWidget {
                   //color: Colors.grey,
                       child:ElevatedButton(
                           child: Text("Third Party (Bystander)"),
-                          onPressed: _callNumber,  // this will the method for your rejected Button
+                          onPressed:(){
+                            _callNumber();
+                            sendRealTimeInfo();//Test sending real time function
+                            updateSensors();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => CallPage()),
+                            );
+                          }
+
                       )
                 ), 
               ), 

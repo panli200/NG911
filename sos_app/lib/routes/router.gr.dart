@@ -9,21 +9,22 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i1;
-import 'package:flutter/material.dart' as _i12;
+import 'package:flutter/material.dart' as _i13;
 
-import '../activities_extended_pages/activities.dart' as _i10;
-import '../activities_extended_pages/activity_detail.dart' as _i11;
+import '../activities_extended_pages/activities.dart' as _i11;
+import '../activities_extended_pages/activity_detail.dart' as _i12;
 import '../Initial.dart' as _i2;
-import '../profile_extended_pages/profile.dart' as _i9;
+import '../profile_extended_pages/profile.dart' as _i10;
 import '../SignUp.dart' as _i3;
 import '../sos.dart' as _i4;
-import '../sos_extended_pages/connect_psap_page.dart' as _i8;
+import '../sos_extended_pages/call.dart' as _i8;
+import '../sos_extended_pages/connect_psap_page.dart' as _i9;
 import '../sos_extended_pages/emergency_call_popup_page.dart' as _i7;
 import '../sos_extended_pages/how_to_use_app_page.dart' as _i6;
 import '../sos_extended_pages/sos_home_page.dart' as _i5;
 
 class AppRouter extends _i1.RootStackRouter {
-  AppRouter([_i12.GlobalKey<_i12.NavigatorState>? navigatorKey])
+  AppRouter([_i13.GlobalKey<_i13.NavigatorState>? navigatorKey])
       : super(navigatorKey);
 
   @override
@@ -84,6 +85,12 @@ class AppRouter extends _i1.RootStackRouter {
           child: _i7.EmergencyCallPopUpPage(
               key: args.key, emergencyCallPopUpID: args.emergencyCallPopUpID));
     },
+    CallRoute.name: (routeData) {
+      final args =
+          routeData.argsAs<CallRouteArgs>(orElse: () => const CallRouteArgs());
+      return _i1.MaterialPageX<dynamic>(
+          routeData: routeData, child: _i8.CallPage(key: args.key));
+    },
     ConnectPsapRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ConnectPsapRouteArgs>(
@@ -91,23 +98,23 @@ class AppRouter extends _i1.RootStackRouter {
               connectPsapPageID: pathParams.getInt('connectPsapPageID')));
       return _i1.MaterialPageX<dynamic>(
           routeData: routeData,
-          child: _i8.ConnectPsapPage(
+          child: _i9.ConnectPsapPage(
               key: args.key, connectPsapPageID: args.connectPsapPageID));
     },
     ProfileRoute.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i9.ProfilePage());
+          routeData: routeData, child: const _i10.ProfilePage());
     },
     ActivitiesRoute.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i10.ActivitiesPage());
+          routeData: routeData, child: const _i11.ActivitiesPage());
     },
     ActivityDetailRoute.name: (routeData) {
       final args = routeData.argsAs<ActivityDetailRouteArgs>();
       return _i1.MaterialPageX<dynamic>(
           routeData: routeData,
           child:
-              _i11.ActivityDetailPage(key: args.key, Snapshot: args.Snapshot));
+              _i12.ActivityDetailPage(key: args.key, Snapshot: args.Snapshot));
     }
   };
 
@@ -133,6 +140,8 @@ class AppRouter extends _i1.RootStackRouter {
                       _i1.RouteConfig(EmergencyCallPopUpRoute.name,
                           path: ':emergencyCallPopUpID',
                           parent: SosRouter.name),
+                      _i1.RouteConfig(CallRoute.name,
+                          path: '', parent: SosRouter.name),
                       _i1.RouteConfig(ConnectPsapRoute.name,
                           path: ':connectPsapPageID', parent: SosRouter.name)
                     ]),
@@ -168,7 +177,7 @@ class EmptyRouterRoute extends _i1.PageRouteInfo<void> {
 /// generated route for [_i2.InitializerWidgetPage]
 class InitializerWidgetRoute
     extends _i1.PageRouteInfo<InitializerWidgetRouteArgs> {
-  InitializerWidgetRoute({_i12.Key? key})
+  InitializerWidgetRoute({_i13.Key? key})
       : super(name, path: '', args: InitializerWidgetRouteArgs(key: key));
 
   static const String name = 'InitializerWidgetRoute';
@@ -177,7 +186,7 @@ class InitializerWidgetRoute
 class InitializerWidgetRouteArgs {
   const InitializerWidgetRouteArgs({this.key});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   @override
   String toString() {
@@ -227,7 +236,7 @@ class ActivitiesRouter extends _i1.PageRouteInfo<void> {
 
 /// generated route for [_i5.SosHomePage]
 class SosHomeRoute extends _i1.PageRouteInfo<SosHomeRouteArgs> {
-  SosHomeRoute({_i12.Key? key})
+  SosHomeRoute({_i13.Key? key})
       : super(name, path: '', args: SosHomeRouteArgs(key: key));
 
   static const String name = 'SosHomeRoute';
@@ -236,7 +245,7 @@ class SosHomeRoute extends _i1.PageRouteInfo<SosHomeRouteArgs> {
 class SosHomeRouteArgs {
   const SosHomeRouteArgs({this.key});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   @override
   String toString() {
@@ -246,7 +255,7 @@ class SosHomeRouteArgs {
 
 /// generated route for [_i6.HowToUsePage]
 class HowToUseRoute extends _i1.PageRouteInfo<HowToUseRouteArgs> {
-  HowToUseRoute({_i12.Key? key, required int howToUseID})
+  HowToUseRoute({_i13.Key? key, required int howToUseID})
       : super(name,
             path: ':howToUseID',
             args: HowToUseRouteArgs(key: key, howToUseID: howToUseID),
@@ -258,7 +267,7 @@ class HowToUseRoute extends _i1.PageRouteInfo<HowToUseRouteArgs> {
 class HowToUseRouteArgs {
   const HowToUseRouteArgs({this.key, required this.howToUseID});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final int howToUseID;
 
@@ -271,7 +280,7 @@ class HowToUseRouteArgs {
 /// generated route for [_i7.EmergencyCallPopUpPage]
 class EmergencyCallPopUpRoute
     extends _i1.PageRouteInfo<EmergencyCallPopUpRouteArgs> {
-  EmergencyCallPopUpRoute({_i12.Key? key, required int emergencyCallPopUpID})
+  EmergencyCallPopUpRoute({_i13.Key? key, required int emergencyCallPopUpID})
       : super(name,
             path: ':emergencyCallPopUpID',
             args: EmergencyCallPopUpRouteArgs(
@@ -285,7 +294,7 @@ class EmergencyCallPopUpRouteArgs {
   const EmergencyCallPopUpRouteArgs(
       {this.key, required this.emergencyCallPopUpID});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final int emergencyCallPopUpID;
 
@@ -295,9 +304,28 @@ class EmergencyCallPopUpRouteArgs {
   }
 }
 
-/// generated route for [_i8.ConnectPsapPage]
+/// generated route for [_i8.CallPage]
+class CallRoute extends _i1.PageRouteInfo<CallRouteArgs> {
+  CallRoute({_i13.Key? key})
+      : super(name, path: '', args: CallRouteArgs(key: key));
+
+  static const String name = 'CallRoute';
+}
+
+class CallRouteArgs {
+  const CallRouteArgs({this.key});
+
+  final _i13.Key? key;
+
+  @override
+  String toString() {
+    return 'CallRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for [_i9.ConnectPsapPage]
 class ConnectPsapRoute extends _i1.PageRouteInfo<ConnectPsapRouteArgs> {
-  ConnectPsapRoute({_i12.Key? key, required int connectPsapPageID})
+  ConnectPsapRoute({_i13.Key? key, required int connectPsapPageID})
       : super(name,
             path: ':connectPsapPageID',
             args: ConnectPsapRouteArgs(
@@ -310,7 +338,7 @@ class ConnectPsapRoute extends _i1.PageRouteInfo<ConnectPsapRouteArgs> {
 class ConnectPsapRouteArgs {
   const ConnectPsapRouteArgs({this.key, required this.connectPsapPageID});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final int connectPsapPageID;
 
@@ -320,23 +348,23 @@ class ConnectPsapRouteArgs {
   }
 }
 
-/// generated route for [_i9.ProfilePage]
+/// generated route for [_i10.ProfilePage]
 class ProfileRoute extends _i1.PageRouteInfo<void> {
   const ProfileRoute() : super(name, path: '');
 
   static const String name = 'ProfileRoute';
 }
 
-/// generated route for [_i10.ActivitiesPage]
+/// generated route for [_i11.ActivitiesPage]
 class ActivitiesRoute extends _i1.PageRouteInfo<void> {
   const ActivitiesRoute() : super(name, path: '');
 
   static const String name = 'ActivitiesRoute';
 }
 
-/// generated route for [_i11.ActivityDetailPage]
+/// generated route for [_i12.ActivityDetailPage]
 class ActivityDetailRoute extends _i1.PageRouteInfo<ActivityDetailRouteArgs> {
-  ActivityDetailRoute({_i12.Key? key, required dynamic Snapshot})
+  ActivityDetailRoute({_i13.Key? key, required dynamic Snapshot})
       : super(name,
             path: '',
             args: ActivityDetailRouteArgs(key: key, Snapshot: Snapshot));
@@ -347,7 +375,7 @@ class ActivityDetailRoute extends _i1.PageRouteInfo<ActivityDetailRouteArgs> {
 class ActivityDetailRouteArgs {
   const ActivityDetailRouteArgs({this.key, required this.Snapshot});
 
-  final _i12.Key? key;
+  final _i13.Key? key;
 
   final dynamic Snapshot;
 
