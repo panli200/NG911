@@ -28,7 +28,7 @@ class EmergencyCallPopUpPage extends StatelessWidget {
   void _callNumber() async{
 
     Location location = Location();
-    location.getCurrentLocation();
+    await location.getCurrentLocation();
     String user = FirebaseAuth.instance.currentUser!.uid.toString();
     String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
     FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set(
