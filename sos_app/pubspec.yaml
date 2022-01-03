@@ -53,11 +53,21 @@ dependencies:
   auto_route: ^3.0.1
   camera: ^0.9.4+3
   battery: ^2.0.3
+
   # Health parsers
   health: ^3.3.1
 
   # Calling dep
   flutter_phone_direct_caller: ^2.0.0
+
+  # Video streaming dep
+  permission_handler: ^8.3.0
+
+  # Background services
+  flutter_background: ^1.1.0
+
+  # Notifications
+  flutter_local_notifications: ^9.2.0
 
 dependency_overrides:
   auto_route:

@@ -14,7 +14,6 @@ class MapsHomePage extends StatefulWidget {
 }
 
 class _MapsHomePageState extends State<MapsHomePage> {
-
   @override
   void initState() {
     // TODO: implement initState

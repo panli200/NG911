@@ -42,6 +42,11 @@ dependencies:
   firebase_core: ^1.10.0
   firebase_storage: ^10.1.0
   firebase_database: ^9.0.4
+  flutter_webrtc:  ^0.6.6
+
+  # Video streaming
+  agora_rtc_engine: ^4.0.5
+  permission_handler: ^8.3.0
 
 dev_dependencies:
   flutter_test:

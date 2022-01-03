@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps_street.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/firebase_database.dart' as FbDb;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:agora_rtc_engine/rtc_engine.dart';
+import 'package:agora_rtc_engine/rtc_local_view.dart' as RtcLocalView;
+import 'package:agora_rtc_engine/rtc_remote_view.dart' as RtcRemoteView;
+import 'package:permission_handler/permission_handler.dart';
 import 'maps_home_page.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'signaling.dart';
+
 
 class CallControlPanel extends StatefulWidget {
   final CallerId;
@@ -17,8 +24,13 @@ class CallControlPanel extends StatefulWidget {
 class _CallControlPanelState extends State<CallControlPanel> {
 
 
-  final FirebaseDatabase database = FirebaseDatabase.instance;
-  DatabaseReference ref = FirebaseDatabase.instance.ref();
+
+
+
+  // End video streaming code
+
+  final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
+  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
   final Stream<QuerySnapshot> users = FirebaseFirestore.instance.collection('testCalls').snapshots();
   var FriendID;
   var snapshot;
@@ -31,8 +43,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
   var yAccString;
   var zAccString;
   var endTime;
-
-  DatabaseReference? _db;
+  final senttext = new TextEditingController();
+  FbDb.DatabaseReference? _db;
   void _callPolice() async{
     const number = '01154703794'; //set the number here
   }
@@ -54,6 +66,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         'endTime: ': FieldValue.serverTimestamp(),
       }
     );
+    dispose();
     Navigator.push(
         context,
         MaterialPageRoute(
@@ -109,8 +122,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   void initState() {
+    // Video steraming stuff
+
     // TODO: implement initState
     super.initState();
+     // Video streaming
     FriendID = widget.CallerId; //Getting user ID from the previous page..
     activateListeners();
     
@@ -118,8 +134,27 @@ class _CallControlPanelState extends State<CallControlPanel> {
     FirebaseFirestore.instance.collection('SOSEmergencies').doc(FriendID).update({'Waiting': false}); // Changing the caller's Waiting state to be False
     FirebaseFirestore.instance.collection('SOSEmergencies').doc(FriendID).update({'Online': true}); // Changing the caller's Online state to be True
   }
+
+  @override
+  void dispose() async{
+    // clear users
+    var collection = FirebaseFirestore.instance.collection('SOSEmergencies').doc(FriendID).collection("messages");
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+    FbDb.FirebaseDatabase.instance.ref('sensors').child(widget.CallerId).remove();
+    FbDb.FirebaseDatabase.instance.ref('users').child(widget.CallerId).remove();
+    super.dispose();
+  }
+
+
+
+
   @override
   Widget build(BuildContext context) {
+    final Query sorted = FirebaseFirestore.instance.collection('SOSEmergencies').doc(FriendID).collection('messages').orderBy("time",descending: true);
+    final Stream<QuerySnapshot> messages = sorted.snapshots();
     return Scaffold(
         appBar: AppBar(
           title: const Text("Incoming Call Control Panel"),
@@ -138,7 +173,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               Row( // For Map
                                   children: <Widget>[
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height * 0.45,
+                                      height: MediaQuery.of(context).size.height * 0.30,
                                       width: MediaQuery.of(context).size.width * 0.45,
                                       child: StreetMap(),
                                     )
@@ -147,7 +182,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               Row( // For Call History
                                   children: <Widget>[
                                     SizedBox(
-                                      height: MediaQuery.of(context).size.height * 0.20,
+                                      height: MediaQuery.of(context).size.height * 0.45,
                                       width: MediaQuery.of(context).size.width * 0.35,
                                       child: Scrollbar(
                                         child: SingleChildScrollView(
@@ -214,234 +249,259 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               )
                             ]
                         ),
-                        Column( // Second Column
-                            children: <Widget>[
-                              Row( // Caller's video stream
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: MediaQuery.of(context).size.height * 0.45,
-                                      width: MediaQuery.of(context).size.width * 0.45,
-                                      child: Image.asset(
-                                          "assets/images/video.jpg",
-                                          fit: BoxFit.cover
+
+                        Column(
+                          children: [
+                            //////
+                            // This is the User Info
+                            //////
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.15,
+                                  width: MediaQuery.of(context).size.width * 0.3,
+
+                                  child: Row(children: [Scrollbar(
+                                    child: SingleChildScrollView(
+                                      scrollDirection: Axis.vertical,
+                                      child: Column(
+                                        children: [
+                                          Container(
+                                            height: 50,
+                                            child: Row(
+                                              children: const [
+                                                Text(
+                                                  'Caller Information',
+                                                  style: TextStyle(fontSize: 25),
+                                                  textAlign: TextAlign.center,
+
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  'Phone: ${snapshot['Phone']}',
+
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '$MobileChargeString',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '$LongitudeString',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '$LatitudeString',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '$xAccString',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '$yAccString',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          Container(
+                                            height: 20,
+                                            child: Row(
+                                              children: [
+                                                Text(
+                                                  '$zAccString',
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                        ],
+                                      ),),
+                                  ),],)),
+
+
+                            const Divider(
+                              height: 5,
+                              thickness: 3,
+                            ),
+
+                              //////
+                              // This is the chat
+                              //////
+                            SizedBox(height: MediaQuery.of(context).size.height * 0.6,
+                                  width: MediaQuery.of(context).size.width * 0.3,
+
+                                  child: Row(children: [Expanded(
+                                      child: StreamBuilder<QuerySnapshot>(
+                                          stream: messages,
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<QuerySnapshot> snapshot,
+                                              ){
+
+                                            if(snapshot.hasError){
+                                              return Text('Something went wrong');
+                                            }
+                                            if(snapshot.connectionState == ConnectionState.waiting){
+                                              return Text('Loading');
+                                            }
+
+                                            final data = snapshot.requireData;
+                                            return ListView.builder(
+                                                reverse: true,
+                                                itemCount: data.size,
+                                                itemBuilder: (context, index){
+                                                  Color c;
+                                                  Alignment a;
+                                                  if(data.docs[index]['SAdmin'] == false){
+                                                    c = Colors.blueGrey;
+                                                    a = Alignment.centerLeft;
+                                                  }else{
+                                                    c = Colors.lightGreen;
+                                                    a = Alignment.centerRight;
+                                                  }
+
+                                                  return SizedBox(
+                                                      child:Align(
+                                                          alignment: a,
+                                                          child: Container(
+                                                            child: Text('  ${data.docs[index]['Message']}',style: const TextStyle(
+                                                                color: Colors.white
+                                                            ),),
+
+
+                                                            constraints: const BoxConstraints(
+                                                              maxHeight: double.infinity,
+                                                            ),
+
+                                                            padding: EdgeInsets.all(10.0),
+                                                            margin: EdgeInsets.all(10.0),
+                                                            decoration: BoxDecoration(
+                                                              color: c,
+                                                              borderRadius: BorderRadius.circular(35.0),
+                                                              boxShadow: const [
+                                                                BoxShadow(
+                                                                    offset: Offset(0, 3),
+                                                                    blurRadius: 5,
+                                                                    color: Colors.grey)
+                                                              ],
+                                                            ),
+                                                          )
+                                                      )
+                                                  );
+
+
+                                                  //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
+
+                                                }
+                                            );
+                                          }
+                                      )
+                                  ),],)),
+
+                            const Divider(
+                              height: 5,
+                              thickness: 3,
+                            ),
+                            //////
+                            // This is the reply
+                            //////
+                              SizedBox(height: MediaQuery.of(context).size.height * 0.12,
+                                  width: MediaQuery.of(context).size.width * 0.3,
+
+                                  child: Row(children: [
+                                    Container(
+                                      height: 70,
+                                      constraints: const BoxConstraints(
+                                        maxHeight: double.infinity,
                                       ),
-                                    )
-                                  ]
-                              ),
-                              Row( // Caller's Information
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: MediaQuery.of(context).size.height * 0.15,
-                                      width: MediaQuery.of(context).size.width * 0.20,
-                                      child: Scrollbar(
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.vertical,
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: 50,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Caller Information',
-                                                      style: TextStyle(fontSize: 25),
-                                                      textAlign: TextAlign.center,
-
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Phone: ${snapshot['Phone']}',
-
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '$MobileChargeString',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '$LongitudeString',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '$LatitudeString',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '$xAccString',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '$yAccString',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 20,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      '$zAccString',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                            ],
-                                          ),),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey,
+                                        borderRadius: BorderRadius.circular(35.0),
                                       ),
-                                    )
-                                  ]
-                              ),
-                              Row( // Messaging
-                                  children: <Widget>[
-                                    SizedBox(
-                                      height: MediaQuery.of(context).size.height * 0.15,
-                                      width: MediaQuery.of(context).size.width * 0.20,
-                                      child: Scrollbar(
-                                        child: SingleChildScrollView(
-                                          scrollDirection: Axis.vertical,
-                                          child: Column(
-                                            children: [
-                                              Container(
-                                                height: 50,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Messages',
-                                                      style: TextStyle(fontSize: 25),
-                                                      textAlign: TextAlign.center,
-
-                                                    ),
-                                                  ],
-                                                ),
+                                      padding: EdgeInsets.all(10.0),
+                                      margin: EdgeInsets.all(20.0),
+                                      child: SizedBox(
+                                        height: MediaQuery.of(context).size.height,
+                                        width: MediaQuery.of(context).size.width * 0.25,
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextField(
+                                                controller: senttext,
+                                                style: TextStyle(color: Colors. white),
+                                                decoration: const InputDecoration(
+                                                    hintText: "Type Something...",
+                                                    hintStyle: TextStyle( color:     Colors.white),
+                                                    border: InputBorder.none),
                                               ),
-                                              Container(
-                                                height: 50,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'User: Any message',
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(Icons.send ,  color: Colors.white),
+                                              onPressed: () {
+                                                String text = senttext.text;
+                                                if(text!='') {
+                                                  FirebaseFirestore.instance.collection('SOSEmergencies').doc(
+                                                      FriendID).collection('messages').add(
+                                                      {
+                                                        'Message': text,
+                                                        'SAdmin': true,
+                                                        'time': FieldValue.serverTimestamp()
+                                                      }
 
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 50,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Dispatcher: Any reply',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              Container(
-                                                height: 50,
-                                                child: Row(
-                                                  children: [
-                                                    Text(
-                                                      'Dispatcher: Any reply',
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 10,
-                                              ),
-                                            ],
-                                          ),),
-                                      ),
-                                    )
-                                  ]
-                              ),
-                              Row(
-                                children: [
+                                                  );
+                                                  senttext.text = '';
+                                                }
+                                              },
+                                            )
+                                          ],
+                                        ),
 
-                                  // Messages wil be typed here
+                                      )
+                                  ),],)),
 
-                                ],
-                              )
-                            ]
-                        ),
-                        Column( // Third Column -----> Speed Dialing
-                            children: <Widget>[
+                          ]
+
+                          ),
 
 
-                              Row( // Police
-                                  children: <Widget>[
-                                    ElevatedButton(
-                                        child: Text("Police"),
-                                        onPressed: _callPolice,
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                                        )
-                                    )
-                                  ]
-                              ),
-                              Row( // Fire Station
-                                  children: <Widget>[
-                                    ElevatedButton(
-                                        child: Text("Fire Department"),
-                                        onPressed: _callFireDepartment,
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                                        )
-                                    )
-                                  ]
-                              ),
-                              Row( // EMS
-                                  children: <Widget>[
-                                    ElevatedButton(
-                                        child: Text("EMS"),
-                                        onPressed: _callEMS,
-                                        style: ElevatedButton.styleFrom(
-                                          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-                                        )
-                                    )
-                                  ]
-                              )
-                            ]
-                        ),
+
+
+
                       ]
                   )
               )
