@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/data/application_data.dart';
+import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
+import 'package:sos_app/profile_extended_pages/upload_file.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:sos_app/services/location.dart';
@@ -105,6 +107,8 @@ class EmergencyCallPopUpPage extends StatelessWidget {
                             _callNumber();
                             sendRealTimeInfo();//Test sending real time function
                             updateSensors();
+                            sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                            uploadFile(); //TEST upload files to the firebase storage
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => CallPage()),
@@ -126,6 +130,8 @@ class EmergencyCallPopUpPage extends StatelessWidget {
                             _callNumber();
                             sendRealTimeInfo();//Test sending real time function
                             updateSensors();
+                            sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                            uploadFile(); //TEST upload files to the firebase storage
                             Navigator.push(
                               context,
                               MaterialPageRoute(builder: (context) => CallPage()),

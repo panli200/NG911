@@ -612,8 +612,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               onPressed: () {
                                 saveMedicalValue();
                                 Navigator.pop(context, 'OK');
-                                sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                                uploadFile(); //TEST upload files to the firebase storage
+
                               },
                               child: const Text('OK'),
                             ),
