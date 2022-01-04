@@ -5,7 +5,10 @@ import 'package:google_maps/google_maps.dart';
 import 'dart:ui' as ui;
 
 class StreetMap extends StatelessWidget {
-  const StreetMap({Key? key}) : super(key: key);
+  final latitude;
+  final longitude;
+  const StreetMap({Key? key, required this.latitude, required this.longitude})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +16,7 @@ class StreetMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-      final myLatlng = LatLng(50.4452, -104.6189);
+      final myLatlng = LatLng(double.parse(latitude), double.parse(longitude));
 
       final mapOptions = MapOptions()
         ..zoom = 19
