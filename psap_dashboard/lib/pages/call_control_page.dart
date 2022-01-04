@@ -22,10 +22,9 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
-
-
-
-
+//used for map_street file
+late String Latitude;
+late String Longitude;
 
   // End video streaming code
 
@@ -83,14 +82,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
     });
 
     ref.child('sensors').child(FriendID).child('Longitude').onValue.listen((event) {
-      String Longitude = event.snapshot.value.toString();
+      Longitude = event.snapshot.value.toString();
       setState((){
         LongitudeString = 'Longitude: ' + Longitude;
       });
     });
 
     ref.child('sensors').child(FriendID).child('Latitude').onValue.listen((event) {
-      String Latitude = event.snapshot.value.toString();
+      Latitude = event.snapshot.value.toString();
       setState((){
         LatitudeString = 'Latitude: ' + Latitude;
       });
@@ -118,12 +117,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
     });
   }
 
-
-
   @override
   void initState() {
     // Video steraming stuff
-
     // TODO: implement initState
     super.initState();
      // Video streaming
@@ -147,9 +143,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
     FbDb.FirebaseDatabase.instance.ref('users').child(widget.CallerId).remove();
     super.dispose();
   }
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -175,7 +168,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                     SizedBox(
                                       height: MediaQuery.of(context).size.height * 0.30,
                                       width: MediaQuery.of(context).size.width * 0.45,
-                                      child: StreetMap(latitude:LatitudeString,longitude: LongitudeString, ),
+                                      child: StreetMap(latitude: Latitude,longitude: Longitude ),
                                     )
                                   ]
                               ),

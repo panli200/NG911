@@ -15,7 +15,8 @@ class StreetMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-      final myLatlng = LatLng(latitude, longitude);
+
+      final myLatlng = LatLng(double.parse(latitude), double.parse(longitude));
 
       final mapOptions = MapOptions()
         ..zoom = 19
