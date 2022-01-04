@@ -36,7 +36,7 @@ void sendUserDate() async {
 //send user emergency contact number with user permission
   if (user.generalPermission == true) {
     await users
-        .doc(user.uid)
+        .doc(user.mobile)
         .collection('Profile Information')
         .doc('General Info')
         .set({
@@ -53,7 +53,7 @@ void sendUserDate() async {
         .catchError((error) => print("Failed to add user: $error"));
   } else {
     await users
-        .doc(user.uid)
+        .doc(user.mobile)
         .collection('Profile Information')
         .doc('General Info')
         .set({
@@ -66,7 +66,7 @@ void sendUserDate() async {
   //send user Ehealth card number with permission
   if (user.personalMedicalPermission == true) {
     await users
-        .doc(user.uid)
+        .doc(user.mobile)
         .collection('Profile Information')
         .doc('Medical Info')
         .set({
@@ -78,7 +78,7 @@ void sendUserDate() async {
         .catchError((error) => print("Failed to add user: $error"));
   } else {
     await users
-        .doc(user.uid)
+        .doc(user.mobile)
         .collection('Profile Information')
         .doc('Medical Info')
         .set({
@@ -92,7 +92,7 @@ void sendUserDate() async {
   //send user Ehealth card number with permission
   if (user.contactMedicalPermission == true) {
     await users
-        .doc(user.uid)
+        .doc(user.mobile)
         .collection('Profile Information')
         .doc('Contact Medical Info')
         .set({
@@ -104,7 +104,7 @@ void sendUserDate() async {
         .catchError((error) => print("Failed to add user: $error"));
   } else {
     await users
-        .doc(user.uid)
+        .doc(user.mobile)
         .collection('Profile Information')
         .doc('Contact Medical Info')
         .set({
