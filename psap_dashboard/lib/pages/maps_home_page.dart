@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
 class MapsHomePage extends StatefulWidget {
   const MapsHomePage({Key? key}) : super(key: key);
 
@@ -19,7 +18,9 @@ class _MapsHomePageState extends State<MapsHomePage> {
     // TODO: implement initState
     super.initState();
   }
-  final Stream<QuerySnapshot> Waiting = FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
+
+  final Stream<QuerySnapshot> Waiting =
+      FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
@@ -44,7 +45,6 @@ class _MapsHomePageState extends State<MapsHomePage> {
                 width: MediaQuery.of(context).size.width * 0.4,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-
                   children: <Widget>[
                     const Text(
                       'Activity Call',
@@ -66,79 +66,68 @@ class _MapsHomePageState extends State<MapsHomePage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    Column( // This will read the Waiting list from Firebase (SOSEmergencies)
+                    Column(
+                        // This will read the Waiting list from Firebase (SOSEmergencies)
 
-                      children: <Widget>[
-                      SizedBox(
+                        children: <Widget>[
+                          SizedBox(
                               height: 200.0,
-                              child:                         StreamBuilder<QuerySnapshot>(
+                              child: StreamBuilder<QuerySnapshot>(
                                   stream: Waiting,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot,
-                                      ){
-
-                                    if(snapshot.hasError){
-                                      return Text('Something went wrong  ${snapshot.error}');
+                                  builder: (
+                                    BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot,
+                                  ) {
+                                    if (snapshot.hasError) {
+                                      return Text(
+                                          'Something went wrong  ${snapshot.error}');
                                     }
-                                    if(snapshot.connectionState == ConnectionState.waiting){
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
                                       return Text('Loading');
                                     }
 
                                     final data = snapshot.requireData;
                                     return ListView.builder(
                                         itemCount: data.size,
-                                        itemBuilder: (context, index){
+                                        itemBuilder: (context, index) {
                                           var id = data.docs[index].id;
-                                          if(data.docs[index]['Waiting']) {
+                                          if (data.docs[index]['Waiting']) {
                                             return Material(
                                               child: Container(
-                                                child: Row(
-                                                    children: <Widget>[
-                                                      ElevatedButton(
-                                                        style: ButtonStyle(
-                                                          backgroundColor: MaterialStateProperty
+                                                child: Row(children: <Widget>[
+                                                  ElevatedButton(
+                                                    style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
                                                               .all<Color>(
-                                                              Colors.red),
-
-                                                        ),
-                                                        onPressed: () {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                                builder: (
-                                                                    context) =>CallControlPanel(CallerId: id, Snapshot: data.docs[index])));
-                                                        },
-                                                        child: Text(' ${data
-                                                            .docs[index]['Phone']}'),
-                                                      ),
-
-
-                                                    ]
-
-                                                ),
-
+                                                                  Colors.red),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  CallControlPanel(
+                                                                      CallerId:
+                                                                          id,
+                                                                      Snapshot:
+                                                                          data.docs[
+                                                                              index])));
+                                                    },
+                                                    child: Text(
+                                                        ' ${data.docs[index]['Phone']}'),
+                                                  ),
+                                                ]),
                                               ),
-
                                             );
-                                          }else{
-                                            return const Material(
-
-                                            );
+                                          } else {
+                                            return const Material();
                                           }
                                           //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
-
-                                        }
-                                    );
-                                  }
-                              )
-
-                        )
-                  ]
-                        ),
-
-
-
-
+                                        });
+                                  }))
+                        ]),
                     const Divider(
                       height: 2,
                       thickness: 2,
@@ -151,64 +140,57 @@ class _MapsHomePageState extends State<MapsHomePage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                  Column( // This will read the Online list from Firebase (SOSEmergencies)
+                    Column(
+                        // This will read the Online list from Firebase (SOSEmergencies)
 
-                    children: <Widget>[
-                      SizedBox(
-                        height: 200.0,
-                        child:                         StreamBuilder<QuerySnapshot>(
-                        stream: Waiting,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot,
-                        ){
+                        children: <Widget>[
+                          SizedBox(
+                              height: 200.0,
+                              child: StreamBuilder<QuerySnapshot>(
+                                  stream: Waiting,
+                                  builder: (
+                                    BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot,
+                                  ) {
+                                    if (snapshot.hasError) {
+                                      return Text(
+                                          'Something went wrong  ${snapshot.error}');
+                                    }
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return Text('Loading');
+                                    }
 
-                          if(snapshot.hasError){
-                          return Text('Something went wrong  ${snapshot.error}');
-                          }
-                          if(snapshot.connectionState == ConnectionState.waiting){
-                          return Text('Loading');
-                          }
-
-                          final data = snapshot.requireData;
-                          return ListView.builder(
-                            itemCount: data.size,
-                            itemBuilder: (context, index){
-                            var id = data.docs[index].id;
-                            if(data.docs[index]['Online']) {
-                            return Material(
-                              child: Container(
-                                child: Row(
-                                  children: <Widget>[
-                                    ElevatedButton(
-                                      style: ButtonStyle(
-                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
-                                      ),
-                                      onPressed: () {},
-                                      child:  Text('${data.docs[index]['Phone']}'),
-                                    ),
-
-                                  ]
-
-                                ),
-
-                              ),
-
-                            );
-                            }else{
-                              return const Material(
-
-                              );
-                            }
-                              //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
-
-                            }
-                          );
-                        }
-                        )
-
-                      )
-                    ]
-                  ),
+                                    final data = snapshot.requireData;
+                                    return ListView.builder(
+                                        itemCount: data.size,
+                                        itemBuilder: (context, index) {
+                                          var id = data.docs[index].id;
+                                          if (data.docs[index]['Online']) {
+                                            return Material(
+                                              child: Container(
+                                                child: Row(children: <Widget>[
+                                                  ElevatedButton(
+                                                    style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty
+                                                              .all<Color>(
+                                                                  Colors.blue),
+                                                    ),
+                                                    onPressed: () {},
+                                                    child: Text(
+                                                        '${data.docs[index]['Phone']}'),
+                                                  ),
+                                                ]),
+                                              ),
+                                            );
+                                          } else {
+                                            return const Material();
+                                          }
+                                          //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
+                                        });
+                                  }))
+                        ]),
                   ],
                 ),
               ),

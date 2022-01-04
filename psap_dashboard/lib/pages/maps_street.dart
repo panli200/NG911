@@ -7,7 +7,8 @@ import 'dart:ui' as ui;
 class StreetMap extends StatelessWidget {
   final latitude;
   final longitude;
-  const StreetMap({Key? key,required this.latitude, required this.longitude}) : super(key: key);
+  const StreetMap({Key? key, required this.latitude, required this.longitude})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +16,6 @@ class StreetMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-
       final myLatlng = LatLng(double.parse(latitude), double.parse(longitude));
 
       final mapOptions = MapOptions()
