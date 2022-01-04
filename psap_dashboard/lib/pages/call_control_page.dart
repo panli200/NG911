@@ -175,7 +175,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                     SizedBox(
                                       height: MediaQuery.of(context).size.height * 0.30,
                                       width: MediaQuery.of(context).size.width * 0.45,
-                                      child: StreetMap(),
+                                      child: StreetMap(latitude:LatitudeString,longitude: LongitudeString, ),
                                     )
                                   ]
                               ),
