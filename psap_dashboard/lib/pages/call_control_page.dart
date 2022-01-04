@@ -25,11 +25,10 @@ class CallControlPanel extends StatefulWidget {
 
 class _CallControlPanelState extends State<CallControlPanel> {
 //used for map_street file
-  late String Latitude;
-  late String Longitude;
+  late String latitude='';
+  late String longitude='';
   WeatherModel weather = WeatherModel();
 
-//
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
   final Stream<QuerySnapshot> users =
@@ -100,9 +99,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .child('Longitude')
         .onValue
         .listen((event) {
-      Longitude = event.snapshot.value.toString();
+      longitude = event.snapshot.value.toString();
       setState(() {
-        LongitudeString = 'Longitude: ' + Longitude;
+        LongitudeString = 'Longitude: ' + longitude;
       });
     });
 
@@ -112,9 +111,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .child('Latitude')
         .onValue
         .listen((event) {
-      Latitude = event.snapshot.value.toString();
+      latitude = event.snapshot.value.toString();
       setState(() {
-        LatitudeString = 'Latitude: ' + Latitude;
+        LatitudeString = 'Latitude: ' + latitude;
       });
     });
 
@@ -161,9 +160,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .doc(FriendID)
         .update(
             {'Online': true}); // Changing the caller's Online state to be True
-
-    weather.getLocationWeather(double.parse(Latitude), double.parse(Longitude));
-    print(weather.weatherDescription);
+    weather.getLocationWeather(double.parse(latitude), double.parse(longitude));
   }
 
   @override
@@ -194,6 +191,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .orderBy("time", descending: true);
     final Stream<QuerySnapshot> messages = sorted.snapshots();
 
+
     return Scaffold(
         appBar: AppBar(
           title: const Text("Incoming Call Control Panel"),
@@ -211,7 +209,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       height: MediaQuery.of(context).size.height * 0.30,
                       width: MediaQuery.of(context).size.width * 0.45,
                       child:
-                          StreetMap(latitude: Latitude, longitude: Longitude),
+                          StreetMap(latitude: latitude, longitude: longitude),
                     )
                   ]),
                   Row(// For Call History
@@ -333,7 +331,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                     child: Row(
                                       children: [
                                         Text(
-                                          '$LongitudeString',
+                                          '$LatitudeString',
                                         ),
                                       ],
                                     ),
@@ -343,10 +341,26 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                     child: Row(
                                       children: [
                                         Text(
-                                          '$LatitudeString',
+                                          '$LongitudeString',
                                         ),
                                       ],
                                     ),
+                                  ),
+                                  Column(// Testing weather data. can be modify the widget in the future
+                                    children: [
+                                      Text(
+                                        'Weather Description: '+weather.weatherDescription
+                                      ),
+                                      Text(
+                                          'Temperature: '+ weather.temperature.toString()
+                                      ),
+                                      Text(
+                                          'Wind Speed: '+ weather.windSpeed.toString()
+                                      ),
+                                      Text(
+                                          'Humidity: '+ weather.humidity.toString()
+                                      ),
+                                    ],
                                   ),
                                   Container(
                                     height: 20,
