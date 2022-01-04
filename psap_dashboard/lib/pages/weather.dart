@@ -9,7 +9,7 @@ class WeatherModel  {
 
   Future<void> getLocationWeather(latitude, longitude) async {
     WeatherFactory wf = WeatherFactory("d5bb0f64fb412359ba54b7cc41e9402e");
-    Weather w = await wf.currentWeatherByLocation(latitude, longitude);
+    Weather w = await wf.currentWeatherByLocation(double.parse(latitude), double.parse(longitude));
 
     humidity= w.humidity!;
     windSpeed = w.windSpeed!;
