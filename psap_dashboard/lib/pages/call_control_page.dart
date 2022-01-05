@@ -25,7 +25,7 @@ class CallControlPanel extends StatefulWidget {
 
 class _CallControlPanelState extends State<CallControlPanel> {
 //used for map_street file
-  late String latitude ='';
+  late String latitude='';
   late String longitude='';
   WeatherModel weather = WeatherModel();
 
@@ -160,7 +160,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .doc(FriendID)
         .update(
             {'Online': true}); // Changing the caller's Online state to be True
-    weather.getLocationWeather(latitude, longitude);
+    weather.getLocationWeather(double.parse(latitude), double.parse(longitude));
   }
 
   @override
