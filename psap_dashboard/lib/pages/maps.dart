@@ -1,11 +1,23 @@
 import 'dart:html';
 
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps/google_maps.dart';
 import 'dart:ui' as ui;
 
-class GoogleMap extends StatelessWidget {
+class GoogleMap extends StatefulWidget {
   const GoogleMap({Key? key}) : super(key: key);
+
+  @override
+  State<GoogleMap> createState() => _GoogleMapState();
+}
+
+class _GoogleMapState extends State<GoogleMap> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,11 +25,6 @@ class GoogleMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-      final myLatlng = LatLng(50.4452, -104.6189);
-
-     // another location
-      final myLatlng2 = LatLng(50.3916, -105.5349);
-
       final mapOptions = MapOptions()
         ..zoom = 6
         ..center = LatLng(53.2, -104.70);
@@ -30,23 +37,20 @@ class GoogleMap extends StatelessWidget {
 
       final map = GMap(elem, mapOptions);
 
-      final marker = Marker(
-          MarkerOptions()
-        ..position = myLatlng
-        ..map = map
-        ..title = 'caller'
-        );
+      DatabaseReference ref = FirebaseDatabase.instance.ref('users');
+      Stream<DatabaseEvent> stream = ref.onValue;
+      stream.listen((DatabaseEvent event) async {
+        for (var doc in event.snapshot.children) {
+          var marker = LatLng(
+              double.parse(doc.children.first.children.first.value.toString()),
+              double.parse(doc.children.first.children.last.value.toString()));
 
-      // Another marker
-      Marker(
-        MarkerOptions()
-          ..position = myLatlng2
-          ..map = map
-          ..icon = 'https://maps.google.com/mapfiles/ms/icons/blue-dot.png'
-      );
+          Marker(MarkerOptions()
+            ..position = marker
+            ..map = map);
+        }
+      });
 
-      final infoWindow = InfoWindow(InfoWindowOptions()..content = 'caller');
-      marker.onClick.listen((event) => infoWindow.open(map, marker));
       return elem;
     });
 
