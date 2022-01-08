@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps.dart';
 import 'call_control_page.dart';
@@ -13,11 +15,26 @@ class MapsHomePage extends StatefulWidget {
 }
 
 class _MapsHomePageState extends State<MapsHomePage> {
+  Duration duration = Duration();
+   late Timer timer;
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    startTimer();
   }
+  void addTime(){
+    const addSeconds = 1;
+    setState(() {
+      final seconds =duration.inSeconds + addSeconds;
+      duration = Duration(seconds: seconds);
+    });
+  }
+  void startTimer(){
+     timer =Timer.periodic(Duration(seconds: 1),(_)=>addTime());
+  }
+  String twoDigits(int n) => n.toString().padLeft(2,'0');
 
   final Stream<QuerySnapshot> Waiting =
       FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
@@ -29,6 +46,8 @@ class _MapsHomePageState extends State<MapsHomePage> {
         backgroundColor: Colors.blue,
       ),
       body: Column(
+
+
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: <Widget>[
           Row(
@@ -91,6 +110,8 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                     return ListView.builder(
                                         itemCount: data.size,
                                         itemBuilder: (context, index) {
+                                          final minutes = twoDigits(duration.inMinutes.remainder(60));
+                                          final seconds = twoDigits(duration.inSeconds.remainder(60));
                                           var id = data.docs[index].id;
                                           if (data.docs[index]['Waiting']) {
                                             return Material(
@@ -116,7 +137,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                               index])));
                                                     },
                                                     child: Text(
-                                                        ' ${data.docs[index]['Phone']}'),
+                                                        ' ${data.docs[index]['Phone']} ' ' Waiting time: $minutes:$seconds'),
                                                   ),
                                                 ]),
                                               ),
