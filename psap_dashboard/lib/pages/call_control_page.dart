@@ -24,8 +24,8 @@ class CallControlPanel extends StatefulWidget {
 
 class _CallControlPanelState extends State<CallControlPanel> {
 //used for map_street file
-  late String Latitude;
-  late String Longitude;
+  String? Latitude;
+  String? Longitude;
 
   // End video streaming code
 
@@ -38,8 +38,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
   var realTimeSnapshot;
   var path;
   var MobileChargeString;
-  var LongitudeString;
-  var LatitudeString;
+  String? LongitudeString;
+  String? LatitudeString;
   var xAccString;
   var yAccString;
   var zAccString;
@@ -75,7 +75,21 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .update({
       'endTime: ': FieldValue.serverTimestamp(),
     });
-    dispose();
+
+    // End records
+    var collection = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(FriendID)
+        .collection("messages");
+    var snapshots = await collection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+    FbDb.FirebaseDatabase.instance
+        .ref('sensors')
+        .child(widget.CallerId)
+        .remove();
+    FbDb.FirebaseDatabase.instance.ref('users').child(widget.CallerId).remove();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const MapsHomePage()));
   }
@@ -101,7 +115,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .listen((event) {
       Longitude = event.snapshot.value.toString();
       setState(() {
-        LongitudeString = 'Longitude: ' + Longitude;
+        LongitudeString = 'Longitude: ' + Longitude!;
       });
     });
 
@@ -113,7 +127,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .listen((event) {
       Latitude = event.snapshot.value.toString();
       setState(() {
-        LatitudeString = 'Latitude: ' + Latitude;
+        LatitudeString = 'Latitude: ' + Latitude!;
       });
     });
 
@@ -165,19 +179,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   @override
   void dispose() async {
     // clear users
-    var collection = FirebaseFirestore.instance
-        .collection('SOSEmergencies')
-        .doc(FriendID)
-        .collection("messages");
-    var snapshots = await collection.get();
-    for (var doc in snapshots.docs) {
-      await doc.reference.delete();
-    }
-    FbDb.FirebaseDatabase.instance
-        .ref('sensors')
-        .child(widget.CallerId)
-        .remove();
-    FbDb.FirebaseDatabase.instance.ref('users').child(widget.CallerId).remove();
+
     super.dispose();
   }
 
@@ -283,14 +285,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   // This is the User Info
                   //////
                   SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.15,
+                      height: MediaQuery.of(context).size.height * 0.30,
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: Row(
                         children: [
-                          Scrollbar(
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: Column(
+                          Column(
                                 children: [
                                   Container(
                                     height: 50,
@@ -379,8 +378,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                   ),
                                 ],
                               ),
-                            ),
-                          ),
+
                         ],
                       )),
 
@@ -393,7 +391,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   // This is the chat
                   //////
                   SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.6,
+                      height: MediaQuery.of(context).size.height * 0.4,
                       width: MediaQuery.of(context).size.width * 0.3,
                       child: Row(
                         children: [
