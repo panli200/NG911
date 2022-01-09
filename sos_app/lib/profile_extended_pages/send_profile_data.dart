@@ -42,12 +42,6 @@ void sendUserDate() async {
         .set({
           'general permission': user.generalPermission,
           'emergency number': user.contactNum,
-          // 'medical permission': user.medicalPermission,
-          // 'personal health card': user.personalHealthNum,
-          // 'personal medical file': user.personalMedicalFile,
-          // 'contact medical permission': user.contactMedicalPermission,
-          // 'contact health card': user.contactHealthNum,
-          // 'contact medical file': user.contactMedicalFile,
         })
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to add user: $error"));
@@ -89,7 +83,7 @@ void sendUserDate() async {
         .then((value) => print("User Updated"))
         .catchError((error) => print("Failed to add user: $error"));
   }
-  //send user Ehealth card number with permission
+  //send user emergency contact Ehealth card number with permission
   if (user.contactMedicalPermission == true) {
     await users
         .doc(user.mobile)
