@@ -27,124 +27,129 @@ class EmergencyCallPopUpPage extends StatelessWidget {
     @PathParam() required this.emergencyCallPopUpID,
   }) : super(key: key);
 
-  void _callNumber() async{
+  void _callNumber(String? date) async{
 
-    Location location = Location();
-    await location.getCurrentLocation();
-    String user = FirebaseAuth.instance.currentUser!.uid.toString();
-    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set(
-        {'Online': false,
-          'Phone': mobile,
-          'User' : user,
-          'StartLocation': GeoPoint(location.latitude, location.longitude),
-          'StartTime': FieldValue.serverTimestamp(),
-          'Waiting': true,
-        }
-        );
-
-    //const number = '01154703798'; //set the number to call here
-    //bool? res = await FlutterPhoneDirectCaller.callNumber(number);
-
-
+  Location location = Location();
+  await location.getCurrentLocation();
+  String user = FirebaseAuth.instance.currentUser!.uid.toString();
+  String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+  FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set(
+  {'Online': false,
+  'Phone': mobile,
+  'User' : user,
+  'StartLocation': GeoPoint(location.latitude, location.longitude),
+  'StartTime': date,
+  'Waiting': true,
   }
+  );
 
-  @override
-  Widget build(BuildContext context) {
-    final emergencyCallPopUp = EmergencyCallPopUpData.emergencyCallPopUp;
-    final connectPsapData = ConnectPsapData.connectPsapData;
 
-    return Scaffold (
-      backgroundColor: Colors.white,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                emergencyCallPopUp.title,
-                style: Theme.of(context).textTheme.headline4,
-              ),
+//const number = '01154703798'; //set the number to call here
+//bool? res = await FlutterPhoneDirectCaller.callNumber(number);
 
-              const SizedBox(
-                height: 10,
-              ),
 
-              const Text(
-                'Who is this call for?',
-                textAlign: TextAlign.center,
-              ),
+}
 
-              Center(
-                  child: Container(
+@override
+Widget build(BuildContext context) {
+  final emergencyCallPopUp = EmergencyCallPopUpData.emergencyCallPopUp;
+  final connectPsapData = ConnectPsapData.connectPsapData;
+
+  return Scaffold (
+    backgroundColor: Colors.white,
+    body: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              emergencyCallPopUp.title,
+              style: Theme.of(context).textTheme.headline4,
+            ),
+
+            const SizedBox(
+              height: 10,
+            ),
+
+            const Text(
+              'Who is this call for?',
+              textAlign: TextAlign.center,
+            ),
+
+            Center(
+              child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8),
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.5,
                   alignment: Alignment.center,
-                      child:ElevatedButton(
-                          child: Text("Yourself"),
-                          onPressed: () => context.router.push(
-                            ConnectPsapRoute(
-                              connectPsapPageID: connectPsapData.id,
-                            ),
-                          )
+                  child:ElevatedButton(
+                      child: Text("Yourself"),
+                      onPressed: () => context.router.push(
+                        ConnectPsapRoute(
+                          connectPsapPageID: connectPsapData.id,
+                        ),
                       )
+                  )
 
-                ), 
-              ), 
+              ),
+            ),
 
-              Center(
-                  child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  alignment: Alignment.center,
-                  //color: Colors.grey,
-                      child:ElevatedButton(
-                          child: Text("Emergency Contact"),
-                          onPressed:(){
-                            _callNumber();
-                            sendRealTimeInfo();//Test sending real time function
-                            updateSensors();
-                            sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                            uploadFile(); //TEST upload files to the firebase storage
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => CallPage()),
-                            );
-                          } // this will the method for your rejected Button
-                      )
-                ), 
-              ), 
-              Center(
-                  child: Container(
+            Center(
+              child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8),
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.5,
                   alignment: Alignment.center,
                   //color: Colors.grey,
-                      child:ElevatedButton(
-                          child: Text("Third Party (Bystander)"),
-                          onPressed:(){
-                            _callNumber();
-                            sendRealTimeInfo();//Test sending real time function
-                            updateSensors();
-                            sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                            uploadFile(); //TEST upload files to the firebase storage
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => CallPage()),
-                            );
-                          }
+                  child:ElevatedButton(
+                      child: Text("Emergency Contact"),
+                      onPressed:(){
+                        var now = new DateTime.now();
+                        String? date = now.toString();
+                        _callNumber(date);
+                        sendRealTimeInfo();//Test sending real time function
+                        updateSensors(date);
+                        sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                        uploadFile(); //TEST upload files to the firebase storage
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CallPage()),
+                        );
+                      } // this will the method for your rejected Button
+                  )
+              ),
+            ),
+            Center(
+              child: Container(
+                  margin: EdgeInsets.symmetric(vertical: 8),
+                  height: 50,
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  alignment: Alignment.center,
+                  //color: Colors.grey,
+                  child:ElevatedButton(
+                      child: Text("Third Party (Bystander)"),
+                      onPressed:(){
+                        var now = new DateTime.now();
+                        String? date = now.toString();
+                        _callNumber(date);
+                        sendRealTimeInfo();//Test sending real time function
+                        updateSensors(date);
+                        sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                        uploadFile(); //TEST upload files to the firebase storage
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => CallPage()),
+                        );
+                      }
 
-                      )
-                ), 
-              ), 
-            ],
-          ),
+                  )
+              ),
+            ),
+          ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }
