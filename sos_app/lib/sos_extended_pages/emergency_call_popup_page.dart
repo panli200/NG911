@@ -108,7 +108,6 @@ Widget build(BuildContext context) {
                         var now = new DateTime.now();
                         String? date = now.toString();
                         _callNumber(date);
-                        sendRealTimeInfo();//Test sending real time function
                         updateSensors(date);
                         sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                         uploadFile(); //TEST upload files to the firebase storage
@@ -133,7 +132,6 @@ Widget build(BuildContext context) {
                         var now = new DateTime.now();
                         String? date = now.toString();
                         _callNumber(date);
-                        sendRealTimeInfo();//Test sending real time function
                         updateSensors(date);
                         sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                         uploadFile(); //TEST upload files to the firebase storage
