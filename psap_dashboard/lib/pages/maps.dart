@@ -37,13 +37,13 @@ class _GoogleMapState extends State<GoogleMap> {
 
       final map = GMap(elem, mapOptions);
 
-      DatabaseReference ref = FirebaseDatabase.instance.ref('users');
+      DatabaseReference ref = FirebaseDatabase.instance.ref('sensors');
       Stream<DatabaseEvent> stream = ref.onValue;
       stream.listen((DatabaseEvent event) async {
         for (var doc in event.snapshot.children) {
           var marker = LatLng(
-              double.parse(doc.children.first.children.first.value.toString()),
-              double.parse(doc.children.first.children.last.value.toString()));
+              double.parse(doc.child('Latitude').value.toString()),
+              double.parse(doc.child('Longitude').value.toString()));
 
           Marker(MarkerOptions()
             ..position = marker

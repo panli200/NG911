@@ -7,33 +7,7 @@ import 'package:sensors/sensors.dart';
 import 'dart:math';
 import 'dart:async';
 
-void sendRealTimeInfo() async {
-  String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-  StreamSubscription? streamSubscriptionEnded;
-  DatabaseReference ref = FirebaseDatabase.instance.ref('users');
-  final databaseReal = ref.child('sensors').child(mobile);
-  final databaseMap = ref.child(mobile).child('map');
-  bool? Ended;
-  Location location = Location();
-  await location.getCurrentLocation();
 
-  Stream<DatabaseEvent> stream = ref.onValue;
-
-  streamSubscriptionEnded =
-  databaseReal.child('Ended').onValue.listen((event) async {
-  bool? EndedB = event.snapshot?.value as bool;
-  Ended = EndedB;
-  });
-
-  stream.listen((DatabaseEvent event) {
-  if (Ended != true) {
-  databaseMap.update({
-  'Latitude': location.latitude.toString(),
-  'Longitude': location.longitude.toString(),
-  });
-  }
-  });
-}
 
 void updateSensors(String? time) async {
 bool? Online;
@@ -50,45 +24,7 @@ final databaseReal = ref.child('sensors').child(mobile);
 
 databaseReal.set({'StartTime': time, 'Online': false, 'Ended': false});
 
-void onlinDoTheUpdate() async {
-//  bool Danger = false;
-//    accelerometerEvents.listen((AccelerometerEvent event) {
-//      x = event.x;
-//      y = event.y;
-//      z = event.z;
-////    double AccelerationMagnitude = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
-////    if (AccelerationMagnitude > 10.0) {
-////      Danger = true;
-////    } else {
-////      Danger = false;
-////    }
-//      databaseReal.update({
-//        'x-Acc': x,
-//        'y-Acc': y,
-//        'z-Acc': z,
-//      });
-//    });
-//
-//// Location
-//    Location location = Location();
-//    await location.getCurrentLocation();
-//    Stream<DatabaseEvent> stream = databaseReal.onValue;
-//
-//    stream.listen((DatabaseEvent event) {
-//      databaseReal.update({
-//        'Latitude': location.latitude.toString(),
-//        'Longitude': location.longitude.toString(),
-//      });
-//    });
-//
-//// Battery
-//    var _battery = Battery();
-//    _battery.onBatteryStateChanged.listen((BatteryState state) {
-//      databaseReal.update({
-//        'MobileCharge': _battery.batteryLevel.toString(),
-//      });
-//    });
-}
+
 
 databaseReal.child('Online').onValue.listen((event) async {
 bool OnlineB = event.snapshot.value as bool;
