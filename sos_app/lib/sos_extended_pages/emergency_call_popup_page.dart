@@ -54,7 +54,10 @@ class EmergencyCallPopUpPage extends StatelessWidget {
 Widget build(BuildContext context) {
   final emergencyCallPopUp = EmergencyCallPopUpData.emergencyCallPopUp;
   final connectPsapData = ConnectPsapData.connectPsapData;
-
+  void callEmergency()async{
+    const number = '01154703796'; //set the number here
+    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+  }
   return Scaffold (
     backgroundColor: Colors.white,
     body: Center(
@@ -109,6 +112,7 @@ Widget build(BuildContext context) {
                         String? date = now.toString();
                         _callNumber(date);
                         updateSensors(date);
+                        callEmergency();
                         sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                         uploadFile(); //TEST upload files to the firebase storage
                         Navigator.push(
@@ -133,6 +137,7 @@ Widget build(BuildContext context) {
                         String? date = now.toString();
                         _callNumber(date);
                         updateSensors(date);
+                        callEmergency();
                         sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                         uploadFile(); //TEST upload files to the firebase storage
                         Navigator.push(
