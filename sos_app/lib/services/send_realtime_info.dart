@@ -82,7 +82,6 @@ Ended = EndedB;
 if (Ended == true) {
 streamSubscription?.pause();
 databaseReal.remove();
-ref.child('users').child(mobile).remove();
 }
 });
 }

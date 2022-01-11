@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart' as Cloud;
+import 'package:firebase_database/firebase_database.dart';
 
 class CallPage extends StatefulWidget {
   CallPage({Key? key}) : super(key: key);
@@ -13,9 +16,21 @@ class CallPage extends StatefulWidget {
 class _CallPageState extends State<CallPage> {
 
   final senttext = new TextEditingController();
+  DatabaseReference ref = FirebaseDatabase.instance.ref();
+  String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+  bool? Ended;
   @override
   void initState() {
-
+    final databaseReal = ref.child('sensors').child(mobile);
+    StreamSubscription? streamSubscriptionEnded;
+    streamSubscriptionEnded =
+        databaseReal.child('Ended').onValue.listen((event) async {
+      bool? EndedB = event.snapshot?.value as bool;
+      Ended = EndedB;
+      if (Ended == true) {
+          Navigator.pop(context);
+      }
+      });
     super.initState();
   }
 
@@ -29,8 +44,8 @@ class _CallPageState extends State<CallPage> {
   Widget build(BuildContext context) {
     String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
     String uid = FirebaseAuth.instance.currentUser!.uid.toString();
-    final Query sorted = FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).collection('messages').orderBy("time",descending: true);
-    final Stream<QuerySnapshot> messages = sorted.snapshots();
+    final Cloud.Query sorted = Cloud.FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).collection('messages').orderBy("time",descending: true);
+    final Stream<Cloud.QuerySnapshot> messages = sorted.snapshots();
     return Scaffold(
         appBar: AppBar(
           title:  const Text("911", ),
@@ -44,10 +59,10 @@ class _CallPageState extends State<CallPage> {
             child: Column(
               children: <Widget>[
                 Expanded(
-                    child: StreamBuilder<QuerySnapshot>(
+                    child: StreamBuilder<Cloud.QuerySnapshot>(
                         stream: messages,
                         builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot,
+                            AsyncSnapshot<Cloud.QuerySnapshot> snapshot,
                             ){
 
                           if(snapshot.hasError){
@@ -143,12 +158,12 @@ class _CallPageState extends State<CallPage> {
                           String text = senttext.text;
                           if(text!='') {
                             String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-                            FirebaseFirestore.instance.collection('SOSEmergencies').doc(
+    Cloud.FirebaseFirestore.instance.collection('SOSEmergencies').doc(
                                 mobile).collection('messages').add(
                                 {
                                   'Message': text,
                                   'SAdmin': false,
-                                  'time': FieldValue.serverTimestamp()
+                                  'time': Cloud.FieldValue.serverTimestamp()
                                 }
 
                             );
