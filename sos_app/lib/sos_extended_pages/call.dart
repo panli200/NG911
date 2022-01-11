@@ -63,8 +63,8 @@ class _CallPageState extends State<CallPage> {
           backgroundColor: Colors.black54,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.call), // The "-" icon
-              onPressed: callEmergency, // The `_decrementCounter` function
+              icon: Icon(Icons.call),
+              onPressed: callEmergency,
             ),
           ],
         ),
