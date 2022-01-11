@@ -27,7 +27,7 @@ class EmergencyCallPopUpPage extends StatelessWidget {
     @PathParam() required this.emergencyCallPopUpID,
   }) : super(key: key);
 
-  void _callNumber() async{
+  void _callNumber(String? date) async{
 
     Location location = Location();
     await location.getCurrentLocation();
@@ -38,10 +38,11 @@ class EmergencyCallPopUpPage extends StatelessWidget {
           'Phone': mobile,
           'User' : user,
           'StartLocation': GeoPoint(location.latitude, location.longitude),
-          'StartTime': FieldValue.serverTimestamp(),
+          'StartTime': date,
           'Waiting': true,
         }
         );
+
 
     //const number = '01154703798'; //set the number to call here
     //bool? res = await FlutterPhoneDirectCaller.callNumber(number);
@@ -104,9 +105,11 @@ class EmergencyCallPopUpPage extends StatelessWidget {
                       child:ElevatedButton(
                           child: Text("Emergency Contact"),
                           onPressed:(){
-                            _callNumber();
+                            var now = new DateTime.now();
+                            String? date = now.toString();
+                            _callNumber(date);
                             sendRealTimeInfo();//Test sending real time function
-                            updateSensors();
+                            updateSensors(date);
                             sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                             uploadFile(); //TEST upload files to the firebase storage
                             Navigator.push(
@@ -127,9 +130,11 @@ class EmergencyCallPopUpPage extends StatelessWidget {
                       child:ElevatedButton(
                           child: Text("Third Party (Bystander)"),
                           onPressed:(){
-                            _callNumber();
+                            var now = new DateTime.now();
+                            String? date = now.toString();
+                            _callNumber(date);
                             sendRealTimeInfo();//Test sending real time function
-                            updateSensors();
+                            updateSensors(date);
                             sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                             uploadFile(); //TEST upload files to the firebase storage
                             Navigator.push(
