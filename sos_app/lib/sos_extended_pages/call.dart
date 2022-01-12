@@ -60,6 +60,7 @@ class _CallPageState extends State<CallPage> {
             "911",
           ),
           centerTitle: true,
+          automaticallyImplyLeading: false,
           backgroundColor: Colors.black54,
           actions: <Widget>[
             IconButton(
