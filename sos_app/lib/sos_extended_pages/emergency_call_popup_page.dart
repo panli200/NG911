@@ -19,7 +19,6 @@ import 'package:sos_app/services/send_realtime_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class EmergencyCallPopUpPage extends StatelessWidget {
-
   final int emergencyCallPopUpID;
 
   const EmergencyCallPopUpPage({
@@ -27,132 +26,111 @@ class EmergencyCallPopUpPage extends StatelessWidget {
     @PathParam() required this.emergencyCallPopUpID,
   }) : super(key: key);
 
-  void _callNumber(String? date) async{
-
-  Location location = Location();
-  await location.getCurrentLocation();
-  String user = FirebaseAuth.instance.currentUser!.uid.toString();
-  String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-  FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set(
-  {'Online': false,
-  'Phone': mobile,
-  'User' : user,
-  'StartLocation': GeoPoint(location.latitude, location.longitude),
-  'StartTime': date,
-  'Waiting': true,
-  }
-  );
-
+  void _callNumber(String? date) async {
+    Location location = Location();
+    await location.getCurrentLocation();
+    String user = FirebaseAuth.instance.currentUser!.uid.toString();
+    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set({
+      'Online': false,
+      'Phone': mobile,
+      'User': user,
+      'StartLocation': GeoPoint(location.latitude, location.longitude),
+      'StartTime': date,
+      'Waiting': true,
+    });
 
 //const number = '01154703798'; //set the number to call here
 //bool? res = await FlutterPhoneDirectCaller.callNumber(number);
-
-
-}
-
-@override
-Widget build(BuildContext context) {
-  final emergencyCallPopUp = EmergencyCallPopUpData.emergencyCallPopUp;
-  final connectPsapData = ConnectPsapData.connectPsapData;
-  void callEmergency()async{
-    const number = '01154703796'; //set the number here
-    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
   }
-  return Scaffold (
-    backgroundColor: Colors.white,
-    body: Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              emergencyCallPopUp.title,
-              style: Theme.of(context).textTheme.headline4,
-            ),
 
-            const SizedBox(
-              height: 10,
-            ),
+  @override
+  Widget build(BuildContext context) {
+    final emergencyCallPopUp = EmergencyCallPopUpData.emergencyCallPopUp;
+    final connectPsapData = ConnectPsapData.connectPsapData;
 
-            const Text(
-              'Who is this call for?',
-              textAlign: TextAlign.center,
-            ),
-
-            Center(
-              child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  alignment: Alignment.center,
-                  child:ElevatedButton(
-                      child: Text("Yourself"),
-                      onPressed: () => context.router.push(
-                        ConnectPsapRoute(
-                          connectPsapPageID: connectPsapData.id,
-                        ),
-                      )
-                  )
-
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                emergencyCallPopUp.title,
+                style: Theme.of(context).textTheme.headline4,
               ),
-            ),
-
-            Center(
-              child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  alignment: Alignment.center,
-                  //color: Colors.grey,
-                  child:ElevatedButton(
-                      child: Text("Emergency Contact"),
-                      onPressed:(){
-                        var now = new DateTime.now();
-                        String? date = now.toString();
-                        _callNumber(date);
-                        updateSensors(date);
-                        callEmergency();
-                        sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                        uploadFile(); //TEST upload files to the firebase storage
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CallPage()),
-                        );
-                      } // this will the method for your rejected Button
-                  )
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            Center(
-              child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  alignment: Alignment.center,
-                  //color: Colors.grey,
-                  child:ElevatedButton(
-                      child: Text("Third Party (Bystander)"),
-                      onPressed:(){
-                        var now = new DateTime.now();
-                        String? date = now.toString();
-                        _callNumber(date);
-                        updateSensors(date);
-                        callEmergency();
-                        sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                        uploadFile(); //TEST upload files to the firebase storage
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => CallPage()),
-                        );
-                      }
-
-                  )
+              const Text(
+                'Who is this call for?',
+                textAlign: TextAlign.center,
               ),
-            ),
-          ],
+              Center(
+                child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    alignment: Alignment.center,
+                    child: ElevatedButton(
+                        child: Text("Yourself"),
+                        onPressed: () => context.router.push(
+                              ConnectPsapRoute(
+                                connectPsapPageID: connectPsapData.id,
+                              ),
+                            ))),
+              ),
+              Center(
+                child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    alignment: Alignment.center,
+                    //color: Colors.grey,
+                    child: ElevatedButton(
+                        child: Text("Emergency Contact"),
+                        onPressed: () {
+                          var now = new DateTime.now();
+                          String? date = now.toString();
+                          _callNumber(date);
+                          updateSensors(date);
+                          sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                          uploadFile(); //TEST upload files to the firebase storage
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CallPage()),
+                          );
+                        } // this will the method for your rejected Button
+                        )),
+              ),
+              Center(
+                child: Container(
+                    margin: EdgeInsets.symmetric(vertical: 8),
+                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    alignment: Alignment.center,
+                    //color: Colors.grey,
+                    child: ElevatedButton(
+                        child: Text("Third Party (Bystander)"),
+                        onPressed: () {
+                          var now = new DateTime.now();
+                          String? date = now.toString();
+                          _callNumber(date);
+                          updateSensors(date);
+                          sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                          uploadFile(); //TEST upload files to the firebase storage
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CallPage()),
+                          );
+                        })),
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

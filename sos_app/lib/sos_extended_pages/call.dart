@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as Cloud;
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 
 class CallPage extends StatefulWidget {
   CallPage({Key? key}) : super(key: key);
@@ -12,9 +13,7 @@ class CallPage extends StatefulWidget {
   _CallPageState createState() => _CallPageState();
 }
 
-
 class _CallPageState extends State<CallPage> {
-
   final senttext = new TextEditingController();
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
@@ -28,15 +27,19 @@ class _CallPageState extends State<CallPage> {
       bool? EndedB = event.snapshot?.value as bool;
       Ended = EndedB;
       if (Ended == true) {
-          Navigator.pop(context);
+        Navigator.pop(context);
       }
-      });
+    });
     super.initState();
+  }
+
+  void callEmergency() async {
+    const number = '01154703796'; //set the number here
+    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
   }
 
   @override
   void dispose() {
-
     super.dispose();
   }
 
@@ -44,15 +47,28 @@ class _CallPageState extends State<CallPage> {
   Widget build(BuildContext context) {
     String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
     String uid = FirebaseAuth.instance.currentUser!.uid.toString();
-    final Cloud.Query sorted = Cloud.FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).collection('messages').orderBy("time",descending: true);
+    final Cloud.Query sorted = Cloud.FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(mobile)
+        .collection('messages')
+        .orderBy("time", descending: true);
     final Stream<Cloud.QuerySnapshot> messages = sorted.snapshots();
+
     return Scaffold(
         appBar: AppBar(
-          title:  const Text("911", ),
+          title: const Text(
+            "911",
+          ),
+          centerTitle: true,
           backgroundColor: Colors.black54,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.call),
+              onPressed: callEmergency,
+            ),
+          ],
         ),
         body: Container(
-
             decoration: const BoxDecoration(
               color: Colors.black87,
             ),
@@ -61,14 +77,15 @@ class _CallPageState extends State<CallPage> {
                 Expanded(
                     child: StreamBuilder<Cloud.QuerySnapshot>(
                         stream: messages,
-                        builder: (BuildContext context,
-                            AsyncSnapshot<Cloud.QuerySnapshot> snapshot,
-                            ){
-
-                          if(snapshot.hasError){
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<Cloud.QuerySnapshot> snapshot,
+                        ) {
+                          if (snapshot.hasError) {
                             return Text('Something went wrong');
                           }
-                          if(snapshot.connectionState == ConnectionState.waiting){
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
                             return Text('Loading');
                           }
 
@@ -76,13 +93,13 @@ class _CallPageState extends State<CallPage> {
                           return ListView.builder(
                               reverse: true,
                               itemCount: data.size,
-                              itemBuilder: (context, index){
+                              itemBuilder: (context, index) {
                                 Color c;
                                 Alignment a;
-                                if(data.docs[index]['SAdmin'] == false){
+                                if (data.docs[index]['SAdmin'] == false) {
                                   c = Colors.blueGrey;
                                   a = Alignment.centerRight;
-                                }else{
+                                } else {
                                   c = Colors.lightGreen;
                                   a = Alignment.centerLeft;
                                 }
@@ -90,20 +107,20 @@ class _CallPageState extends State<CallPage> {
                                 return Align(
                                     alignment: a,
                                     child: Container(
-                                      child: Text('  ${data.docs[index]['Message']}',style: const TextStyle(
-                                          color: Colors.white
-                                      ),),
-
-
+                                      child: Text(
+                                        '  ${data.docs[index]['Message']}',
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
                                       constraints: const BoxConstraints(
                                         maxHeight: double.infinity,
                                       ),
-
                                       padding: EdgeInsets.all(10.0),
                                       margin: EdgeInsets.all(10.0),
                                       decoration: BoxDecoration(
                                         color: c,
-                                        borderRadius: BorderRadius.circular(35.0),
+                                        borderRadius:
+                                            BorderRadius.circular(35.0),
                                         boxShadow: const [
                                           BoxShadow(
                                               offset: Offset(0, 3),
@@ -111,18 +128,11 @@ class _CallPageState extends State<CallPage> {
                                               color: Colors.grey)
                                         ],
                                       ),
-                                    )
-                                );
-
+                                    ));
 
                                 //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
-
-                              }
-                          );
-                        }
-                    )
-                ),
-
+                              });
+                        })),
                 Container(
                   height: 70,
                   constraints: const BoxConstraints(
@@ -145,28 +155,30 @@ class _CallPageState extends State<CallPage> {
                       Expanded(
                         child: TextField(
                           controller: senttext,
-                          style: TextStyle(color: Colors. white),
+                          style: TextStyle(color: Colors.white),
                           decoration: const InputDecoration(
                               hintText: "Type Something...",
-                              hintStyle: TextStyle( color:     Colors.white),
+                              hintStyle: TextStyle(color: Colors.white),
                               border: InputBorder.none),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.send ,  color: Colors.white),
+                        icon: const Icon(Icons.send, color: Colors.white),
                         onPressed: () {
                           String text = senttext.text;
-                          if(text!='') {
-                            String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-    Cloud.FirebaseFirestore.instance.collection('SOSEmergencies').doc(
-                                mobile).collection('messages').add(
-                                {
-                                  'Message': text,
-                                  'SAdmin': false,
-                                  'time': Cloud.FieldValue.serverTimestamp()
-                                }
-
-                            );
+                          if (text != '') {
+                            String mobile = FirebaseAuth
+                                .instance.currentUser!.phoneNumber
+                                .toString();
+                            Cloud.FirebaseFirestore.instance
+                                .collection('SOSEmergencies')
+                                .doc(mobile)
+                                .collection('messages')
+                                .add({
+                              'Message': text,
+                              'SAdmin': false,
+                              'time': Cloud.FieldValue.serverTimestamp()
+                            });
                             senttext.text = '';
                           }
                         },
@@ -174,13 +186,7 @@ class _CallPageState extends State<CallPage> {
                     ],
                   ),
                 ),
-
-
-
               ],
-            )
-        )
-
-    );
+            )));
   }
 }
