@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps_street.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart' as FbDb;
+import 'package:weather/weather.dart';
 import 'dart:async';
 import 'maps_home_page.dart';
 
@@ -17,16 +18,20 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
-//used for map_street file
+  //used for map_street file
   String? Latitude;
   String? Longitude;
+  // weather data
+  double? humidity;
+  int? temperature;
+  double? windSpeed;
+  String? weatherDescription;
 
   // End video streaming code
-
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
   final Stream<QuerySnapshot> users =
-  FirebaseFirestore.instance.collection('testCalls').snapshots();
+      FirebaseFirestore.instance.collection('testCalls').snapshots();
   var FriendID;
   var snapshot;
   var realTimeSnapshot;
@@ -197,6 +202,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
     });
   }
 
+  Future<void> getLocationWeather() async {
+    WeatherFactory wf = WeatherFactory("d5bb0f64fb412359ba54b7cc41e9402e");
+    Weather w = await wf.currentWeatherByLocation(
+        double.parse(Latitude!), double.parse(Longitude!));
+    humidity = w.humidity!;
+    windSpeed = w.windSpeed!;
+    temperature = w.temperature!.celsius!.toInt();
+    weatherDescription = w.weatherDescription!;
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -204,6 +219,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     FriendID = widget.CallerId; //Getting user ID from the previous page..
     ref.child('sensors').child(FriendID).update({'Online': true});
     activateListeners();
+    getLocationWeather();
 
     snapshot = widget.Snapshot;
     FirebaseFirestore.instance
@@ -216,13 +232,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .collection('SOSEmergencies')
         .doc(FriendID)
         .update(
-        {'Online': true}); // Changing the caller's Online state to be True
+            {'Online': true}); // Changing the caller's Online state to be True
   }
 
   @override
   void dispose() async {
     // clear users
-
     super.dispose();
   }
 
@@ -244,96 +259,95 @@ class _CallControlPanelState extends State<CallControlPanel> {
               height: MediaQuery.of(context).size.height * 0.9,
               child: Row(children: <Widget>[
                 Column(// First Column
-
                     children: <Widget>[
-                      Row(// For Map
-                          children: <Widget>[
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.30,
-                              width: MediaQuery.of(context).size.width * 0.45,
-                              child:
-                              StreetMap(latitude: Latitude!, longitude: Longitude!),
-                            )
-                          ]),
-                      Row(// For Call History
-                          children: <Widget>[
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.45,
-                              width: MediaQuery.of(context).size.width * 0.35,
-                              child: Scrollbar(
-                                child: SingleChildScrollView(
-                                  scrollDirection: Axis.vertical,
-                                  child: Column(
-                                    children: [
-                                      Container(
-                                        height: 50,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              'Caller History',
-                                              style: TextStyle(fontSize: 25),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 50,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              '13 December 2012',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Container(
-                                        height: 50,
-                                        child: Row(
-                                          children: [
-                                            Text(
-                                              '8 January 2009',
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                      ),
-                                    ],
-                                  ),
+                  Row(// For Map
+                      children: <Widget>[
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.30,
+                      width: MediaQuery.of(context).size.width * 0.45,
+                      child:
+                          StreetMap(latitude: Latitude!, longitude: Longitude!),
+                    )
+                  ]),
+                  Row(// For Call History
+                      children: <Widget>[
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.45,
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      child: Scrollbar(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Column(
+                            children: [
+                              Container(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      'Caller History',
+                                      style: TextStyle(fontSize: 25),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            )
-                          ]),
-                      Row(// For Closing the call
-                          children: <Widget>[
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.10,
-                              width: MediaQuery.of(context).size.width * 0.35,
-                              child: ElevatedButton(
-                                  child: Text("End Call"),
-                                  onPressed: () async {
-                                    FbDb.DatabaseReference real =
-                                    FbDb.FirebaseDatabase.instance.ref();
-                                    final databaseReal =
-                                    real.child('sensors').child(FriendID);
+                              Container(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '13 December 2012',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Container(
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    Text(
+                                      '8 January 2009',
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ]),
+                  Row(// For Closing the call
+                      children: <Widget>[
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.10,
+                      width: MediaQuery.of(context).size.width * 0.35,
+                      child: ElevatedButton(
+                          child: Text("End Call"),
+                          onPressed: () async {
+                            FbDb.DatabaseReference real =
+                                FbDb.FirebaseDatabase.instance.ref();
+                            final databaseReal =
+                                real.child('sensors').child(FriendID);
 
-                                    await databaseReal
-                                        .update({'Online': false, 'Ended': true});
+                            await databaseReal
+                                .update({'Online': false, 'Ended': true});
 
-                                    // End the call
+                            // End the call
 
-                                    _EndCall(); // this will the method for your rejected Button
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 50, vertical: 30),
-                                  )),
-                            )
-                          ])
-                    ]),
+                            _EndCall(); // this will the method for your rejected Button
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.red,
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 30),
+                          )),
+                    )
+                  ])
+                ]),
                 Column(children: [
                   //////
                   // This is the User Info
@@ -345,90 +359,43 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         children: [
                           Column(
                             children: [
-                              Container(
-                                height: 50,
-                                child: Row(
-                                  children: const [
-                                    Text(
-                                      'Caller Information',
-                                      style: TextStyle(fontSize: 25),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
+                              const Text(
+                                'Caller Information',
+                                style: TextStyle(fontSize: 25),
                               ),
-                              Container(
-                                height: 20,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Phone: ${snapshot['Phone']}',
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                'Weather: ' + weatherDescription!,
                               ),
-                              Container(
-                                height: 20,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '$MobileChargeString',
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                'Temperature in Degree: ' +
+                                    temperature!.toString(),
                               ),
-                              Container(
-                                height: 20,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '$LongitudeString',
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                'Humidity: ' + humidity!.toString(),
                               ),
-                              Container(
-                                height: 20,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '$LatitudeString',
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                'Wind Speed: ' + windSpeed!.toString(),
                               ),
-                              Container(
-                                height: 20,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '$xAccString',
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                'Phone: ${snapshot['Phone']}',
                               ),
-                              Container(
-                                height: 20,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '$yAccString',
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                '$MobileChargeString',
                               ),
-                              Container(
-                                height: 20,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '$zAccString',
-                                    ),
-                                  ],
-                                ),
+                              Text(
+                                '$LongitudeString',
                               ),
-                              SizedBox(
-                                height: 10,
+                              Text(
+                                '$LatitudeString',
+                              ),
+                              Text(
+                                '$xAccString',
+                              ),
+                              Text(
+                                '$yAccString',
+                              ),
+                              Text(
+                                '$zAccString',
                               ),
                             ],
                           ),
@@ -452,9 +419,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               child: StreamBuilder<QuerySnapshot>(
                                   stream: messages,
                                   builder: (
-                                      BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot,
-                                      ) {
+                                    BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot,
+                                  ) {
                                     if (snapshot.hasError) {
                                       return Text('Something went wrong');
                                     }
@@ -489,23 +456,23 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                           color: Colors.white),
                                                     ),
                                                     constraints:
-                                                    const BoxConstraints(
+                                                        const BoxConstraints(
                                                       maxHeight:
-                                                      double.infinity,
+                                                          double.infinity,
                                                     ),
                                                     padding:
-                                                    EdgeInsets.all(10.0),
+                                                        EdgeInsets.all(10.0),
                                                     margin:
-                                                    EdgeInsets.all(10.0),
+                                                        EdgeInsets.all(10.0),
                                                     decoration: BoxDecoration(
                                                       color: c,
                                                       borderRadius:
-                                                      BorderRadius.circular(
-                                                          35.0),
+                                                          BorderRadius.circular(
+                                                              35.0),
                                                       boxShadow: const [
                                                         BoxShadow(
                                                             offset:
-                                                            Offset(0, 3),
+                                                                Offset(0, 3),
                                                             blurRadius: 5,
                                                             color: Colors.grey)
                                                       ],
@@ -551,7 +518,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                         decoration: const InputDecoration(
                                             hintText: "Type Something...",
                                             hintStyle:
-                                            TextStyle(color: Colors.white),
+                                                TextStyle(color: Colors.white),
                                             border: InputBorder.none),
                                       ),
                                     ),
