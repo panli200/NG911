@@ -45,9 +45,17 @@ class _GoogleMapState extends State<GoogleMap> {
               double.parse(doc.child('Latitude').value.toString()),
               double.parse(doc.child('Longitude').value.toString()));
 
-          Marker(MarkerOptions()
-            ..position = marker
-            ..map = map);
+          if (doc.child('Online').value == false) {
+            Marker(MarkerOptions()
+              ..position = marker
+              ..map = map);
+          } else {
+            Marker(MarkerOptions()
+              ..position = marker
+              ..map = map
+              ..icon =
+                  'https://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+          }
         }
       });
 
