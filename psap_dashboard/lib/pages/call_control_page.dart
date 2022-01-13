@@ -203,7 +203,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 
   Future<void> getLocationWeather() async {
-    WeatherFactory wf = WeatherFactory("d5bb0f64fb412359ba54b7cc41e9402e");
+    WeatherFactory wf = WeatherFactory("5e1ad24d143d638f46a53ae6403ee651");
     Weather w = await wf.currentWeatherByLocation(
         double.parse(Latitude!), double.parse(Longitude!));
     humidity = w.humidity!;
