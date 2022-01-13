@@ -4,18 +4,10 @@ import 'package:sos_app/data/application_data.dart';
 import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
 import 'package:sos_app/profile_extended_pages/upload_file.dart';
 import 'package:sos_app/routes/router.gr.dart';
-import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:sos_app/services/send_realtime_info.dart';
-import 'package:sos_app/services/weather.dart';
-import 'package:sos_app/services/acceleration.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:sos_app/services/location.dart';
-import 'package:battery/battery.dart';
-import 'package:flutter_background/flutter_background.dart';
 import 'package:sos_app/sos_extended_pages/call.dart';
-import 'package:sos_app/services/send_realtime_info.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class EmergencyCallPopUpPage extends StatelessWidget {

@@ -59,24 +59,23 @@ class _CallControlPanelState extends State<CallControlPanel> {
     print("Print inside call");
     var now = new DateTime.now();
     var date = now.toString();
+    CollectionReference users = FirebaseFirestore.instance.collection('SoSUsers');
     streamSubscription?.cancel();
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(FriendID)
         .update({'Online': false, 'Ended': true});
 
-//    double? long = double.parse(LongitudeString!);
-//    double? lat = double.parse(LatitudeString!);
 
-    FirebaseFirestore.instance
-        .collection('SOSUsers')
+
+    await users
         .doc(FriendID)
         .collection('Emergencies')
-        .doc(date)
-        .set({
+        .add({
       'StartTime': StartTime,
-      'EndTime': FieldValue.serverTimestamp()
-//      'EndPoint': GeoPoint(lat, long)
+      'EndTime': FieldValue.serverTimestamp(),
+      'EndPointLatitude': Latitude,
+      'EndPointLongitude': Longitude
     });
 
     // End records
