@@ -22,10 +22,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
   String? Latitude;
   String? Longitude;
   // weather data
-  double? humidity;
-  int? temperature;
-  double? windSpeed;
-  String? weatherDescription;
+  late double humidity = 0.0;
+  late int temperature = 0;
+  late double windSpeed = 0.0;
+  late String weatherDescription = '';
 
   // End video streaming code
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
@@ -364,7 +364,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 style: TextStyle(fontSize: 25),
                               ),
                               Text(
-                                'Weather: ' + weatherDescription!,
+                                'Weather: ' + weatherDescription,
                               ),
                               Text(
                                 'Temperature in Degree: ' +
