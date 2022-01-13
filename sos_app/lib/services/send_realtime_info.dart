@@ -4,6 +4,7 @@ import 'package:sos_app/services/location.dart';
 import 'package:battery/battery.dart';
 import 'package:sensors/sensors.dart';
 import 'dart:async';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 void updateSensors(String? time) async {
   bool? Online;
@@ -21,13 +22,28 @@ void updateSensors(String? time) async {
   Location location = Location();
   await location.getCurrentLocation();
   Stream<DatabaseEvent> stream = databaseReal.onValue;
+  final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+  _stopWatchTimer.onExecute.add(StopWatchExecute.start);
 
-  databaseReal.set({'StartTime': time, 'Online': false, 'Ended': false,'Latitude': location.latitude.toString(),
-    'Longitude': location.longitude.toString(),});
+  databaseReal.set({
+    'StartTime': time,
+    'Online': false,
+    'Ended': false,
+    'Latitude': location.latitude.toString(),
+    'Longitude': location.longitude.toString(),
+  });
+
+  streamSubscription = stream.listen((DatabaseEvent event) {
+    _stopWatchTimer.rawTime.listen((value) =>
+      databaseReal.update({
+        'Timer': StopWatchTimer.getDisplayTime(value),
+      }));
+  });
 
   databaseReal.child('Online').onValue.listen((event) async {
     bool OnlineB = event.snapshot.value as bool;
     Online = OnlineB;
+
     if (Online! == true && Ended != true) {
       streamSubscription =
           accelerometerEvents.listen((AccelerometerEvent event) {
@@ -71,6 +87,8 @@ void updateSensors(String? time) async {
         if (Ended == true) {
           streamSubscription?.pause();
           databaseReal.remove();
+          _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
+          _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
         }
       });
     }
