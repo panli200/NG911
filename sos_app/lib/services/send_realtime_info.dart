@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:battery/battery.dart';
 import 'package:sensors/sensors.dart';
-import 'dart:math';
 import 'dart:async';
 
 void updateSensors(String? time) async {

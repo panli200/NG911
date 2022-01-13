@@ -69,6 +69,9 @@ dependencies:
   # Notifications
   flutter_local_notifications: ^9.2.0
 
+  # DateTime
+  intl: ^0.17.0
+
 dependency_overrides:
   auto_route:
     git:

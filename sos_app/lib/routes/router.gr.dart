@@ -113,8 +113,8 @@ class AppRouter extends _i1.RootStackRouter {
       final args = routeData.argsAs<ActivityDetailRouteArgs>();
       return _i1.MaterialPageX<dynamic>(
           routeData: routeData,
-          child:
-              _i12.ActivityDetailPage(key: args.key, Snapshot: args.Snapshot));
+          child: _i12.ActivityDetailPage(
+              key: args.key, Activity: args.Activity, Snapshot: args.Snapshot));
     }
   };
 
@@ -364,23 +364,28 @@ class ActivitiesRoute extends _i1.PageRouteInfo<void> {
 
 /// generated route for [_i12.ActivityDetailPage]
 class ActivityDetailRoute extends _i1.PageRouteInfo<ActivityDetailRouteArgs> {
-  ActivityDetailRoute({_i13.Key? key, required dynamic Snapshot})
+  ActivityDetailRoute(
+      {_i13.Key? key, required dynamic Activity, required dynamic Snapshot})
       : super(name,
             path: '',
-            args: ActivityDetailRouteArgs(key: key, Snapshot: Snapshot));
+            args: ActivityDetailRouteArgs(
+                key: key, Activity: Activity, Snapshot: Snapshot));
 
   static const String name = 'ActivityDetailRoute';
 }
 
 class ActivityDetailRouteArgs {
-  const ActivityDetailRouteArgs({this.key, required this.Snapshot});
+  const ActivityDetailRouteArgs(
+      {this.key, required this.Activity, required this.Snapshot});
 
   final _i13.Key? key;
+
+  final dynamic Activity;
 
   final dynamic Snapshot;
 
   @override
   String toString() {
-    return 'ActivityDetailRouteArgs{key: $key, Snapshot: $Snapshot}';
+    return 'ActivityDetailRouteArgs{key: $key, Activity: $Activity, Snapshot: $Snapshot}';
   }
 }

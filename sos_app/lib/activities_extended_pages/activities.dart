@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:sos_app/activities_extended_pages/activity_detail.dart';
 import 'package:shimmer/shimmer.dart';
 import 'dart:async';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:intl/intl.dart';
 
 class ActivitiesPage extends StatelessWidget {
 
@@ -44,18 +43,20 @@ class DataList extends StatelessWidget {
 
   final Timer timer;
   DataList(this.timer);
-
+  final DateFormat formatter = DateFormat().add_yMd().add_jm();
 
   @override
   Widget build(BuildContext context){
-    final Stream<QuerySnapshot> users = FirebaseFirestore.instance.collection('testCalls').snapshots();
+    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+    CollectionReference activities = FirebaseFirestore.instance.collection('SoSUsers').doc(mobile).collection('Emergencies');
+    final Stream<QuerySnapshot> activitiesList = activities.snapshots();
       return Container(
 
         child: Column(
           children: <Widget>[
             Expanded(
                 child: StreamBuilder<QuerySnapshot>(
-                    stream: users,
+                    stream: activitiesList,
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot,
                         ){
@@ -71,13 +72,14 @@ class DataList extends StatelessWidget {
                       return ListView.builder(
                           itemCount: data.size,
                           itemBuilder: (context, index){
+                            var id = data.docs[index].id;
                             return  InkWell(
                               child: Container(
                                 child: Row(
                                     children: <Widget>[
                                       Icon(Icons.add_alert_outlined),
                                       Container(
-                                        child: Text(' Date: ${data.docs[index]['Date']}',style: TextStyle(
+                                        child: Text(' Date: ${formatter.format(DateTime.parse(data.docs[index]['StartTime']))}',style: TextStyle(
                                           color: Colors.white,
                                         ),),
                                       )
@@ -93,15 +95,13 @@ class DataList extends StatelessWidget {
                                 ),
                               ),
                               onTap: () {
-                                //Map <String,dynamic> data = {"Date": "2 January 2021", "StartTime" : "12:05pm","EndTime" : "12:13pm", "Status" : "Ended" };
-                                //FirebaseFirestore.instance.collection("testCalls").add(data);
+
                                 Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => ActivityDetailPage(Snapshot: data.docs[index])),
+                                  MaterialPageRoute(builder: (context) => ActivityDetailPage(Activity: id,Snapshot: data.docs[index])),
                                 );
                               },
                             );
-                            //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
 
                           }
                       );
