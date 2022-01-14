@@ -32,8 +32,7 @@ class EmergencyCallPopUpPage extends StatelessWidget {
       'Waiting': true,
     });
 
-//const number = '01154703798'; //set the number to call here
-//bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+
   }
 
   @override

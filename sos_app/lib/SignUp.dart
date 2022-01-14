@@ -2,20 +2,8 @@
 
 import 'package:auto_route/src/router/auto_router_x.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sos_app/activities_extended_pages/activities.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sos_app/routes/router.gr.dart';
-import 'package:sos_app/services/location.dart';
-import 'package:sos_app/services/weather.dart';
-import 'package:sos_app/services/acceleration.dart';
-import 'package:sensors/sensors.dart';
-import 'dart:math';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sos_app/sos_extended_pages/sos_home_page.dart';
-import 'package:sos_app/sos.dart';
 
 enum MobileVerificationState {
   SHOW_MOBILE_FORM_STATE,

@@ -4,6 +4,34 @@ import 'package:sos_app/services/location.dart';
 import 'package:battery/battery.dart';
 import 'package:sensors/sensors.dart';
 import 'dart:async';
+import 'package:intl/intl.dart';
+
+//void updateTimer(String? time) async{
+//DateTime startTime = DateTime.parse(time!);
+//DatabaseReference ref = FirebaseDatabase.instance.ref();
+//String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+//final databaseReal = ref.child('sensors').child(mobile);
+//Timer.periodic(Duration(seconds: 1), (timer) {
+//DateTime now= DateTime.now();
+//int timeWaited = now.difference(startTime).inSeconds;
+//var Online;
+//var Ended;
+//databaseReal.child('Ended').onValue.listen((event) async {
+//bool? EndedB = event.snapshot?.value as bool;
+//Ended = EndedB;
+//
+//});
+//databaseReal.child('Online').onValue.listen((event) async {
+//bool OnlineB = event.snapshot.value as bool;
+//Online = OnlineB;
+//if (Online! == false && Ended != true) {
+//databaseReal.update({
+//'TimeWaited': timeWaited
+//});
+//}});
+//});
+//}
+
 
 void updateSensors(String? time) async {
   bool? Online;
@@ -17,7 +45,6 @@ void updateSensors(String? time) async {
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
   final databaseReal = ref.child('sensors').child(mobile);
-
   Location location = Location();
   await location.getCurrentLocation();
   Stream<DatabaseEvent> stream = databaseReal.onValue;
@@ -25,6 +52,9 @@ void updateSensors(String? time) async {
   databaseReal.set({'StartTime': time, 'Online': false, 'Ended': false,'Latitude': location.latitude.toString(),
     'Longitude': location.longitude.toString(),});
 
+
+
+  // Acceleration Data
   databaseReal.child('Online').onValue.listen((event) async {
     bool OnlineB = event.snapshot.value as bool;
     Online = OnlineB;

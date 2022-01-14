@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps.dart';
 import 'call_control_page.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
+import 'package:firebase_database/firebase_database.dart' as FbDb;
 class MapsHomePage extends StatefulWidget {
   const MapsHomePage({Key? key}) : super(key: key);
 
@@ -12,7 +10,28 @@ class MapsHomePage extends StatefulWidget {
   State<MapsHomePage> createState() => _MapsHomePageState();
 }
 
+
+
 class _MapsHomePageState extends State<MapsHomePage> {
+//  var timeWaited;
+//  String? timeWaitedString;
+// void getTimeWaited(String? phone){
+//  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
+//  ref
+//      .child('sensors')
+//      .child(phone!)
+//      .child('TimeWaited')
+//      .onValue
+//      .listen((event) async {
+//  timeWaited = event.snapshot.value.toString();
+//  setState(() {
+//    timeWaitedString = timeWaited + 's';
+//
+//  });
+//  });
+//
+//  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -116,7 +135,8 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                               index])));
                                                     },
                                                     child: Text(
-                                                        ' ${data.docs[index]['Phone']} ' '  ${data.docs[index]['StartTime']}'),
+                                                        ' ${data.docs[index]['Phone']} '),
+
                                                   ),
                                                 ]),
                                               ),
