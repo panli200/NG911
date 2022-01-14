@@ -116,7 +116,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                               index])));
                                                     },
                                                     child: Text(
-                                                        ' ${data.docs[index]['Phone']}'),
+                                                        ' ${data.docs[index]['Phone']} ' '  ${data.docs[index]['StartTime']}'),
                                                   ),
                                                 ]),
                                               ),
