@@ -42,13 +42,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   var xAccString;
   var yAccString;
   StreamSubscription? streamSubscription;
-//  Listener? startTimeListener;
-//  Listener? mobileChargeListener;
-//  Listener? longitudeListener;
-//  Listener? latitiudeListener;
-//  Listener? xaListener;
-//  Listener? yaListener;
-//  Listener? zaListener;
+
   var zAccString;
   String? StartTime;
   var endTime;
@@ -59,19 +53,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
     print("Print inside call");
     var now = new DateTime.now();
     var date = now.toString();
-    CollectionReference users = FirebaseFirestore.instance.collection('SoSUsers');
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('SoSUsers');
     streamSubscription?.cancel();
     await FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(FriendID)
         .update({'Online': false, 'Ended': true});
 
-
-
-    await users
-        .doc(FriendID)
-        .collection('Emergencies')
-        .add({
+    await users.doc(FriendID).collection('Emergencies').add({
       'StartTime': StartTime,
       'EndTime': FieldValue.serverTimestamp(),
       'EndPointLatitude': Latitude,
@@ -213,7 +203,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     FriendID = widget.CallerId; //Getting user ID from the previous page..
     ref.child('sensors').child(FriendID).update({'Online': true});
@@ -232,6 +221,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .doc(FriendID)
         .update(
             {'Online': true}); // Changing the caller's Online state to be True
+
+    String UserMedicalReport = "";
   }
 
   @override
@@ -262,7 +253,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   Row(// For Map
                       children: <Widget>[
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.30,
+                      height: MediaQuery.of(context).size.height * 0.50,
                       width: MediaQuery.of(context).size.width * 0.45,
                       child:
                           StreetMap(latitude: Latitude!, longitude: Longitude!),
@@ -271,8 +262,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   Row(// For Call History
                       children: <Widget>[
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.45,
-                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: MediaQuery.of(context).size.height * 0.20,
+                      width: MediaQuery.of(context).size.width * 0.45,
                       child: Scrollbar(
                         child: SingleChildScrollView(
                           scrollDirection: Axis.vertical,
@@ -341,7 +332,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.red,
-                            padding: EdgeInsets.symmetric(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 50, vertical: 30),
                           )),
                     )
@@ -353,7 +344,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   //////
                   SizedBox(
                       height: MediaQuery.of(context).size.height * 0.30,
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: MediaQuery.of(context).size.width * 0.25,
                       child: Row(
                         children: [
                           Column(
@@ -405,147 +396,187 @@ class _CallControlPanelState extends State<CallControlPanel> {
                     height: 5,
                     thickness: 3,
                   ),
-
-                  //////
-                  // This is the chat
-                  //////
-                  SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.4,
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              child: StreamBuilder<QuerySnapshot>(
-                                  stream: messages,
-                                  builder: (
-                                    BuildContext context,
-                                    AsyncSnapshot<QuerySnapshot> snapshot,
-                                  ) {
-                                    if (snapshot.hasError) {
-                                      return Text('Something went wrong');
-                                    }
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return Text('Loading');
-                                    }
-
-                                    final data = snapshot.requireData;
-                                    return ListView.builder(
-                                        reverse: true,
-                                        itemCount: data.size,
-                                        itemBuilder: (context, index) {
-                                          Color c;
-                                          Alignment a;
-                                          if (data.docs[index]['SAdmin'] ==
-                                              false) {
-                                            c = Colors.blueGrey;
-                                            a = Alignment.centerLeft;
-                                          } else {
-                                            c = Colors.lightGreen;
-                                            a = Alignment.centerRight;
-                                          }
-
-                                          return SizedBox(
-                                              child: Align(
-                                                  alignment: a,
-                                                  child: Container(
-                                                    child: Text(
-                                                      '  ${data.docs[index]['Message']}',
-                                                      style: const TextStyle(
-                                                          color: Colors.white),
-                                                    ),
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                      maxHeight:
-                                                          double.infinity,
-                                                    ),
-                                                    padding:
-                                                        EdgeInsets.all(10.0),
-                                                    margin:
-                                                        EdgeInsets.all(10.0),
-                                                    decoration: BoxDecoration(
-                                                      color: c,
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              35.0),
-                                                      boxShadow: const [
-                                                        BoxShadow(
-                                                            offset:
-                                                                Offset(0, 3),
-                                                            blurRadius: 5,
-                                                            color: Colors.grey)
-                                                      ],
-                                                    ),
-                                                  )));
-                                        });
-                                  })),
-                        ],
-                      )),
-
-                  const Divider(
-                    height: 5,
-                    thickness: 3,
-                  ),
-                  //////
-                  // This is the reply
-                  //////
-                  SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.12,
-                      width: MediaQuery.of(context).size.width * 0.3,
-                      child: Row(
-                        children: [
-                          Container(
-                              height: 70,
-                              constraints: const BoxConstraints(
-                                maxHeight: double.infinity,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.blueGrey,
-                                borderRadius: BorderRadius.circular(35.0),
-                              ),
-                              padding: EdgeInsets.all(10.0),
-                              margin: EdgeInsets.all(20.0),
-                              child: SizedBox(
-                                height: MediaQuery.of(context).size.height,
-                                width: MediaQuery.of(context).size.width * 0.25,
-                                child: Row(
-                                  children: [
-                                    Expanded(
-                                      child: TextField(
-                                        controller: senttext,
-                                        style: TextStyle(color: Colors.white),
-                                        decoration: const InputDecoration(
-                                            hintText: "Type Something...",
-                                            hintStyle:
-                                                TextStyle(color: Colors.white),
-                                            border: InputBorder.none),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.send,
-                                          color: Colors.white),
-                                      onPressed: () {
-                                        String text = senttext.text;
-                                        if (text != '') {
-                                          FirebaseFirestore.instance
-                                              .collection('SOSEmergencies')
-                                              .doc(FriendID)
-                                              .collection('messages')
-                                              .add({
-                                            'Message': text,
-                                            'SAdmin': true,
-                                            'time': FieldValue.serverTimestamp()
-                                          });
-                                          senttext.text = '';
-                                        }
-                                      },
-                                    )
-                                  ],
-                                ),
-                              )),
-                        ],
-                      )),
                 ]),
+                Column(children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.70,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: Row(
+                      children: [
+                        Column(children: [
+                          ElevatedButton(
+                              onPressed: _EndCall,
+                              child: Text("Download Medical Report")),
+                          ElevatedButton(
+                              onPressed: _EndCall,
+                              child: Text("Download Profile Information")),
+                          //////
+                          // This is the chat
+                          //////
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.4,
+                              width: MediaQuery.of(context).size.width * 0.2,
+                              child: Row(
+                                children: [
+                                  Expanded(
+                                      child: StreamBuilder<QuerySnapshot>(
+                                          stream: messages,
+                                          builder: (
+                                            BuildContext context,
+                                            AsyncSnapshot<QuerySnapshot>
+                                                snapshot,
+                                          ) {
+                                            if (snapshot.hasError) {
+                                              return const Text(
+                                                  'Something went wrong');
+                                            }
+//                                            if (snapshot.connectionState ==
+//                                                ConnectionState.waiting) {
+//                                              return const Text('Loading');
+//                                            }
+
+                                            final data = snapshot.requireData;
+                                            return ListView.builder(
+                                                reverse: true,
+                                                itemCount: data.size,
+                                                itemBuilder: (context, index) {
+                                                  Color c;
+                                                  Alignment a;
+                                                  if (data.docs[index]
+                                                          ['SAdmin'] ==
+                                                      false) {
+                                                    c = Colors.blueGrey;
+                                                    a = Alignment.centerLeft;
+                                                  } else {
+                                                    c = Colors.lightGreen;
+                                                    a = Alignment.centerRight;
+                                                  }
+
+                                                  return SizedBox(
+                                                      child: Align(
+                                                          alignment: a,
+                                                          child: Container(
+                                                            child: Text(
+                                                              '  ${data.docs[index]['Message']}',
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            ),
+                                                            constraints:
+                                                                const BoxConstraints(
+                                                              maxHeight: double
+                                                                  .infinity,
+                                                            ),
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(10.0),
+                                                            margin:
+                                                                const EdgeInsets
+                                                                    .all(10.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: c,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          35.0),
+                                                              boxShadow: const [
+                                                                BoxShadow(
+                                                                    offset:
+                                                                        Offset(0,
+                                                                            3),
+                                                                    blurRadius:
+                                                                        5,
+                                                                    color: Colors
+                                                                        .grey)
+                                                              ],
+                                                            ),
+                                                          )));
+                                                });
+                                          })),
+                                ],
+                              )),
+
+                          const Divider(
+                            height: 5,
+                            thickness: 3,
+                          ),
+                          //////
+                          // This is the reply
+                          //////
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.12,
+                              width: MediaQuery.of(context).size.width * 0.3,
+                              child: Row(
+                                children: [
+                                  Container(
+                                      height: 70,
+                                      constraints: const BoxConstraints(
+                                        maxHeight: double.infinity,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.blueGrey,
+                                        borderRadius:
+                                            BorderRadius.circular(35.0),
+                                      ),
+                                      padding: const EdgeInsets.all(10.0),
+                                      margin: const EdgeInsets.all(20.0),
+                                      child: SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.25,
+                                        child: Row(
+                                          children: [
+                                            Expanded(
+                                              child: TextField(
+                                                controller: senttext,
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                                decoration:
+                                                    const InputDecoration(
+                                                        hintText:
+                                                            "Type Something...",
+                                                        hintStyle:
+                                                            TextStyle(
+                                                                color: Colors
+                                                                    .white),
+                                                        border:
+                                                            InputBorder.none),
+                                              ),
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(Icons.send,
+                                                  color: Colors.white),
+                                              onPressed: () {
+                                                String text = senttext.text;
+                                                if (text != '') {
+                                                  FirebaseFirestore.instance
+                                                      .collection(
+                                                          'SOSEmergencies')
+                                                      .doc(FriendID)
+                                                      .collection('messages')
+                                                      .add({
+                                                    'Message': text,
+                                                    'SAdmin': true,
+                                                    'time': FieldValue
+                                                        .serverTimestamp()
+                                                  });
+                                                  senttext.text = '';
+                                                }
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      )),
+                                ],
+                              ))
+                        ])
+                      ],
+                    ),
+                  )
+                ])
               ]))
         ]));
   }

@@ -32,8 +32,7 @@ class EmergencyCallPopUpPage extends StatelessWidget {
       'Waiting': true,
     });
 
-//const number = '01154703798'; //set the number to call here
-//bool? res = await FlutterPhoneDirectCaller.callNumber(number);
+
   }
 
   @override
@@ -87,6 +86,7 @@ class EmergencyCallPopUpPage extends StatelessWidget {
                           var now = new DateTime.now();
                           String? date = now.toString();
                           _callNumber(date);
+                          updateTimer(date);
                           updateSensors(date);
                           sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                           uploadFile(); //TEST upload files to the firebase storage

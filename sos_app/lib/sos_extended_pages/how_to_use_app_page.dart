@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/data/application_data.dart';
-import 'package:sos_app/routes/router.gr.dart';
 
 class HowToUsePage extends StatelessWidget {
 
