@@ -45,6 +45,7 @@ void updateSensors(String? time) async {
     Online = OnlineB;
 
     if (Online! == true && Ended != true) {
+      _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
       streamSubscription =
           accelerometerEvents.listen((AccelerometerEvent event) {
         x = event.x;
@@ -87,8 +88,7 @@ void updateSensors(String? time) async {
         if (Ended == true) {
           streamSubscription?.pause();
           databaseReal.remove();
-          _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
-          _stopWatchTimer.onExecute.add(StopWatchExecute.reset);
+
         }
       });
     }
