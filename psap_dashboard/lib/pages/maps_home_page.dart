@@ -13,24 +13,24 @@ class MapsHomePage extends StatefulWidget {
 
 
 class _MapsHomePageState extends State<MapsHomePage> {
-  var timeWaited;
-  String? timeWaitedString;
- void getTimeWaited(String? phone){
-  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
-  ref
-      .child('sensors')
-      .child(phone!)
-      .child('TimeWaited')
-      .onValue
-      .listen((event) async {
-  timeWaited = event.snapshot.value.toString();
-  setState(() {
-    timeWaitedString = timeWaited + 's';
-
-  });
-  });
-
-  }
+//  var timeWaited;
+//  String? timeWaitedString;
+// void getTimeWaited(String? phone){
+//  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
+//  ref
+//      .child('sensors')
+//      .child(phone!)
+//      .child('TimeWaited')
+//      .onValue
+//      .listen((event) async {
+//  timeWaited = event.snapshot.value.toString();
+//  setState(() {
+//    timeWaitedString = timeWaited + 's';
+//
+//  });
+//  });
+//
+//  }
 
   @override
   void initState() {
@@ -110,7 +110,6 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                     return ListView.builder(
                                         itemCount: data.size,
                                         itemBuilder: (context, index) {
-                                          getTimeWaited(data.docs[index]['Phone']);
                                           var id = data.docs[index].id;
                                           if (data.docs[index]['Waiting']) {
                                             return Material(
@@ -136,7 +135,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                               index])));
                                                     },
                                                     child: Text(
-                                                        ' ${data.docs[index]['Phone']} ' '  $timeWaitedString'),
+                                                        ' ${data.docs[index]['Phone']} '),
                                                   ),
                                                 ]),
                                               ),

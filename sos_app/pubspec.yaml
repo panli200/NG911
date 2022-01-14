@@ -72,6 +72,9 @@ dependencies:
   # DateTime
   intl: ^0.17.0
 
+  # Stopwatch
+  stop_watch_timer: ^1.3.1
+
 dependency_overrides:
   auto_route:
     git:
