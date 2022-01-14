@@ -31,14 +31,14 @@ void updateSensors(String? time) async {
     'Ended': false,
     'Latitude': location.latitude.toString(),
     'Longitude': location.longitude.toString(),
+
   });
 
-  streamSubscription = stream.listen((DatabaseEvent event) {
-    _stopWatchTimer.rawTime.listen((value) =>
-      databaseReal.update({
-        'Timer': StopWatchTimer.getDisplayTime(value),
-      }));
-  });
+  _stopWatchTimer.rawTime.listen((value) =>
+    databaseReal.update({
+      'Timer': StopWatchTimer.getDisplayTime(value),
+    })
+  );
 
   databaseReal.child('Online').onValue.listen((event) async {
     bool OnlineB = event.snapshot.value as bool;
