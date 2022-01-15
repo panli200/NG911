@@ -33,7 +33,7 @@ class InitializerWidgetPage extends StatelessWidget {
     } else {
       context.router
           .pushAndPopUntil(HomeRouter(), predicate: (route) => false);
-      return SosPage();
+      return SignUpPage();
     }
   }
 }
