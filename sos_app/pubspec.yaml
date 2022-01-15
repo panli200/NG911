@@ -63,6 +63,9 @@ dependencies:
   # Video streaming dep
   permission_handler: ^8.3.0
 
+  # Video Stream
+  flutter_webrtc:  ^0.8.1
+
   # Background services
   flutter_background: ^1.1.0
 

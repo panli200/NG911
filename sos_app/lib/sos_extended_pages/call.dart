@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as Cloud;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
+import 'package:sos_app/sos_extended_pages/signaling.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'package:sos_app/sos_extended_pages/videostream.dart';
 
 class CallPage extends StatefulWidget {
   CallPage({Key? key}) : super(key: key);
@@ -18,6 +22,13 @@ class _CallPageState extends State<CallPage> {
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
   bool? Ended;
+
+  //Video Stream
+  Signaling signaling = Signaling();
+  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  String? roomId;
+
   @override
   void initState() {
     final databaseReal = ref.child('sensors').child(mobile);
@@ -30,6 +41,16 @@ class _CallPageState extends State<CallPage> {
         Navigator.pop(context);
       }
     });
+
+    //Video Stream
+    _localRenderer.initialize();
+    _remoteRenderer.initialize();
+
+    signaling.onAddRemoteStream = ((stream) {
+      _remoteRenderer.srcObject = stream;
+      setState(() {});
+    });
+
     super.initState();
   }
 
@@ -40,6 +61,8 @@ class _CallPageState extends State<CallPage> {
 
   @override
   void dispose() {
+    _localRenderer.dispose();
+    _remoteRenderer.dispose();
     super.dispose();
   }
 
@@ -67,6 +90,17 @@ class _CallPageState extends State<CallPage> {
               icon: Icon(Icons.call),
               onPressed: callEmergency,
             ),
+            IconButton(
+                icon: Icon(Icons.videocam),
+                onPressed: () async {
+                  signaling.openUserMedia(_localRenderer, _remoteRenderer);
+                  roomId = await signaling.createRoom(_remoteRenderer);
+                  setState(() {});
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => VideoStream(signaling: signaling,localRenderer: _localRenderer)),
+                  );
+                }),
           ],
         ),
         body: Container(
