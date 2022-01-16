@@ -27,9 +27,9 @@ class Signaling {
   StreamStateCallback? onAddRemoteStream;
 
   Future<String> createRoom(RTCVideoRenderer remoteRenderer) async {
+    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
     FirebaseFirestore db = FirebaseFirestore.instance;
-    DocumentReference roomRef = db.collection('rooms').doc();
-
+    DocumentReference roomRef = db.collection('SOSEmergencies').doc(mobile).collection('rooms').doc();
     print('Create PeerConnection with configuration: $configuration');
 
     peerConnection = await createPeerConnection(configuration);
@@ -61,7 +61,6 @@ class Signaling {
 
     //Send RoomID to realtime database
     DatabaseReference ref = FirebaseDatabase.instance.ref();
-    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
     final databaseReal = ref.child('sensors').child(mobile);
 
     databaseReal.update({
