@@ -45,18 +45,12 @@ class _CallPageState extends State<CallPage> {
     //Video Stream
     _localRenderer.initialize();
     _remoteRenderer.initialize();
-
     signaling.onAddRemoteStream = ((stream) {
       _remoteRenderer.srcObject = stream;
       setState(() {});
     });
 
     super.initState();
-  }
-
-  void callEmergency() async {
-    const number = '01154703796'; //set the number here
-    bool? res = await FlutterPhoneDirectCaller.callNumber(number);
   }
 
   @override
@@ -87,9 +81,28 @@ class _CallPageState extends State<CallPage> {
           backgroundColor: Colors.black54,
           actions: <Widget>[
             IconButton(
-              icon: Icon(Icons.call),
-              onPressed: callEmergency,
-            ),
+                icon: Icon(Icons.call),
+                onPressed: () async {
+                  signaling.openUserAudio(_localRenderer, _remoteRenderer);
+                  roomId = await signaling.createRoom(_remoteRenderer);
+                  setState(() {});
+                  showDialog(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                            actions: <Widget>[
+                              new IconButton(
+                                  alignment: Alignment.center,
+                                  icon: new Icon(
+                                    Icons.call_end,
+                                    color: Colors.red,
+                                  ),
+                                  onPressed: () {
+                                    signaling.hangUp(_localRenderer);
+                                    Navigator.of(context).pop(null);
+                                  }),
+                            ],
+                          ));
+                }),
             IconButton(
                 icon: Icon(Icons.videocam),
                 onPressed: () async {
@@ -98,7 +111,10 @@ class _CallPageState extends State<CallPage> {
                   setState(() {});
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => VideoStream(signaling: signaling,localRenderer: _localRenderer)),
+                    MaterialPageRoute(
+                        builder: (context) => VideoStream(
+                            signaling: signaling,
+                            localRenderer: _localRenderer)),
                   );
                 }),
           ],

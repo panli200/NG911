@@ -52,8 +52,6 @@ void updateSensors(String? time) async {
   databaseReal.set({'StartTime': time, 'Online': false, 'Ended': false,'Latitude': location.latitude.toString(),
     'Longitude': location.longitude.toString(),});
 
-
-
   // Acceleration Data
   databaseReal.child('Online').onValue.listen((event) async {
     bool OnlineB = event.snapshot.value as bool;
@@ -73,12 +71,13 @@ void updateSensors(String? time) async {
         }
       });
 
-// Location
+// Location and Speed
       streamSubscription = stream.listen((DatabaseEvent event) {
         if (Ended != true) {
           databaseReal.update({
             'Latitude': location.latitude.toString(),
             'Longitude': location.longitude.toString(),
+            'Speed':location.speed.toString()
           });
         }
       });

@@ -31,7 +31,7 @@ class VideoStream extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: RTCVideoView(localRenderer, mirror: true)),
+                  Expanded(child: RTCVideoView(localRenderer)),
                 ],
               ),
             ),
