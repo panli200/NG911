@@ -202,7 +202,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 
   void getRoomId() {
-    RoomstreamSubscription = ref
+    streamSubscription = ref
         .child('sensors')
         .child(FriendID)
         .child('RoomID')
@@ -228,14 +228,18 @@ class _CallControlPanelState extends State<CallControlPanel> {
     _remoteRenderer.initialize();
     _localRenderer.initialize();
 
-    signaling.onAddRemoteStream = ((stream) {
+    signaling.onAddRemoteStream = ((stream) async {
       _remoteRenderer.srcObject = stream;
       setState(() {});
     });
+    signaling.openUserMedia(_localRenderer, _remoteRenderer);
 
-    // End video streaming
     super.initState();
     FriendID = widget.CallerId; //Getting user ID from the previous page..
+    getRoomId();
+
+    signaling.joinRoom(roomId, _remoteRenderer, FriendID);//join the video stream
+
     ref.child('sensors').child(FriendID).update({'Online': true});
     activateListeners();
     getLocationWeather();
@@ -267,11 +271,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
-    signaling.openUserMedia(_localRenderer, _remoteRenderer);
-    getRoomId();
-    print("The room is: " + roomId);
-    signaling.joinRoom(roomId, _remoteRenderer, FriendID);
-    print("The room is: " + roomId);
     final Query sorted = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(FriendID)
@@ -437,8 +436,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                     width: MediaQuery.of(context).size.width * 0.20,
                     child: Row(
                       children: [
-                        Expanded(
-                            child: RTCVideoView(_remoteRenderer)),
+                        Expanded(child: RTCVideoView(_remoteRenderer)),
                       ],
                     ),
                   ),
