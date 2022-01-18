@@ -5,6 +5,8 @@ import 'package:firebase_database/firebase_database.dart' as FbDb;
 import 'package:weather/weather.dart';
 import 'dart:async';
 import 'maps_home_page.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
+import 'signaling.dart';
 
 class CallControlPanel extends StatefulWidget {
   final CallerId;
@@ -18,20 +20,26 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
+  // RealTime database
+  final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
+  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
   //used for map_street file
   String? Latitude;
   String? Longitude;
+
   // weather data
   late double humidity = 0.0;
   late int temperature = 0;
   late double windSpeed = 0.0;
   late String weatherDescription = '';
 
+  // video streaming
+  Signaling signaling = Signaling();
+  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+
   // End video streaming code
-  final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
-  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
-  final Stream<QuerySnapshot> users =
-      FirebaseFirestore.instance.collection('testCalls').snapshots();
+
   var FriendID;
   var snapshot;
   var realTimeSnapshot;
@@ -42,12 +50,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
   var xAccString;
   var yAccString;
   StreamSubscription? streamSubscription;
+  StreamSubscription? RoomstreamSubscription;
 
   var zAccString;
   String? StartTime;
   var endTime;
   final senttext = new TextEditingController();
   FbDb.DatabaseReference? _db;
+  var roomId;
 
   void _EndCall() async {
     print("Print inside call");
@@ -191,6 +201,17 @@ class _CallControlPanelState extends State<CallControlPanel> {
     });
   }
 
+  void getRoomId() {
+    RoomstreamSubscription = ref
+        .child('sensors')
+        .child(FriendID)
+        .child('RoomID')
+        .onValue
+        .listen((event) {
+      roomId = event.snapshot.value.toString();
+    });
+  }
+
   Future<void> getLocationWeather() async {
     WeatherFactory wf = WeatherFactory("5e1ad24d143d638f46a53ae6403ee651");
     Weather w = await wf.currentWeatherByLocation(
@@ -203,6 +224,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   void initState() {
+    // Video streaming
+    _remoteRenderer.initialize();
+    _localRenderer.initialize();
+
+    signaling.onAddRemoteStream = ((stream) {
+      _remoteRenderer.srcObject = stream;
+      setState(() {});
+    });
+
+    // End video streaming
     super.initState();
     FriendID = widget.CallerId; //Getting user ID from the previous page..
     ref.child('sensors').child(FriendID).update({'Online': true});
@@ -227,12 +258,20 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   void dispose() async {
+    // clean video streaming
+    _localRenderer.dispose;
+    _remoteRenderer.dispose();
     // clear users
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    signaling.openUserMedia(_localRenderer, _remoteRenderer);
+    getRoomId();
+    print("The room is: " + roomId);
+    signaling.joinRoom(roomId, _remoteRenderer, FriendID);
+    print("The room is: " + roomId);
     final Query sorted = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(FriendID)
@@ -318,6 +357,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       child: ElevatedButton(
                           child: Text("End Call"),
                           onPressed: () async {
+                            signaling.hangUp(FriendID);
                             FbDb.DatabaseReference real =
                                 FbDb.FirebaseDatabase.instance.ref();
                             final databaseReal =
@@ -339,6 +379,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   ])
                 ]),
                 Column(children: [
+                  // Second Column
                   //////
                   // This is the User Info
                   //////
@@ -391,6 +432,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           ),
                         ],
                       )),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.20,
+                    width: MediaQuery.of(context).size.width * 0.20,
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: RTCVideoView(_remoteRenderer)),
+                      ],
+                    ),
+                  ),
 
                   const Divider(
                     height: 5,
