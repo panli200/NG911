@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps.dart';
 import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:html' as html;
 import 'package:firebase_database/firebase_database.dart' as FbDb;
 class MapsHomePage extends StatefulWidget {
   const MapsHomePage({Key? key}) : super(key: key);
@@ -37,9 +38,8 @@ class _MapsHomePageState extends State<MapsHomePage> {
     // TODO: implement initState
     super.initState();
   }
-
-  final Stream<QuerySnapshot> Waiting =
-      FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
+  GoogleMap? googleMap = const GoogleMap();
+  final Stream<QuerySnapshot> Waiting = FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
@@ -57,7 +57,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.9,
                 width: MediaQuery.of(context).size.width * 0.6,
-                child: GoogleMap(),
+                child: googleMap,
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.9,
