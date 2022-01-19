@@ -5,6 +5,7 @@ import 'package:battery/battery.dart';
 import 'package:sensors/sensors.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'package:stop_watch_timer/stop_watch_timer.dart';
 
 //void updateTimer(String? time) async{
 //DateTime startTime = DateTime.parse(time!);
@@ -52,6 +53,15 @@ void updateSensors(String? time) async {
   databaseReal.set({'StartTime': time, 'Online': false, 'Ended': false,'Latitude': location.latitude.toString(),
     'Longitude': location.longitude.toString(),});
 
+  final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+  _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+
+  _stopWatchTimer.secondTime.listen((value) =>
+      databaseReal.update({
+        'Timer': StopWatchTimer.getDisplayTime(value*1000,milliSecond: false),
+      })
+  );
+
   // Acceleration Data
   databaseReal.child('Online').onValue.listen((event) async {
     bool OnlineB = event.snapshot.value as bool;
@@ -98,6 +108,7 @@ void updateSensors(String? time) async {
         bool? EndedB = event.snapshot?.value as bool;
         Ended = EndedB;
         if (Ended == true) {
+          _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
           streamSubscription?.pause();
           databaseReal.remove();
         }
