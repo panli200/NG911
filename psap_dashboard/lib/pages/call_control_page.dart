@@ -126,118 +126,115 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     // Going back to maps home page
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) =>  MapsHomePage()));
+        context, MaterialPageRoute(builder: (context) => MapsHomePage()));
   }
 
   void activateListeners() {
+    endedStateStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('Ended')
+        .onValue
+        .listen((event) async {
+      bool? endedB = event.snapshot.value as bool;
+      ended = endedB;
+    });
 
-      endedStateStream = ref
-          .child('sensors')
-          .child(callerId)
-          .child('Ended')
-          .onValue
-          .listen((event) async {
-        bool ? endedB = event.snapshot.value as bool;
-        ended = endedB;
-      });
+    startTimeStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('StartTime')
+        .onValue
+        .listen((event) {
+      if (ended != true) {
+        setState(() {
+          StartTime = event.snapshot.value.toString();
+        });
+      }
+    });
 
-      startTimeStream = ref
-          .child('sensors')
-          .child(callerId)
-          .child('StartTime')
-          .onValue
-          .listen((event) {
-        if (ended != true) {
-          setState(() {
-            StartTime = event.snapshot.value.toString();
-          });
-        }
-      });
+    batteryStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('MobileCharge')
+        .onValue
+        .listen((event) {
+      if (ended != true) {
+        String mobileCharge = event.snapshot.value.toString();
+        setState(() {
+          mobileChargeString = 'Mobile Charge: ' + mobileCharge;
+        });
+      }
+    });
 
-      batteryStream = ref
-          .child('sensors')
-          .child(callerId)
-          .child('MobileCharge')
-          .onValue
-          .listen((event) {
-        if (ended != true) {
-          String mobileCharge = event.snapshot.value.toString();
-          setState(() {
-            mobileChargeString = 'Mobile Charge: ' + mobileCharge;
-          });
-        }
-      });
+    longitudeStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('Longitude')
+        .onValue
+        .listen((event) {
+      if (ended != true) {
+        longitudePassed = event.snapshot.value.toString();
+        setState(() {
+          longitudeString = 'Longitude: ' + longitudePassed!;
+        });
+      }
+    });
 
-      longitudeStream = ref
-          .child('sensors')
-          .child(callerId)
-          .child('Longitude')
-          .onValue
-          .listen((event) {
-        if (ended != true) {
-          longitudePassed = event.snapshot.value.toString();
-          setState(() {
-            longitudeString = 'Longitude: ' + longitudePassed
-            !;
-          });
-        }
-      });
+    latitudeStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('Latitude')
+        .onValue
+        .listen((event) {
+      if (ended != true) {
+        latitudePassed = event.snapshot.value.toString();
+        setState(() {
+          latitudeString = 'Latitude: ' + latitudePassed!;
+        });
+      }
+    });
 
-      latitudeStream = ref
-          .child('sensors')
-          .child(callerId)
-          .child('Latitude')
-          .onValue
-          .listen((event) {
-        if (ended != true) {
-          latitudePassed = event.snapshot.value.toString();
-          setState(() {
-            latitudeString = 'Latitude: ' + latitudePassed
-            !;
-          });
-        }
-      });
+    xAccelerationStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('x-Acc')
+        .onValue
+        .listen((event) {
+      if (ended != true) {
+        String xAcc = event.snapshot.value.toString();
+        setState(() {
+          xAccelerationString = 'Acceleration x: ' + xAcc;
+        });
+      }
+    });
 
-      xAccelerationStream = ref
-          .child('sensors')
-          .child(callerId)
-          .child('x-Acc')
-          .onValue
-          .listen((event) {
-        if (ended != true) {
-          String xAcc = event.snapshot.value.toString();
-          setState(() {
-            xAccelerationString = 'Acceleration x: ' + xAcc;
-          });
-        }
-      });
-
-      yAccelerationStream = ref
-          .child('sensors')
-          .child(callerId)
-          .child('y-Acc')
-          .onValue
-          .listen((event) {
-        if (ended != true) {
-          String yAcc = event.snapshot.value.toString();
-          setState(() {
-            yAccelerationString = 'Acceleration y: ' + yAcc;
-          });
-        }
-      });
-      zAccelerationStream = ref
-          .child('sensors')
-          .child(callerId)
-          .child('z-Acc')
-          .onValue
-          .listen((event) {
-        if (ended != true) {
-          String zAcc = event.snapshot.value.toString();
-          setState(() {
-              zAccelerationString = 'Acceleration z: ' + zAcc;
-          });
-        }
-      });
+    yAccelerationStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('y-Acc')
+        .onValue
+        .listen((event) {
+      if (ended != true) {
+        String yAcc = event.snapshot.value.toString();
+        setState(() {
+          yAccelerationString = 'Acceleration y: ' + yAcc;
+        });
+      }
+    });
+    zAccelerationStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('z-Acc')
+        .onValue
+        .listen((event) {
+      if (ended != true) {
+        String zAcc = event.snapshot.value.toString();
+        setState(() {
+          zAccelerationString = 'Acceleration z: ' + zAcc;
+        });
+      }
+    });
   }
 
 //  void pauseListeners(){
@@ -310,7 +307,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
     getLocationWeather();
 //    pauseListeners();
 
-
     // Changing states
     snapshot = widget.Snapshot;
     FirebaseFirestore.instance
@@ -348,12 +344,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .orderBy("time", descending: true);
     final Stream<QuerySnapshot> messages = sortedMessages.snapshots();
     // To get the history of the caller "past calls"
-    final Query pastCalls = FirebaseFirestore.instance
-        .collection('SOSUsers')
-        .doc(callerId)
-        .collection('Emergencies')
-        .orderBy("StartTime", descending: true);
-    final Stream<QuerySnapshot> pastEmergencies = pastCalls!.snapshots();
     return Scaffold(
         appBar: AppBar(
           title: const Text("Incoming Call Control Panel"),
@@ -368,73 +358,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   Row(// For Map
                       children: <Widget>[
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.50,
+                      height: MediaQuery.of(context).size.height * 0.70,
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: StreetMap(),
-                    )
-                  ]),
-                  Row(// For Call History
-                      children: <Widget>[
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.20,
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: Scrollbar(
-                        child: SingleChildScrollView(
-                            scrollDirection: Axis.vertical,
-                            child: StreamBuilder<QuerySnapshot>(
-                                stream: pastEmergencies,
-                                builder: (
-                                  BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot,
-                                ) {
-                                  if (snapshot.hasError) {
-                                    return const Text('Something went wrong');
-                                  }
-//                                  if (snapshot.connectionState ==
-//                                      ConnectionState.waiting) {
-//                                    return const Text('Loading');
-//                                  }
-                                  final DateFormat formatter =
-                                      DateFormat().add_yMd().add_jm();
-                                  final data = snapshot.requireData;
-                                  print("the data size is: " + data.size.toString());
-                                  return ListView.builder(
-                                      addAutomaticKeepAlives: false,
-                                      addRepaintBoundaries: false,
-                                      itemCount: data.size,
-                                      itemBuilder: (context, index) {
-                                        return SizedBox(
-                                          child: InkWell(
-                                            child: Container(
-                                              child: Row(children: <Widget>[
-                                                const Icon(Icons.add_alert_outlined),
-                                                Text(
-                                                  ' Date: ${formatter.format(DateTime.parse(data.docs[index]['StartTime']))}',
-                                                  style: const TextStyle(
-                                                    color: Colors.white,
-                                                  ),
-                                                )
-                                              ]),
-                                              padding: const EdgeInsets.all(20.0),
-                                              margin: const EdgeInsets.all(20.0),
-                                              decoration: const BoxDecoration(
-                                                shape: BoxShape.rectangle,
-                                                color: Colors.blue,
-                                              ),
-                                            ),
-                                            onTap: () {},
-                                          ),
-                                        );
-                                      });
-                                })),
-                      ),
                     )
                   ]),
                   Row(// For Closing the call
                       children: <Widget>[
                     SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.10,
-                      width: MediaQuery.of(context).size.width * 0.35,
+                      height: MediaQuery.of(context).size.height * 0.06,
+                      width: MediaQuery.of(context).size.width * 0.25,
                       child: ElevatedButton(
                           child: const Text("End Call"),
                           onPressed: () async {
@@ -453,8 +386,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.red,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 50, vertical: 30),
                           )),
                     )
                   ])
@@ -514,24 +445,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         ],
                       )),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.20,
-                    width: MediaQuery.of(context).size.width * 0.20,
-                    child: Row(
-                      children: [
-                        Expanded(child: RTCVideoView(_remoteRenderer)),
-                      ],
-                    ),
-                  ),
-
-                  const Divider(
-                    height: 5,
-                    thickness: 3,
-                  ),
-                ]),
-                Column(children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.70,
-                    width: MediaQuery.of(context).size.width * 0.3,
+                    height: MediaQuery.of(context).size.height * 0.55,
+                    width: MediaQuery.of(context).size.width * 0.25,
                     child: Row(
                       children: [
                         Column(children: [
@@ -540,12 +455,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               child: const Text("Download Medical Report")),
                           ElevatedButton(
                               onPressed: _EndCall,
-                              child: const Text("Download Profile Information")),
+                              child:
+                                  const Text("Download Profile Information")),
                           //////
                           // This is the chat
                           //////
                           SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.4,
+                              height: MediaQuery.of(context).size.height * 0.35,
                               width: MediaQuery.of(context).size.width * 0.2,
                               child: Row(
                                 children: [
@@ -561,10 +477,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               return const Text(
                                                   'Something went wrong');
                                             }
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
-                                              return const Text('Loading');
-                                            }
+//                                            if (snapshot.connectionState ==
+//                                                ConnectionState.waiting) {
+//                                              return const Text('Loading');
+//                                            }
 
                                             final data = snapshot.requireData;
                                             return ListView.builder(
@@ -575,6 +491,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 itemBuilder: (context, index) {
                                                   Color c;
                                                   Alignment a;
+                                                  print(
+                                                      "the other data size is: " +
+                                                          data.size.toString());
                                                   if (data.docs[index]
                                                           ['SAdmin'] ==
                                                       false) {
@@ -639,7 +558,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           //////
                           SizedBox(
                               height: MediaQuery.of(context).size.height * 0.12,
-                              width: MediaQuery.of(context).size.width * 0.3,
+                              width: MediaQuery.of(context).size.width * 0.25,
                               child: Row(
                                 children: [
                                   Container(
@@ -659,7 +578,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                             MediaQuery.of(context).size.height,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.25,
+                                                0.18,
                                         child: Row(
                                           children: [
                                             Expanded(
@@ -708,7 +627,23 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         ])
                       ],
                     ),
-                  )
+                  ),
+
+                  const Divider(
+                    height: 5,
+                    thickness: 3,
+                  ),
+                ]),
+                Column(children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.70,
+                    width: MediaQuery.of(context).size.width * 0.3,
+                    child: Row(
+                      children: [
+                        Expanded(child: RTCVideoView(_remoteRenderer)),
+                      ],
+                    ),
+                  ),
                 ])
               ]))
         ]));
