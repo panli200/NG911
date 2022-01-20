@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:psap_dashboard/pages/maps_street.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart' as FbDb;
 import 'package:weather/weather.dart';
@@ -10,6 +9,7 @@ import 'signaling.dart';
 import 'package:google_maps/google_maps.dart' as googleMap;
 import 'dart:ui' as ui;
 import 'dart:html';
+import 'package:intl/intl.dart';
 
 // Enviromental variables
 String? latitudePassed;
@@ -27,6 +27,7 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
+  // Bloc
   // RealTime database
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
@@ -34,7 +35,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   // database variables
   var callerId = '';
   var snapshot;
-
+  Query? pastCalls;
   // States of the call
   bool? ended = false;
 
@@ -76,7 +77,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? roomIdAccelerationStream;
 
   String? StartTime;
-  final sentText = new TextEditingController();
+  final sentText = TextEditingController();
   FbDb.DatabaseReference? _db;
   var roomId;
 
@@ -95,10 +96,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
     roomIdAccelerationStream?.cancel();
 
     // Changing the states
-    await FirebaseFirestore.instance.collection('SOSEmergencies').doc(callerId).update({'Online': false, 'Ended': true});
+    await FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .update({'Online': false, 'Ended': true});
 
     // Write activity
-    CollectionReference user = FirebaseFirestore.instance.collection('SoSUsers');
+    CollectionReference user =
+        FirebaseFirestore.instance.collection('SoSUsers');
     await user.doc(callerId).collection('Emergencies').add({
       'StartTime': StartTime,
       'EndTime': FieldValue.serverTimestamp(),
@@ -121,116 +126,140 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     // Going back to maps home page
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MapsHomePage()));
+        context, MaterialPageRoute(builder: (context) =>  MapsHomePage()));
   }
 
   void activateListeners() {
 
-    endedStateStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('Ended')
-        .onValue
-        .listen((event) async {
-      bool? endedB = event.snapshot.value as bool;
-      ended = endedB;
-    });
+      endedStateStream = ref
+          .child('sensors')
+          .child(callerId)
+          .child('Ended')
+          .onValue
+          .listen((event) async {
+        bool ? endedB = event.snapshot.value as bool;
+        ended = endedB;
+      });
 
-    startTimeStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('StartTime')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        setState(() {
-          StartTime = event.snapshot.value.toString();
-        });
-      }
-    });
+      startTimeStream = ref
+          .child('sensors')
+          .child(callerId)
+          .child('StartTime')
+          .onValue
+          .listen((event) {
+        if (ended != true) {
+          setState(() {
+            StartTime = event.snapshot.value.toString();
+          });
+        }
+      });
 
-    batteryStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('MobileCharge')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        String MobileCharge = event.snapshot.value.toString();
-        setState(() {
-          mobileChargeString = 'Mobile Charge: ' + MobileCharge;
+      batteryStream = ref
+          .child('sensors')
+          .child(callerId)
+          .child('MobileCharge')
+          .onValue
+          .listen((event) {
+        if (ended != true) {
+          String mobileCharge = event.snapshot.value.toString();
+          setState(() {
+            mobileChargeString = 'Mobile Charge: ' + mobileCharge;
+          });
+        }
+      });
 
-        });
-      }
-    });
+      longitudeStream = ref
+          .child('sensors')
+          .child(callerId)
+          .child('Longitude')
+          .onValue
+          .listen((event) {
+        if (ended != true) {
+          longitudePassed = event.snapshot.value.toString();
+          setState(() {
+            longitudeString = 'Longitude: ' + longitudePassed
+            !;
+          });
+        }
+      });
 
-    longitudeStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('Longitude')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        longitudePassed = event.snapshot.value.toString();
-        setState(() {
-          longitudeString = 'Longitude: ' + longitudePassed!;
-        });
-      }
-    });
+      latitudeStream = ref
+          .child('sensors')
+          .child(callerId)
+          .child('Latitude')
+          .onValue
+          .listen((event) {
+        if (ended != true) {
+          latitudePassed = event.snapshot.value.toString();
+          setState(() {
+            latitudeString = 'Latitude: ' + latitudePassed
+            !;
+          });
+        }
+      });
 
-    latitudeStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('Latitude')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        latitudePassed = event.snapshot.value.toString();
-        setState(() {
-          latitudeString = 'Latitude: ' + latitudePassed!;
-        });
-      }
-    });
+      xAccelerationStream = ref
+          .child('sensors')
+          .child(callerId)
+          .child('x-Acc')
+          .onValue
+          .listen((event) {
+        if (ended != true) {
+          String xAcc = event.snapshot.value.toString();
+          setState(() {
+            xAccelerationString = 'Acceleration x: ' + xAcc;
+          });
+        }
+      });
 
-    xAccelerationStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('x-Acc')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        String xAcc = event.snapshot.value.toString();
-        setState(() {
-          xAccelerationString = 'Acceleration x: ' + xAcc;
-        });
-      }
-    });
+      yAccelerationStream = ref
+          .child('sensors')
+          .child(callerId)
+          .child('y-Acc')
+          .onValue
+          .listen((event) {
+        if (ended != true) {
+          String yAcc = event.snapshot.value.toString();
+          setState(() {
+            yAccelerationString = 'Acceleration y: ' + yAcc;
+          });
+        }
+      });
+      zAccelerationStream = ref
+          .child('sensors')
+          .child(callerId)
+          .child('z-Acc')
+          .onValue
+          .listen((event) {
+        if (ended != true) {
+          String zAcc = event.snapshot.value.toString();
+          setState(() {
+              zAccelerationString = 'Acceleration z: ' + zAcc;
+          });
+        }
+      });
+  }
 
-    yAccelerationStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('y-Acc')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        String yAcc = event.snapshot.value.toString();
-        setState(() {
-          yAccelerationString = 'Acceleration y: ' + yAcc;
-        });
-      }
-    });
-    zAccelerationStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('z-Acc')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        String zAcc = event.snapshot.value.toString();
-        setState(() {
-          zAccelerationString = 'Acceleration z: ' + zAcc;
-        });
-      }
+  void pauseListeners(){
+    Timer.periodic(Duration(seconds: 1), (timer)
+    async{
+      startTimeStream?.pause();
+      batteryStream?.pause();
+      longitudeStream?.pause();
+      latitudeStream?.pause();
+      xAccelerationStream?.pause();
+      yAccelerationStream?.pause();
+      zAccelerationStream?.pause();
+      roomIdAccelerationStream?.pause();
+      await Future.delayed(Duration(seconds: 1));
+      startTimeStream?.resume();
+      batteryStream?.resume();
+      longitudeStream?.resume();
+      latitudeStream?.resume();
+      xAccelerationStream?.resume();
+      yAccelerationStream?.resume();
+      zAccelerationStream?.resume();
+      roomIdAccelerationStream?.resume();
     });
   }
 
@@ -254,10 +283,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
     temperature = w.temperature!.celsius!.toInt();
   }
 
+  // Initialize
   @override
   void initState() {
     // Google map initialize
-
 
     // Video streaming
     _remoteRenderer.initialize();
@@ -279,8 +308,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
     ref.child('sensors').child(callerId).update({'Online': true});
     activateListeners();
     getLocationWeather();
+    pauseListeners();
 
 
+    // Changing states
     snapshot = widget.Snapshot;
     FirebaseFirestore.instance
         .collection('SOSEmergencies')
@@ -294,7 +325,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .update(
             {'Online': true}); // Changing the caller's Online state to be True
 
-    String UserMedicalReport = "";
+    //String UserMedicalReport = "";
   }
 
   @override
@@ -309,9 +340,20 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final Query sorted = FirebaseFirestore.instance.collection('SOSEmergencies').doc(callerId).collection('messages')
+    // To get the messages sent
+    final Query sortedMessages = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection('messages')
         .orderBy("time", descending: true);
-    final Stream<QuerySnapshot> messages = sorted.snapshots();
+    final Stream<QuerySnapshot> messages = sortedMessages.snapshots();
+    // To get the history of the caller "past calls"
+    final Query pastCalls = FirebaseFirestore.instance
+        .collection('SOSUsers')
+        .doc(callerId)
+        .collection('Emergencies')
+        .orderBy("StartTime", descending: true);
+    final Stream<QuerySnapshot> pastEmergencies = pastCalls!.snapshots();
     return Scaffold(
         appBar: AppBar(
           title: const Text("Incoming Call Control Panel"),
@@ -338,47 +380,53 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       width: MediaQuery.of(context).size.width * 0.45,
                       child: Scrollbar(
                         child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Column(
-                            children: [
-                              Container(
-                                height: 50,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      'Caller History',
-                                      style: TextStyle(fontSize: 25),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 50,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '13 December 2012',
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Container(
-                                height: 50,
-                                child: Row(
-                                  children: [
-                                    Text(
-                                      '8 January 2009',
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                            ],
-                          ),
-                        ),
+                            scrollDirection: Axis.vertical,
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: pastEmergencies,
+                                builder: (
+                                  BuildContext context,
+                                  AsyncSnapshot<QuerySnapshot> snapshot,
+                                ) {
+                                  if (snapshot.hasError) {
+                                    return const Text('Something went wrong');
+                                  }
+//                                  if (snapshot.connectionState ==
+//                                      ConnectionState.waiting) {
+//                                    return const Text('Loading');
+//                                  }
+                                  final DateFormat formatter =
+                                      DateFormat().add_yMd().add_jm();
+                                  final data = snapshot.requireData;
+                                  print("the data size is: " + data.size.toString());
+                                  return ListView.builder(
+                                      addAutomaticKeepAlives: false,
+                                      addRepaintBoundaries: false,
+                                      itemCount: data.size,
+                                      itemBuilder: (context, index) {
+                                        return SizedBox(
+                                          child: InkWell(
+                                            child: Container(
+                                              child: Row(children: <Widget>[
+                                                const Icon(Icons.add_alert_outlined),
+                                                Text(
+                                                  ' Date: ${formatter.format(DateTime.parse(data.docs[index]['StartTime']))}',
+                                                  style: const TextStyle(
+                                                    color: Colors.white,
+                                                  ),
+                                                )
+                                              ]),
+                                              padding: const EdgeInsets.all(20.0),
+                                              margin: const EdgeInsets.all(20.0),
+                                              decoration: const BoxDecoration(
+                                                shape: BoxShape.rectangle,
+                                                color: Colors.blue,
+                                              ),
+                                            ),
+                                            onTap: () {},
+                                          ),
+                                        );
+                                      });
+                                })),
                       ),
                     )
                   ]),
@@ -388,9 +436,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       height: MediaQuery.of(context).size.height * 0.10,
                       width: MediaQuery.of(context).size.width * 0.35,
                       child: ElevatedButton(
-                          child: Text("End Call"),
+                          child: const Text("End Call"),
                           onPressed: () async {
-                            signaling?.hangUp(callerId);
+                            signaling.hangUp(callerId);
                             FbDb.DatabaseReference real =
                                 FbDb.FirebaseDatabase.instance.ref();
                             final databaseReal =
@@ -489,10 +537,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         Column(children: [
                           ElevatedButton(
                               onPressed: _EndCall,
-                              child: Text("Download Medical Report")),
+                              child: const Text("Download Medical Report")),
                           ElevatedButton(
                               onPressed: _EndCall,
-                              child: Text("Download Profile Information")),
+                              child: const Text("Download Profile Information")),
                           //////
                           // This is the chat
                           //////
@@ -667,14 +715,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 }
 
-
-
 class StreetMap extends StatelessWidget {
-
   const StreetMap({Key? key}) : super(key: key);
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -682,7 +724,8 @@ class StreetMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-      final myLatlng = googleMap.LatLng(double.parse(latitudePassed!), double.parse(longitudePassed!));
+      final myLatlng = googleMap.LatLng(
+          double.parse(latitudePassed!), double.parse(longitudePassed!));
       print("The Latitude is: " + latitudePassed!);
       final mapOptions = googleMap.MapOptions()
         ..zoom = 19
@@ -701,7 +744,8 @@ class StreetMap extends StatelessWidget {
         ..map = map
         ..title = 'caller');
 
-      final infoWindow = googleMap.InfoWindow(googleMap.InfoWindowOptions()..content = 'caller');
+      final infoWindow = googleMap.InfoWindow(
+          googleMap.InfoWindowOptions()..content = 'caller');
       marker.onClick.listen((event) => infoWindow.open(map, marker));
       return elem;
     });

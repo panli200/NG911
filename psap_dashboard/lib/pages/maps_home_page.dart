@@ -14,31 +14,30 @@ class MapsHomePage extends StatefulWidget {
 
 
 class _MapsHomePageState extends State<MapsHomePage> {
-//  var timeWaited;
-//  String? timeWaitedString;
-// void getTimeWaited(String? phone){
-//  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
-//  ref
-//      .child('sensors')
-//      .child(phone!)
-//      .child('TimeWaited')
-//      .onValue
-//      .listen((event) async {
-//  timeWaited = event.snapshot.value.toString();
-//  setState(() {
-//    timeWaitedString = timeWaited + 's';
-//
-//  });
-//  });
-//
-//  }
+  var timeWaited = "0";
+  String? timeWaitedString;
+ void getTimeWaited(String? phone){
+  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
+  ref
+      .child('sensors')
+      .child(phone!)
+      .child('Timer')
+      .onValue
+      .listen((event) async {
+  timeWaited = event.snapshot.value.toString();
+  setState(() {
+    timeWaitedString = timeWaited;
+
+  });
+  });
+
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
-  GoogleMap? googleMap = const GoogleMap();
   final Stream<QuerySnapshot> Waiting = FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -57,7 +56,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.9,
                 width: MediaQuery.of(context).size.width * 0.6,
-                child: googleMap,
+                child: GoogleMap(),
               ),
               SizedBox(
                 height: MediaQuery.of(context).size.height * 0.9,
@@ -110,6 +109,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                     return ListView.builder(
                                         itemCount: data.size,
                                         itemBuilder: (context, index) {
+                                          getTimeWaited(data.docs[index].id);
                                           var id = data.docs[index].id;
                                           if (data.docs[index]['Waiting']) {
                                             return Material(
@@ -135,7 +135,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                               index])));
                                                     },
                                                     child: Text(
-                                                        ' ${data.docs[index]['Phone']} '),
+                                                        ' ${data.docs[index]['Phone']+ "  Time waited: " + timeWaitedString!}'),
 
                                                   ),
                                                 ]),
