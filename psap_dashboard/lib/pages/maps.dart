@@ -45,11 +45,11 @@ class _GoogleMapState extends State<GoogleMap> {
               double.parse(doc.child('Latitude').value.toString()),
               double.parse(doc.child('Longitude').value.toString()));
 
-          if (doc.child('Online').value == false) {
+          if (doc.child('Online').value == false && doc.child('Ended').value == false) {
             Marker(MarkerOptions()
               ..position = marker
               ..map = map);
-          } else {
+          } else if (doc.child('Online').value == true && doc.child('Ended').value == false) {
             Marker(MarkerOptions()
               ..position = marker
               ..map = map

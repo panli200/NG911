@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps.dart';
 import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:html' as html;
 import 'package:firebase_database/firebase_database.dart' as FbDb;
 class MapsHomePage extends StatefulWidget {
   const MapsHomePage({Key? key}) : super(key: key);
@@ -13,33 +14,31 @@ class MapsHomePage extends StatefulWidget {
 
 
 class _MapsHomePageState extends State<MapsHomePage> {
-//  var timeWaited;
-//  String? timeWaitedString;
-// void getTimeWaited(String? phone){
-//  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
-//  ref
-//      .child('sensors')
-//      .child(phone!)
-//      .child('TimeWaited')
-//      .onValue
-//      .listen((event) async {
-//  timeWaited = event.snapshot.value.toString();
-//  setState(() {
-//    timeWaitedString = timeWaited + 's';
-//
-//  });
-//  });
-//
-//  }
+  var timeWaited = "0";
+  String? timeWaitedString;
+ void getTimeWaited(String? phone){
+  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
+  ref
+      .child('sensors')
+      .child(phone!)
+      .child('Timer')
+      .onValue
+      .listen((event) async {
+  timeWaited = event.snapshot.value.toString();
+  setState(() {
+    timeWaitedString = timeWaited;
+
+  });
+  });
+
+  }
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
-
-  final Stream<QuerySnapshot> Waiting =
-      FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
+  final Stream<QuerySnapshot> Waiting = FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
@@ -110,6 +109,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                     return ListView.builder(
                                         itemCount: data.size,
                                         itemBuilder: (context, index) {
+                                          getTimeWaited(data.docs[index].id);
                                           var id = data.docs[index].id;
                                           if (data.docs[index]['Waiting']) {
                                             return Material(
@@ -135,7 +135,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                               index])));
                                                     },
                                                     child: Text(
-                                                        ' ${data.docs[index]['Phone']} '),
+                                                        ' ${data.docs[index]['Phone']+ "  Time waited: " + timeWaitedString!}'),
 
                                                   ),
                                                 ]),
