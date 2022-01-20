@@ -106,8 +106,10 @@ class AppRouter extends _i1.RootStackRouter {
           routeData: routeData, child: const _i10.ProfilePage());
     },
     ActivitiesRoute.name: (routeData) {
+      final args = routeData.argsAs<ActivitiesRouteArgs>(
+          orElse: () => const ActivitiesRouteArgs());
       return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: const _i11.ActivitiesPage());
+          routeData: routeData, child: _i11.ActivitiesPage(key: args.key));
     },
     ActivityDetailRoute.name: (routeData) {
       final args = routeData.argsAs<ActivityDetailRouteArgs>();
@@ -356,10 +358,22 @@ class ProfileRoute extends _i1.PageRouteInfo<void> {
 }
 
 /// generated route for [_i11.ActivitiesPage]
-class ActivitiesRoute extends _i1.PageRouteInfo<void> {
-  const ActivitiesRoute() : super(name, path: '');
+class ActivitiesRoute extends _i1.PageRouteInfo<ActivitiesRouteArgs> {
+  ActivitiesRoute({_i13.Key? key})
+      : super(name, path: '', args: ActivitiesRouteArgs(key: key));
 
   static const String name = 'ActivitiesRoute';
+}
+
+class ActivitiesRouteArgs {
+  const ActivitiesRouteArgs({this.key});
+
+  final _i13.Key? key;
+
+  @override
+  String toString() {
+    return 'ActivitiesRouteArgs{key: $key}';
+  }
 }
 
 /// generated route for [_i12.ActivityDetailPage]
