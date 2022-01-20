@@ -240,28 +240,28 @@ class _CallControlPanelState extends State<CallControlPanel> {
       });
   }
 
-  void pauseListeners(){
-    Timer.periodic(Duration(seconds: 1), (timer)
-    async{
-      startTimeStream?.pause();
-      batteryStream?.pause();
-      longitudeStream?.pause();
-      latitudeStream?.pause();
-      xAccelerationStream?.pause();
-      yAccelerationStream?.pause();
-      zAccelerationStream?.pause();
-      roomIdAccelerationStream?.pause();
-      await Future.delayed(Duration(seconds: 1));
-      startTimeStream?.resume();
-      batteryStream?.resume();
-      longitudeStream?.resume();
-      latitudeStream?.resume();
-      xAccelerationStream?.resume();
-      yAccelerationStream?.resume();
-      zAccelerationStream?.resume();
-      roomIdAccelerationStream?.resume();
-    });
-  }
+//  void pauseListeners(){
+//    Timer.periodic(Duration(seconds: 1), (timer)
+//    async{
+//      startTimeStream?.pause();
+//      batteryStream?.pause();
+//      longitudeStream?.pause();
+//      latitudeStream?.pause();
+//      xAccelerationStream?.pause();
+//      yAccelerationStream?.pause();
+//      zAccelerationStream?.pause();
+//      roomIdAccelerationStream?.pause();
+//      await Future.delayed(Duration(seconds: 1));
+//      startTimeStream?.resume();
+//      batteryStream?.resume();
+//      longitudeStream?.resume();
+//      latitudeStream?.resume();
+//      xAccelerationStream?.resume();
+//      yAccelerationStream?.resume();
+//      zAccelerationStream?.resume();
+//      roomIdAccelerationStream?.resume();
+//    });
+//  }
 
   void getRoomId() {
     roomIdAccelerationStream = ref
@@ -308,7 +308,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     ref.child('sensors').child(callerId).update({'Online': true});
     activateListeners();
     getLocationWeather();
-    pauseListeners();
+//    pauseListeners();
 
 
     // Changing states
