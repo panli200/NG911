@@ -49,12 +49,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
   double? windSpeed = 0.0;
   String? weatherDescription = '';
 
-  // acceleration and location data
+  // acceleration and location/speed data
   String? xAccelerationString = '';
   String? yAccelerationString = '';
   String? zAccelerationString = '';
   String? longitudeString = '';
   String? latitudeString = '';
+  String? speedString = '';
 
   // other sensors
   String mobileChargeString = '';
@@ -71,6 +72,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? batteryStream;
   StreamSubscription? longitudeStream;
   StreamSubscription? latitudeStream;
+  StreamSubscription? speedStream;
   StreamSubscription? xAccelerationStream;
   StreamSubscription? yAccelerationStream;
   StreamSubscription? zAccelerationStream;
@@ -90,6 +92,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     batteryStream?.cancel();
     longitudeStream?.cancel();
     latitudeStream?.cancel();
+    speedStream?.cancel();
     xAccelerationStream?.cancel();
     yAccelerationStream?.cancel();
     zAccelerationStream?.cancel();
@@ -195,6 +198,20 @@ class _CallControlPanelState extends State<CallControlPanel> {
       }
     });
 
+    speedStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('Speed')
+        .onValue
+        .listen((event) {
+      if (ended != true) {
+        String speed = event.snapshot.value.toString();
+        setState(() {
+          speedString = 'Speed: ' + speed;
+        });
+      }
+    });
+
     xAccelerationStream = ref
         .child('sensors')
         .child(callerId)
@@ -275,6 +292,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     WeatherFactory wf = WeatherFactory("5e1ad24d143d638f46a53ae6403ee651");
     Weather w = await wf.currentWeatherByLocation(
         double.parse(latitudePassed!), double.parse(longitudePassed!));
+    weatherDescription = w.weatherDescription;
     humidity = w.humidity!;
     windSpeed = w.windSpeed!;
     temperature = w.temperature!.celsius!.toInt();
@@ -363,6 +381,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       child: StreetMap(),
                     )
                   ]),
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.1,
+                    width: MediaQuery.of(context).size.width * 0.25,
+                  ),
                   Row(// For Closing the call
                       children: <Widget>[
                     SizedBox(
@@ -396,7 +418,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   // This is the User Info
                   //////
                   SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.30,
+                      height: MediaQuery.of(context).size.height * 0.35,
                       width: MediaQuery.of(context).size.width * 0.25,
                       child: Row(
                         children: [
@@ -432,6 +454,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 '$latitudeString',
                               ),
                               Text(
+                                '$speedString',
+                              ),
+                              Text(
                                 '$xAccelerationString',
                               ),
                               Text(
@@ -452,17 +477,17 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         Column(children: [
                           ElevatedButton(
                               onPressed: _EndCall,
-                              child: const Text("Download Medical Report")),
+                              child: const Text("Download Personal Medical Report")),
                           ElevatedButton(
                               onPressed: _EndCall,
                               child:
-                                  const Text("Download Profile Information")),
+                                  const Text("Download Emergency Contact Medical Report")),
                           //////
                           // This is the chat
                           //////
                           SizedBox(
                               height: MediaQuery.of(context).size.height * 0.35,
-                              width: MediaQuery.of(context).size.width * 0.2,
+                              width: MediaQuery.of(context).size.width * 0.25,
                               child: Row(
                                 children: [
                                   Expanded(
@@ -549,10 +574,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 ],
                               )),
 
-                          const Divider(
-                            height: 5,
-                            thickness: 3,
-                          ),
                           //////
                           // This is the reply
                           //////
@@ -578,7 +599,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                             MediaQuery.of(context).size.height,
                                         width:
                                             MediaQuery.of(context).size.width *
-                                                0.18,
+                                                0.20,
                                         child: Row(
                                           children: [
                                             Expanded(
@@ -627,11 +648,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         ])
                       ],
                     ),
-                  ),
-
-                  const Divider(
-                    height: 5,
-                    thickness: 3,
                   ),
                 ]),
                 Column(children: [
