@@ -4,6 +4,7 @@ import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:html' as html;
 import 'package:firebase_database/firebase_database.dart' as FbDb;
+
 class MapsHomePage extends StatefulWidget {
   const MapsHomePage({Key? key}) : super(key: key);
 
@@ -11,26 +12,22 @@ class MapsHomePage extends StatefulWidget {
   State<MapsHomePage> createState() => _MapsHomePageState();
 }
 
-
-
 class _MapsHomePageState extends State<MapsHomePage> {
   var timeWaited = "0";
   String? timeWaitedString;
- void getTimeWaited(String? phone){
-  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
-  ref
-      .child('sensors')
-      .child(phone!)
-      .child('Timer')
-      .onValue
-      .listen((event) async {
-  timeWaited = event.snapshot.value.toString();
-  setState(() {
-    timeWaitedString = timeWaited;
-
-  });
-  });
-
+  void getTimeWaited(String? phone) {
+    FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
+    ref
+        .child('sensors')
+        .child(phone!)
+        .child('Timer')
+        .onValue
+        .listen((event) async {
+      timeWaited = event.snapshot.value.toString();
+      setState(() {
+        timeWaitedString = timeWaited;
+      });
+    });
   }
 
   @override
@@ -38,7 +35,9 @@ class _MapsHomePageState extends State<MapsHomePage> {
     // TODO: implement initState
     super.initState();
   }
-  final Stream<QuerySnapshot> Waiting = FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
+
+  final Stream<QuerySnapshot> Waiting =
+      FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
@@ -135,8 +134,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                               index])));
                                                     },
                                                     child: Text(
-                                                        ' ${data.docs[index]['Phone']+ "  Time waited: " + timeWaitedString!}'),
-
+                                                        ' ${data.docs[index]['Phone'] + "  Time waited: " + timeWaitedString!}'),
                                                   ),
                                                 ]),
                                               ),
