@@ -61,7 +61,6 @@ class _CallPageState extends State<CallPage> {
   @override
   Widget build(BuildContext context) {
     String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-    String uid = FirebaseAuth.instance.currentUser!.uid.toString();
     final Cloud.Query sorted = Cloud.FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(mobile)
