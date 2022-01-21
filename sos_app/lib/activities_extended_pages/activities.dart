@@ -1,24 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sos_app/activities_extended_pages/activity_detail.dart';
-import 'package:shimmer/shimmer.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
-//class ActivitiesPage extends StatefulWidget {
-//
-//  const ActivitiesPage({Key? key}) : super(key: key);
-//
-//  @override
-//  Widget build(BuildContext context) {
-//    return Scaffold(
-//      body: Center(
-//        child: DelayedList(),
-//      ),
-//    );
-//  }
-//}
+
 class ActivitiesPage extends StatefulWidget {
   ActivitiesPage({Key? key}) : super(key: key);
 
@@ -36,7 +23,7 @@ class ActivitiesPageState extends State<ActivitiesPage> {
   @override
   Widget build(BuildContext context){
     String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-    CollectionReference activities = FirebaseFirestore.instance.collection('SoSUsers').doc(mobile).collection('Emergencies');
+    Query activities = FirebaseFirestore.instance.collection('SoSUsers').doc(mobile).collection('Emergencies').orderBy('StartTime', descending: true);
     final Stream<QuerySnapshot> activitiesList = activities.snapshots();
       return Container(
 
