@@ -187,6 +187,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                           if (data.docs[index]['Online']) {
                                             return Material(
                                               child: Container(
+                                                height: 30,
                                                 child: Row(children: <Widget>[
                                                   ElevatedButton(
                                                     style: ButtonStyle(
