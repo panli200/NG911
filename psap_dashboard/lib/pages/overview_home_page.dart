@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
+import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class OverviewHomePage extends StatefulWidget {
   @override
@@ -29,6 +31,43 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                 SizedBox(
                   height: MediaQuery.of(context).size.height * 0.9,
                   width: MediaQuery.of(context).size.width * 0.6,
+                    child: SfCartesianChart(
+                      // Initialize category axis
+                        primaryXAxis: CategoryAxis(),
+                        series: <LineSeries<Emergency, String>>[
+                          LineSeries<Emergency, String>(
+                            // Bind data source
+                              dataSource:  <Emergency>[
+                                Emergency('01:00', 2),
+                                Emergency('02:00', 8),
+                                Emergency('03:00', 4),
+                                Emergency('04:00', 3),
+                                Emergency('05:00', 40),
+                                Emergency('06:00', 5),
+                                Emergency('07:00', 15),
+                                Emergency('08:00', 8),
+                                Emergency('09:00', 6),
+                                Emergency('10:00', 9),
+                                Emergency('11:00', 2),
+                                Emergency('12:00', 7),
+                                Emergency('13:00', 55),
+                                Emergency('14:00', 2),
+                                Emergency('15:00', 12),
+                                Emergency('16:00', 0),
+                                Emergency('17:00', 4),
+                                Emergency('18:00', 0),
+                                Emergency('19:00', 22),
+                                Emergency('20:00', 0),
+                                Emergency('21:00', 0),
+                                Emergency('22:00', 0),
+                                Emergency('23:00', 0),
+                                Emergency('24:00', 0),
+                              ],
+                              xValueMapper: (Emergency amount, _) => amount.hour,
+                              yValueMapper: (Emergency amount, _) => amount.amount
+                          )
+                        ]
+                    )
                 ),
                 SizedBox(
                     height: MediaQuery.of(context).size.height * 0.9,
@@ -43,6 +82,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                           ),
                           textAlign: TextAlign.center,
                         ),
+
                         Row(
                           children: const [
                             Expanded(child: Text('Mobile Number')),
@@ -94,9 +134,15 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                             ),
                           ],
                         ),
+
                       ],
                     )),
               ]),
         ]),
       );
+}
+class Emergency {
+  Emergency(this.hour, this.amount);
+  final String hour;
+  final double amount;
 }

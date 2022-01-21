@@ -54,6 +54,9 @@ dependencies:
   # Pattern
   bloc: ^8.0.2
 
+  #Chart
+  syncfusion_flutter_charts: ^19.4.43
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
