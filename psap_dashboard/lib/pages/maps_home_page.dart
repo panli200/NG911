@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:psap_dashboard/pages/maps.dart';
+import 'package:psap_dashboard/pages/signaling.dart';
 import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:html' as html;
@@ -15,6 +17,11 @@ class MapsHomePage extends StatefulWidget {
 class _MapsHomePageState extends State<MapsHomePage> {
   var timeWaited = "0";
   String? timeWaitedString;
+  // video streaming
+  Signaling signaling = Signaling();
+  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+
   void getTimeWaited(String? phone) {
     FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
     ref
@@ -32,10 +39,28 @@ class _MapsHomePageState extends State<MapsHomePage> {
 
   @override
   void initState() {
+
+    // Video streaming
+    _remoteRenderer.initialize();
+    _localRenderer.initialize();
+
+    signaling.onAddRemoteStream = ((stream) {
+      _remoteRenderer.srcObject = stream;
+      setState(() {});
+    });
+    signaling.openUserMedia(_localRenderer, _remoteRenderer);
     // TODO: implement initState
     super.initState();
   }
+  @override
+  void dispose() async {
+    // clean video streaming
+    _localRenderer.dispose();
+    _remoteRenderer.dispose();
 
+    // clear users
+    super.dispose();
+  }
   final Stream<QuerySnapshot> Waiting =
       FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
@@ -131,7 +156,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                           id,
                                                                       Snapshot:
                                                                           data.docs[
-                                                                              index])));
+                                                                              index], signaling: signaling, localRenderer: _localRenderer,remoteRenderer: _remoteRenderer)));
                                                     },
                                                     child: Text(
                                                         ' ${data.docs[index]['Phone'] + "  Time waited: " + timeWaitedString!}'),
