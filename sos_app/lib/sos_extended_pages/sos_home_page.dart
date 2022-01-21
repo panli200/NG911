@@ -1,293 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:shimmer/shimmer.dart';
-import 'dart:async';
-import 'package:camera/camera.dart';
-import 'package:sos_app/main.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:sos_app/data/application_data.dart';
 import 'package:sos_app/widgets.dart';
 
-class SosHomePage extends StatelessWidget {
-
+class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: DelayedList(),
-      ),
-    );
-  }
+  SosHomePageState createState() => SosHomePageState();
 }
 
-class DelayedList extends StatefulWidget {
-  @override
-  _DelayedListState createState() => _DelayedListState();
-}
-
-class _DelayedListState extends State<DelayedList> {
-  bool isLoading = true;
-
-  @override
-  Widget build(BuildContext context) {
-    Timer timer = Timer(Duration(seconds: 3), () {
-      setState(() {
-        isLoading = false;
-      });
-    });
-
-    return isLoading ? ShimmerList() : DataList(timer);
-  }
-}
-
-class DataList extends StatelessWidget {
-  final Timer timer;
+class SosHomePageState extends State<SosHomePage> {
   final howToUsePopUp = HowToUseData.howToUsePopUp;
   final emergencyCallPopUp = EmergencyCallPopUpData.emergencyCallPopUp;
 
-  DataList(this.timer);
-
   @override
   Widget build(BuildContext context) {
-    timer.cancel();
     return Scaffold(
-      body:
-        Container(
-        margin: EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          // children: <Widget>[
-          children: <Widget>[ 
-            Container(
-              height: 40,
-              width: 40,
-              margin: const EdgeInsets.only(left: 20.0, right: 20.0),
-              
-              child:  HowToUseButton(
-                  tileColor: howToUsePopUp.color,
-                  pageTitle: howToUsePopUp.title,
-                  onTileTap: () => context.router.push(
-                    HowToUseRoute(
-                      howToUseID: howToUsePopUp.id,
-                    ),
-                  ) // onTileTap
-                ),
-            ), // How To Use App Placeholder  
-
-            SizedBox(height: 20), // Spacing visuals
-
-            Center(
-              child: Container(
-                  height: 250,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  child: BackCameraPreview(),
-                ),
-            ),
-
-            SizedBox(height: 20), // Spacing visuals
-
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget> [
-                Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  margin: EdgeInsets.symmetric(vertical: 8),
-
-                  child:  MedicalScenarioButton(
-                    tileColor: emergencyCallPopUp.color,
-                    pageTitle: emergencyCallPopUp.title,
-                    onTileTap: () => context.router.push(
-                      EmergencyCallPopUpRoute(
-                        emergencyCallPopUpID: emergencyCallPopUp.id,
-                      ),
-                    ) // onTileTap
-                  ),
-                ),
-
-                Center(
-                    child: Container(
-                    margin: EdgeInsets.symmetric(vertical: 8),
-                    height: 50,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    alignment: Alignment.center,
-                    color: Colors.grey,
-                    child: Text('Scenario Call Button # 2')
-                  ), 
-                ), // Scenario Two Button Placeholder
-
-                // Center(
-                //     child: Container(
-                //     margin: EdgeInsets.symmetric(vertical: 8),
-                //     height: 50,
-                //     width: MediaQuery.of(context).size.width * 0.8,
-                //     alignment: Alignment.center,
-                //     color: Colors.grey,
-                //     child: Text('Scenario Call Button # 3')
-                //   ), 
-                // ), // Scenario Three 
-              ],
-            ) // SOS Scenario Button Placeholders
-          ],
-        ),
-      ) 
-    );
-  }
-}
-
-/************** BACK CAMERA LOGIC START **************/
-class BackCameraPreview extends StatefulWidget {
-  final color;
-  final size;
-
-  BackCameraPreview({this.color, this.size});
-
-  @override
-  _BackCameraPreview createState() => _BackCameraPreview();
-}
-
-class _BackCameraPreview extends State<BackCameraPreview> {
-  late CameraController controller;
-
-  @override
-  void initState() {
-    super.initState();
-    controller = CameraController(cameras[0], ResolutionPreset.medium);
-    controller.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {});
-    });
-  }
-
-  @override
-  void dispose() {
-    controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    if (!controller.value.isInitialized) {
-      return Container();
-    }
-    return AspectRatio(
-        aspectRatio: controller.value.aspectRatio,
-        child: CameraPreview(controller));
-  }
-}
- /************** BACK CAMERA LOGIC END **************/
-
-class ShimmerList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    int offset = 0;
-    int time = 800;
-
-    return SafeArea(
-      child: ListView.builder(
-        itemCount: 8,
-        itemBuilder: (BuildContext context, int index) {
-          offset += 5;
-          time = 800 + offset;
-
-          print(time);
-
-          return Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
-              child: Shimmer.fromColors(
-                highlightColor: Colors.white,
-                baseColor: Colors.grey,
-                child: ShimmerLayout(),
-                period: Duration(milliseconds: time),
-              ));
-        },
-      ),
-    );
-  }
-}
-
-class ShimmerLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
+        body: Container(
+      padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       margin: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
+        // children: <Widget>[
         children: <Widget>[
           Container(
             height: 40,
             width: 40,
-            decoration: BoxDecoration(
-              color: Colors.grey,
-              shape: BoxShape.circle
-            ),
-          ),// How To Use App Placeholder  
+            child: HowToUseButton(
+                tileColor: howToUsePopUp.color,
+                pageTitle: howToUsePopUp.title,
+                onTileTap: () => context.router.push(
+                      HowToUseRoute(
+                        howToUseID: howToUsePopUp.id,
+                      ),
+                    ) // onTileTap
+                ),
+          ), // How To Use App Placeholder
 
           SizedBox(height: 20), // Spacing visuals
 
-          Center(
-            child: Container(
-              height: 250,
-              width: MediaQuery.of(context).size.width * 0.8,
-              alignment: Alignment.center,
-              color: Colors.grey,
-            ), // Soundwave Placeholder
-          ),
-          
           SizedBox(height: 20), // Spacing visuals
-          
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget> [
-              Center(
-                  child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
+            children: <Widget>[
+              Container(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
                   height: 50,
                   width: MediaQuery.of(context).size.width * 0.8,
-                  alignment: Alignment.center,
-                  color: Colors.grey,
-                ), 
-              ), // Scenario One Button Placeholder (GENERIC MEDICAL SCENARIO)
-
-              Center(
-                  child: Container(
                   margin: EdgeInsets.symmetric(vertical: 8),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  alignment: Alignment.center,
-                  color: Colors.grey,
-                ), 
-              ), // Scenario Two Button Placeholder
-
-              Center(
-                  child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  alignment: Alignment.center,
-                  color: Colors.grey,
-                ), 
-              ), // Scenario Three Button Placeholder
-
-              Center(
-                  child: Container(
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  alignment: Alignment.center,
-                  color: Colors.grey,
-                ), 
-              ) // Scenario Four Button Placeholder
+                  child: Center(
+                      child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.red),
+                    ),
+                    onPressed: () {
+                      context.router.push(
+                        EmergencyCallPopUpRoute(
+                          emergencyCallPopUpID: emergencyCallPopUp.id,
+                        ),
+                      );
+                    },
+                    child: Text("Generic Emergency 911"),
+                  ))),
+              const Divider(
+                height: 10,
+                thickness: 5,
+              ),
             ],
           ) // SOS Scenario Button Placeholders
         ],
       ),
-    );
+    ));
   }
 }
