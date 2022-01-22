@@ -92,7 +92,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
     longitudeStream?.cancel();
     latitudeStream?.cancel();
     speedStream?.cancel();
-    xAccelerationStream?.cancel();
     yAccelerationStream?.cancel();
     zAccelerationStream?.cancel();
     roomIdAccelerationStream?.cancel();
