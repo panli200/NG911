@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:battery/battery.dart';
-import 'package:sensors/sensors.dart';
 import 'dart:async';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'acceleration.dart';
@@ -17,7 +16,6 @@ void updateSensors(String? time) async {
   double z = 0.0;
   Acceleration? accelerationC = Acceleration();
   String accelerationString = "";
-  final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
   final databaseReal = ref.child('sensors').child(mobile);
