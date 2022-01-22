@@ -54,19 +54,7 @@ void updateSensors(String? time) async {
         });
       });
 
-//      streamSubscription =
-//          accelerometerEvents.listen((AccelerometerEvent event) {
-//        x = event.x;
-//        y = event.y;
-//        z = event.z;
-//        if (Ended != true) {
-//          databaseReal.update({
-//            'x-Acc': x,
-//            'y-Acc': y,
-//            'z-Acc': z,
-//          });
-//        }
-//      });
+
 
 // Location and Speed
       streamSubscription = stream.listen((DatabaseEvent event) {
@@ -82,10 +70,10 @@ void updateSensors(String? time) async {
 // Battery
       var _battery = Battery();
       streamSubscription =
-          _battery.onBatteryStateChanged.listen((BatteryState state) {
+          _battery.onBatteryStateChanged.listen((BatteryState state) async{
         if (Ended != true) {
           databaseReal.update({
-            'MobileCharge': _battery.batteryLevel.toString(),
+            'MobileCharge': await _battery.batteryLevel.toString(),
           });
         }
       });
