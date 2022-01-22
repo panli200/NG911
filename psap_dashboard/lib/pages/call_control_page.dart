@@ -50,7 +50,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   String? weatherDescription = '';
 
   // acceleration and location/speed data
-  String? xAccelerationString = '';
+  String? AccelerationString = '';
   String? yAccelerationString = '';
   String? zAccelerationString = '';
   String? longitudeString = '';
@@ -72,9 +72,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? longitudeStream;
   StreamSubscription? latitudeStream;
   StreamSubscription? speedStream;
-  StreamSubscription? xAccelerationStream;
-  StreamSubscription? yAccelerationStream;
-  StreamSubscription? zAccelerationStream;
+  StreamSubscription? AccelerationStream;
   StreamSubscription? roomIdAccelerationStream;
 
   String? StartTime;
@@ -92,9 +90,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     longitudeStream?.cancel();
     latitudeStream?.cancel();
     speedStream?.cancel();
-    xAccelerationStream?.cancel();
-    yAccelerationStream?.cancel();
-    zAccelerationStream?.cancel();
+
     roomIdAccelerationStream?.cancel();
 
     // Changing the states
@@ -211,46 +207,22 @@ class _CallControlPanelState extends State<CallControlPanel> {
       }
     });
 
-    xAccelerationStream = ref
+    AccelerationStream = ref
         .child('sensors')
         .child(callerId)
-        .child('x-Acc')
+        .child('Acceleration')
         .onValue
         .listen((event) {
       if (ended != true) {
-        String xAcc = event.snapshot.value.toString();
+        String AccelerationValue = event.snapshot.value.toString();
         setState(() {
-          xAccelerationString = 'Acceleration x: ' + xAcc;
+          AccelerationString =  AccelerationValue;
         });
       }
     });
 
-    yAccelerationStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('y-Acc')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        String yAcc = event.snapshot.value.toString();
-        setState(() {
-          yAccelerationString = 'Acceleration y: ' + yAcc;
-        });
-      }
-    });
-    zAccelerationStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('z-Acc')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        String zAcc = event.snapshot.value.toString();
-        setState(() {
-          zAccelerationString = 'Acceleration z: ' + zAcc;
-        });
-      }
-    });
+
+
   }
 
 //  void pauseListeners(){
@@ -440,14 +412,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 '$speedString',
                               ),
                               Text(
-                                '$xAccelerationString',
+                                '$AccelerationString',
                               ),
-                              Text(
-                                '$yAccelerationString',
-                              ),
-                              Text(
-                                '$zAccelerationString',
-                              ),
+
                             ],
                           ),
                         ],
@@ -486,10 +453,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               return const Text(
                                                   'Something went wrong');
                                             }
-//                                            if (snapshot.connectionState ==
-//                                                ConnectionState.waiting) {
-//                                              return const Text('Loading');
-//                                            }
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const Text('Loading');
+                                            }
 
                                             final data = snapshot.requireData;
                                             return ListView.builder(
