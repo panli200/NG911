@@ -1,29 +1,31 @@
+import 'dart:async';
 import 'package:sensors/sensors.dart';
-import 'dart:math';
 
-class AccelerationAnalyzer {
-
-  double x = 0.0;
-  double y = 0.0;
-  double z = 0.0;
-
-  Future<void> getAcceleration() async {
-    //For display, can be delete in the future
-    await accelerometerEvents.listen((AccelerometerEvent event) {
-      x = event.x;
-      y = event.y;
-      z = event.z;
+class Acceleration {
+  Acceleration() {
+    String accelerationAdded = "";
+    double accelerationX = 0;
+    double accelerationY = 0;
+    double accelerationZ = 0;
+    accelerometerEvents.listen((AccelerometerEvent event) {
+      accelerationX = event.x;
+      accelerationY = event.y;
+      accelerationZ = event.z;
+    });
+    Timer.periodic(Duration(seconds: 5), (t) {
+      accelerationAdded = "x: " +
+          accelerationX.toString() +
+          "\n" +
+          "y: " +
+          accelerationY.toString() +
+          "\n" +
+          "z: " +
+          accelerationZ.toString();
+      accelerationController.sink.add(accelerationAdded);
     });
   }
 
+  final accelerationController = StreamController<String>.broadcast();
 
-  bool isAccident() {
-    double ? AccelerationMagnitude = sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2));
-    if (AccelerationMagnitude > 10.0) {
-      return true;
-    }
-    return false;
-  }
-
+  Stream<String> get stream => accelerationController.stream;
 }
-

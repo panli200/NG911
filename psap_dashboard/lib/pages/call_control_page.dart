@@ -50,7 +50,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   String? weatherDescription = '';
 
   // acceleration and location/speed data
-  String? xAccelerationString = '';
+  String? AccelerationString = '';
   String? yAccelerationString = '';
   String? zAccelerationString = '';
   String? longitudeString = '';
@@ -72,7 +72,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? longitudeStream;
   StreamSubscription? latitudeStream;
   StreamSubscription? speedStream;
-  StreamSubscription? xAccelerationStream;
+  StreamSubscription? AccelerationStream;
   StreamSubscription? yAccelerationStream;
   StreamSubscription? zAccelerationStream;
   StreamSubscription? roomIdAccelerationStream;
@@ -211,16 +211,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
       }
     });
 
-    xAccelerationStream = ref
+    AccelerationStream = ref
         .child('sensors')
         .child(callerId)
-        .child('x-Acc')
+        .child('Acceleration')
         .onValue
         .listen((event) {
       if (ended != true) {
-        String xAcc = event.snapshot.value.toString();
+        String AccelerationValue = event.snapshot.value.toString();
         setState(() {
-          xAccelerationString = 'Acceleration x: ' + xAcc;
+          AccelerationString =  AccelerationValue;
         });
       }
     });
@@ -440,14 +440,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 '$speedString',
                               ),
                               Text(
-                                '$xAccelerationString',
+                                '$AccelerationString',
                               ),
-                              Text(
-                                '$yAccelerationString',
-                              ),
-                              Text(
-                                '$zAccelerationString',
-                              ),
+//                              Text(
+//                                '$yAccelerationString',
+//                              ),
+//                              Text(
+//                                '$zAccelerationString',
+//                              ),
                             ],
                           ),
                         ],
