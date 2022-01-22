@@ -9,7 +9,6 @@ import 'signaling.dart';
 import 'package:google_maps/google_maps.dart' as googleMap;
 import 'dart:ui' as ui;
 import 'dart:html';
-import 'package:intl/intl.dart';
 
 // Enviromental variables
 String? latitudePassed;
@@ -18,8 +17,10 @@ String? longitudePassed;
 class CallControlPanel extends StatefulWidget {
   final CallerId;
   final Snapshot;
-  const CallControlPanel(
-      {Key? key, required this.CallerId, required this.Snapshot})
+  final signaling;
+  final remoteRenderer;
+  final localRenderer;
+  const CallControlPanel({Key? key, required this.CallerId, required this.Snapshot, required this.signaling,required this.localRenderer,this.remoteRenderer})
       : super(key: key);
 
   @override
@@ -27,7 +28,6 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
-  // Bloc
   // RealTime database
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
@@ -59,12 +59,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   // other sensors
   String mobileChargeString = '';
-  // video streaming
-  Signaling signaling = Signaling();
-  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
-  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
 
-  // End video streaming code
+  //Video Audio Stream
+  Signaling? signaling ;
+  RTCVideoRenderer? _localRenderer ;
+  RTCVideoRenderer? _remoteRenderer ;
 
   // Listeners
   StreamSubscription? endedStateStream;
@@ -80,7 +79,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   String? StartTime;
   final sentText = TextEditingController();
-  FbDb.DatabaseReference? _db;
+
   var roomId;
 
   // Function to display the map
@@ -303,22 +302,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
   void initState() {
     // Google map initialize
 
-    // Video streaming
-    _remoteRenderer.initialize();
-    _localRenderer.initialize();
-
-    signaling.onAddRemoteStream = ((stream) async {
-      _remoteRenderer.srcObject = stream;
-      setState(() {});
-    });
-    signaling.openUserMedia(_localRenderer, _remoteRenderer);
-
-    super.initState();
     callerId = widget.CallerId; //Getting user ID from the previous page..
     getRoomId();
+     signaling = widget.signaling;
+     _localRenderer = widget.localRenderer;
+     _remoteRenderer = widget.remoteRenderer;
 
-    signaling.joinRoom(
-        roomId, _remoteRenderer, callerId); //join the video stream
+    signaling?.joinRoom(
+        roomId, _remoteRenderer!, callerId); //join the video stream
 
     ref.child('sensors').child(callerId).update({'Online': true});
     activateListeners();
@@ -331,23 +322,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .collection('SOSEmergencies')
         .doc(callerId)
         .update({
-      'Waiting': false
-    }); // Changing the caller's Waiting state to be False
-    FirebaseFirestore.instance
-        .collection('SOSEmergencies')
-        .doc(callerId)
-        .update(
-            {'Online': true}); // Changing the caller's Online state to be True
-
+      'Waiting': false,
+      'Online': true
+    }); // Changing the caller's Waiting state to be False and Online state to be True
+    super.initState();
     //String UserMedicalReport = "";
   }
 
   @override
   void dispose() async {
-    // clean video streaming
-    _localRenderer.dispose;
-    _remoteRenderer.dispose();
-
     // clear users
     super.dispose();
   }
@@ -393,7 +376,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       child: ElevatedButton(
                           child: const Text("End Call"),
                           onPressed: () async {
-                            signaling.hangUp(callerId);
+                            signaling!.hangUp(_localRenderer!, roomId, callerId);
                             FbDb.DatabaseReference real =
                                 FbDb.FirebaseDatabase.instance.ref();
                             final databaseReal =
@@ -477,11 +460,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         Column(children: [
                           ElevatedButton(
                               onPressed: _EndCall,
-                              child: const Text("Download Personal Medical Report")),
+                              child: const Text(
+                                  "Download Personal Medical Report")),
                           ElevatedButton(
                               onPressed: _EndCall,
-                              child:
-                                  const Text("Download Emergency Contact Medical Report")),
+                              child: const Text(
+                                  "Download Emergency Contact Medical Report")),
                           //////
                           // This is the chat
                           //////
@@ -656,7 +640,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                     width: MediaQuery.of(context).size.width * 0.3,
                     child: Row(
                       children: [
-                        Expanded(child: RTCVideoView(_remoteRenderer)),
+                        Expanded(child: RTCVideoView(_remoteRenderer!)),
                       ],
                     ),
                   ),
@@ -677,7 +661,7 @@ class StreetMap extends StatelessWidget {
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
       final myLatlng = googleMap.LatLng(
           double.parse(latitudePassed!), double.parse(longitudePassed!));
-      print("The Latitude is: " + latitudePassed!);
+
       final mapOptions = googleMap.MapOptions()
         ..zoom = 19
         ..center = myLatlng;

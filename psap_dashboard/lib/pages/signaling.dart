@@ -20,7 +20,7 @@ class Signaling {
   RTCPeerConnection? peerConnection;
   MediaStream? localStream;
   MediaStream? remoteStream;
-  String? roomId;
+ // String? roomId;
   String? currentRoomText;
   StreamStateCallback? onAddRemoteStream;
 
@@ -115,7 +115,13 @@ class Signaling {
     remoteVideo.srcObject = await createLocalMediaStream('key');
   }
 
-  Future<void> hangUp(String CallerId) async {
+  Future<void> hangUp(
+      RTCVideoRenderer localVideo, String roomId, String CallerId) async {
+    List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
+    tracks.forEach((track) {
+      track.stop();
+    });
+
     if (remoteStream != null) {
       remoteStream!.getTracks().forEach((track) => track.stop());
     }
@@ -127,8 +133,7 @@ class Signaling {
           .collection('SOSEmergencies')
           .doc(CallerId)
           .collection('rooms')
-          .doc('$roomId');
-      ;
+          .doc(roomId);
       var calleeCandidates = await roomRef.collection('calleeCandidates').get();
       calleeCandidates.docs.forEach((document) => document.reference.delete());
 
