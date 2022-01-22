@@ -73,8 +73,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? latitudeStream;
   StreamSubscription? speedStream;
   StreamSubscription? AccelerationStream;
-  StreamSubscription? yAccelerationStream;
-  StreamSubscription? zAccelerationStream;
   StreamSubscription? roomIdAccelerationStream;
 
   String? StartTime;
@@ -92,8 +90,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     longitudeStream?.cancel();
     latitudeStream?.cancel();
     speedStream?.cancel();
-    yAccelerationStream?.cancel();
-    zAccelerationStream?.cancel();
+
     roomIdAccelerationStream?.cancel();
 
     // Changing the states
@@ -224,32 +221,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
       }
     });
 
-    yAccelerationStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('y-Acc')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        String yAcc = event.snapshot.value.toString();
-        setState(() {
-          yAccelerationString = 'Acceleration y: ' + yAcc;
-        });
-      }
-    });
-    zAccelerationStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('z-Acc')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        String zAcc = event.snapshot.value.toString();
-        setState(() {
-          zAccelerationString = 'Acceleration z: ' + zAcc;
-        });
-      }
-    });
+
+
   }
 
 //  void pauseListeners(){
@@ -441,12 +414,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               Text(
                                 '$AccelerationString',
                               ),
-//                              Text(
-//                                '$yAccelerationString',
-//                              ),
-//                              Text(
-//                                '$zAccelerationString',
-//                              ),
+
                             ],
                           ),
                         ],
@@ -485,10 +453,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               return const Text(
                                                   'Something went wrong');
                                             }
-//                                            if (snapshot.connectionState ==
-//                                                ConnectionState.waiting) {
-//                                              return const Text('Loading');
-//                                            }
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const Text('Loading');
+                                            }
 
                                             final data = snapshot.requireData;
                                             return ListView.builder(
