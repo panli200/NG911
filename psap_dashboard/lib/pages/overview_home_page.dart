@@ -1,8 +1,10 @@
+import 'dart:async';
+import 'dart:html';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import 'package:intl/intl.dart';
 
 class OverviewHomePage extends StatefulWidget {
   @override
@@ -10,10 +12,22 @@ class OverviewHomePage extends StatefulWidget {
 }
 
 class _OverviewHomePageState extends State<OverviewHomePage> {
-  final Stream<QuerySnapshot> emergencies = FirebaseFirestore.instance
-      .collection('SOSEmergencies')
-      .orderBy('StartTime', descending: true)
-      .snapshots();
+ Timer? timer;
+  var currentDay = DateTime.now();
+  NumberFormat formatter = new NumberFormat("0000");
+  final Stream<QuerySnapshot> history =
+      FirebaseFirestore.instance.collection('History').snapshots();
+
+  List<int> num = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+
+
+  @override
+  void initState() {
+    // Timer.periodic(Duration(seconds: 1), (t) {  });
+
+    //getNum();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -23,81 +37,146 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
           centerTitle: true,
           backgroundColor: Colors.green,
         ),
-        body: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: <Widget>[
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.9,
-                        width: MediaQuery.of(context).size.width * 0.6,
-                        child: SfCartesianChart(
-                            // Initialize category axis
-                            primaryXAxis: CategoryAxis(),
-                            series: <LineSeries<Emergency, String>>[
-                              LineSeries<Emergency, String>(
-                                  // Bind data source
-                                  dataSource: <Emergency>[
-                                    Emergency('01:00', 2),
-                                    Emergency('02:00', 8),
-                                    Emergency('03:00', 4),
-                                    Emergency('04:00', 3),
-                                    Emergency('05:00', 40),
-                                    Emergency('06:00', 5),
-                                    Emergency('07:00', 15),
-                                    Emergency('08:00', 8),
-                                    Emergency('09:00', 6),
-                                    Emergency('10:00', 9),
-                                    Emergency('11:00', 2),
-                                    Emergency('12:00', 7),
-                                    Emergency('13:00', 55),
-                                    Emergency('14:00', 2),
-                                    Emergency('15:00', 12),
-                                    Emergency('16:00', 0),
-                                    Emergency('17:00', 4),
-                                    Emergency('18:00', 0),
-                                    Emergency('19:00', 22),
-                                    Emergency('20:00', 0),
-                                    Emergency('21:00', 0),
-                                    Emergency('22:00', 0),
-                                    Emergency('23:00', 0),
-                                    Emergency('24:00', 0),
-                                  ],
-                                  xValueMapper: (Emergency amount, _) =>
-                                      amount.hour,
-                                  yValueMapper: (Emergency amount, _) =>
-                                      amount.amount)
-                            ])),
-                    SizedBox(
-                        height: MediaQuery.of(context).size.height * 0.9,
-                        width: MediaQuery.of(context).size.width * 0.4,
-                        child: Column(
-                          children: <Widget>[
-                            const Text(
-                              'Call History',
+        body:
+            Column(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: <
+                Widget>[
+          Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.6,
+
+                    child:StreamBuilder<QuerySnapshot>(
+                        stream: history,
+                        builder: (
+                            BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot,
+                            ) {
+                          if (snapshot.hasError) {
+                            return Text(
+                                'Something went wrong  ${snapshot.error}');
+                          }
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return Text('Loading');
+                          }
+                          final data = snapshot.requireData;
+                          for (var doc in data.docs) {
+                            if (DateTime.parse(doc.id).year == currentDay.year &&
+                                DateTime.parse(doc.id).month == currentDay.month &&
+                                DateTime.parse(doc.id).day == currentDay.day) {
+                              for (int i = 0; i < 24; i++) {
+                                if (DateTime.parse(doc.id).hour == i) {
+                                    num[i] = num[i] + 1;
+                                }
+                              }
+                            }
+                          }
+                          return   SfCartesianChart(
+                           // Initialize category axis
+                              primaryXAxis: CategoryAxis(),
+                              series: <LineSeries<Emergency, String>>[
+                                LineSeries<Emergency, String>(
+                                    // Bind data source
+                                    dataSource: <Emergency>[
+                                      Emergency('01:00', num[0]),
+                                      Emergency('02:00', num[1]),
+                                      Emergency('03:00', num[2]),
+                                      Emergency('04:00', num[3]),
+                                      Emergency('05:00', num[4]),
+                                      Emergency('06:00', num[5]),
+                                      Emergency('07:00', num[6]),
+                                      Emergency('08:00', num[7]),
+                                      Emergency('09:00', num[8]),
+                                      Emergency('10:00', num[9]),
+                                      Emergency('11:00', num[10]),
+                                      Emergency('12:00', num[11]),
+                                      Emergency('13:00', num[12]),
+                                      Emergency('14:00', num[13]),
+                                      Emergency('15:00', num[14]),
+                                      Emergency('16:00', num[15]),
+                                      Emergency('17:00', num[16]),
+                                      Emergency('18:00', num[17]),
+                                      Emergency('19:00', num[18]),
+                                      Emergency('20:00', num[19]),
+                                      Emergency('21:00', num[20]),
+                                      Emergency('22:00', num[21]),
+                                      Emergency('23:00', num[22]),
+                                      Emergency('24:00', num[23]),
+                                    ],
+                                    xValueMapper: (Emergency amount, _) =>
+                                        amount.hour,
+                                    yValueMapper: (Emergency amount, _) =>
+                                        amount.amount)
+                              ]);
+
+                        }),
+
+                ),
+                SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.9,
+                    width: MediaQuery.of(context).size.width * 0.4,
+                    child: Column(
+                      children: <Widget>[
+                        const Text(
+                          'Call History',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 30,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        Row(
+                          children: const [
+                            Expanded(
+                                child: Text(
+                              '#',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
-                                fontSize: 30,
                               ),
-                              textAlign: TextAlign.center,
-                            ),
-                            Row(
-                              children: const [
-                                Expanded(child: Text('Mobile Number')),
-                                Expanded(child: Text('Calling Time')),
-                                Expanded(child: Text('Latitude')),
-                                Expanded(child: Text('Longitude')),
-                              ],
-                            ),
-                            Column(
+                            )),
+                            Expanded(
+                                child: Text(
+                              'Time',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )),
+                            Expanded(
+                                child: Text(
+                              'Mobile',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )),
+                            Expanded(
+                                child: Text(
+                              'Latitude',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )),
+                            Expanded(
+                                child: Text(
+                              'Longitude',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                              ),
+                            )),
+                          ],
+                        ),
+                        Scrollbar(
+                          isAlwaysShown: true,
+                          child: SingleChildScrollView(
+                            child: Column(
                               children: [
                                 SizedBox(
                                   height:
                                       MediaQuery.of(context).size.height * 0.8,
                                   child: StreamBuilder<QuerySnapshot>(
-                                      stream: emergencies,
+                                      stream: history,
                                       builder: (
                                         BuildContext context,
                                         AsyncSnapshot<QuerySnapshot> snapshot,
@@ -113,38 +192,58 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                         final data = snapshot.requireData;
                                         return ListView.builder(
                                             itemCount: data.size,
+                                            reverse: true,
                                             itemBuilder: (context, index) {
-                                              if (data.docs[index]['Ended']) {
+                                              if (DateTime.parse(data
+                                                              .docs[index].id)
+                                                          .year ==
+                                                      currentDay.year &&
+                                                  DateTime.parse(data
+                                                              .docs[index].id)
+                                                          .month ==
+                                                      currentDay.month &&
+                                                  DateTime.parse(data
+                                                              .docs[index].id)
+                                                          .day ==
+                                                      currentDay.day) {
+
                                                 return Material(
                                                   child: Container(
                                                     height: 30,
                                                     child:
                                                         Row(children: <Widget>[
-                                                      Text(' ${data.docs[index]['Phone']} ' +
-                                                          ' ${data.docs[index]['StartTime']} ' +
-                                                          ' ${data.docs[index]['StartLocation'].latitude} '
-                                                              ' ${data.docs[index]['StartLocation'].longitude}'),
+                                                      Text(formatter.format(
+                                                              index + 1) +
+                                                          '   ' +
+                                                          DateTime.parse(data
+                                                                  .docs[index]
+                                                                  .id)
+                                                              .toString() +
+                                                          '  ${data.docs[index]['Phone']} '
+                                                              '  ${data.docs[index]['Location'].latitude}'
+                                                              '   ${data.docs[index]['Location'].longitude}'),
                                                     ]),
                                                   ),
                                                 );
                                               } else {
                                                 return const Material();
                                               }
-                                              //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
                                             });
                                       }),
                                 ),
                               ],
                             ),
-                          ],
-                        )),
-                  ]),
-            ]),
+                          ),
+                        ),
+                      ],
+                    )),
+              ]),
+        ]),
       );
 }
 
 class Emergency {
   Emergency(this.hour, this.amount);
   final String hour;
-  final double amount;
+  final int amount;
 }
