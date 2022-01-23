@@ -14,6 +14,7 @@ void updateSensors(String? time) async {
   double x = 0.0;
   double y = 0.0;
   double z = 0.0;
+  int batteryLevel = 0;
   Acceleration? accelerationC = Acceleration();
   String accelerationString = "";
   DatabaseReference ref = FirebaseDatabase.instance.ref();
@@ -52,8 +53,6 @@ void updateSensors(String? time) async {
         });
       });
 
-
-
 // Location and Speed
       streamSubscription = stream.listen((DatabaseEvent event) {
         if (Ended != true) {
@@ -68,10 +67,11 @@ void updateSensors(String? time) async {
 // Battery
       var _battery = Battery();
       streamSubscription =
-          _battery.onBatteryStateChanged.listen((BatteryState state) async{
+          _battery.onBatteryStateChanged.listen((BatteryState state) async {
+        batteryLevel = await _battery.batteryLevel;
         if (Ended != true) {
           databaseReal.update({
-            'MobileCharge': await _battery.batteryLevel.toString(),
+            'MobileCharge': batteryLevel.toString(),
           });
         }
       });
