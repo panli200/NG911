@@ -324,6 +324,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     // To get the history of the caller "past calls"
     return Scaffold(
         appBar: AppBar(
+          automaticallyImplyLeading: false,
           title: const Text("Incoming Call Control Panel"),
           backgroundColor: Colors.redAccent,
         ),
