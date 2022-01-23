@@ -5,6 +5,7 @@ import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
 import 'package:sos_app/profile_extended_pages/upload_file.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:sos_app/services/location.dart';
+import 'package:sos_app/services/send_call_history.dart';
 import 'package:sos_app/services/send_realtime_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sos_app/sos_extended_pages/call.dart';
@@ -89,6 +90,7 @@ class EmergencyCallPopUpPage extends StatelessWidget {
                           updateSensors(date);
                           sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                           uploadFile(); //TEST upload files to the firebase storage
+                          updateHistory();//Test adding call history database
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => CallPage()),
