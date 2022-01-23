@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:psap_dashboard/pages/maps.dart';
 import 'package:psap_dashboard/pages/signaling.dart';
+import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
 import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:html' as html;
@@ -39,7 +40,6 @@ class _MapsHomePageState extends State<MapsHomePage> {
 
   @override
   void initState() {
-
     // Video streaming
     _remoteRenderer.initialize();
     _localRenderer.initialize();
@@ -52,6 +52,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
     // TODO: implement initState
     super.initState();
   }
+
   @override
   void dispose() async {
     // clean video streaming
@@ -61,10 +62,12 @@ class _MapsHomePageState extends State<MapsHomePage> {
     // clear users
     super.dispose();
   }
+
   final Stream<QuerySnapshot> Waiting =
       FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
+      drawer: NavigationDrawerWidget(),
       appBar: AppBar(
         title: const Text('Map'),
         centerTitle: true,
@@ -150,13 +153,17 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                       Navigator.push(
                                                           context,
                                                           MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  CallControlPanel(
-                                                                      CallerId:
-                                                                          id,
-                                                                      Snapshot:
-                                                                          data.docs[
-                                                                              index], signaling: signaling, localRenderer: _localRenderer,remoteRenderer: _remoteRenderer)));
+                                                              builder: (context) => CallControlPanel(
+                                                                  CallerId: id,
+                                                                  Snapshot: data
+                                                                          .docs[
+                                                                      index],
+                                                                  signaling:
+                                                                      signaling,
+                                                                  localRenderer:
+                                                                      _localRenderer,
+                                                                  remoteRenderer:
+                                                                      _remoteRenderer)));
                                                     },
                                                     child: Text(
                                                         ' ${data.docs[index]['Phone'] + "  Time waited: " + timeWaitedString!}'),
