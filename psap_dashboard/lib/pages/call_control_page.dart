@@ -75,6 +75,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? AccelerationStream;
   StreamSubscription? roomIdAccelerationStream;
 
+  Stream<QuerySnapshot>? messages;
   String? StartTime;
   final sentText = TextEditingController();
 
@@ -284,6 +285,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
         roomId, _remoteRenderer!, callerId); //join the video stream
 
     ref.child('sensors').child(callerId).update({'Online': true});
+
+    //messages
+    final Query sortedMessages = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection('messages')
+        .orderBy("time", descending: true);
+    messages = sortedMessages.snapshots();
+
     activateListeners();
     getLocationWeather();
 //    pauseListeners();
@@ -310,12 +320,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   @override
   Widget build(BuildContext context) {
     // To get the messages sent
-    final Query sortedMessages = FirebaseFirestore.instance
-        .collection('SOSEmergencies')
-        .doc(callerId)
-        .collection('messages')
-        .orderBy("time", descending: true);
-    final Stream<QuerySnapshot> messages = sortedMessages.snapshots();
+
     // To get the history of the caller "past calls"
     return Scaffold(
         appBar: AppBar(

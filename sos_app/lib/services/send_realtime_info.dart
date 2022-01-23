@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:battery/battery.dart';
-import 'package:sensors/sensors.dart';
 import 'dart:async';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'acceleration.dart';
@@ -15,9 +14,9 @@ void updateSensors(String? time) async {
   double x = 0.0;
   double y = 0.0;
   double z = 0.0;
+  int batteryLevel = 0;
   Acceleration? accelerationC = Acceleration();
   String accelerationString = "";
-  final FirebaseDatabase database = FirebaseDatabase.instance;
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
   final databaseReal = ref.child('sensors').child(mobile);
@@ -54,8 +53,6 @@ void updateSensors(String? time) async {
         });
       });
 
-
-
 // Location and Speed
       streamSubscription = stream.listen((DatabaseEvent event) {
         if (Ended != true) {
@@ -70,10 +67,11 @@ void updateSensors(String? time) async {
 // Battery
       var _battery = Battery();
       streamSubscription =
-          _battery.onBatteryStateChanged.listen((BatteryState state) async{
+          _battery.onBatteryStateChanged.listen((BatteryState state) async {
+        batteryLevel = await _battery.batteryLevel;
         if (Ended != true) {
           databaseReal.update({
-            'MobileCharge': await _battery.batteryLevel.toString(),
+            'MobileCharge': batteryLevel.toString(),
           });
         }
       });
