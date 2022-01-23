@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
 class SOSUser {
-  String uid = FirebaseAuth.instance.currentUser!.uid;
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
   bool generalPermission = false;
   String contactNum = '';
