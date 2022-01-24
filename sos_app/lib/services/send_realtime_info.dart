@@ -46,11 +46,13 @@ void updateSensors(String? time) async {
     if (Online! == true && Ended != true) {
       _stopWatchTimer.onExecute.add(StopWatchExecute.stop); //Stop timer
 
- streamSubscription =accelerationC?.stream.listen((event) {
+      streamSubscription = accelerationC?.stream.listen((event) {
         accelerationString = event;
-        databaseReal.update({
-          'Acceleration': accelerationString,
-        });
+        if (Ended != true) {
+          databaseReal.update({
+            'Acceleration': accelerationString,
+          });
+        }
       });
 
 // Location and Speed
