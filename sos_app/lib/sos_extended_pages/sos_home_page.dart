@@ -3,6 +3,13 @@ import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:sos_app/data/application_data.dart';
 import 'package:sos_app/widgets.dart';
+import 'package:sos_app/profile_extended_pages/upload_file.dart';
+import 'package:sos_app/services/location.dart';
+import 'package:sos_app/services/send_call_history.dart';
+import 'package:sos_app/services/send_realtime_info.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:sos_app/sos_extended_pages/call.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
@@ -18,13 +25,12 @@ class SosHomePageState extends State<SosHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
+      body: Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       margin: EdgeInsets.symmetric(vertical: 20),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
-        // children: <Widget>[
         children: <Widget>[
           Container(
             height: 40,
@@ -42,40 +48,130 @@ class SosHomePageState extends State<SosHomePage> {
 
           SizedBox(height: 20), // Spacing visuals
 
-          SizedBox(height: 20), // Spacing visuals
+          Center(
+            child:
+            Text(
+                'Make an emergency call for:',
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.headline6,
+            ),
+          ),
 
+          SizedBox(height: 20), // Spacing visuals
+          
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Container(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 20.0, vertical: 5.0),
-                  height: 50,
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  child: Center(
-                      child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red),
-                    ),
-                    onPressed: () {
-                      context.router.push(
-                        EmergencyCallPopUpRoute(
-                          emergencyCallPopUpID: emergencyCallPopUp.id,
-                        ),
-                      );
-                    },
-                    child: Text("Generic Emergency 911"),
-                  ))),
-              const Divider(
-                height: 10,
-                thickness: 5,
-              ),
+              Center(
+                child: 
+                  Container(
+                    child: 
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                      ),
+                      onPressed: () {
+                        var now = new DateTime.now();
+                          String? date = now.toString();
+                          _callNumber(date);
+                          updateSensors(date);
+                          //sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                          uploadFile(); //TEST upload files to the firebase storage
+                          updateHistory();//Test adding call history database
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CallPage()),
+                        );
+                      },
+                      child: Text("Yourself"),
+                    )
+                  )
+                ),
+
+                SizedBox(height: 20), // Spacing visuals
+
+                Center(
+                child: 
+                  Container(
+                    child: 
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                      ),
+                      onPressed: () {
+                        var now = new DateTime.now();
+                          String? date = now.toString();
+                          _callNumber(date);
+                          updateSensors(date);
+                          //sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                          uploadFile(); //TEST upload files to the firebase storage
+                          updateHistory();//Test adding call history database
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CallPage()),
+                        );
+                      },
+                      child: Text("Emergency Contact"),
+                    )
+                  )
+                ),
+
+                SizedBox(height: 20), // Spacing visuals
+
+                Center(
+                child: 
+                  Container(
+                    child: 
+                    ElevatedButton(
+                      style: ButtonStyle(
+                        backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red),
+                      ),
+                      onPressed: () {
+                        var now = new DateTime.now();
+                          String? date = now.toString();
+                          _callNumber(date);
+                          updateSensors(date);
+                          //sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                          uploadFile(); //TEST upload files to the firebase storage
+                          updateHistory();//Test adding call history database
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => CallPage()),
+                        );
+                      },
+                      child: Text("Third Party (Bystander)"),
+                    )
+                  )
+                ),
+
+              // const Divider(
+              //   height: 10,
+              //   thickness: 5,
+              // ),
             ],
           ) // SOS Scenario Button Placeholders
         ],
       ),
     ));
+  }
+
+  void _callNumber(String? date) async {
+    Location location = Location();
+    await location.getCurrentLocation();
+    String user = FirebaseAuth.instance.currentUser!.uid.toString();
+    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set({
+      'Online': false,
+      'Phone': mobile,
+      'User': user,
+      'StartLocation': GeoPoint(location.latitude, location.longitude),
+      'StartTime': date,
+      'Waiting': true,
+    });
+
+
   }
 }

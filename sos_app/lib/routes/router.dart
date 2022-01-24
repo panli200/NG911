@@ -1,7 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/sos.dart';
 import 'package:sos_app/sos_extended_pages/how_to_use_app_page.dart';
-import 'package:sos_app/sos_extended_pages/emergency_call_popup_page.dart';
 import 'package:sos_app/sos_extended_pages/call.dart';
 import 'package:sos_app/sos_extended_pages/connect_psap_page.dart';
 import 'package:sos_app/sos_extended_pages/sos_home_page.dart';
@@ -45,10 +44,6 @@ import 'package:sos_app/SignUp.dart';
                     AutoRoute(
                       path: ':howToUseID',
                       page: HowToUsePage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
-                    ),
-                    AutoRoute(
-                      path: ':emergencyCallPopUpID',
-                      page: EmergencyCallPopUpPage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
                     ),
                     AutoRoute(
                       path: '',
