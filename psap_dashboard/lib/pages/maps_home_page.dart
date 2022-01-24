@@ -17,7 +17,7 @@ class MapsHomePage extends StatefulWidget {
 
 class _MapsHomePageState extends State<MapsHomePage> {
   var timeWaited = "0";
-  String? timeWaitedString;
+  String? timeWaitedString = ' ';
   // video streaming
   Signaling signaling = Signaling();
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
@@ -137,7 +137,9 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                         itemCount: data.size,
                                         itemBuilder: (context, index) {
                                           getTimeWaited(data.docs[index].id);
+                                          String phone = " ";
                                           var id = data.docs[index].id;
+                                          phone = data.docs[index]['Phone'].toString();
                                           if (data.docs[index]['Waiting']) {
                                             return Material(
                                               child: Container(
@@ -166,7 +168,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                       _remoteRenderer)));
                                                     },
                                                     child: Text(
-                                                        ' ${data.docs[index]['Phone'] + "  Time waited: " + timeWaitedString!}'),
+                                                        ' ${phone + "  Time waited: " + timeWaitedString!}'),
                                                   ),
                                                 ]),
                                               ),
