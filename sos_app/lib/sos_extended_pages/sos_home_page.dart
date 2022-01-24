@@ -10,6 +10,8 @@ import 'package:sos_app/services/send_realtime_info.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sos_app/sos_extended_pages/call.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
+import 'package:sos_app/profile_extended_pages/upload_file.dart';
 
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
@@ -20,10 +22,26 @@ class SosHomePage extends StatefulWidget {
 
 class SosHomePageState extends State<SosHomePage> {
   final howToUsePopUp = HowToUseData.howToUsePopUp;
-  final emergencyCallPopUp = EmergencyCallPopUpData.emergencyCallPopUp;
+
+  void _callNumber(String? date) async {
+    Location location = Location();
+    await location.getCurrentLocation();
+    String user = FirebaseAuth.instance.currentUser!.uid.toString();
+    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set({
+      'Online': false,
+      'Phone': mobile,
+      'User': user,
+      'StartLocation': GeoPoint(location.latitude, location.longitude),
+      'StartTime': date,
+      'Waiting': true,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final connectPsapData = ConnectPsapData.connectPsapData;
+
     return Scaffold(
       body: Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
@@ -71,19 +89,11 @@ class SosHomePageState extends State<SosHomePage> {
                         backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.red),
                       ),
-                      onPressed: () {
-                        var now = new DateTime.now();
-                          String? date = now.toString();
-                          _callNumber(date);
-                          updateSensors(date);
-                          //sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                          uploadFile(); //TEST upload files to the firebase storage
-                          updateHistory();//Test adding call history database
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => CallPage()),
-                        );
-                      },
+                      onPressed: () => context.router.push(
+                        ConnectPsapRoute(
+                          connectPsapPageID: connectPsapData.id,
+                        ),
+                      ),
                       child: Text("Yourself"),
                     )
                   )
@@ -101,11 +111,11 @@ class SosHomePageState extends State<SosHomePage> {
                         MaterialStateProperty.all<Color>(Colors.red),
                       ),
                       onPressed: () {
-                        var now = new DateTime.now();
+                          var now = new DateTime.now();
                           String? date = now.toString();
                           _callNumber(date);
                           updateSensors(date);
-                          //sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                          sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                           uploadFile(); //TEST upload files to the firebase storage
                           updateHistory();//Test adding call history database
                           Navigator.push(
@@ -130,13 +140,12 @@ class SosHomePageState extends State<SosHomePage> {
                         MaterialStateProperty.all<Color>(Colors.red),
                       ),
                       onPressed: () {
-                        var now = new DateTime.now();
+                          var now = new DateTime.now();
                           String? date = now.toString();
                           _callNumber(date);
                           updateSensors(date);
-                          //sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                          sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                           uploadFile(); //TEST upload files to the firebase storage
-                          updateHistory();//Test adding call history database
                           Navigator.push(
                             context,
                             MaterialPageRoute(builder: (context) => CallPage()),
@@ -156,22 +165,5 @@ class SosHomePageState extends State<SosHomePage> {
         ],
       ),
     ));
-  }
-
-  void _callNumber(String? date) async {
-    Location location = Location();
-    await location.getCurrentLocation();
-    String user = FirebaseAuth.instance.currentUser!.uid.toString();
-    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set({
-      'Online': false,
-      'Phone': mobile,
-      'User': user,
-      'StartLocation': GeoPoint(location.latitude, location.longitude),
-      'StartTime': date,
-      'Waiting': true,
-    });
-
-
   }
 }
