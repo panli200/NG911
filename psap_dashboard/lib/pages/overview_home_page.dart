@@ -23,9 +23,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
 
   @override
   void initState() {
-    // Timer.periodic(Duration(seconds: 1), (t) {  });
 
-    //getNum();
     super.initState();
   }
 
@@ -132,13 +130,6 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                           children: const [
                             Expanded(
                                 child: Text(
-                              '#',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )),
-                            Expanded(
-                                child: Text(
                               'Time',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
@@ -192,7 +183,6 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                         final data = snapshot.requireData;
                                         return ListView.builder(
                                             itemCount: data.size,
-                                            reverse: true,
                                             itemBuilder: (context, index) {
                                               if (DateTime.parse(data
                                                               .docs[index].id)
@@ -212,15 +202,12 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                                     height: 30,
                                                     child:
                                                         Row(children: <Widget>[
-                                                      Text(formatter.format(
-                                                              index + 1) +
-                                                          '   ' +
-                                                          DateTime.parse(data
+                                                      Text(DateTime.parse(data
                                                                   .docs[index]
                                                                   .id)
                                                               .toString() +
                                                           '  ${data.docs[index]['Phone']} '
-                                                              '  ${data.docs[index]['Location'].latitude}'
+                                                              '  ${data.docs[index]['Location'].latitude}  '
                                                               '   ${data.docs[index]['Location'].longitude}'),
                                                     ]),
                                                   ),
