@@ -71,14 +71,15 @@ class _CallPageState extends State<CallPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text(
-            "911",
+            "911 Dispatcher",
+            style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
           automaticallyImplyLeading: false,
-          backgroundColor: Colors.black54,
+          backgroundColor: Colors.white,
           actions: <Widget>[
             IconButton(
-                icon: Icon(Icons.call),
+                icon: Icon(Icons.call, color: Colors.black),
                 onPressed: () async {
                   signaling.openUserAudio(_localRenderer, _remoteRenderer);
                   roomId = await signaling.createRoom(_remoteRenderer);
@@ -90,7 +91,7 @@ class _CallPageState extends State<CallPage> {
                               new IconButton(
                                   alignment: Alignment.center,
                                   icon: new Icon(
-                                    Icons.call_end,
+                                    Icons.phone,
                                     color: Colors.red,
                                   ),
                                   onPressed: () {
@@ -101,7 +102,7 @@ class _CallPageState extends State<CallPage> {
                           ));
                 }),
             IconButton(
-                icon: Icon(Icons.videocam),
+                icon: Icon(Icons.video_call_rounded, color: Colors.black),
                 onPressed: () async {
                   signaling.openUserMedia(_localRenderer, _remoteRenderer);
                   roomId = await signaling.createRoom(_remoteRenderer);
@@ -118,7 +119,7 @@ class _CallPageState extends State<CallPage> {
         ),
         body: Container(
             decoration: const BoxDecoration(
-              color: Colors.black87,
+              color: Colors.white,
             ),
             child: Column(
               children: <Widget>[
@@ -158,7 +159,7 @@ class _CallPageState extends State<CallPage> {
                                       child: Text(
                                         '  ${data.docs[index]['Message']}',
                                         style: const TextStyle(
-                                            color: Colors.white),
+                                            color: Colors.black),
                                       ),
                                       constraints: const BoxConstraints(
                                         maxHeight: double.infinity,
@@ -171,8 +172,8 @@ class _CallPageState extends State<CallPage> {
                                             BorderRadius.circular(35.0),
                                         boxShadow: const [
                                           BoxShadow(
-                                              offset: Offset(0, 3),
-                                              blurRadius: 5,
+                                              offset: Offset(0, 2),
+                                              blurRadius: 2,
                                               color: Colors.grey)
                                         ],
                                       ),
@@ -187,12 +188,12 @@ class _CallPageState extends State<CallPage> {
                     maxHeight: double.infinity,
                   ),
                   decoration: BoxDecoration(
-                    color: Colors.blueGrey,
+                    color: Colors.white54,
                     borderRadius: BorderRadius.circular(35.0),
                     boxShadow: const [
                       BoxShadow(
-                          offset: Offset(0, 3),
-                          blurRadius: 5,
+                          offset: Offset(0, 2),
+                          blurRadius: 2,
                           color: Colors.grey)
                     ],
                   ),
@@ -203,15 +204,15 @@ class _CallPageState extends State<CallPage> {
                       Expanded(
                         child: TextField(
                           controller: senttext,
-                          style: TextStyle(color: Colors.white),
+                          style: TextStyle(color: Colors.black),
                           decoration: const InputDecoration(
                               hintText: "Type Something...",
-                              hintStyle: TextStyle(color: Colors.white),
+                              hintStyle: TextStyle(color: Colors.black),
                               border: InputBorder.none),
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.send, color: Colors.white),
+                        icon: const Icon(Icons.send, color: Colors.blue),
                         onPressed: () {
                           String text = senttext.text;
                           if (text != '') {
