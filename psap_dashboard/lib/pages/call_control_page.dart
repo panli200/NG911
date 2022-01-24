@@ -462,7 +462,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           // This is the chat
                           //////
                           SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.35,
+                              height: MediaQuery.of(context).size.height * 0.34,
                               width: MediaQuery.of(context).size.width * 0.25,
                               child: Row(
                                 children: [
