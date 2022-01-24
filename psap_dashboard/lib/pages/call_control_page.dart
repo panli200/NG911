@@ -9,6 +9,7 @@ import 'signaling.dart';
 import 'package:google_maps/google_maps.dart' as googleMap;
 import 'dart:ui' as ui;
 import 'dart:html';
+import 'location.dart';
 
 // Enviromental variables
 String? latitudePassed;
@@ -80,6 +81,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
   final sentText = TextEditingController();
 
   var roomId;
+
+
+
 
   // Function to display the map
 
@@ -273,9 +277,24 @@ class _CallControlPanelState extends State<CallControlPanel> {
   // Initialize
   @override
   void initState() {
+
+
     // Google map initialize
 
     callerId = widget.CallerId; //Getting user ID from the previous page..
+
+    // Get Locaiton list Stream
+    Location? streamLoc = Location(callerId);
+    double? LatitudeStreamed;
+    streamLoc.streamLatitude.listen((event){
+      LatitudeStreamed = event;
+
+    });
+    double? LongitudeStreamed;
+    streamLoc.streamLongitude.listen((event){
+      LongitudeStreamed = event;
+
+    });
     getRoomId();
      signaling = widget.signaling;
      _localRenderer = widget.localRenderer;
