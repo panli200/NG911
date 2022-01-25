@@ -10,11 +10,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) => Scaffold(
-    // drawer: NavigationDrawerWidget(),
-    // appBar: AppBar(
-    //   title: Text(MyApp.title),
-    // ),
-      body: Column(
+          body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -30,19 +26,27 @@ class _LoginPageState extends State<LoginPage> {
 
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
-            child: const TextField(
-                obscureText: true,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Username',
-                )),
+            child: TextField(
+              onChanged: (value) {
+                //Do something with the user input.
+              },
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Username',
+              ),
+            ),
           ),
+
           const SizedBox(height: 20), // Spacing visuals
+
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
-            child: const TextField(
+            child: TextField(
+                onChanged: (value) {
+                  //Do something with the user input.
+                },
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   labelText: 'Password',
                 )),
