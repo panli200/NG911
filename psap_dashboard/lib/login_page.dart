@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:psap_dashboard/pages/maps_home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -8,6 +9,14 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController username = TextEditingController();
+  TextEditingController password = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
           body: Column(
@@ -26,14 +35,23 @@ class _LoginPageState extends State<LoginPage> {
 
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
-            child: TextField(
-              onChanged: (value) {
-                //Do something with the user input.
+            child: TextFormField(
+              validator: (value) {
+                if (value!.isNotEmpty && value.length <= 2) {
+                  return 'The username not exist';
+                }
+                return null;
               },
+              inputFormatters: <TextInputFormatter>[
+                // FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(9),
+              ],
               decoration: const InputDecoration(
+                icon: Icon(Icons.person),
                 border: OutlineInputBorder(),
                 labelText: 'Username',
               ),
+              controller: username,
             ),
           ),
 
@@ -41,24 +59,46 @@ class _LoginPageState extends State<LoginPage> {
 
           SizedBox(
             width: MediaQuery.of(context).size.width * 0.3,
-            child: TextField(
-                onChanged: (value) {
-                  //Do something with the user input.
-                },
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Password',
-                )),
+            child: TextFormField(
+              validator: (value) {
+                if (value!.isNotEmpty) {
+                  return 'Please enter correct password';
+                }
+                return null;
+              },
+              inputFormatters: <TextInputFormatter>[
+                // FilteringTextInputFormatter.digitsOnly,
+                LengthLimitingTextInputFormatter(9),
+              ],
+              obscureText: true,
+              decoration: const InputDecoration(
+                icon: Icon(Icons.vpn_key),
+                border: OutlineInputBorder(),
+                labelText: 'Password',
+              ),
+              controller: password,
+            ),
           ),
-          const SizedBox(height: 40),
+          const SizedBox(height: 60),
           SizedBox(
               width: MediaQuery.of(context).size.width * 0.3,
               height: MediaQuery.of(context).size.width * 0.03,
               child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const MapsHomePage()));
+                onPressed: () async {
+                  FirebaseFirestore.instance
+                      .collection('PSAPUser')
+                      .get()
+                      .then((QuerySnapshot querySnapshot) {
+                    for (var doc in querySnapshot.docs) {
+                      if (doc["username"] == username.text &&
+                          doc["password"] == password.text) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const MapsHomePage()));
+                      }
+                    }
+                  });
                 },
                 child: const Text('LOGIN'),
                 style: ElevatedButton.styleFrom(
