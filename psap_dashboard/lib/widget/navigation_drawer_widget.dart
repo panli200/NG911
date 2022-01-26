@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:psap_dashboard/login_page.dart';
 import 'package:psap_dashboard/pages/maps_home_page.dart';
 import 'package:psap_dashboard/pages/overview_home_page.dart';
 import 'package:psap_dashboard/pages/settings_home_page.dart';
@@ -9,7 +10,7 @@ class NavigationDrawerWidget extends StatelessWidget {
   final padding = EdgeInsets.symmetric(horizontal: 20);
   @override
   Widget build(BuildContext context) {
-    final name = 'Team Bugs';
+    final name = 'Logout';
     final email = '';
     final urlImage =
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHHO-97UOCydLCAK9jpUBrpXyMqdp5JQnlgA&usqp=CAU';
@@ -23,12 +24,12 @@ class NavigationDrawerWidget extends StatelessWidget {
               urlImage: urlImage,
               name: name,
               email: email,
-              onClicked: () => Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => UserDataPage(
-                  name: 'Team Bugs',
-                  urlImage: urlImage,
-                ),
-              )),
+               onClicked: ()  {
+                 Navigator.push(
+                     context,
+                     MaterialPageRoute(
+                     builder: (_) => LoginPage()));
+               },
             ),
             Container(
               padding: padding,

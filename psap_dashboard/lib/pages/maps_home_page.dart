@@ -5,7 +5,6 @@ import 'package:psap_dashboard/pages/signaling.dart';
 import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
 import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:html' as html;
 import 'package:firebase_database/firebase_database.dart' as FbDb;
 
 class MapsHomePage extends StatefulWidget {
