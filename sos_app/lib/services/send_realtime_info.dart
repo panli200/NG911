@@ -23,7 +23,6 @@ void updateSensors(String? time) async {
   Location location = Location();
   await location.getCurrentLocation();
   Stream<DatabaseEvent> stream = databaseReal.onValue;
-  bool TimerOn = false;
   int? counts;
   databaseReal.set({
     'StartTime': time,
@@ -40,7 +39,6 @@ if(counts == null){
   counts++;
 }
   final StopWatchTimer _stopWatchTimer = StopWatchTimer();
-  if(TimerOn == false) {
 
     _stopWatchTimer.onExecute.add(StopWatchExecute.start);
     _stopWatchTimer.secondTime.listen((value) {
@@ -51,7 +49,6 @@ if(counts == null){
       });}
     });
 
-  }
   // Acceleration Data
   databaseReal.child('Online').onValue.listen((event) async {
     bool OnlineB = event.snapshot.value as bool;
