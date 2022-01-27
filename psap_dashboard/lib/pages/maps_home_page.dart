@@ -8,7 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart' as FbDb;
 
 class MapsHomePage extends StatefulWidget {
-  final String name;
+  final name;
 
   const MapsHomePage({Key? key, required this.name}) : super(key: key);
 
@@ -177,7 +177,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                   localRenderer:
                                                                       _localRenderer,
                                                                   remoteRenderer:
-                                                                      _remoteRenderer)));
+                                                                      _remoteRenderer,name: name,)));
                                                     },
                                                     child: Text(
                                                         ' ${phone + "  Time waited: " + timeWaitedString!}'),

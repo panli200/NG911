@@ -6,7 +6,7 @@ import 'package:psap_dashboard/pages/settings_home_page.dart';
 import 'package:psap_dashboard/pages/user_data_page.dart';
 
 class NavigationDrawerWidget extends StatefulWidget {
-  final String name;
+  final name;
 
   const NavigationDrawerWidget({Key? key, required this.name})
       : super(key: key);

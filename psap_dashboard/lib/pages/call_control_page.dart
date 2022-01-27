@@ -130,14 +130,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     // Ending the endState stream
     endedStateStream?.cancel();
-    name = widget.name;
-    // Going back to maps home page
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => MapsHomePage(
-                  name: name,
-                )));
+
   }
 
   void activateListeners() {
@@ -282,9 +275,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
   // Initialize
   @override
   void initState() {
-
     callerId = widget.CallerId; //Getting user ID from the previous page..
-
+    name = widget.name;
     // Get Locaiton list Stream
     Location? streamLoc = Location(callerId);
     double? LatitudeStreamed;
@@ -384,8 +376,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 .update({'Online': false, 'Ended': true});
 
                             // End the call
+                            _EndCall();
 
-                            _EndCall(); // this will the method for your rejected Button
+                            // Going back to maps home page
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => MapsHomePage(
+                                      name: name,
+                                    )));
+                            // this will the method for your rejected Button
                           },
                           style: ElevatedButton.styleFrom(
                             primary: Colors.red,
