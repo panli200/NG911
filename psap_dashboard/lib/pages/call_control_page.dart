@@ -90,12 +90,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   var roomId;
   String name = '';
-  void getUSer() {
-    setState(() {
-      name = widget.name;
-    });
-  }
-  // Function to display the map
 
   // Function to end the call
   void _EndCall() async {
@@ -136,7 +130,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     // Ending the endState stream
     endedStateStream?.cancel();
-
+    name = widget.name;
     // Going back to maps home page
     Navigator.push(
         context,
@@ -288,8 +282,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
   // Initialize
   @override
   void initState() {
-    // Get PSAP user
-    getUSer();
 
     callerId = widget.CallerId; //Getting user ID from the previous page..
 
