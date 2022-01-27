@@ -8,7 +8,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart' as FbDb;
 
 class MapsHomePage extends StatefulWidget {
-  const MapsHomePage({Key? key}) : super(key: key);
+  final String name;
+
+  const MapsHomePage({Key? key, required this.name}) : super(key: key);
 
   @override
   State<MapsHomePage> createState() => _MapsHomePageState();
@@ -21,6 +23,13 @@ class _MapsHomePageState extends State<MapsHomePage> {
   Signaling signaling = Signaling();
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+  String name = '';
+
+  void getUSer() {
+    setState(() {
+      name = widget.name;
+    });
+  }
 
   void getTimeWaited(String? phone) {
     FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
@@ -39,6 +48,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
 
   @override
   void initState() {
+    getUSer();
     // Video streaming
     _remoteRenderer.initialize();
     _localRenderer.initialize();
@@ -66,7 +76,9 @@ class _MapsHomePageState extends State<MapsHomePage> {
       FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
-      drawer: NavigationDrawerWidget(),
+      drawer: NavigationDrawerWidget(
+        name: name,
+      ),
       appBar: AppBar(
         title: const Text('Map'),
         centerTitle: true,
@@ -138,7 +150,8 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                           getTimeWaited(data.docs[index].id);
                                           String phone = " ";
                                           var id = data.docs[index].id;
-                                          phone = data.docs[index]['Phone'].toString();
+                                          phone = data.docs[index]['Phone']
+                                              .toString();
                                           if (data.docs[index]['Waiting']) {
                                             return Material(
                                               child: Container(

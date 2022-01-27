@@ -5,9 +5,30 @@ import 'package:psap_dashboard/pages/overview_home_page.dart';
 import 'package:psap_dashboard/pages/settings_home_page.dart';
 import 'package:psap_dashboard/pages/user_data_page.dart';
 
+class NavigationDrawerWidget extends StatefulWidget {
+  final String name;
 
-class NavigationDrawerWidget extends StatelessWidget {
+  const NavigationDrawerWidget({Key? key, required this.name})
+      : super(key: key);
+  @override
+  State<NavigationDrawerWidget> createState() => _NavigationDrawerWidgetState();
+}
+
+class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
   final padding = EdgeInsets.symmetric(horizontal: 20);
+  String uNAME = '';
+  void getUSer() {
+    setState(() {
+      uNAME = widget.name;
+    });
+  }
+
+  @override
+  void initState() {
+    getUSer();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final name = 'Logout';
@@ -24,12 +45,10 @@ class NavigationDrawerWidget extends StatelessWidget {
               urlImage: urlImage,
               name: name,
               email: email,
-               onClicked: ()  {
-                 Navigator.push(
-                     context,
-                     MaterialPageRoute(
-                     builder: (_) => LoginPage()));
-               },
+              onClicked: () {
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (_) => LoginPage()));
+              },
             ),
             Container(
               padding: padding,
@@ -117,17 +136,17 @@ class NavigationDrawerWidget extends StatelessWidget {
     switch (index) {
       case 0:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => MapsHomePage(),
+          builder: (context) => MapsHomePage(name: uNAME),
         ));
         break;
       case 1:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => OverviewHomePage(),
+          builder: (context) => OverviewHomePage(name: uNAME),
         ));
         break;
       case 2:
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => SettingsHomePage(),
+          builder: (context) => SettingsHomePage(name: uNAME),
         ));
         break;
     }

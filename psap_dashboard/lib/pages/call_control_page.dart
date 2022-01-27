@@ -21,7 +21,15 @@ class CallControlPanel extends StatefulWidget {
   final signaling;
   final remoteRenderer;
   final localRenderer;
-  const CallControlPanel({Key? key, required this.CallerId, required this.Snapshot, required this.signaling,required this.localRenderer,this.remoteRenderer})
+  final name;
+  const CallControlPanel(
+      {Key? key,
+      required this.CallerId,
+      required this.Snapshot,
+      required this.signaling,
+      required this.localRenderer,
+      this.remoteRenderer,
+      this.name})
       : super(key: key);
 
   @override
@@ -62,9 +70,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
   String mobileChargeString = '';
 
   //Video Audio Stream
-  Signaling? signaling ;
-  RTCVideoRenderer? _localRenderer ;
-  RTCVideoRenderer? _remoteRenderer ;
+  Signaling? signaling;
+  RTCVideoRenderer? _localRenderer;
+  RTCVideoRenderer? _remoteRenderer;
 
   // Listeners
   StreamSubscription? endedStateStream;
@@ -81,10 +89,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
   final sentText = TextEditingController();
 
   var roomId;
-
-
-
-
+  String name = '';
+  void getUSer() {
+    setState(() {
+      name = widget.name;
+    });
+  }
   // Function to display the map
 
   // Function to end the call
@@ -129,7 +139,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     // Going back to maps home page
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => MapsHomePage()));
+        context,
+        MaterialPageRoute(
+            builder: (context) => MapsHomePage(
+                  name: name,
+                )));
   }
 
   void activateListeners() {
@@ -221,13 +235,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
       if (ended != true) {
         String AccelerationValue = event.snapshot.value.toString();
         setState(() {
-          AccelerationString =  AccelerationValue;
+          AccelerationString = AccelerationValue;
         });
       }
     });
-
-
-
   }
 
 //  void pauseListeners(){
@@ -277,28 +288,25 @@ class _CallControlPanelState extends State<CallControlPanel> {
   // Initialize
   @override
   void initState() {
-
-
-    // Google map initialize
+    // Get PSAP user
+    getUSer();
 
     callerId = widget.CallerId; //Getting user ID from the previous page..
 
     // Get Locaiton list Stream
     Location? streamLoc = Location(callerId);
     double? LatitudeStreamed;
-    streamLoc.streamLatitude.listen((event){
+    streamLoc.streamLatitude.listen((event) {
       LatitudeStreamed = event;
-
     });
     double? LongitudeStreamed;
-    streamLoc.streamLongitude.listen((event){
+    streamLoc.streamLongitude.listen((event) {
       LongitudeStreamed = event;
-
     });
     getRoomId();
-     signaling = widget.signaling;
-     _localRenderer = widget.localRenderer;
-     _remoteRenderer = widget.remoteRenderer;
+    signaling = widget.signaling;
+    _localRenderer = widget.localRenderer;
+    _remoteRenderer = widget.remoteRenderer;
 
     signaling?.joinRoom(
         roomId, _remoteRenderer!, callerId); //join the video stream
@@ -373,7 +381,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       child: ElevatedButton(
                           child: const Text("End Call"),
                           onPressed: () async {
-                            signaling!.hangUp(_localRenderer!, roomId, callerId);
+                            signaling!
+                                .hangUp(_localRenderer!, roomId, callerId);
                             FbDb.DatabaseReference real =
                                 FbDb.FirebaseDatabase.instance.ref();
                             final databaseReal =
@@ -439,7 +448,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               Text(
                                 '$AccelerationString',
                               ),
-
                             ],
                           ),
                         ],

@@ -1,12 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
 
-class SettingsHomePage extends StatelessWidget {
+class SettingsHomePage extends StatefulWidget {
+  final name;
+  const SettingsHomePage({Key? key, required this.name}) : super(key: key);
+
+  @override
+  State<SettingsHomePage> createState() => _SettingsHomePageState();
+}
+
+class _SettingsHomePageState extends State<SettingsHomePage> {
+  CollectionReference users = FirebaseFirestore.instance.collection('PSAPUser');
+
+  TextEditingController newPwd = TextEditingController();
+  TextEditingController newPWD = TextEditingController();
+  String name = '';
+
+  void getUSer() {
+    setState(() {
+      name = widget.name;
+    });
+  }
+
+  @override
+  void initState() {
+    getUSer();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
-      drawer: NavigationDrawerWidget(),
+      drawer: NavigationDrawerWidget(
+        name: name,
+      ),
       appBar: AppBar(
-        title: Text('Reset Password'),
+        title: const Text('Reset Password'),
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
@@ -15,7 +44,7 @@ class SettingsHomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Center(
+            const Center(
               child: Text('Username  admin'),
             ),
 
@@ -23,30 +52,60 @@ class SettingsHomePage extends StatelessWidget {
 
             Container(
               width: MediaQuery.of(context).size.width * 0.4,
-              child: const TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'New Password',
-                  )),
+              child: TextField(
+                obscureText: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'New Password',
+                ),
+                controller: newPwd,
+              ),
             ),
 
             SizedBox(height: 20), // Spacing visuals
 
             Container(
               width: MediaQuery.of(context).size.width * 0.4,
-              child: const TextField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Confirm Password',
-                  )),
+              child: TextField(
+                obscureText: true,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'Confirm Password',
+                ),
+                controller: newPWD,
+              ),
             ),
 
             Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () async {
+                    users.get().then((QuerySnapshot querySnapshot) {
+                      for (var doc in querySnapshot.docs) {
+                        if (doc["username"] == name &&
+                            (newPwd.text == newPWD.text)) {
+                          Future<void> updateUser() {
+                            return users
+                                .doc(doc.id)
+                                .update({'password': newPwd.text});
+                          }
+
+                          updateUser();
+                        }
+                      }
+                    });
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                                title: const Text('Password Updated'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () =>
+                                        Navigator.pop(context, 'OK'),
+                                    child: const Text('OK'),
+                                  ),
+                                ]));
+                  },
                   child: const Text('Submit'),
                 ))
           ],
