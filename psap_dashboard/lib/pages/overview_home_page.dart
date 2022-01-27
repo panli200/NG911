@@ -7,7 +7,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
 
 class OverviewHomePage extends StatefulWidget {
-  final String name;
+  final name;
 
   const OverviewHomePage({Key? key, required this.name}) : super(key: key);
 
