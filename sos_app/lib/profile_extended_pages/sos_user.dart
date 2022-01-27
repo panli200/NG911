@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 class SOSUser {
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
   bool generalPermission = false;
-  String contactNum = '';
+  String contactNum =  '';
   bool personalMedicalPermission = false;
   String personalHealthNum = '';
   String personalMedicalFile = '';
