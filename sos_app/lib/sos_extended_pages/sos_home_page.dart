@@ -43,7 +43,7 @@ class SosHomePageState extends State<SosHomePage> {
     final connectPsapData = ConnectPsapData.connectPsapData;
 
     return Scaffold(
-      body: Container(
+        body: Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       margin: EdgeInsets.symmetric(vertical: 20),
       child: Column(
@@ -67,94 +67,87 @@ class SosHomePageState extends State<SosHomePage> {
           SizedBox(height: 20), // Spacing visuals
 
           Center(
-            child:
-            Text(
-                'Make an emergency call for:',
-                textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.headline6,
+            child: Text(
+              'Make an emergency call for:',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.headline6,
             ),
           ),
 
           SizedBox(height: 20), // Spacing visuals
-          
+
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Center(
-                child: 
-                  Container(
-                    child: 
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                      ),
-                      onPressed: () => context.router.push(
-                        ConnectPsapRoute(
-                          connectPsapPageID: connectPsapData.id,
-                        ),
-                      ),
-                      child: Text("Yourself"),
-                    )
-                  )
+                  child: Container(
+                      child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
+                onPressed: () {
+                  var now = new DateTime.now();
+                  String? date = now.toString();
+                  _callNumber(date);
+                  updateSensors(date);
+                  sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                  uploadFile(); //TEST upload files to the firebase storage
+                  updateHistory(); //Test adding call history database
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CallPage()),
+                  );
+                },
+                child: Text("Yourself"),
+              ))),
 
-                SizedBox(height: 20), // Spacing visuals
+              SizedBox(height: 20), // Spacing visuals
 
-                Center(
-                child: 
-                  Container(
-                    child: 
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                      ),
-                      onPressed: () {
-                          var now = new DateTime.now();
-                          String? date = now.toString();
-                          _callNumber(date);
-                          updateSensors(date);
-                          sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                          uploadFile(); //TEST upload files to the firebase storage
-                          updateHistory();//Test adding call history database
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => CallPage()),
-                        );
-                      },
-                      child: Text("Emergency Contact"),
-                    )
-                  )
+              Center(
+                  child: Container(
+                      child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
+                onPressed: () {
+                  var now = new DateTime.now();
+                  String? date = now.toString();
+                  _callNumber(date);
+                  updateSensors(date);
+                  sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                  uploadFile(); //TEST upload files to the firebase storage
+                  updateHistory(); //Test adding call history database
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CallPage()),
+                  );
+                },
+                child: Text("Emergency Contact"),
+              ))),
 
-                SizedBox(height: 20), // Spacing visuals
+              SizedBox(height: 20), // Spacing visuals
 
-                Center(
-                child: 
-                  Container(
-                    child: 
-                    ElevatedButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                        MaterialStateProperty.all<Color>(Colors.red),
-                      ),
-                      onPressed: () {
-                          var now = new DateTime.now();
-                          String? date = now.toString();
-                          _callNumber(date);
-                          updateSensors(date);
-                          sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                          uploadFile(); //TEST upload files to the firebase storage
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => CallPage()),
-                        );
-                      },
-                      child: Text("Third Party (Bystander)"),
-                    )
-                  )
+              Center(
+                  child: Container(
+                      child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
+                onPressed: () {
+                  var now = new DateTime.now();
+                  String? date = now.toString();
+                  _callNumber(date);
+                  updateSensors(date);
+                  sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                  uploadFile(); //TEST upload files to the firebase storage
+                  updateHistory(); //Test adding call history database
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => CallPage()),
+                  );
+                },
+                child: Text("Third Party (Bystander)"),
+              ))),
 
               // const Divider(
               //   height: 10,
