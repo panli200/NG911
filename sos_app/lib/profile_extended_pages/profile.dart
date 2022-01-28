@@ -616,6 +616,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                               child: const Text('OK'),
                             ),
+
                           ],
                         ),
                       );
@@ -623,6 +624,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: const Text('SAVE MEDICAL INFORMATION'),
                 ),
+        ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.black),
+            ),
+            onPressed: () {
+              // code here to activate background
+            },
+          child: const Text('Enable Background location'),),
               ],
             ),
           ),
