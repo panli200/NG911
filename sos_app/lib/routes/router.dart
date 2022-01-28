@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/sos.dart';
 import 'package:sos_app/sos_extended_pages/how_to_use_app_page.dart';
 import 'package:sos_app/sos_extended_pages/call.dart';
-import 'package:sos_app/sos_extended_pages/connect_psap_page.dart';
 import 'package:sos_app/sos_extended_pages/sos_home_page.dart';
 import 'package:sos_app/activities_extended_pages/activities.dart';
 import 'package:sos_app/activities_extended_pages/activity_detail.dart';
@@ -49,10 +48,6 @@ import 'package:sos_app/SignUp.dart';
                       path: '',
                       page: CallPage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
                     ),
-                    AutoRoute(
-                      path: ':connectPsapPageID',
-                      page: ConnectPsapPage,  // FUTURE EXTENDED/POP-UP PAGES FOR SOS PAGE
-                    )
                   ],
                 ),
                 AutoRoute(
