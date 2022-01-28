@@ -47,15 +47,15 @@ class AppRouter extends _i1.RootStackRouter {
       return _i1.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i4.SosPage());
     },
-    SosRouter.name: (routeData) {
+    SOS.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i1.EmptyRouterPage());
     },
-    ProfileRouter.name: (routeData) {
+    Profile.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i1.EmptyRouterPage());
     },
-    ActivitiesRouter.name: (routeData) {
+    Activities.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
           routeData: routeData, child: const _i1.EmptyRouterPage());
     },
@@ -120,34 +120,34 @@ class AppRouter extends _i1.RootStackRouter {
               path: '',
               parent: EmptyRouterRoute.name,
               children: [
-                _i1.RouteConfig(SosRouter.name,
+                _i1.RouteConfig(SOS.name,
                     path: 'sos_extended_pages',
                     parent: HomeRouter.name,
                     children: [
                       _i1.RouteConfig(SosHomeRoute.name,
-                          path: '', parent: SosRouter.name),
+                          path: '', parent: SOS.name),
                       _i1.RouteConfig(HowToUseRoute.name,
-                          path: ':howToUseID', parent: SosRouter.name),
+                          path: ':howToUseID', parent: SOS.name),
                       _i1.RouteConfig(CallRoute.name,
-                          path: '', parent: SosRouter.name),
+                          path: '', parent: SOS.name),
                       _i1.RouteConfig(ConnectPsapRoute.name,
-                          path: ':connectPsapPageID', parent: SosRouter.name)
+                          path: ':connectPsapPageID', parent: SOS.name)
                     ]),
-                _i1.RouteConfig(ProfileRouter.name,
+                _i1.RouteConfig(Profile.name,
                     path: 'profile_extended_pages',
                     parent: HomeRouter.name,
                     children: [
                       _i1.RouteConfig(ProfileRoute.name,
-                          path: '', parent: ProfileRouter.name)
+                          path: '', parent: Profile.name)
                     ]),
-                _i1.RouteConfig(ActivitiesRouter.name,
+                _i1.RouteConfig(Activities.name,
                     path: 'activities_extended_pages',
                     parent: HomeRouter.name,
                     children: [
                       _i1.RouteConfig(ActivitiesRoute.name,
-                          path: '', parent: ActivitiesRouter.name),
+                          path: '', parent: Activities.name),
                       _i1.RouteConfig(ActivityDetailRoute.name,
-                          path: '', parent: ActivitiesRouter.name)
+                          path: '', parent: Activities.name)
                     ])
               ])
         ])
@@ -193,28 +193,28 @@ class HomeRouter extends _i1.PageRouteInfo<void> {
 }
 
 /// generated route for [_i1.EmptyRouterPage]
-class SosRouter extends _i1.PageRouteInfo<void> {
-  const SosRouter({List<_i1.PageRouteInfo>? children})
+class SOS extends _i1.PageRouteInfo<void> {
+  const SOS({List<_i1.PageRouteInfo>? children})
       : super(name, path: 'sos_extended_pages', initialChildren: children);
 
-  static const String name = 'SosRouter';
+  static const String name = 'SOS';
 }
 
 /// generated route for [_i1.EmptyRouterPage]
-class ProfileRouter extends _i1.PageRouteInfo<void> {
-  const ProfileRouter({List<_i1.PageRouteInfo>? children})
+class Profile extends _i1.PageRouteInfo<void> {
+  const Profile({List<_i1.PageRouteInfo>? children})
       : super(name, path: 'profile_extended_pages', initialChildren: children);
 
-  static const String name = 'ProfileRouter';
+  static const String name = 'Profile';
 }
 
 /// generated route for [_i1.EmptyRouterPage]
-class ActivitiesRouter extends _i1.PageRouteInfo<void> {
-  const ActivitiesRouter({List<_i1.PageRouteInfo>? children})
+class Activities extends _i1.PageRouteInfo<void> {
+  const Activities({List<_i1.PageRouteInfo>? children})
       : super(name,
             path: 'activities_extended_pages', initialChildren: children);
 
-  static const String name = 'ActivitiesRouter';
+  static const String name = 'Activities';
 }
 
 /// generated route for [_i5.SosHomePage]

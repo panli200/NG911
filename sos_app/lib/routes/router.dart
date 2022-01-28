@@ -32,7 +32,7 @@ import 'package:sos_app/SignUp.dart';
               children: [
                 AutoRoute(
                   path: 'sos_extended_pages',
-                  name: 'SosRouter',
+                  name: 'SOS',
                   page: EmptyRouterPage,
 
                   // FUTURE PAGE ROUTING FOR SOS PAGE
@@ -57,7 +57,7 @@ import 'package:sos_app/SignUp.dart';
                 ),
                 AutoRoute(
                   path: 'profile_extended_pages',
-                  name: 'ProfileRouter',
+                  name: 'Profile',
                   page: EmptyRouterPage,
 
                   // FUTURE EXTENDED/POP-UP PAGES FOR PROFILE PAGE
@@ -71,7 +71,7 @@ import 'package:sos_app/SignUp.dart';
                 ),
                 AutoRoute(
                   path: 'activities_extended_pages',
-                  name: 'ActivitiesRouter',
+                  name: 'Activities',
                   page: EmptyRouterPage,
 
                   // FUTURE EXTENDED/POP-UP PAGES FOR Activities PAGE
