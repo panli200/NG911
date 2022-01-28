@@ -10,13 +10,14 @@ class SosPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       appBarBuilder: (_, tabsRouter) => AppBar(
+        title: Text(tabsRouter.current.name),
         centerTitle: true,
         leading: const AutoBackButton(),
       ),
       routes: const [
-        SosRouter(),
-        ProfileRouter(),
-        ActivitiesRouter(),
+        SOS(),
+        Profile(),
+        Activities(),
       ],
 
       bottomNavigationBuilder: (_, tabsRouter) {
@@ -24,7 +25,7 @@ class SosPage extends StatelessWidget {
 
           currentIndex: tabsRouter.activeIndex,
           onTap: tabsRouter.setActiveIndex,
-          
+
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
