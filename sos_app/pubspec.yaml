@@ -67,7 +67,7 @@ dependencies:
   flutter_webrtc:  ^0.8.1
 
   # Background services
-  flutter_background: ^1.1.0
+  flutter_background_service: ^0.2.2
 
   # Notifications
   flutter_local_notifications: ^9.2.0

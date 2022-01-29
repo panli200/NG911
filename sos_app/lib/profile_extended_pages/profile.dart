@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sos_app/profile_extended_pages/sliding_switch_widget.dart';
 import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
 import 'package:sos_app/profile_extended_pages/upload_file.dart';
-
+import 'background.dart';
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
   _ProfilePageState createState() => _ProfilePageState();
@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late SharedPreferences prefs;
   final _formKey = GlobalKey<FormState>();
-
+  String textBackground = "Stop Service";
   getGeneralValue() async {
     prefs = await _prefs;
 
@@ -625,14 +625,30 @@ class _ProfilePageState extends State<ProfilePage> {
                   child: const Text('SAVE MEDICAL INFORMATION'),
                 ),
         ElevatedButton(
+          child: Text(textBackground),
             style: ButtonStyle(
               backgroundColor:
               MaterialStateProperty.all<Color>(Colors.black),
             ),
-            onPressed: () {
+            onPressed: () async{
               // code here to activate background
+              Background background = Background();
+              var isRunning = await background.isRunning();
+              if (isRunning) {
+                background.service.sendData(
+                  {"action": "stopService"},
+                );
+              } else {
+                background.service.start();
+              }
+
+              if (!isRunning) {
+                textBackground = 'Stop Service';
+              } else {
+                textBackground = 'Start Service';
+              }
             },
-          child: const Text('Enable Background location'),),
+        )
               ],
             ),
           ),
