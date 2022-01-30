@@ -64,7 +64,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   String? zAccelerationString = '';
   String? longitudeString = '';
   String? latitudeString = '';
-  String? speedString = '';
+  String? speedString = ''; // In meters/second
 
   // other sensors
   String mobileChargeString = '';
@@ -208,7 +208,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
       if (ended != true) {
         String speed = event.snapshot.value.toString();
         setState(() {
-          speedString = 'Speed: ' + speed;
+          speedString = speed;
         });
       }
     });
@@ -333,6 +333,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
     // To get the messages sent
 
     // To get the history of the caller "past calls"
+
+    String? userMotion = '';
+
+    if (double.parse('$speedString') >= 1.0 || double.parse('$speedString') <= -1.0)
+      userMotion = 'moving';
+    else
+      userMotion = 'still';
+
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -393,28 +401,38 @@ class _CallControlPanelState extends State<CallControlPanel> {
                     )
                   ])
                 ]),
+                
                 Column(children: [
                   // Second Column
                   //////
                   // This is the User Info
                   //////
-                  SizedBox(
+                  Container(
                       height: MediaQuery.of(context).size.height * 0.35,
                       width: MediaQuery.of(context).size.width * 0.25,
+                      //color: Colors.red,
+                      padding: EdgeInsets.all(5.0),
+                      
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        
                         children: [
                           Column(
                             children: [
                               const Text(
                                 'Caller Information',
                                 style: TextStyle(fontSize: 25),
+                                textAlign: TextAlign.center,
                               ),
                               Text(
-                                'Weather: ' + weatherDescription!,
+                                mobileChargeString,
                               ),
                               Text(
-                                'Temperature in Degree: ' +
-                                    temperature!.toString(),
+                                'Phone: ${snapshot['Phone']}',
+                              ),
+                              Text(
+                                'Weather: ' + temperature!.toString() + ' ' + weatherDescription!,
                               ),
                               Text(
                                 'Humidity: ' + humidity!.toString(),
@@ -423,19 +441,31 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 'Wind Speed: ' + windSpeed!.toString(),
                               ),
                               Text(
-                                'Phone: ${snapshot['Phone']}',
+                                'Location of the call: ———' 
                               ),
                               Text(
-                                mobileChargeString,
+                                'Location of the caller now:' 
+                              ),
+                              Row
+                              (
+                                children: 
+                                [
+                                  Text
+                                  (
+                                    '$longitudeString',
+                                  ),
+                                  Text
+                                  (
+                                    '     ', // SPACING
+                                  ),
+                                  Text
+                                  (
+                                    '$latitudeString',
+                                  ),
+                                ]
                               ),
                               Text(
-                                '$longitudeString',
-                              ),
-                              Text(
-                                '$latitudeString',
-                              ),
-                              Text(
-                                '$speedString',
+                                'Caller is ' + userMotion
                               ),
                               Text(
                                 '$AccelerationString',
@@ -448,6 +478,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                     height: MediaQuery.of(context).size.height * 0.55,
                     width: MediaQuery.of(context).size.width * 0.25,
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+
                       children: [
                         Column(children: [
                           ElevatedButton(
@@ -465,6 +498,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               height: MediaQuery.of(context).size.height * 0.34,
                               width: MediaQuery.of(context).size.width * 0.25,
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Expanded(
                                       child: StreamBuilder<QuerySnapshot>(
