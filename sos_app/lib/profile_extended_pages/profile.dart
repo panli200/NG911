@@ -714,20 +714,20 @@ class _ProfilePageState extends State<ProfilePage> {
                 final service = FlutterBackgroundService();
                 var isRunning = await service.isServiceRunning();
                 if (isRunning) {
-                  textBackground = 'Start Service';
                   service.sendData(
                     {"action": "stopService"},
                   );
                 } else {
                   service.start();
-                  textBackground = 'Stop Service';
                 }
 
-                // if (!isRunning) {
-                //   textBackground = 'Stop Service';
-                // } else {
-                //   textBackground = 'Start Service';
-                // }
+                if (!isRunning) {
+                  textBackground = 'Stop Service';
+                } else {
+                  textBackground = 'Start Service';
+                }
+
+                setState((){});
             },
         )
               ],
