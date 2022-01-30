@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_route/annotations.dart';
@@ -11,10 +12,74 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sos_app/profile_extended_pages/sliding_switch_widget.dart';
 import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
 import 'package:sos_app/profile_extended_pages/upload_file.dart';
-
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:sos_app/services/location.dart';
 class ProfilePage extends StatefulWidget {
+
   const ProfilePage({Key? key}) : super(key: key);
+
   _ProfilePageState createState() => _ProfilePageState();
+}
+
+Future<void> initializeService() async {
+  print("I am initialized");
+  final service = FlutterBackgroundService();
+  await service.configure(
+    androidConfiguration: AndroidConfiguration(
+      // this will executed when app is in foreground or background in separated isolate
+      onStart: onStart,
+
+      // auto start service
+      autoStart: true,
+      isForegroundMode: true,
+    ),
+    iosConfiguration: IosConfiguration(
+      // auto start service
+      autoStart: true,
+
+      // this will executed when app is in foreground in separated isolate
+      onForeground: onStart,
+
+      // you have to enable background fetch capability on xcode project
+      onBackground: onIosBackground,
+    ),
+  );
+}
+
+// to ensure this executed
+// run app from xcode, then from xcode menu, select Simulate Background Fetch
+void onIosBackground() {
+  WidgetsFlutterBinding.ensureInitialized();
+  print('FLUTTER BACKGROUND FETCH');
+}
+
+void onStart() {
+  print("I am Started");
+  WidgetsFlutterBinding.ensureInitialized();
+  final service = FlutterBackgroundService();
+  service.onDataReceived.listen((event) {
+
+    if (event!["action"] == "stopService") {
+      service.stopBackgroundService();
+    }
+  });
+
+  // bring to foreground
+  service.setForegroundMode(true);
+  Timer.periodic(Duration(seconds: 1), (timer) async {
+    if (!(await service.isServiceRunning())) timer.cancel();
+    service.setNotificationInfo(
+      title: "SOS App",
+      content: "Listening to background",
+    );
+
+    Location location = Location();
+    await location.getCurrentLocation();
+
+    service.sendData(
+      {"current_lat": location.latitude.toString(), "current_long": location.longitude.toString()},
+    );
+  });
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -29,7 +94,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late SharedPreferences prefs;
   final _formKey = GlobalKey<FormState>();
-
+  String textBackground = "Stop Service";
   getGeneralValue() async {
     prefs = await _prefs;
 
@@ -86,6 +151,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   void initState() {
+    initializeService();
     super.initState();
     getGeneralValue();
     getMedicalValue();
@@ -616,6 +682,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                               child: const Text('OK'),
                             ),
+
                           ],
                         ),
                       );
@@ -623,6 +690,46 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: const Text('SAVE MEDICAL INFORMATION'),
                 ),
+                const Divider(
+                  height: 10,
+                  thickness: 5,
+                ),
+            Text(
+              'Emergency Listener',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 17,
+              ),
+            ),
+        ElevatedButton(
+          child: Text(textBackground),
+            style: ButtonStyle(
+              backgroundColor:
+              MaterialStateProperty.all<Color>(Colors.black),
+            ),
+            onPressed: () async{
+              // code here to activate background
+
+                final service = FlutterBackgroundService();
+                var isRunning = await service.isServiceRunning();
+                if (isRunning) {
+                  service.sendData(
+                    {"action": "stopService"},
+                  );
+                } else {
+                  service.start();
+                }
+
+                if (!isRunning) {
+                  textBackground = 'Stop Service';
+                } else {
+                  textBackground = 'Start Service';
+                }
+
+                setState((){});
+            },
+        )
               ],
             ),
           ),
@@ -655,4 +762,6 @@ class _ProfilePageState extends State<ProfilePage> {
     _user.contactMedicalFile = fileT != null ? basename(fileT!.path) : '';
     _user.contactMedicalFilePath = path2;
   }
+  // functions for background se
+
 }
