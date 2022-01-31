@@ -27,16 +27,16 @@ class Location{
     Timer.periodic(Duration(seconds: 1), (t) {
           LatitudeEachSecond = LatitudeFromRealTime;
           LongitudeEachSecond = LongitudeFromRealTime;
-          LocationControllerLatitude.sink.add(LatitudeEachSecond);
-          LocationControllerLongitude.sink.add(LongitudeEachSecond);
+//          LocationControllerLatitude.sink.add(LatitudeEachSecond);
+//          LocationControllerLongitude.sink.add(LongitudeEachSecond);
       }
 
     );
 
   }
 
-  final LocationControllerLongitude = StreamController<double>.broadcast();
-  final LocationControllerLatitude = StreamController<double>.broadcast();
-  Stream<double> get streamLongitude => LocationControllerLongitude.stream;
-  Stream<double> get streamLatitude => LocationControllerLatitude.stream;
+//  final LocationControllerLongitude = StreamController<double>.broadcast();
+//  final LocationControllerLatitude = StreamController<double>.broadcast();
+//  Stream<double> get streamLongitude => LocationControllerLongitude.stream;
+//  Stream<double> get streamLatitude => LocationControllerLatitude.stream;
 }

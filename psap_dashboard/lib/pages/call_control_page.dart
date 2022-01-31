@@ -12,8 +12,8 @@ import 'dart:html';
 import 'location.dart';
 
 // Enviromental variables
-String? latitudePassed;
-String? longitudePassed;
+String? latitudePassed = '';
+String? longitudePassed = '';
 
 class CallControlPanel extends StatefulWidget {
   final CallerId;
@@ -278,15 +278,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
     callerId = widget.CallerId; //Getting user ID from the previous page..
     name = widget.name;
     // Get Locaiton list Stream
-    Location? streamLoc = Location(callerId);
-    double? LatitudeStreamed;
-    streamLoc.streamLatitude.listen((event) {
-      LatitudeStreamed = event;
-    });
-    double? LongitudeStreamed;
-    streamLoc.streamLongitude.listen((event) {
-      LongitudeStreamed = event;
-    });
+//    Location? streamLoc = Location(callerId);
+//    double? LatitudeStreamed = 0.0;
+//    streamLoc.streamLatitude.listen((event) {
+//      LatitudeStreamed = event;
+//    });
+//    double? LongitudeStreamed = 0.0;
+//    streamLoc.streamLongitude.listen((event) {
+//      LongitudeStreamed = event;
+//    });
     getRoomId();
     signaling = widget.signaling;
     _localRenderer = widget.localRenderer;
@@ -330,17 +330,23 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
-    // To get the messages sent
-
-    // To get the history of the caller "past calls"
 
     String? userMotion = '';
-
-    if (double.parse('$speedString') >= 1.0 || double.parse('$speedString') <= -1.0)
-      userMotion = 'moving';
-    else
-      userMotion = 'still';
-
+    double? speedDouble = 0.0;
+    if(double.tryParse('$speedString') !=null){
+      speedDouble = double.tryParse('$speedString');
+      if (speedDouble! >= 1.0 || speedDouble! <= -1.0) {
+        userMotion = 'moving';
+        setState(() {});
+      }else{
+        userMotion = 'still';
+        setState((){});
+      }
+    }
+    else {
+      userMotion = 'unknown';
+      setState((){});
+    }
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
