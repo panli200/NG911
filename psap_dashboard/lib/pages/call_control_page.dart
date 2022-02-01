@@ -133,7 +133,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   }
 
-  void activateListeners() {
+  void activateListeners() async{
+    WidgetsFlutterBinding.ensureInitialized();
     endedStateStream = ref
         .child('sensors')
         .child(callerId)
@@ -333,20 +334,24 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     String? userMotion = '';
     double? speedDouble = 0.0;
-    if(double.tryParse('$speedString') !=null){
-      speedDouble = double.tryParse('$speedString');
-      if (speedDouble! >= 1.0 || speedDouble! <= -1.0) {
-        userMotion = 'moving';
-        setState(() {});
-      }else{
-        userMotion = 'still';
-        setState((){});
+    Future.delayed(Duration.zero,() {
+      if (double.tryParse('$speedString') != null) {
+        WidgetsFlutterBinding.ensureInitialized();
+        speedDouble = double.tryParse('$speedString');
+        if (speedDouble! >= 1.0 || speedDouble! <= -1.0) {
+          userMotion = 'moving';
+          setState(() {});
+        } else {
+          userMotion = 'still';
+          setState(() {});
+        }
       }
-    }
-    else {
-      userMotion = 'unknown';
-      setState((){});
-    }
+      else {
+        WidgetsFlutterBinding.ensureInitialized();
+        userMotion = 'unknown';
+        setState(() {});
+      }
+    });
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -471,7 +476,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 ]
                               ),
                               Text(
-                                'Caller is ' + userMotion
+                                'Caller is ' + userMotion!
                               ),
                               Text(
                                 '$AccelerationString',
@@ -685,6 +690,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
 class StreetMap extends StatelessWidget {
   const StreetMap({Key? key}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {

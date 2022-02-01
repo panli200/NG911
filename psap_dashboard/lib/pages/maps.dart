@@ -49,7 +49,7 @@ class _GoogleMapState extends State<GoogleMap> {
             Marker(MarkerOptions()
               ..position = marker
               ..map = map);
-          } else if (doc.child('Online').value == true && doc.child('Ended').value == false) {
+          } if (doc.child('Online').value == true && doc.child('Ended').value == false) {
             Marker(MarkerOptions()
               ..position = marker
               ..map = map
