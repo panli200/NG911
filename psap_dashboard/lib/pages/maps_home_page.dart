@@ -25,14 +25,20 @@ class _MapsHomePageState extends State<MapsHomePage> {
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String name = '';
 
-  void getUSer() {
-    setState(() {
-      name = widget.name;
+  void getUSer() async{
+    Future.delayed(Duration.zero,()
+    {
+      setState(() {
+        name = widget.name;
+      });
     });
   }
 
-  void getTimeWaited(String? phone) {
-    FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
+  void getTimeWaited(String? phone) async{
+  Future.delayed(Duration.zero,(){
+
+  WidgetsFlutterBinding.ensureInitialized();
+  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
     ref
         .child('sensors')
         .child(phone!)
@@ -44,7 +50,9 @@ class _MapsHomePageState extends State<MapsHomePage> {
         timeWaitedString = timeWaited;
       });
     });
+  });
   }
+
 
   @override
   void initState() {
@@ -128,6 +136,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                         children: <Widget>[
                           SizedBox(
                               height: 200.0,
+
                               child: StreamBuilder<QuerySnapshot>(
                                   stream: Waiting,
                                   builder: (
@@ -144,6 +153,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                     }
 
                                     final data = snapshot.requireData;
+
                                     return ListView.builder(
                                         itemCount: data.size,
                                         itemBuilder: (context, index) {
