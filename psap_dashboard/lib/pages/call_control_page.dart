@@ -82,7 +82,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? latitudeStream;
   StreamSubscription? speedStream;
   StreamSubscription? AccelerationStream;
-  StreamSubscription? roomIdAccelerationStream;
+  StreamSubscription? roomIdStream;
 
   Stream<QuerySnapshot>? messages;
   String? StartTime;
@@ -99,8 +99,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     longitudeStream?.cancel();
     latitudeStream?.cancel();
     speedStream?.cancel();
-
-    roomIdAccelerationStream?.cancel();
+    roomIdStream?.cancel();
 
     // Changing the states
     await FirebaseFirestore.instance
@@ -253,7 +252,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 //  }
 
   void getRoomId() {
-    roomIdAccelerationStream = ref
+    roomIdStream = ref
         .child('sensors')
         .child(callerId)
         .child('RoomID')
