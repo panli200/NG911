@@ -97,6 +97,7 @@ class _LoginPageState extends State<LoginPage> {
                             MaterialPageRoute(
                                 builder: (_) =>
                                     MapsHomePage(name: username.text)));
+                        password.clear();
                       }
                     }
                   });
