@@ -14,6 +14,10 @@ import 'location.dart';
 // Enviromental variables
 String? latitudePassed = '';
 String? longitudePassed = '';
+var callerId = '';
+var startLan = '';
+var startLon = '';
+bool? ended = false;
 
 class CallControlPanel extends StatefulWidget {
   final CallerId;
@@ -42,11 +46,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
 
   // database variables
-  var callerId = '';
+
   var snapshot;
   Query? pastCalls;
   // States of the call
-  bool? ended = false;
 
   //used for map_street file
   String htmlId = "8";
@@ -129,10 +132,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     // Ending the endState stream
     endedStateStream?.cancel();
-
   }
 
-  void activateListeners() async{
+  void activateListeners() async {
     WidgetsFlutterBinding.ensureInitialized();
     endedStateStream = ref
         .child('sensors')
@@ -272,6 +274,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
     temperature = w.temperature!.celsius!.toInt();
   }
 
+  Future<void> getStartLocation() async {
+    var collection = FirebaseFirestore.instance.collection('SOSEmergencies');
+    var docSnapshot = await collection.doc(callerId).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      startLan = data['StartLocation'].latitude.toString();
+      startLon = data['StartLocation'].longitude.toString();
+    }
+  }
+
   // Initialize
   @override
   void initState() {
@@ -318,6 +330,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
       'Waiting': false,
       'Online': true
     }); // Changing the caller's Waiting state to be False and Online state to be True
+
+    getStartLocation();
     super.initState();
     //String UserMedicalReport = "";
   }
@@ -330,10 +344,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
-
     String? userMotion = '';
     double? speedDouble = 0.0;
-    Future.delayed(Duration.zero,() {
+    Future.delayed(Duration.zero, () {
       if (double.tryParse('$speedString') != null) {
         WidgetsFlutterBinding.ensureInitialized();
         speedDouble = double.tryParse('$speedString');
@@ -344,8 +357,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
           userMotion = 'still';
           setState(() {});
         }
-      }
-      else {
+      } else {
         WidgetsFlutterBinding.ensureInitialized();
         userMotion = 'unknown';
         setState(() {});
@@ -401,8 +413,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => MapsHomePage(
-                                      name: name,
-                                    )));
+                                          name: name,
+                                        )));
                             // this will the method for your rejected Button
                           },
                           style: ElevatedButton.styleFrom(
@@ -411,7 +423,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                     )
                   ])
                 ]),
-                
                 Column(children: [
                   // Second Column
                   //////
@@ -422,11 +433,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       width: MediaQuery.of(context).size.width * 0.25,
                       //color: Colors.red,
                       padding: EdgeInsets.all(5.0),
-                      
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        
                         children: [
                           Column(
                             children: [
@@ -442,7 +451,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 'Phone: ${snapshot['Phone']}',
                               ),
                               Text(
-                                'Weather: ' + temperature!.toString() + ' ' + weatherDescription!,
+                                'Weather: ' +
+                                    temperature!.toString() +
+                                    ' ' +
+                                    weatherDescription!,
                               ),
                               Text(
                                 'Humidity: ' + humidity!.toString(),
@@ -450,33 +462,20 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               Text(
                                 'Wind Speed: ' + windSpeed!.toString(),
                               ),
-                              Text(
-                                'Location of the call: ———' 
-                              ),
-                              Text(
-                                'Location of the caller now:' 
-                              ),
-                              Row
-                              (
-                                children: 
-                                [
-                                  Text
-                                  (
-                                    '$longitudeString',
-                                  ),
-                                  Text
-                                  (
-                                    '     ', // SPACING
-                                  ),
-                                  Text
-                                  (
-                                    '$latitudeString',
-                                  ),
-                                ]
-                              ),
-                              Text(
-                                'Caller is ' + userMotion!
-                              ),
+                              Text('Location of the call: ———'),
+                              Text('Location of the caller now:'),
+                              Row(children: [
+                                Text(
+                                  '$longitudeString',
+                                ),
+                                Text(
+                                  '     ', // SPACING
+                                ),
+                                Text(
+                                  '$latitudeString',
+                                ),
+                              ]),
+                              Text('Caller is ' + userMotion!),
                               Text(
                                 '$AccelerationString',
                               ),
@@ -490,7 +489,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-
                       children: [
                         Column(children: [
                           ElevatedButton(
@@ -690,13 +688,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
 class StreetMap extends StatelessWidget {
   const StreetMap({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     String htmlId = "8";
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
+      List<googleMap.LatLng> locations = [
+        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      ];
+
       final myLatlng = googleMap.LatLng(
           double.parse(latitudePassed!), double.parse(longitudePassed!));
 
@@ -717,9 +718,21 @@ class StreetMap extends StatelessWidget {
         ..map = map
         ..title = 'caller');
 
-      final infoWindow = googleMap.InfoWindow(
-          googleMap.InfoWindowOptions()..content = 'caller');
-      marker.onClick.listen((event) => infoWindow.open(map, marker));
+      FbDb.DatabaseReference ref =
+          FbDb.FirebaseDatabase.instance.ref("sensors").child(callerId);
+      Stream<FbDb.DatabaseEvent> stream = ref.onValue;
+      stream.listen((FbDb.DatabaseEvent event) {
+        if (event.snapshot.child('Ended').value == false) {
+          Timer.periodic(const Duration(seconds: 5), (t) {
+            locations.add(googleMap.LatLng(
+                double.parse(latitudePassed!), double.parse(longitudePassed!)));
+            final line = googleMap.Polyline(googleMap.PolylineOptions()
+              ..map = map
+              ..path = locations);
+          });
+        }
+      });
+
       return elem;
     });
 
