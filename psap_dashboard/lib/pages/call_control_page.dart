@@ -135,6 +135,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 
   void activateListeners() async {
+    bool? endedB = false;
     WidgetsFlutterBinding.ensureInitialized();
     endedStateStream = ref
         .child('sensors')
@@ -142,7 +143,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .child('Ended')
         .onValue
         .listen((event) async {
-      bool? endedB = event.snapshot.value as bool;
+      endedB = event.snapshot.value as bool;
       ended = endedB;
     });
 
@@ -535,9 +536,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 itemBuilder: (context, index) {
                                                   Color c;
                                                   Alignment a;
-                                                  print(
-                                                      "the other data size is: " +
-                                                          data.size.toString());
                                                   if (data.docs[index]
                                                           ['SAdmin'] ==
                                                       false) {
@@ -721,16 +719,31 @@ class StreetMap extends StatelessWidget {
       FbDb.DatabaseReference ref =
           FbDb.FirebaseDatabase.instance.ref("sensors").child(callerId);
       Stream<FbDb.DatabaseEvent> stream = ref.onValue;
+
+      bool? end = false;
+
       stream.listen((FbDb.DatabaseEvent event) {
-        if (event.snapshot.child('Ended').value == false) {
-          Timer.periodic(const Duration(seconds: 5), (t) {
+        if (event.snapshot.child('Ended').value == true) {
+          end = true;
+        }
+      });
+
+      StreamSubscription? mapStream;
+      mapStream = stream.listen((FbDb.DatabaseEvent event) {
+        Timer.periodic(const Duration(seconds: 5), (timer) {
+          if (end == true) {
+            timer.cancel();
+            mapStream!.cancel();
+          } else {
             locations.add(googleMap.LatLng(
                 double.parse(latitudePassed!), double.parse(longitudePassed!)));
+            print("---------------------");
+            print(locations);
             final line = googleMap.Polyline(googleMap.PolylineOptions()
               ..map = map
               ..path = locations);
-          });
-        }
+          }
+        });
       });
 
       return elem;
