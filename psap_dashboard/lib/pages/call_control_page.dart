@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart' as FbDb;
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:weather/weather.dart';
 import 'dart:async';
 import 'maps_home_page.dart';
@@ -10,6 +11,7 @@ import 'package:google_maps/google_maps.dart' as googleMap;
 import 'dart:ui' as ui;
 import 'dart:html';
 import 'location.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 
 // Enviromental variables
 String? latitudePassed = '';
@@ -421,7 +423,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       height: MediaQuery.of(context).size.height * 0.35,
                       width: MediaQuery.of(context).size.width * 0.25,
                       //color: Colors.red,
-                      padding: EdgeInsets.all(5.0),
+                      padding: EdgeInsets.all(10.0),
                       
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -429,61 +431,156 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         
                         children: [
                           Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text(
                                 'Caller Information',
                                 style: TextStyle(fontSize: 25),
                                 textAlign: TextAlign.center,
                               ),
-                              Text(
-                                mobileChargeString,
+                              Row 
+                              (
+                                children: 
+                                [
+                                    Icon(FlutterRemix.battery_2_charge_line),    
+                                    Text(mobileChargeString, style: TextStyle(fontSize: 15),)
+                                ],
                               ),
-                              Text(
-                                'Phone: ${snapshot['Phone']}',
+
+                              Row 
+                              (
+                                children: 
+                                [
+                                    Icon(FlutterRemix.smartphone_line),    
+                                    Text('Phone: ${snapshot['Phone']}', style: TextStyle(fontSize: 15),)
+                                ],
                               ),
-                              Text(
-                                'Weather: ' + temperature!.toString() + ' ' + weatherDescription!,
+
+                              Row 
+                              (
+                                children: 
+                                [
+                                  Icon(FlutterRemix.celsius_line),  
+                                  Text
+                                  (
+                                    'Weather: ' + temperature!.toString() + '° ' + weatherDescription!,
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Humidity: ' + humidity!.toString(),
+
+                              Row 
+                              (
+                                children: 
+                                [
+                                  Icon(FlutterRemix.contrast_drop_2_line),
+                                  Text
+                                  (
+                                    'Humidity: ' + humidity!.toString(),
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Wind Speed: ' + windSpeed!.toString(),
+
+                              Row 
+                              (
+                                children: 
+                                [
+                                  Icon(FlutterRemix.windy_line),
+                                  Text
+                                  (
+                                    'Wind Speed: ' + windSpeed!.toString(),
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Location of the call: ———' 
+
+                              Row 
+                              (
+                                children: 
+                                [
+                                  Icon(FlutterRemix.map_pin_line),
+                                  Text
+                                  (
+                                    'Location of the call: ———',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ],
                               ),
-                              Text(
-                                'Location of the caller now:' 
+
+                              Row 
+                              (
+                                children: 
+                                [
+                                  Icon(FlutterRemix.user_location_line),
+                                  Text
+                                  (
+                                    'Location of the caller now:',
+                                    style: TextStyle(fontSize: 15),
+                                  ),
+                                ],
                               ),
-                              Row
+
+                              // Row
+                              // (
+                              //   children: 
+                              //   [
+                              //     Text
+                              //     (
+                              //       '$longitudeString',
+                              //     ),
+                              //     Text
+                              //     (
+                              //       '     ', // SPACING
+                              //     ),
+                              //     Text
+                              //     (
+                              //       '$latitudeString',
+                              //     ),
+                              //   ]
+                              // ),
+                              Text
+                              (
+                                '$longitudeString' + '°',
+                              ),
+                              Text
+                              (
+                                '$latitudeString' + '°',
+                              ),
+
+                              Row 
                               (
                                 children: 
                                 [
                                   Text
                                   (
-                                    '$longitudeString',
+                                    'Caller is' + userMotion!,
+                                    style: TextStyle(fontSize: 15),
                                   ),
+                                  Icon(FlutterRemix.walk_fill), 
                                   Text
                                   (
-                                    '     ', // SPACING
+                                    userMotion!,
+                                    style: TextStyle(fontSize: 15),
                                   ),
-                                  Text
-                                  (
-                                    '$latitudeString',
-                                  ),
-                                ]
+                                ],
                               ),
-                              Text(
-                                'Caller is ' + userMotion!
-                              ),
-                              Text(
-                                '$AccelerationString',
-                              ),
+
+                              // Row 
+                              // (
+                              //   children: 
+                              //   [
+                              //     Text
+                              //     (
+                              //       '$AccelerationString',
+                              //       style: TextStyle(fontSize: 15),
+                              //     ),
+                              //   ],
+                              // ),
                             ],
                           ),
                         ],
-                      )),
+                      )), 
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.55,
                     width: MediaQuery.of(context).size.width * 0.25,
@@ -492,7 +589,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       crossAxisAlignment: CrossAxisAlignment.center,
 
                       children: [
-                        Column(children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
                           ElevatedButton(
                               onPressed: _EndCall,
                               child: const Text(

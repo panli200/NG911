@@ -56,6 +56,7 @@ dependencies:
 
   #Chart
   syncfusion_flutter_charts: ^19.4.43
+  flutter_remix: ^0.0.3
 
 dev_dependencies:
   flutter_test:
