@@ -39,51 +39,57 @@ class _SettingsHomePageState extends State<SettingsHomePage> {
         centerTitle: true,
         backgroundColor: Colors.green,
       ),
-      body: Container(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Center(
-              child: Text('Username  admin'),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: Text(
+              'Username: $name',
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+              textAlign: TextAlign.center,
             ),
+          ),
 
-            SizedBox(height: 20), // Spacing visuals
+          const SizedBox(height: 20), // Spacing visuals
 
-            Container(
-              width: MediaQuery.of(context).size.width * 0.4,
-              child: TextField(
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'New Password',
-                ),
-                controller: newPwd,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: TextField(
+              obscureText: true,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'New Password',
               ),
+              controller: newPwd,
             ),
+          ),
 
-            SizedBox(height: 20), // Spacing visuals
+          const SizedBox(height: 40), // Spacing visuals
 
-            Container(
-              width: MediaQuery.of(context).size.width * 0.4,
-              child: TextField(
-                obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
-                  labelText: 'Confirm Password',
-                ),
-                controller: newPWD,
+          SizedBox(
+            width: MediaQuery.of(context).size.width * 0.3,
+            child: TextField(
+              obscureText: true,
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                labelText: 'Confirm Password',
               ),
+              controller: newPWD,
             ),
+          ),
 
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: ElevatedButton(
-                  onPressed: () async {
+          const SizedBox(height: 40),
+
+          SizedBox(
+              width: MediaQuery.of(context).size.width * 0.1,
+              height: MediaQuery.of(context).size.width * 0.02,
+              child: ElevatedButton(
+                onPressed: () {
+                  if (newPwd.text == newPWD.text) {
                     users.get().then((QuerySnapshot querySnapshot) {
                       for (var doc in querySnapshot.docs) {
-                        if (doc["username"] == name &&
-                            (newPwd.text == newPWD.text)) {
+                        if (doc["username"] == name) {
                           Future<void> updateUser() {
                             return users
                                 .doc(doc.id)
@@ -100,15 +106,34 @@ class _SettingsHomePageState extends State<SettingsHomePage> {
                                 title: const Text('Password Updated'),
                                 actions: <Widget>[
                                   TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'OK'),
+                                    onPressed: () {
+                                      Navigator.pop(context, 'OK');
+                                      newPwd.clear();
+                                      newPWD.clear();
+                                    },
                                     child: const Text('OK'),
                                   ),
                                 ]));
-                  },
-                  child: const Text('Submit'),
-                ))
-          ],
-        ),
+                  } else {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                                title: const Text(
+                                    'Password not match, please reenter a new password'),
+                                actions: <Widget>[
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, 'OK');
+                                      newPwd.clear();
+                                      newPWD.clear();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ]));
+                  }
+                },
+                child: const Text('Submit'),
+              ))
+        ],
       ));
 }
