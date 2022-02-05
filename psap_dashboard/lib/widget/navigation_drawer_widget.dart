@@ -31,21 +31,29 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final name = 'Logout';
-    final email = '';
-    final urlImage =
+    final name = uNAME;
+    const email = '';
+    const urlImage =
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRHHO-97UOCydLCAK9jpUBrpXyMqdp5JQnlgA&usqp=CAU';
 
     return Drawer(
       child: Material(
-        color: Color.fromRGBO(50, 75, 205, 1),
+        color: Colors.blue,
         child: ListView(
           children: <Widget>[
             buildHeader(
               urlImage: urlImage,
               name: name,
               email: email,
-              onClicked: () {
+              onClicked: () {},
+            ),
+            IconButton(
+              icon: const Icon(
+                Icons.logout,
+              ),
+              color: Colors.red,
+              splashColor: Colors.white,
+              onPressed: () {
                 Navigator.pushReplacement(
                     context, MaterialPageRoute(builder: (_) => LoginPage()));
               },
