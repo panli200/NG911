@@ -17,7 +17,7 @@ class MapsHomePage extends StatefulWidget {
 }
 
 class _MapsHomePageState extends State<MapsHomePage> {
-  var timeWaited = "0";
+  String? timeWaited = "0";
   String timeWaitedString = '0';
   // video streaming
   Signaling signaling = Signaling();
@@ -45,10 +45,14 @@ class _MapsHomePageState extends State<MapsHomePage> {
         .child('Timer')
         .onValue
         .listen((event) async {
-      timeWaited = event.snapshot.value.toString();
-      setState(() {
-        timeWaitedString = timeWaited;
-      });
+      timeWaited = event.snapshot.value!.toString();
+
+        if(timeWaited != null){
+  timeWaitedString = timeWaited!;
+  setState(() {});
+  }
+
+
     });
   });
   }
