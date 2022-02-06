@@ -18,7 +18,7 @@ class MapsHomePage extends StatefulWidget {
 
 class _MapsHomePageState extends State<MapsHomePage> {
   var timeWaited = "0";
-  String? timeWaitedString = ' ';
+  String timeWaitedString = '0';
   // video streaming
   Signaling signaling = Signaling();
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
@@ -190,7 +190,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                       _remoteRenderer,name: name,)));
                                                     },
                                                     child: Text(
-                                                        ' ${phone + "  Time waited: " + timeWaitedString!}'),
+                                                        ' ${phone + "  Time waited: " + timeWaitedString}'),
                                                   ),
                                                 ]),
                                               ),
