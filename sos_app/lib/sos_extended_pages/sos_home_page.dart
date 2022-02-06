@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:sos_app/data/application_data.dart';
+import 'package:sos_app/services/call_type.dart';
 import 'package:sos_app/widgets.dart';
 import 'package:sos_app/profile_extended_pages/upload_file.dart';
 import 'package:sos_app/services/location.dart';
@@ -35,6 +36,7 @@ class SosHomePageState extends State<SosHomePage> {
       'StartLocation': GeoPoint(location.latitude, location.longitude),
       'StartTime': date,
       'Waiting': true,
+      'type': 5,
     });
   }
 
@@ -93,6 +95,7 @@ class SosHomePageState extends State<SosHomePage> {
                   sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
+                  personal(); //Test adding call type
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CallPage()),
@@ -117,6 +120,7 @@ class SosHomePageState extends State<SosHomePage> {
                   sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
+                  contact(); //Test adding call type
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CallPage()),
@@ -138,8 +142,6 @@ class SosHomePageState extends State<SosHomePage> {
                   String? date = now.toString();
                   _callNumber(date);
                   updateSensors(date);
-                  sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                  uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
                   Navigator.push(
                     context,
