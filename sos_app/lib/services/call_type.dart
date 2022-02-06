@@ -9,6 +9,8 @@ void personal() async {
   late SharedPreferences prefs;
   SOSUser user = SOSUser();
   prefs = await _prefs;
+  CollectionReference emergency =
+      FirebaseFirestore.instance.collection('SOSEmergencies');
 
   user.generalPermission = (prefs.containsKey("GeneralPermission")
       ? prefs.getBool("GeneralPermission")
@@ -18,33 +20,42 @@ void personal() async {
       (prefs.containsKey("PersonalMedicalPermission")
           ? prefs.getBool("PersonalMedicalPermission")
           : false)!;
-  print("------------*************");
-  print(user.generalPermission);
-  print(user.personalMedicalPermission);
+
   if ((user.generalPermission == true) &&
       (user.personalMedicalPermission == false)) {
-    await FirebaseFirestore.instance
-        .collection('SOSEmergencies')
+    await emergency
         .doc(mobile)
         .update({
-      'type': 1,
-    });
+          'type': 1,
+        })
+        .then((value) => print("Call type Updated"))
+        .catchError((error) => print("Failed to add type: $error"));
   } else if ((user.generalPermission == true) &&
       (user.personalMedicalPermission == true)) {
-    await FirebaseFirestore.instance
-        .collection('SOSEmergencies')
+    await emergency
         .doc(mobile)
         .update({
-      'type': 2,
-    });
+          'type': 2,
+        })
+        .then((value) => print("Call type Updated"))
+        .catchError((error) => print("Failed to add type: $error"));
   } else if ((user.generalPermission == false) &&
       (user.personalMedicalPermission == true)) {
-    await FirebaseFirestore.instance
-        .collection('SOSEmergencies')
+    await emergency
         .doc(mobile)
         .update({
-      'type': 3,
-    });
+          'type': 3,
+        })
+        .then((value) => print("Call type Updated"))
+        .catchError((error) => print("Failed to add type: $error"));
+  } else {
+    await emergency
+        .doc(mobile)
+        .update({
+          'type': 5,
+        })
+        .then((value) => print("Call type Updated"))
+        .catchError((error) => print("Failed to add type: $error"));
   }
 }
 
@@ -54,14 +65,41 @@ void contact() async {
   late SharedPreferences prefs;
   prefs = await _prefs;
   SOSUser user = SOSUser();
+  CollectionReference emergency =
+      FirebaseFirestore.instance.collection('SOSEmergencies');
 
   user.contactMedicalPermission = (prefs.containsKey("contactMedicalPermission")
       ? prefs.getBool("contactMedicalPermission")
       : false)!;
-print(user.contactMedicalPermission);
+  print(user.contactMedicalPermission);
   if (user.contactMedicalPermission == true) {
-    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).update({
-      'type': 4,
-    });
+    await emergency
+        .doc(mobile)
+        .update({
+          'type': 4,
+        })
+        .then((value) => print("Call type Updated"))
+        .catchError((error) => print("Failed to add type: $error"));
+  } else {
+    await emergency
+        .doc(mobile)
+        .update({
+          'type': 5,
+        })
+        .then((value) => print("Call type Updated"))
+        .catchError((error) => print("Failed to add type: $error"));
   }
+}
+
+void standby() async {
+  String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+
+  await FirebaseFirestore.instance
+      .collection('SOSEmergencies')
+      .doc(mobile)
+      .update({
+        'type': 5,
+      })
+      .then((value) => print("Call type Updated"))
+      .catchError((error) => print("Failed to add type: $error"));
 }

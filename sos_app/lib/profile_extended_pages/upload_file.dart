@@ -50,7 +50,7 @@ Future uploadFile() async {
         .update({
           'personal medical file download': urlDownload,
         })
-        .then((value) => print("User Updated"))
+        .then((value) => print("User File Updated"))
         .catchError((error) => print("Failed to add user: $error"));
   }
   if (user.contactMedicalPermission == true) {
@@ -74,7 +74,7 @@ Future uploadFile() async {
         .update({
           'contact medical file download': urlDownload,
         })
-        .then((value) => print("User Updated"))
+        .then((value) => print("User File Updated"))
         .catchError((error) => print("Failed to add user: $error"));
   }
 }

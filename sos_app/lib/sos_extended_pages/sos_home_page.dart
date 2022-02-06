@@ -29,21 +29,18 @@ class SosHomePageState extends State<SosHomePage> {
     await location.getCurrentLocation();
     String user = FirebaseAuth.instance.currentUser!.uid.toString();
     String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).set({
+    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).update({
       'Online': false,
       'Phone': mobile,
       'User': user,
       'StartLocation': GeoPoint(location.latitude, location.longitude),
       'StartTime': date,
       'Waiting': true,
-      'type': 5,
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final connectPsapData = ConnectPsapData.connectPsapData;
-
     return Scaffold(
         body: Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
@@ -143,6 +140,7 @@ class SosHomePageState extends State<SosHomePage> {
                   _callNumber(date);
                   updateSensors(date);
                   updateHistory(); //Test adding call history database
+                  standby();
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CallPage()),
