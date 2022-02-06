@@ -41,20 +41,37 @@ class _GoogleMapState extends State<GoogleMap> {
       Stream<DatabaseEvent> stream = ref.onValue;
       stream.listen((DatabaseEvent event) async {
         for (var doc in event.snapshot.children) {
-          var marker = LatLng(
-              double.parse(doc.child('Latitude').value.toString()),
-              double.parse(doc.child('Longitude').value.toString()));
+          if(double.tryParse(doc.child('Latitude').value.toString()) !=null && double.tryParse(doc.child('Longitude').value.toString()) !=null) {
+            var marker = LatLng(
+                double.tryParse(doc
+                    .child('Latitude')
+                    .value
+                    .toString()),
+                double.tryParse(doc
+                    .child('Longitude')
+                    .value
+                    .toString()));
 
-          if (doc.child('Online').value == false && doc.child('Ended').value == false) {
-            Marker(MarkerOptions()
-              ..position = marker
-              ..map = map);
-          } if (doc.child('Online').value == true && doc.child('Ended').value == false) {
-            Marker(MarkerOptions()
-              ..position = marker
-              ..map = map
-              ..icon =
-                  'https://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+            if (doc
+                .child('Online')
+                .value == false && doc
+                .child('Ended')
+                .value == false) {
+              Marker(MarkerOptions()
+                ..position = marker
+                ..map = map);
+            }
+            if (doc
+                .child('Online')
+                .value == true && doc
+                .child('Ended')
+                .value == false) {
+              Marker(MarkerOptions()
+                ..position = marker
+                ..map = map
+                ..icon =
+                    'https://maps.google.com/mapfiles/ms/icons/blue-dot.png');
+            }
           }
         }
       });
