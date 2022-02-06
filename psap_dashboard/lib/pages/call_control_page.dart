@@ -253,16 +253,25 @@ class _CallControlPanelState extends State<CallControlPanel> {
 //    });
 //  }
 
-  void getRoomId() {
+  Future<void> getRoomId() async {
     roomIdStream = ref
         .child('sensors')
         .child(callerId)
         .child('RoomID')
         .onValue
         .listen((event) {
-      roomId = event.snapshot.value.toString();
+          setState(() {
+            roomId = event.snapshot.value.toString();
+            signaling = widget.signaling;
+            _localRenderer = widget.localRenderer;
+            _remoteRenderer = widget.remoteRenderer;
+
+            signaling?.joinRoom(
+                roomId, _remoteRenderer!, callerId); //join the video stream
+          });
     });
   }
+
 
   Future<void> getLocationWeather() async {
     WeatherFactory wf = WeatherFactory("5e1ad24d143d638f46a53ae6403ee651");
@@ -289,13 +298,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 //    streamLoc.streamLongitude.listen((event) {
 //      LongitudeStreamed = event;
 //    });
-    getRoomId();
-    signaling = widget.signaling;
-    _localRenderer = widget.localRenderer;
-    _remoteRenderer = widget.remoteRenderer;
-
-    signaling?.joinRoom(
-        roomId, _remoteRenderer!, callerId); //join the video stream
+    getRoomId();//get roomId and join the stream
 
     ref.child('sensors').child(callerId).update({'Online': true});
 
@@ -636,9 +639,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 itemBuilder: (context, index) {
                                                   Color c;
                                                   Alignment a;
-                                                  print(
-                                                      "the other data size is: " +
-                                                          data.size.toString());
                                                   if (data.docs[index]
                                                           ['SAdmin'] ==
                                                       false) {
