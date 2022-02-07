@@ -10,6 +10,8 @@ import 'signaling.dart';
 import 'package:google_maps/google_maps.dart' as googleMap;
 import 'dart:ui' as ui;
 import 'dart:html';
+import 'health__info_buttons.dart';
+import 'user_data_page.dart';
 import 'location.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 
@@ -24,10 +26,12 @@ class CallControlPanel extends StatefulWidget {
   final remoteRenderer;
   final localRenderer;
   final name;
+  final type;
   const CallControlPanel(
       {Key? key,
       required this.CallerId,
       required this.Snapshot,
+      required this.type,
       required this.signaling,
       required this.localRenderer,
       this.remoteRenderer,
@@ -49,7 +53,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
   Query? pastCalls;
   // States of the call
   bool? ended = false;
-
   //used for map_street file
   String htmlId = "8";
   StreetMap? streetMap;
@@ -92,7 +95,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   var roomId;
   String name = '';
-
+  int callType = 4;
+  String emergencyContactNumberString = '';
+  String emergencyHealthCardNumberString = '';
+  String personalHealthCardString = '';
   // Function to end the call
   void _EndCall() async {
     // Closing the listeners
@@ -228,6 +234,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
         });
       }
     });
+
+
   }
 
 //  void pauseListeners(){
@@ -282,12 +290,19 @@ class _CallControlPanelState extends State<CallControlPanel> {
     windSpeed = w.windSpeed!;
     temperature = w.temperature!.celsius!.toInt();
   }
+  void initHealthData() async{
+
+
+  }
 
   // Initialize
   @override
   void initState() {
     callerId = widget.CallerId; //Getting user ID from the previous page..
     name = widget.name;
+    callType = widget.type;
+    initHealthData();
+
     // Get Locaiton list Stream
 //    Location? streamLoc = Location(callerId);
 //    double? LatitudeStreamed = 0.0;
@@ -312,7 +327,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     activateListeners();
     getLocationWeather();
-//    pauseListeners();
+//    initialize Widgets
 
     // Changing states
     snapshot = widget.Snapshot;
@@ -338,7 +353,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     String? userMotion = '';
     double? speedDouble = 0.0;
-    Future.delayed(Duration.zero,() {
+    Future.delayed(Duration.zero,() async{
+      emergencyContactNumberString = await getEmergencyContactNumber(callerId);
+      emergencyHealthCardNumberString = await getEmergencyContactHealthCard(callerId);
+      personalHealthCardString = await getPersonalHealthCard(callerId);
+      setState((){});
       if (double.tryParse('$speedString') != null) {
         WidgetsFlutterBinding.ensureInitialized();
         speedDouble = double.tryParse('$speedString');
@@ -423,7 +442,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   // This is the User Info
                   //////
                   Container(
-                      height: MediaQuery.of(context).size.height * 0.35,
+                      height: MediaQuery.of(context).size.height * 0.36,
                       width: MediaQuery.of(context).size.width * 0.25,
                       //color: Colors.red,
                       padding: EdgeInsets.all(10.0),
@@ -585,7 +604,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         ],
                       )), 
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.55,
+                    height: MediaQuery.of(context).size.height * 0.54,
                     width: MediaQuery.of(context).size.width * 0.25,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -595,18 +614,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                          ElevatedButton(
-                              onPressed: _EndCall,
-                              child: const Text(
-                                  "Download Personal Medical Report")),
-                          ElevatedButton(
-                              onPressed: _EndCall,
-                              child: const Text(
-                                  "Download Emergency Contact Medical Report")),
+
+
+
+                             CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString),
                           //////
                           // This is the chat
                           //////
-                          SizedBox(
+                            SizedBox(
                               height: MediaQuery.of(context).size.height * 0.34,
                               width: MediaQuery.of(context).size.width * 0.25,
                               child: Row(
@@ -795,31 +810,38 @@ class StreetMap extends StatelessWidget {
     String htmlId = "8";
 
     // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-      final myLatlng = googleMap.LatLng(
-          double.parse(latitudePassed!), double.parse(longitudePassed!));
+    ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId){
+     // if(double.tryParse(latitudePassed!) != null && double.tryParse(longitudePassed!) != null) {
+        final myLatlng = googleMap.LatLng(
 
-      final mapOptions = googleMap.MapOptions()
-        ..zoom = 19
-        ..center = myLatlng;
+            double.tryParse(latitudePassed!),
+            double.tryParse(longitudePassed!));
 
-      final elem = DivElement()
-        ..id = htmlId
-        ..style.width = "100%"
-        ..style.height = "100%"
-        ..style.border = 'none';
 
-      final map = googleMap.GMap(elem, mapOptions);
+        final mapOptions = googleMap.MapOptions()
+          ..zoom = 19
+          ..center = myLatlng;
 
-      final marker = googleMap.Marker(googleMap.MarkerOptions()
-        ..position = myLatlng
-        ..map = map
-        ..title = 'caller');
+        final elem = DivElement()
+          ..id = htmlId
+          ..style.width = "100%"
+          ..style.height = "100%"
+          ..style.border = 'none';
 
-      final infoWindow = googleMap.InfoWindow(
-          googleMap.InfoWindowOptions()..content = 'caller');
-      marker.onClick.listen((event) => infoWindow.open(map, marker));
-      return elem;
+        final map = googleMap.GMap(elem, mapOptions);
+
+        final marker = googleMap.Marker(googleMap.MarkerOptions()
+          ..position = myLatlng
+          ..map = map
+          ..title = 'caller');
+
+        final infoWindow = googleMap.InfoWindow(
+            googleMap.InfoWindowOptions()
+              ..content = 'caller');
+        marker.onClick.listen((event) => infoWindow.open(map, marker));
+
+        return elem;
+
     });
 
     return HtmlElementView(viewType: htmlId);

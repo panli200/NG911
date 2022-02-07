@@ -34,28 +34,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
     });
   }
 
-  void getTimeWaited(String? phone) async{
-  Future.delayed(Duration.zero,(){
 
-  WidgetsFlutterBinding.ensureInitialized();
-  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
-    ref
-        .child('sensors')
-        .child(phone!)
-        .child('Timer')
-        .onValue
-        .listen((event) async {
-      timeWaited = event.snapshot.value!.toString();
-
-        if(timeWaited != null){
-  timeWaitedString = timeWaited!;
-  setState(() {});
-  }
-
-
-    });
-  });
-  }
 
 
   @override
@@ -156,17 +135,44 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                       return Text('Loading');
                                     }
 
+
                                     final data = snapshot.requireData;
 
                                     return ListView.builder(
                                         itemCount: data.size,
                                         itemBuilder: (context, index) {
-                                          getTimeWaited(data.docs[index].id);
+                                          void getTimeWaited(String? phone) async{
+
+                                              WidgetsFlutterBinding.ensureInitialized();
+                                              FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
+                                              ref
+                                                  .child('sensors')
+                                                  .child(phone!)
+                                                  .child('Timer')
+                                                  .onValue
+                                                  .listen((event) async {
+                                                timeWaited = event.snapshot.value!.toString();
+
+                                                if(timeWaited != null){
+                                                timeWaitedString = timeWaited!;
+                                                Future.delayed(Duration.zero,() {
+                                                setState(() {});
+                                                });
+                                                }
+
+
+                                              });
+                                          }
+
+
                                           String phone = " ";
+                                          int? type = 5;
                                           var id = data.docs[index].id;
                                           phone = data.docs[index]['Phone']
                                               .toString();
+                                           type =  data.docs[index]['type'];
                                           if (data.docs[index]['Waiting']) {
+                                            getTimeWaited(data.docs[index].id);
                                             return Material(
                                               child: Container(
                                                 child: Row(children: <Widget>[
@@ -186,6 +192,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                   Snapshot: data
                                                                           .docs[
                                                                       index],
+                                                                  type: type,
                                                                   signaling:
                                                                       signaling,
                                                                   localRenderer:
