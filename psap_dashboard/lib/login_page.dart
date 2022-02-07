@@ -14,6 +14,8 @@ class _LoginPageState extends State<LoginPage> {
   String pwd = '';
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
+  bool validNAME = true;
+  bool validPWD = true;
 
   @override
   void initState() {
@@ -44,26 +46,24 @@ class _LoginPageState extends State<LoginPage> {
                 onChanged: (value) {
                   setState(() {
                     name = value;
+                    FirebaseFirestore.instance
+                        .collection('PSAPUser')
+                        .get()
+                        .then((QuerySnapshot querySnapshot) {
+                      for (var doc in querySnapshot.docs) {
+                        if (doc["username"] != value) {
+                          validNAME = false;
+                        }
+                      }
+                    });
                   });
                 },
                 validator: (value) {
-                  bool valid = false;
-                  FirebaseFirestore.instance
-                      .collection('PSAPUser')
-                      .get()
-                      .then((QuerySnapshot querySnapshot) {
-                    for (var doc in querySnapshot.docs) {
-                      if (doc["username"] == username.text) {
-                        valid == true;
-                      } else {
-                        valid == false;
-                      }
-                    }
-                  });
-                  if (valid == true) {
+                  if (validNAME == true) {
                     return null;
                   } else {
-                    return 'The username not exist';
+                    username.clear();
+                    return 'Please enter valid username';
                   }
                 },
                 decoration: const InputDecoration(
@@ -83,27 +83,24 @@ class _LoginPageState extends State<LoginPage> {
                 onChanged: (value) {
                   setState(() {
                     pwd = value;
+                    FirebaseFirestore.instance
+                        .collection('PSAPUser')
+                        .get()
+                        .then((QuerySnapshot querySnapshot) {
+                      for (var doc in querySnapshot.docs) {
+                        if (doc["username"] == username.text && doc["password"] != value) {
+                          validPWD = false;
+                        }
+                      }
+                    });
                   });
                 },
                 validator: (value) {
-                  bool valid = false;
-                  FirebaseFirestore.instance
-                      .collection('PSAPUser')
-                      .get()
-                      .then((QuerySnapshot querySnapshot) {
-                    for (var doc in querySnapshot.docs) {
-                      if (doc["username"] == username.text &&
-                          doc["password"] == password.text) {
-                        valid == true;
-                      } else {
-                        valid == false;
-                      }
-                    }
-                  });
-                  if (valid == true) {
+                  if (validPWD == true) {
                     return null;
                   } else {
-                    return 'Please enter matched password';
+                    password.clear();
+                    return 'Please enter valid password';
                   }
                 },
                 obscureText: true,
