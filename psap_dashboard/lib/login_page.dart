@@ -9,6 +9,9 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final formKey = GlobalKey<FormState>();
+  String name = '';
+  String pwd = '';
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
 
@@ -19,72 +22,71 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-          body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Center(
-            child: Text(
-              'Saskatchewan Public Safety Agency 911',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
-              textAlign: TextAlign.center,
-            ),
-          ),
-
-          const SizedBox(height: 80), // Spacing visuals
-
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.3,
-            child: TextFormField(
-              validator: (value) {
-                if (value!.isNotEmpty && value.length <= 2) {
-                  return 'The username not exist';
-                }
-                return null;
-              },
-              inputFormatters: <TextInputFormatter>[
-                // FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(9),
-              ],
-              decoration: const InputDecoration(
-                icon: Icon(Icons.person),
-                border: OutlineInputBorder(),
-                labelText: 'Username',
+          body: Form(
+        key: formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            const Center(
+              child: Text(
+                'Saskatchewan Public Safety Agency 911',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
+                textAlign: TextAlign.center,
               ),
-              controller: username,
             ),
-          ),
 
-          const SizedBox(height: 20), // Spacing visuals
+            const SizedBox(height: 80), // Spacing visuals
 
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.3,
-            child: TextFormField(
-              validator: (value) {
-                if (value!.isNotEmpty) {
-                  return 'Please enter correct password';
-                }
-                return null;
-              },
-              inputFormatters: <TextInputFormatter>[
-                // FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(9),
-              ],
-              obscureText: true,
-              decoration: const InputDecoration(
-                icon: Icon(Icons.vpn_key),
-                border: OutlineInputBorder(),
-                labelText: 'Password',
-              ),
-              controller: password,
-            ),
-          ),
-          const SizedBox(height: 60),
-          SizedBox(
+            SizedBox(
               width: MediaQuery.of(context).size.width * 0.3,
-              height: MediaQuery.of(context).size.width * 0.03,
-              child: ElevatedButton(
-                onPressed: () async {
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    name = value;
+                  });
+                },
+                validator: (value) {
+                  bool valid = false;
+                  FirebaseFirestore.instance
+                      .collection('PSAPUser')
+                      .get()
+                      .then((QuerySnapshot querySnapshot) {
+                    for (var doc in querySnapshot.docs) {
+                      if (doc["username"] == username.text) {
+                        valid == true;
+                      } else {
+                        valid == false;
+                      }
+                    }
+                  });
+                  if (valid == true) {
+                    return null;
+                  } else {
+                    return 'The username not exist';
+                  }
+                },
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.person),
+                  border: OutlineInputBorder(),
+                  labelText: 'Username',
+                ),
+                controller: username,
+              ),
+            ),
+
+            const SizedBox(height: 20), // Spacing visuals
+
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.3,
+              child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    pwd = value;
+                  });
+                },
+                validator: (value) {
+                  bool valid = false;
                   FirebaseFirestore.instance
                       .collection('PSAPUser')
                       .get()
@@ -92,21 +94,59 @@ class _LoginPageState extends State<LoginPage> {
                     for (var doc in querySnapshot.docs) {
                       if (doc["username"] == username.text &&
                           doc["password"] == password.text) {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) =>
-                                    MapsHomePage(name: username.text)));
-                        password.clear();
+                        valid == true;
+                      } else {
+                        valid == false;
                       }
                     }
                   });
+                  if (valid == true) {
+                    return null;
+                  } else {
+                    return 'Please enter matched password';
+                  }
                 },
-                child: const Text('LOGIN'),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.red, // background
+                obscureText: true,
+                decoration: const InputDecoration(
+                  icon: Icon(Icons.vpn_key),
+                  border: OutlineInputBorder(),
+                  labelText: 'Password',
                 ),
-              ))
-        ],
+                controller: password,
+              ),
+            ),
+            const SizedBox(height: 60),
+            SizedBox(
+                width: MediaQuery.of(context).size.width * 0.3,
+                height: MediaQuery.of(context).size.width * 0.03,
+                child: ElevatedButton(
+                  onPressed: () async {
+                    final isValid = formKey.currentState?.validate();
+                    if (isValid!) {
+                      formKey.currentState!.save();
+                    }
+                    FirebaseFirestore.instance
+                        .collection('PSAPUser')
+                        .get()
+                        .then((QuerySnapshot querySnapshot) {
+                      for (var doc in querySnapshot.docs) {
+                        if (doc["username"] == name && doc["password"] == pwd) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => MapsHomePage(name: name)));
+                          password.clear();
+                          username.clear();
+                        }
+                      }
+                    });
+                  },
+                  child: const Text('LOGIN'),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.red, // background
+                  ),
+                ))
+          ],
+        ),
       ));
 }
