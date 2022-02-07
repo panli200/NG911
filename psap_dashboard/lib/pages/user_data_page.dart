@@ -1,27 +1,23 @@
-// import 'package:flutter/material.dart';
-//
-// class UserDataPage extends StatelessWidget {
-//   final String name;
-//   final String pwd;
-//
-//   const UserDataPage({
-//     Key? key,
-//     required this.name,
-//     required this.pwd,
-//   }) : super(key: key);
-//
-//   @override
-//   Widget build(BuildContext context) => Scaffold(
-//         appBar: AppBar(
-//           backgroundColor: Colors.pink,
-//           title: Text(name),
-//           centerTitle: true,
-//         ),
-//         // body: Image.network(
-//         //  // urlImage,
-//         //   width: double.infinity,
-//         //   height: double.infinity,
-//         //   fit: BoxFit.cover,
-//         // ),
-//       );
-// }
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+Future<String> getEmergencyContactNumber (String phone)async{
+  CollectionReference EmergencyData =  FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
+  var details =  EmergencyData.doc('General Info').get();
+
+  String Number = '';
+  await details.then((snapshot) {
+    Number = snapshot['emergency number'].toString();
+    return Number;
+  });
+  return Number;
+}
+Future<String> getEmergencyContactHealthCard (String phone)async{
+  CollectionReference EmergencyData = FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
+  var details =  await EmergencyData.doc('Contact Medical Info').get();
+  return details['contact health card'];
+}
+Future<String> getPersonalHealthCard (String phone)async{
+  CollectionReference EmergencyData = FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
+  var details =  await EmergencyData.doc('Medical Info').get();
+  return details['personal health card'];
+}
