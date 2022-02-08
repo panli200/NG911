@@ -17,6 +17,7 @@ class MapsHomePage extends StatefulWidget {
 }
 
 class _MapsHomePageState extends State<MapsHomePage> {
+  
   String? timeWaited = "0";
   String timeWaitedString = '0';
   // video streaming
@@ -33,9 +34,6 @@ class _MapsHomePageState extends State<MapsHomePage> {
       });
     });
   }
-
-
-
 
   @override
   void initState() {
@@ -67,6 +65,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
       FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
+    backgroundColor: Colors.grey[100],
       drawer: NavigationDrawerWidget(
         name: name,
       ),
@@ -75,51 +74,72 @@ class _MapsHomePageState extends State<MapsHomePage> {
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      body: 
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              SizedBox(
+              Container(
                 height: MediaQuery.of(context).size.height * 0.9,
                 width: MediaQuery.of(context).size.width * 0.6,
+                padding: EdgeInsets.all(10.0),
+                decoration:
+                  BoxDecoration
+                  (
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.white, width: 1)
+                  ),
                 child: GoogleMap(),
               ),
-              SizedBox(
+
+              SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+
+              Container(
                 height: MediaQuery.of(context).size.height * 0.9,
-                width: MediaQuery.of(context).size.width * 0.4,
+                width: MediaQuery.of(context).size.width * 0.39,
+                decoration: 
+                BoxDecoration
+                (
+                  shape: BoxShape.rectangle,
+                  borderRadius: BorderRadius.circular(12),
+                  color: Colors.white,
+                  border: Border.all(color: Colors.white, width: 1)
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
-                    const Text(
-                      'Activity Call',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 30,
-                      ),
+                    const Text
+                    (
+                      'Emergency Index',
+                      style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30,),
                       textAlign: TextAlign.center,
                     ),
-                    const Divider(
+
+                    const Divider
+                    (
                       height: 5,
                       thickness: 3,
+                      color: Colors.black12,
                     ),
-                    const Text(
-                      'Waiting List:',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+                      
+                    const Text
+                    (
+                      'Waiting List',
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20,),
                       textAlign: TextAlign.center,
                     ),
+                    
                     Column(
                         // This will read the Waiting list from Firebase (SOSEmergencies)
-
                         children: <Widget>[
                           SizedBox(
                               height: 200.0,
-
                               child: StreamBuilder<QuerySnapshot>(
                                   stream: Waiting,
                                   builder: (
@@ -134,8 +154,6 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                         ConnectionState.waiting) {
                                       return Text('Loading');
                                     }
-
-
                                     final data = snapshot.requireData;
 
                                     return ListView.builder(
@@ -165,7 +183,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                           }
 
 
-                                          String phone = " ";
+                                          String phone = "";
                                           int? type = 5;
                                           var id = data.docs[index].id;
                                           phone = data.docs[index]['Phone']
@@ -174,34 +192,33 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                           if (data.docs[index]['Waiting']) {
                                             getTimeWaited(data.docs[index].id);
                                             return Material(
-                                              child: Container(
-                                                child: Row(children: <Widget>[
-                                                  ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all<Color>(
-                                                                  Colors.red),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) => CallControlPanel(
-                                                                  CallerId: id,
-                                                                  Snapshot: data
-                                                                          .docs[
-                                                                      index],
-                                                                  type: type,
-                                                                  signaling:
-                                                                      signaling,
-                                                                  localRenderer:
-                                                                      _localRenderer,
-                                                                  remoteRenderer:
-                                                                      _remoteRenderer,name: name,)));
+                                              child: 
+                                                Container
+                                                (
+                                                  margin: const EdgeInsets.all(10.0),
+                                                  child: 
+                                                    Row
+                                                    (
+                                                      children: <Widget> [
+                                                        ElevatedButton
+                                                        (
+                                                          style: ButtonStyle (backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                                                        ),
+                                                      onPressed: () {
+                                                        Navigator.push(context, MaterialPageRoute (
+                                                          builder: (context) => CallControlPanel(
+                                                            CallerId: id,
+                                                            Snapshot: data.docs[index],
+                                                              type: type,
+                                                              signaling:signaling,
+                                                              localRenderer:_localRenderer,
+                                                              remoteRenderer:_remoteRenderer,name: name,
+                                                          )
+                                                        )
+                                                      );
                                                     },
-                                                    child: Text(
-                                                        ' ${phone + "  Time waited: " + timeWaitedString}'),
+                                                    child: 
+                                                      Text(' ${phone + "  Time waited: " + timeWaitedString}'),
                                                   ),
                                                 ]),
                                               ),
@@ -213,12 +230,14 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                         });
                                   }))
                         ]),
+
                     const Divider(
-                      height: 2,
-                      thickness: 2,
+                      height: 5,
+                      thickness: 3,
+                      color: Colors.black12,
                     ),
                     const Text(
-                      'Online List:',
+                      'Online List',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20,
@@ -254,6 +273,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                           if (data.docs[index]['Online']) {
                                             return Material(
                                               child: Container(
+                                                margin: const EdgeInsets.all(10.0),
                                                 height: 30,
                                                 child: Row(children: <Widget>[
                                                   ElevatedButton(
