@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:psap_dashboard/pages/maps_home_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -63,6 +62,7 @@ class _LoginPageState extends State<LoginPage> {
                     return null;
                   } else {
                     username.clear();
+                    password.clear();
                     return 'Please enter valid username';
                   }
                 },
@@ -88,8 +88,15 @@ class _LoginPageState extends State<LoginPage> {
                         .get()
                         .then((QuerySnapshot querySnapshot) {
                       for (var doc in querySnapshot.docs) {
-                        if (doc["username"] == username.text && doc["password"] != value) {
+                        if (doc["username"] == username.text &&
+                            doc["password"] != value) {
+                          validNAME = true;
                           validPWD = false;
+                        }
+                        if (doc["username"] == username.text &&
+                            doc["password"] == value) {
+                          validNAME = true;
+                          validPWD = true;
                         }
                       }
                     });
@@ -132,8 +139,8 @@ class _LoginPageState extends State<LoginPage> {
                               context,
                               MaterialPageRoute(
                                   builder: (_) => MapsHomePage(name: name)));
-                          password.clear();
                           username.clear();
+                          password.clear();
                         }
                       }
                     });
