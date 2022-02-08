@@ -54,9 +54,12 @@ dependencies:
   # Pattern
   bloc: ^8.0.2
 
-  #Chart
+  # Chart
   syncfusion_flutter_charts: ^19.4.43
   flutter_remix: ^0.0.3
+
+  # Launch URL for download
+  url_launcher: ^6.0.18
 
 dev_dependencies:
   flutter_test:

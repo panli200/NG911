@@ -99,6 +99,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
   String emergencyContactNumberString = '';
   String emergencyHealthCardNumberString = '';
   String personalHealthCardString = '';
+  String urlPMR = '';
+  String urlECMR = '';
   // Function to end the call
   void _EndCall() async {
     // Closing the listeners
@@ -238,28 +240,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   }
 
-//  void pauseListeners(){
-//    Timer.periodic(Duration(seconds: 1), (timer)
-//    async{
-//      startTimeStream?.pause();
-//      batteryStream?.pause();
-//      longitudeStream?.pause();
-//      latitudeStream?.pause();
-//      xAccelerationStream?.pause();
-//      yAccelerationStream?.pause();
-//      zAccelerationStream?.pause();
-//      roomIdAccelerationStream?.pause();
-//      await Future.delayed(Duration(seconds: 1));
-//      startTimeStream?.resume();
-//      batteryStream?.resume();
-//      longitudeStream?.resume();
-//      latitudeStream?.resume();
-//      xAccelerationStream?.resume();
-//      yAccelerationStream?.resume();
-//      zAccelerationStream?.resume();
-//      roomIdAccelerationStream?.resume();
-//    });
-//  }
 
   Future<void> getRoomId() async {
     roomIdStream = ref
@@ -290,10 +270,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     windSpeed = w.windSpeed!;
     temperature = w.temperature!.celsius!.toInt();
   }
-  void initHealthData() async{
 
-
-  }
 
   // Initialize
   @override
@@ -301,7 +278,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
     callerId = widget.CallerId; //Getting user ID from the previous page..
     name = widget.name;
     callType = widget.type;
-    initHealthData();
 
     // Get Locaiton list Stream
 //    Location? streamLoc = Location(callerId);
@@ -357,6 +333,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
       emergencyContactNumberString = await getEmergencyContactNumber(callerId);
       emergencyHealthCardNumberString = await getEmergencyContactHealthCard(callerId);
       personalHealthCardString = await getPersonalHealthCard(callerId);
+      urlPMR = await getUrlPMR(callerId);
+      urlECMR = await getUrlECMR(callerId);
       setState((){});
       if (double.tryParse('$speedString') != null) {
         WidgetsFlutterBinding.ensureInitialized();
@@ -688,6 +666,19 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                         child: 
                                         StreamBuilder<QuerySnapshot>
                                         (
+                             CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString, urlPMR: urlPMR, urlECMR: urlECMR),
+                          //////
+                          // This is the chat
+                          //////
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.34,
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                      child: StreamBuilder<QuerySnapshot>(
                                           stream: messages,
                                           builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot,) 
                                           {
