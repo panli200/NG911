@@ -648,8 +648,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                             (
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString),
-                          
                                 SizedBox  // SMS Area
                                 (
                                   height: MediaQuery.of(context).size.height * 0.34,
@@ -661,12 +659,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      Expanded
-                                      (
-                                        child: 
-                                        StreamBuilder<QuerySnapshot>
-                                        (
-                             CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString, urlPMR: urlPMR, urlECMR: urlECMR),
+                                      CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString, urlPMR: urlPMR, urlECMR: urlECMR),
                           //////
                           // This is the chat
                           //////
@@ -830,9 +823,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 ),
                               ],
                             ),
-                      ],
+                            )
+                          ],
                     ),
-                  ),
+                  ])),
                 ]),
 
                 SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
@@ -843,7 +837,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                     Container
                     (
                       height: MediaQuery.of(context).size.height * 0.90,
-                      width: MediaQuery.of(context).size.width * 0.3,
+                      width: MediaQuery.of(context).size.width * 0.30,
 
                       decoration:
                         BoxDecoration
