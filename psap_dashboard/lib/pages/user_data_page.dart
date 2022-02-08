@@ -21,3 +21,15 @@ Future<String> getPersonalHealthCard (String phone)async{
   var details =  await EmergencyData.doc('Medical Info').get();
   return details['personal health card'];
 }
+
+Future<String> getUrlPMR (String phone)async{
+  CollectionReference EmergencyData = FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
+  var details =  await EmergencyData.doc('Medical Info').get();
+  return details['personal medical file download'];
+}
+
+Future<String> getUrlECMR (String phone)async{
+  CollectionReference EmergencyData = FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
+  var details =  await EmergencyData.doc('Contact Medical Info ').get();
+  return details['contact medical file download'];
+}
