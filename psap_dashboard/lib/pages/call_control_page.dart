@@ -376,81 +376,122 @@ class _CallControlPanelState extends State<CallControlPanel> {
       }
     });
     return Scaffold(
+      backgroundColor: Colors.grey[100],
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: const Text("Incoming Call Control Panel"),
-          backgroundColor: Colors.redAccent,
+          title: const Text("Emergency Control Panel"),
         ),
-        body: Column(children: <Widget>[
-          SizedBox(
+        body: 
+        
+        Column
+        (
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            SizedBox // First Column (Contains Map and End Call Button)
+            (
               height: MediaQuery.of(context).size.height * 0.9,
-              child: Row(children: <Widget>[
-                Column(// First Column
-                    children: <Widget>[
-                  Row(// For Map
+              child: 
+              Row
+              (
+                children: <Widget>[
+                Column
+                (
+                  children: <Widget>[
+                    Row //THE MAP
+                    (
                       children: <Widget>[
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.70,
-                      width: MediaQuery.of(context).size.width * 0.45,
-                      child: StreetMap(),
-                    )
-                  ]),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.1,
-                    width: MediaQuery.of(context).size.width * 0.25,
-                  ),
-                  Row(// For Closing the call
-                      children: <Widget>[
-                    SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.06,
+                        Container
+                        (
+                          height: MediaQuery.of(context).size.height * 0.74,
+                          width: MediaQuery.of(context).size.width * 0.43,
+                          padding: EdgeInsets.all(10.0),
+                          decoration:
+                          BoxDecoration
+                            (
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white,
+                              border: Border.all(color: Colors.white, width: 1)
+                            ),
+                          child: StreetMap(),
+                         )
+                      ]
+                    ),
+
+                    SizedBox  // SPACING
+                    (
+                      height: MediaQuery.of(context).size.height * 0.1,
                       width: MediaQuery.of(context).size.width * 0.25,
-                      child: ElevatedButton(
-                          child: const Text("End Call"),
-                          onPressed: () async {
-                            signaling!
-                                .hangUp(_localRenderer!, roomId, callerId);
-                            FbDb.DatabaseReference real =
-                                FbDb.FirebaseDatabase.instance.ref();
-                            final databaseReal =
-                                real.child('sensors').child(callerId);
+                    ),
 
-                            await databaseReal
-                                .update({'Online': false, 'Ended': true});
+                    Row //END CONNECTION BUTTON
+                    (
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: <Widget>[
+                        SizedBox
+                        (
+                          height: MediaQuery.of(context).size.height * 0.06,
+                          width: MediaQuery.of(context).size.width * 0.25,
+                          child: 
+                            ElevatedButton
+                            (
+                              child: const Text("End Connection"),
+                              onPressed: () async {
+                                signaling!
+                                    .hangUp(_localRenderer!, roomId, callerId);
+                                FbDb.DatabaseReference real =
+                                    FbDb.FirebaseDatabase.instance.ref();
+                                final databaseReal =
+                                    real.child('sensors').child(callerId);
 
-                            // End the call
-                            _EndCall();
+                                await databaseReal
+                                    .update({'Online': false, 'Ended': true});
 
-                            // Going back to maps home page
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => MapsHomePage(
-                                      name: name,
-                                    )));
-                            // this will the method for your rejected Button
-                          },
-                          style: ElevatedButton.styleFrom(
-                            primary: Colors.red,
-                          )),
-                    )
-                  ])
+                                // End the call
+                                _EndCall();
+
+                                // Going back to maps home page
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MapsHomePage(
+                                          name: name,
+                                        )));
+                                // this will the method for your rejected Button
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: Colors.red,
+                              )
+                            ),
+                        )
+                    ]
+                  )
                 ]),
                 
-                Column(children: [
-                  // Second Column
-                  //////
-                  // This is the User Info
-                  //////
-                  Container(
+                SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+
+                Column
+                (
+                  children: [
+                    Container // Second Column (Contains the user info and chat box)
+                    (
                       height: MediaQuery.of(context).size.height * 0.36,
                       width: MediaQuery.of(context).size.width * 0.25,
-                      //color: Colors.red,
                       padding: EdgeInsets.all(10.0),
+                      decoration:
+                        BoxDecoration
+                        (
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.white, width: 1)
+                        ),
                       
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        
                         children: [
                           Column(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -603,163 +644,180 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           ),
                         ],
                       )), 
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.54,
+
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.01,), // SPACING
+
+                  Container  // CHAT BOX
+                  (
+                    height: MediaQuery.of(context).size.height * 0.53,
                     width: MediaQuery.of(context).size.width * 0.25,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                    decoration:
+                      BoxDecoration
+                      (
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.white, width: 1)
+                      ),
+                      child: 
+                        Row
+                        (
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
 
-                      children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-
-
-
-                             CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString),
-                          //////
-                          // This is the chat
-                          //////
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.34,
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                      child: StreamBuilder<QuerySnapshot>(
+                            Column
+                            (
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString),
+                          
+                                SizedBox  // SMS Area
+                                (
+                                  height: MediaQuery.of(context).size.height * 0.34,
+                                  width: MediaQuery.of(context).size.width * 0.24,
+                              
+                                  child: 
+                                  Row
+                                  (
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Expanded
+                                      (
+                                        child: 
+                                        StreamBuilder<QuerySnapshot>
+                                        (
                                           stream: messages,
-                                          builder: (
-                                            BuildContext context,
-                                            AsyncSnapshot<QuerySnapshot>
-                                                snapshot,
-                                          ) {
-                                            if (snapshot.hasError) {
+                                          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot,) 
+                                          {
+                                            if (snapshot.hasError) 
+                                            {
                                               return const Text(
-                                                  'Something went wrong');
+                                              'Something went wrong');
                                             }
-                                            if (snapshot.connectionState ==
-                                                ConnectionState.waiting) {
+
+                                            if (snapshot.connectionState == ConnectionState.waiting) 
+                                            {
                                               return const Text('Loading');
                                             }
 
                                             final data = snapshot.requireData;
-                                            return ListView.builder(
-                                                addAutomaticKeepAlives: false,
-                                                addRepaintBoundaries: false,
-                                                reverse: true,
-                                                itemCount: data.size,
-                                                itemBuilder: (context, index) {
-                                                  Color c;
-                                                  Alignment a;
-                                                  if (data.docs[index]
-                                                          ['SAdmin'] ==
-                                                      false) {
-                                                    c = Colors.lightGreen;
-                                                    a = Alignment.centerLeft;
-                                                  } else {
-                                                    c = Colors.blueGrey;
-                                                    a = Alignment.centerRight;
-                                                  }
 
-                                                  return SizedBox(
-                                                      child: Align(
-                                                          alignment: a,
-                                                          child: Container(
-                                                            child: Text(
-                                                              '  ${data.docs[index]['Message']}',
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .white),
+                                            return ListView.builder(
+                                              addAutomaticKeepAlives: false,
+                                              addRepaintBoundaries: false,
+                                              reverse: true,
+                                              itemCount: data.size,
+                                              itemBuilder: (context, index) 
+                                              {
+                                                Color c;
+                                                Alignment a;
+                                                if (data.docs[index]['SAdmin'] == false) 
+                                                {
+                                                  c = Colors.black38;
+                                                  a = Alignment.centerLeft;
+                                                } 
+                                                else 
+                                                {
+                                                  c = Colors.blue;
+                                                  a = Alignment.centerRight;
+                                                }
+
+                                                return SizedBox(
+                                                  child: 
+                                                    Align
+                                                    (
+                                                      alignment: a,
+                                                      child: 
+                                                        Container
+                                                        (
+                                                          child: 
+                                                            Text
+                                                            (
+                                                              '${data.docs[index]['Message']}',
+                                                              style: const TextStyle(color: Colors.white),
                                                             ),
                                                             constraints:
-                                                                const BoxConstraints(
-                                                              maxHeight: double
-                                                                  .infinity,
-                                                            ),
-                                                            padding:
-                                                                const EdgeInsets
-                                                                    .all(10.0),
-                                                            margin:
-                                                                const EdgeInsets
-                                                                    .all(10.0),
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              color: c,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          35.0),
-                                                              boxShadow: const [
-                                                                BoxShadow(
-                                                                    offset:
-                                                                        Offset(0,
-                                                                            3),
-                                                                    blurRadius:
-                                                                        5,
-                                                                    color: Colors
-                                                                        .grey)
-                                                              ],
-                                                            ),
-                                                          )));
-                                                });
-                                          })),
-                                ],
-                              )),
+                                                              const BoxConstraints
+                                                              (
+                                                                maxHeight: double.infinity,
+                                                              ),
+                                                            padding: const EdgeInsets.all(10.0),
+                                                            margin: const EdgeInsets.all(10.0),
+                                                            decoration: 
+                                                              BoxDecoration
+                                                              (
+                                                                color: c,
+                                                                borderRadius:BorderRadius.circular(35.0),
+                                                                boxShadow: const [
+                                                                  BoxShadow
+                                                                  (
+                                                                    offset: Offset(0,3),
+                                                                    blurRadius: 5, 
+                                                                    color: Colors.grey
+                                                                  )
+                                                                ],
+                                                              ),
+                                                        )
+                                                    )
+                                                );
+                                              });
+                                          })
+                                        ),
+                                    ],
+                                  )
+                                ),
 
-                          //////
-                          // This is the reply
-                          //////
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.12,
-                              width: MediaQuery.of(context).size.width * 0.25,
-                              child: Row(
-                                children: [
-                                  Container(
-                                      height: 70,
-                                      constraints: const BoxConstraints(
-                                        maxHeight: double.infinity,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.blueGrey,
-                                        borderRadius:
-                                            BorderRadius.circular(35.0),
-                                      ),
-                                      padding: const EdgeInsets.all(10.0),
-                                      margin: const EdgeInsets.all(20.0),
-                                      child: SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.20,
-                                        child: Row(
+                                Container  // Reply button area
+                                (
+                                  height: 70,
+                                  constraints: 
+                                    const BoxConstraints
+                                    (
+                                      maxHeight: double.infinity,
+                                    ),
+                                  decoration: 
+                                    BoxDecoration
+                                    (
+                                      color: Colors.grey[100],
+                                      borderRadius: BorderRadius.circular(35.0),
+                                    ),
+                                  padding: const EdgeInsets.all(10.0),
+                                  margin: const EdgeInsets.all(20.0),
+                                  child: 
+                                    SizedBox
+                                    (
+                                      height: MediaQuery.of(context).size.height,
+                                      width: MediaQuery.of(context).size.width * 0.20,
+                                      child: 
+                                        Row 
+                                        (
                                           children: [
-                                            Expanded(
-                                              child: TextField(
-                                                controller: sentText,
-                                                style: const TextStyle(
-                                                    color: Colors.white),
-                                                decoration:
-                                                    const InputDecoration(
-                                                        hintText:
-                                                            "Type Something...",
-                                                        hintStyle:
-                                                            TextStyle(
-                                                                color: Colors
-                                                                    .white),
-                                                        border:
-                                                            InputBorder.none),
+                                            Expanded
+                                            (
+                                              child: 
+                                                TextField
+                                                (
+                                                  controller: sentText,
+                                                  style: 
+                                                  const TextStyle(color: Colors.black),
+                                                  decoration:
+                                                    const InputDecoration
+                                                    (
+                                                      hintText: "Type Something...",
+                                                      hintStyle: TextStyle(color: Colors.black),
+                                                      border: InputBorder.none
+                                                    ),
+                                                ),
                                               ),
-                                            ),
-                                            IconButton(
-                                              icon: const Icon(Icons.send,
-                                                  color: Colors.white),
+                                            IconButton
+                                            (
+                                              icon: const Icon(FlutterRemix.send_plane_fill, color: Colors.blue),
                                               onPressed: () {
                                                 String text = sentText.text;
-                                                if (text != '') {
+                                                if (text != '') 
+                                                {
                                                   FirebaseFirestore.instance
                                                       .collection(
                                                           'SOSEmergencies')
@@ -777,26 +835,46 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                             )
                                           ],
                                         ),
-                                      )),
-                                ],
-                              ))
-                        ])
+                                      )
+                                ),
+                              ],
+                            ),
                       ],
                     ),
                   ),
                 ]),
-                Column(children: [
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.70,
-                    width: MediaQuery.of(context).size.width * 0.3,
-                    child: Row(
-                      children: [
-                        Expanded(child: RTCVideoView(_remoteRenderer!)),
-                      ],
+
+                SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
+
+                Column  // VIDEO COLUMN
+                (
+                  children: [
+                    Container
+                    (
+                      height: MediaQuery.of(context).size.height * 0.90,
+                      width: MediaQuery.of(context).size.width * 0.3,
+
+                      decoration:
+                        BoxDecoration
+                        (
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.white,
+                          border: Border.all(color: Colors.white, width: 1)
+                        ),
+                      child: 
+                        Row
+                        (
+                        children: [
+                          Expanded(child: RTCVideoView(_remoteRenderer!)),
+                        ],
+                      ),
                     ),
-                  ),
-                ])
-              ]))
+                  ]
+                )
+              ]
+            )
+          )
         ]));
   }
 }
