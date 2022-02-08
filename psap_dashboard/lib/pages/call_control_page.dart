@@ -455,7 +455,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                   children: [
                     Container // Second Column (Contains the user info and chat box)
                     (
-                      height: MediaQuery.of(context).size.height * 0.36,
+                      height: MediaQuery.of(context).size.height * 0.45,
                       width: MediaQuery.of(context).size.width * 0.25,
                       padding: EdgeInsets.all(10.0),
                       decoration:
@@ -606,6 +606,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                   ),
                                 ],
                               ),
+    CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString, urlPMR: urlPMR, urlECMR: urlECMR),
 
                               // Row 
                               // (
@@ -627,7 +628,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
                   Container  // CHAT BOX
                   (
-                    height: MediaQuery.of(context).size.height * 0.53,
+                    height: MediaQuery.of(context).size.height * 0.44,
                     width: MediaQuery.of(context).size.width * 0.25,
                     decoration:
                       BoxDecoration
@@ -650,7 +651,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                               children: [
                                 SizedBox  // SMS Area
                                 (
-                                  height: MediaQuery.of(context).size.height * 0.34,
+                                  height: MediaQuery.of(context).size.height * 0.28,
                                   width: MediaQuery.of(context).size.width * 0.24,
                               
                                   child: 
@@ -659,13 +660,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString, urlPMR: urlPMR, urlECMR: urlECMR),
                           //////
                           // This is the chat
                           //////
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.34,
-                              width: MediaQuery.of(context).size.width * 0.25,
+                              height: MediaQuery.of(context).size.height * 0.31,
+                              width: MediaQuery.of(context).size.width * 0.24,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -752,6 +752,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                     ],
                                   )
                                 ),
+    ]),
+    ),
 
                                 Container  // Reply button area
                                 (
@@ -775,7 +777,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       height: MediaQuery.of(context).size.height,
                                       width: MediaQuery.of(context).size.width * 0.20,
                                       child: 
-                                        Row 
+                                        Row
                                         (
                                           children: [
                                             Expanded
@@ -823,9 +825,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 ),
                               ],
                             ),
-                            )
-                          ],
-                    ),
+
                   ])),
                 ]),
 
