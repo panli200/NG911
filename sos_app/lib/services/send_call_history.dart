@@ -19,9 +19,21 @@ Future<void> updateHistory() async {
 }
 
 
-//Future<void> sendLocationHistory() async {
-//  String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-//  DocumentReference Emergency = FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile);
-//
-//  List<Sensor> twentyPoints = sensors();
-//}
+Future<void> sendLocationHistory() async {
+  String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+  DocumentReference Emergency = FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile);
+
+  DatabaseClass? db;
+  List<Sensor> twentyPoints = await db!.sensors();
+
+  int numberOfPoints = twentyPoints.length;
+
+  for(int i=0; i<numberOfPoints ; i++){
+  String latitudePoint = "Latitude" + i.toString();
+  String longitudePoint = "Longitude" + i.toString();
+  await Emergency.collection("location").add({
+  latitudePoint: twentyPoints[i].getLatitude(),
+  longitudePoint: twentyPoints[i].getLongitude()
+  });
+  }
+}

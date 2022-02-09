@@ -22,6 +22,8 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
+
+
 Future<void> initializeService() async {
   print("I am initialized");
   final service = FlutterBackgroundService();
@@ -58,15 +60,10 @@ void onIosBackground() {
 Future<void> onStart() async {
 
   var currentIndex = 0;
-  final database = openDatabase(
-    join(await getDatabasesPath(), 'sensor_database.db'),
-    onCreate: (db, version) {
-      return db.execute(
-        'CREATE TABLE sensors(id INTEGER PRIMARY KEY, latitude TEXT, longitude TEXT)',
-      );
-    },
-    version: 1,
-  );
+
+
+  DatabaseClass? db;
+
 
 //  Future<void> insertSensor(Sensor sensor) async {
 //    // Get a reference to the database.
@@ -209,7 +206,7 @@ Future<void> onStart() async {
         latitude: location.latitude.toString(),
         longitude: location.longitude.toString(),
       );
-      await insertSensor(point, database);
+      await db?.insertSensor(point);
       currentIndex ++; // increment current index
     }else{ // current index is 20 -> first 20 points have been set
       print("this is 20");
@@ -219,11 +216,11 @@ Future<void> onStart() async {
         longitude: location.longitude.toString(),
       );
       for(int i=0; i<19 ; i++){ // shifting all sensors in i to i-1, from 0-19
-        Sensor sensorPlusOne = await sensorItem(i+1, database);
-        Sensor overWritten = Sensor(id: i, latitude: sensorPlusOne.getLatitude(), longitude: sensorPlusOne.getLongitude());
-        updateSensor(overWritten, database);
+        Sensor? sensorPlusOne = await db?.sensorItem(i+1);
+        Sensor overWritten = Sensor(id: i, latitude: sensorPlusOne!.getLatitude(), longitude: sensorPlusOne.getLongitude());
+        db?.updateSensor(overWritten);
       }
-      updateSensor(NewPoint, database); // Finally, write the new point to the index 19
+      db?.updateSensor(NewPoint); // Finally, write the new point to the index 19
     }
 
 
