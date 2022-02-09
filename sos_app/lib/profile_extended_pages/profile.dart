@@ -13,6 +13,8 @@ import 'package:sos_app/profile_extended_pages/sliding_switch_widget.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:sos_app/services/TwentyPoints.dart';
+import 'package:sos_app/services/local_location.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -29,12 +31,12 @@ Future<void> initializeService() async {
       onStart: onStart,
 
       // auto start service
-      autoStart: true,
+      autoStart: false,
       isForegroundMode: true,
     ),
     iosConfiguration: IosConfiguration(
       // auto start service
-      autoStart: true,
+      autoStart: false,
 
       // this will executed when app is in foreground in separated isolate
       onForeground: onStart,
@@ -54,6 +56,8 @@ void onIosBackground() {
 }
 
 Future<void> onStart() async {
+
+  var currentIndex = 0;
   final database = openDatabase(
     join(await getDatabasesPath(), 'sensor_database.db'),
     onCreate: (db, version) {
@@ -64,118 +68,118 @@ Future<void> onStart() async {
     version: 1,
   );
 
-  Future<void> insertSensor(Sensor sensor) async {
-    // Get a reference to the database.
-    final db = await database;
-
-    await db.insert(
-      'sensors',
-      sensor.toMap(),
-      conflictAlgorithm: ConflictAlgorithm.replace,
-    );
-  }
-
-  Future<List<Sensor>> sensors() async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Query the table for all sensor.
-    final List<Map<String, dynamic>> maps = await db.query('sensors');
-
-    // Convert the List<Map<String, dynamic> into a List<Sensor>.
-    return List.generate(maps.length, (i) {
-      return Sensor(
-        id: maps[i]['id'],
-        latitude: maps[i]['latitude'],
-        longitude: maps[i]['longitude'],
-      );
-    });
-  }
-
-  Future<List<Sensor>> sensorItem(index) async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Query the table for all sensor.
-    final List<Map<String, dynamic>> maps = await db.query('sensors');
-
-    // Convert the List<Map<String, dynamic> into a List<Sensor>.
-    return List.generate(1, (index) {
-      return Sensor(
-        id: index,
-        latitude: maps[index]['latitude'],
-        longitude: maps[index]['longitude'],
-      );
-    });
-  }
-
-  Future<void> updateSensor(Sensor sensor) async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Update the given sensor.
-    await db.update(
-      'sensors',
-      sensor.toMap(),
-      // Ensure that the sensor has a matching id.
-      where: 'id = ?',
-      // Pass the sensor's id as a whereArg to prevent SQL injection.
-      whereArgs: [sensor.id],
-    );
-  }
-
-  Future<void> deleteSensor(int id) async {
-    // Get a reference to the database.
-    final db = await database;
-
-    // Remove the sensor from the database.
-    await db.delete(
-      'sensors',
-      // Use a `where` clause to delete a specific sensor.
-      where: 'id = ?',
-      // Pass the sensor's id as a whereArg to prevent SQL injection.
-      whereArgs: [id],
-    );
-  }
+//  Future<void> insertSensor(Sensor sensor) async {
+//    // Get a reference to the database.
+//    final db = await database;
+//
+//    await db.insert(
+//      'sensors',
+//      sensor.toMap(),
+//      conflictAlgorithm: ConflictAlgorithm.replace,
+//    );
+//  }
+//
+//  Future<List<Sensor>> sensors() async {
+//    // Get a reference to the database.
+//    final db = await database;
+//
+//    // Query the table for all sensor.
+//    final List<Map<String, dynamic>> maps = await db.query('sensors');
+//
+//    // Convert the List<Map<String, dynamic> into a List<Sensor>.
+//    return List.generate(maps.length, (i) {
+//      return Sensor(
+//        id: maps[i]['id'],
+//        latitude: maps[i]['latitude'],
+//        longitude: maps[i]['longitude'],
+//      );
+//    });
+//  }
+//
+//  Future<Sensor> sensorItem(index) async {
+//    // Get a reference to the database.
+//    final db = await database;
+//
+//    // Query the table for all sensor.
+//    final List<Map<String, dynamic>> maps = await db.query('sensors');
+//
+//    // Convert the List<Map<String, dynamic> into a List<Sensor>.
+//
+//      return Sensor(
+//        id: index,
+//        latitude: maps[index]['latitude'],
+//        longitude: maps[index]['longitude'],
+//      );
+//  };
+//
+//
+//  Future<void> updateSensor(Sensor sensor) async {
+//    // Get a reference to the database.
+//    final db = await database;
+//
+//    // Update the given sensor.
+//    await db.update(
+//      'sensors',
+//      sensor.toMap(),
+//      // Ensure that the sensor has a matching id.
+//      where: 'id = ?',
+//      // Pass the sensor's id as a whereArg to prevent SQL injection.
+//      whereArgs: [sensor.id],
+//    );
+//  }
+//
+//  Future<void> deleteSensor(int id) async {
+//    // Get a reference to the database.
+//    final db = await database;
+//
+//    // Remove the sensor from the database.
+//    await db.delete(
+//      'sensors',
+//      // Use a `where` clause to delete a specific sensor.
+//      where: 'id = ?',
+//      // Pass the sensor's id as a whereArg to prevent SQL injection.
+//      whereArgs: [id],
+//    );
+//  }
 
   // Get location data
-  Location location = Location();
-  await location.getCurrentLocation();
-
-  var s0 = Sensor(
-    id: 0,
-    latitude: location.latitude.toString(),
-    longitude: location.longitude.toString(),
-  );
-  await insertSensor(s0);
-  print(await sensors());
-
-  var s1 = Sensor(
-    id: 1,
-    latitude: location.latitude.toString(),
-    longitude: location.longitude.toString(),
-  );
-  await insertSensor(s1);
-
-  // Print the updated results.
-  print(await sensors()); // Prints a list .
-
-  //print the sensor data in index 0
-  print(await sensorItem(0));
-
-  // Update so with s1 data and save it to the database.
-  s0 = Sensor(id: s0.id, latitude: s1.latitude, longitude: s1.longitude);
-  await updateSensor(s0);
-  await deleteSensor(s1.id);
-
-  // Print the updated results.
-  print(await sensors());
-
-  // Delete first item from the database.
-  await deleteSensor(s0.id);
-
-  // Print the updated results.
-  print(await sensors());
+//  Location location = Location();
+//  await location.getCurrentLocation();
+//
+//  var s0 = Sensor(
+//    id: 0,
+//    latitude: location.latitude.toString(),
+//    longitude: location.longitude.toString(),
+//  );
+//  await insertSensor(s0);
+//  print(await sensors());
+//
+//  var s1 = Sensor(
+//    id: 1,
+//    latitude: location.latitude.toString(),
+//    longitude: location.longitude.toString(),
+//  );
+//  await insertSensor(s1);
+//
+//  // Print the updated results.
+//  print(await sensors()); // Prints a list .
+//
+//  //print the sensor data in index 0
+//  print(await sensorItem(0));
+//
+//  // Update so with s1 data and save it to the database.
+//  s0 = Sensor(id: s0.id, latitude: s1.latitude, longitude: s1.longitude);
+//  await updateSensor(s0);
+//  await deleteSensor(s1.id);
+//
+//  // Print the updated results.
+//  print(await sensors());
+//
+//  // Delete first item from the database.
+//  await deleteSensor(s0.id);
+//
+//  // Print the updated results.
+//  print(await sensors());
   //-----------------------end of sqlite sample
 
   print("I am Started");
@@ -189,7 +193,7 @@ Future<void> onStart() async {
 
   // bring to foreground
   service.setForegroundMode(true);
-  Timer.periodic(Duration(seconds: 1), (timer) async {
+  Timer.periodic(Duration(seconds: 10), (timer) async {
     if (!(await service.isServiceRunning())) timer.cancel();
     service.setNotificationInfo(
       title: "SOS App",
@@ -198,6 +202,31 @@ Future<void> onStart() async {
 
     Location location = Location();
     await location.getCurrentLocation();
+    if(currentIndex <20){ // getting points 0-19
+      print("I am here" + currentIndex.toString());
+      var point = Sensor(
+        id: currentIndex,
+        latitude: location.latitude.toString(),
+        longitude: location.longitude.toString(),
+      );
+      await insertSensor(point, database);
+      currentIndex ++; // increment current index
+    }else{ // current index is 20 -> first 20 points have been set
+      print("this is 20");
+      var NewPoint = Sensor(
+        id: 19,
+        latitude: location.latitude.toString(),
+        longitude: location.longitude.toString(),
+      );
+      for(int i=0; i<19 ; i++){ // shifting all sensors in i to i-1, from 0-19
+        Sensor sensorPlusOne = await sensorItem(i+1, database);
+        Sensor overWritten = Sensor(id: i, latitude: sensorPlusOne.getLatitude(), longitude: sensorPlusOne.getLongitude());
+        updateSensor(overWritten, database);
+      }
+      updateSensor(NewPoint, database); // Finally, write the new point to the index 19
+    }
+
+
 
     service.sendData(
       {
@@ -220,7 +249,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late SharedPreferences prefs;
   final _formKey = GlobalKey<FormState>();
-  String textBackground = "Stop Service";
+  String textBackground = "Start Service";
   getGeneralValue() async {
     prefs = await _prefs;
 
@@ -891,27 +920,4 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 // Sensor class for location
-class Sensor {
-  final int id;
-  final String latitude;
-  final String longitude;
 
-  Sensor({
-    required this.id,
-    required this.latitude,
-    required this.longitude,
-  });
-
-  Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'latitude': latitude,
-      'longitude': longitude,
-    };
-  }
-
-  @override
-  String toString() {
-    return 'Sensor{id: $id,latitude: $latitude, longitude: $longitude}';
-  }
-}
