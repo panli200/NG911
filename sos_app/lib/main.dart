@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:sos_app/routes/router.gr.dart';
-import 'package:camera/camera.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-late List<CameraDescription> cameras;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  cameras = await availableCameras();
   await Firebase.initializeApp();
   runApp(MyApp());
 }

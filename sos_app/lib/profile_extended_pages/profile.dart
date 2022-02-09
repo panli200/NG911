@@ -10,12 +10,11 @@ import 'package:sos_app/profile_extended_pages/sos_user.dart';
 import 'package:sos_app/profile_extended_pages/dialog_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sos_app/profile_extended_pages/sliding_switch_widget.dart';
-import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
-import 'package:sos_app/profile_extended_pages/upload_file.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:sos_app/services/location.dart';
-class ProfilePage extends StatefulWidget {
+import 'package:sqflite/sqflite.dart';
 
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   _ProfilePageState createState() => _ProfilePageState();
@@ -44,6 +43,7 @@ Future<void> initializeService() async {
       onBackground: onIosBackground,
     ),
   );
+
 }
 
 // to ensure this executed
@@ -53,12 +53,135 @@ void onIosBackground() {
   print('FLUTTER BACKGROUND FETCH');
 }
 
-void onStart() {
+Future<void> onStart() async {
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'sensor_database.db'),
+    onCreate: (db, version) {
+      return db.execute(
+        'CREATE TABLE sensors(id INTEGER PRIMARY KEY, latitude TEXT, longitude TEXT)',
+      );
+    },
+    version: 1,
+  );
+
+  Future<void> insertSensor(Sensor sensor) async {
+    // Get a reference to the database.
+    final db = await database;
+
+    await db.insert(
+      'sensors',
+      sensor.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Sensor>> sensors() async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Query the table for all sensor.
+    final List<Map<String, dynamic>> maps = await db.query('sensors');
+
+    // Convert the List<Map<String, dynamic> into a List<Sensor>.
+    return List.generate(maps.length, (i) {
+      return Sensor(
+        id: maps[i]['id'],
+        latitude: maps[i]['latitude'],
+        longitude: maps[i]['longitude'],
+      );
+    });
+  }
+
+  Future<List<Sensor>> sensorItem(index) async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Query the table for all sensor.
+    final List<Map<String, dynamic>> maps = await db.query('sensors');
+
+    // Convert the List<Map<String, dynamic> into a List<Sensor>.
+    return List.generate(1, (index) {
+      return Sensor(
+        id: index,
+        latitude: maps[index]['latitude'],
+        longitude: maps[index]['longitude'],
+      );
+    });
+  }
+
+  Future<void> updateSensor(Sensor sensor) async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Update the given sensor.
+    await db.update(
+      'sensors',
+      sensor.toMap(),
+      // Ensure that the sensor has a matching id.
+      where: 'id = ?',
+      // Pass the sensor's id as a whereArg to prevent SQL injection.
+      whereArgs: [sensor.id],
+    );
+  }
+
+  Future<void> deleteSensor(int id) async {
+    // Get a reference to the database.
+    final db = await database;
+
+    // Remove the sensor from the database.
+    await db.delete(
+      'sensors',
+      // Use a `where` clause to delete a specific sensor.
+      where: 'id = ?',
+      // Pass the sensor's id as a whereArg to prevent SQL injection.
+      whereArgs: [id],
+    );
+  }
+
+  // Get location data
+  Location location = Location();
+  await location.getCurrentLocation();
+
+  var s0 = Sensor(
+    id: 0,
+    latitude: location.latitude.toString(),
+    longitude: location.longitude.toString(),
+  );
+  await insertSensor(s0);
+  print(await sensors());
+
+  var s1 = Sensor(
+    id: 1,
+    latitude: location.latitude.toString(),
+    longitude: location.longitude.toString(),
+  );
+  await insertSensor(s1);
+
+  // Print the updated results.
+  print(await sensors()); // Prints a list .
+
+  //print the sensor data in index 0
+  print(await sensorItem(0));
+
+  // Update so with s1 data and save it to the database.
+  s0 = Sensor(id: s0.id, latitude: s1.latitude, longitude: s1.longitude);
+  await updateSensor(s0);
+  await deleteSensor(s1.id);
+
+  // Print the updated results.
+  print(await sensors());
+
+  // Delete first item from the database.
+  await deleteSensor(s0.id);
+
+  // Print the updated results.
+  print(await sensors());
+  //-----------------------end of sqlite sample
+
   print("I am Started");
   WidgetsFlutterBinding.ensureInitialized();
   final service = FlutterBackgroundService();
   service.onDataReceived.listen((event) {
-
     if (event!["action"] == "stopService") {
       service.stopBackgroundService();
     }
@@ -77,7 +200,10 @@ void onStart() {
     await location.getCurrentLocation();
 
     service.sendData(
-      {"current_lat": location.latitude.toString(), "current_long": location.longitude.toString()},
+      {
+        "current_lat": location.latitude.toString(),
+        "current_long": location.longitude.toString()
+      },
     );
   });
 }
@@ -678,11 +804,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               onPressed: () {
                                 saveMedicalValue();
                                 Navigator.pop(context, 'OK');
-
                               },
                               child: const Text('OK'),
                             ),
-
                           ],
                         ),
                       );
@@ -694,42 +818,42 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 10,
                   thickness: 5,
                 ),
-            Text(
-              'Emergency Listener',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-              ),
-            ),
-        ElevatedButton(
-          child: Text(textBackground),
-            style: ButtonStyle(
-              backgroundColor:
-              MaterialStateProperty.all<Color>(Colors.black),
-            ),
-            onPressed: () async{
-              // code here to activate background
+                Text(
+                  'Emergency Listener',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
+                ),
+                ElevatedButton(
+                  child: Text(textBackground),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.black),
+                  ),
+                  onPressed: () async {
+                    // code here to activate background
 
-                final service = FlutterBackgroundService();
-                var isRunning = await service.isServiceRunning();
-                if (isRunning) {
-                  service.sendData(
-                    {"action": "stopService"},
-                  );
-                } else {
-                  service.start();
-                }
+                    final service = FlutterBackgroundService();
+                    var isRunning = await service.isServiceRunning();
+                    if (isRunning) {
+                      service.sendData(
+                        {"action": "stopService"},
+                      );
+                    } else {
+                      service.start();
+                    }
 
-                if (!isRunning) {
-                  textBackground = 'Stop Service';
-                } else {
-                  textBackground = 'Start Service';
-                }
+                    if (!isRunning) {
+                      textBackground = 'Stop Service';
+                    } else {
+                      textBackground = 'Start Service';
+                    }
 
-                setState((){});
-            },
-        )
+                    setState(() {});
+                  },
+                )
               ],
             ),
           ),
@@ -764,4 +888,30 @@ class _ProfilePageState extends State<ProfilePage> {
   }
   // functions for background se
 
+}
+
+// Sensor class for location
+class Sensor {
+  final int id;
+  final String latitude;
+  final String longitude;
+
+  Sensor({
+    required this.id,
+    required this.latitude,
+    required this.longitude,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'latitude': latitude,
+      'longitude': longitude,
+    };
+  }
+
+  @override
+  String toString() {
+    return 'Sensor{id: $id,latitude: $latitude, longitude: $longitude}';
+  }
 }
