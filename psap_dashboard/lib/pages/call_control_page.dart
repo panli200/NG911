@@ -287,7 +287,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
       startLan = data['StartLocation'].latitude.toString();
       startLon = data['StartLocation'].longitude.toString();
       //Get route before the call
-      List<googleMap.LatLng> previousLocs = await [
+      previousLocs = [
         googleMap.LatLng(double.parse(startLan), double.parse(startLon))
       ];
       // fetch the locations and add it to list at here:
