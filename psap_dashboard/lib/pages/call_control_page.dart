@@ -18,9 +18,8 @@ import 'package:flutter_remix/flutter_remix.dart';
 // Enviromental variables
 String? latitudePassed = '';
 String? longitudePassed = '';
-var callerId = '';
-var startLan = '';
-var startLon = '';
+
+List<googleMap.LatLng>? previousLocs ;
 
 class CallControlPanel extends StatefulWidget {
   final CallerId;
@@ -51,7 +50,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
 
   // database variables
-//  var callerId = '';
+  var callerId = '';
+  var startLan = '';
+  var startLon = '';
   var snapshot;
   Query? pastCalls;
   // States of the call
@@ -285,7 +286,23 @@ class _CallControlPanelState extends State<CallControlPanel> {
       Map<String, dynamic> data = docSnapshot.data()!;
       startLan = data['StartLocation'].latitude.toString();
       startLon = data['StartLocation'].longitude.toString();
+      //Get route before the call
+      List<googleMap.LatLng> previousLocs = await [
+        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      ];
+      // fetch the locations and add it to list at here:
+
+
+      //Get the route after the call
+      // List<googleMap.LatLng> newLocs = [
+      //   googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      // ];
     }
+    print("-------------");
+    print(previousLocs);
+    var locSnapshot = await collection.doc(callerId).collection('location').get();
+
+
   }
 
   // Initialize
@@ -876,18 +893,6 @@ class StreetMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-      //Get route before the call
-      List<googleMap.LatLng> previousLocs = [
-        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
-      ];
-
-
-
-
-      //Get the route after the call
-      List<googleMap.LatLng> newLocs = [
-        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
-      ];
 
 
       final myLatlng = googleMap.LatLng(
@@ -914,11 +919,11 @@ class StreetMap extends StatelessWidget {
         ..map = map
         ..path = previousLocs);
 
-      final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
-        ..map = map
-        ..path = newLocs
-        ..strokeColor = "#c4161b"
-      );
+      // final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
+      //   ..map = map
+      //   ..path = newLocs
+      //   ..strokeColor = "#c4161b"
+      // );
 
       return elem;
     });
