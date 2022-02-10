@@ -10,19 +10,20 @@ import 'package:sos_app/profile_extended_pages/sos_user.dart';
 import 'package:sos_app/profile_extended_pages/dialog_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sos_app/profile_extended_pages/sliding_switch_widget.dart';
-import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
-import 'package:sos_app/profile_extended_pages/upload_file.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:sos_app/services/location.dart';
-class ProfilePage extends StatefulWidget {
+import 'package:sqflite/sqflite.dart';
+import 'package:sos_app/services/TwentyPoints.dart';
 
+class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
 
   _ProfilePageState createState() => _ProfilePageState();
 }
 
+
+
 Future<void> initializeService() async {
-  print("I am initialized");
   final service = FlutterBackgroundService();
   await service.configure(
     androidConfiguration: AndroidConfiguration(
@@ -30,12 +31,12 @@ Future<void> initializeService() async {
       onStart: onStart,
 
       // auto start service
-      autoStart: true,
+      autoStart: false,
       isForegroundMode: true,
     ),
     iosConfiguration: IosConfiguration(
       // auto start service
-      autoStart: true,
+      autoStart: false,
 
       // this will executed when app is in foreground in separated isolate
       onForeground: onStart,
@@ -44,6 +45,7 @@ Future<void> initializeService() async {
       onBackground: onIosBackground,
     ),
   );
+
 }
 
 // to ensure this executed
@@ -53,12 +55,102 @@ void onIosBackground() {
   print('FLUTTER BACKGROUND FETCH');
 }
 
-void onStart() {
-  print("I am Started");
+Future<void> onStart() async {
   WidgetsFlutterBinding.ensureInitialized();
+  var currentIndex = 0;
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'sensor_database.db'),
+    onCreate: (db, version) {
+      return db.execute(
+        'CREATE TABLE sensors(id INTEGER PRIMARY KEY, latitude TEXT, longitude TEXT)',
+      );
+    },
+    version: 1,
+  );
+
+  Future<void> insertSensor(Sensor sensor) async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    await db.insert(
+      'sensors',
+      sensor.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Sensor>> sensors() async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Query the table for all sensor.
+    final List<Map<String, dynamic>> maps = await db.query('sensors');
+
+    // Convert the List<Map<String, dynamic> into a List<Sensor>.
+    return List.generate(maps.length, (i) {
+      return Sensor(
+        id: maps[i]['id'],
+        latitude: maps[i]['latitude'],
+        longitude: maps[i]['longitude'],
+      );
+    });
+  }
+
+  Future<Sensor> sensorItem(index) async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Query the table for all sensor.
+    final List<Map<String, dynamic>> maps = await db.query('sensors');
+
+    // Convert the List<Map<String, dynamic> into a List<Sensor>.
+
+    return Sensor(
+      id: index,
+      latitude: maps[index]['latitude'],
+      longitude: maps[index]['longitude'],
+    );
+  }
+
+
+  Future<void> updateSensor(Sensor sensor) async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Update the given sensor.
+    await db.update(
+      'sensors',
+      sensor.toMap(),
+      // Ensure that the sensor has a matching id.
+      where: 'id = ?',
+      // Pass the sensor's id as a whereArg to prevent SQL injection.
+      whereArgs: [sensor.id],
+    );
+  }
+
+  Future<void> deleteSensor(int id) async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Remove the sensor from the database.
+    await db.delete(
+      'sensors',
+      // Use a `where` clause to delete a specific sensor.
+      where: 'id = ?',
+      // Pass the sensor's id as a whereArg to prevent SQL injection.
+      whereArgs: [id],
+    );
+  }
+
+
+
   final service = FlutterBackgroundService();
   service.onDataReceived.listen((event) {
-
     if (event!["action"] == "stopService") {
       service.stopBackgroundService();
     }
@@ -66,18 +158,50 @@ void onStart() {
 
   // bring to foreground
   service.setForegroundMode(true);
-  Timer.periodic(Duration(seconds: 1), (timer) async {
+  Timer.periodic(Duration(seconds: 10), (timer) async {
     if (!(await service.isServiceRunning())) timer.cancel();
     service.setNotificationInfo(
       title: "SOS App",
       content: "Listening to background",
     );
-
     Location location = Location();
     await location.getCurrentLocation();
+    if(currentIndex <20){ // getting points 0-19
+      var point = Sensor(
+        id: currentIndex,
+        latitude: location.latitude.toString(),
+        longitude: location.longitude.toString(),
+      );
+       await insertSensor(point);
+
+
+      currentIndex ++; // increment current index
+    }else{ // current index is 20 -> first 20 points have been set
+      var NewPoint = Sensor(
+        id: 19,
+        latitude: location.latitude.toString(),
+        longitude: location.longitude.toString(),
+      );
+      final db = await database;
+      final List<Map<String, dynamic>> maps = await db.query('sensors');
+
+      // Convert the List<Map<String, dynamic> into a List<Sensor>.
+
+      for(int i=0; i<maps.length ; i++){ // shifting all sensors in i to i-1, from 0-19
+        Sensor? sensorPlusOne = await sensorItem(i+1);
+        Sensor overWritten = Sensor(id: i, latitude: sensorPlusOne!.getLatitude(), longitude: sensorPlusOne.getLongitude());
+        updateSensor(overWritten);
+      }
+      updateSensor(NewPoint); // Finally, write the new point to the index 19
+    }
+
+
 
     service.sendData(
-      {"current_lat": location.latitude.toString(), "current_long": location.longitude.toString()},
+      {
+        "current_lat": location.latitude.toString(),
+        "current_long": location.longitude.toString()
+      },
     );
   });
 }
@@ -94,7 +218,7 @@ class _ProfilePageState extends State<ProfilePage> {
   final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   late SharedPreferences prefs;
   final _formKey = GlobalKey<FormState>();
-  String textBackground = "Stop Service";
+  String textBackground = "Start Service";
   getGeneralValue() async {
     prefs = await _prefs;
 
@@ -678,11 +802,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               onPressed: () {
                                 saveMedicalValue();
                                 Navigator.pop(context, 'OK');
-
                               },
                               child: const Text('OK'),
                             ),
-
                           ],
                         ),
                       );
@@ -694,42 +816,42 @@ class _ProfilePageState extends State<ProfilePage> {
                   height: 10,
                   thickness: 5,
                 ),
-            Text(
-              'Emergency Listener',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-              ),
-            ),
-        ElevatedButton(
-          child: Text(textBackground),
-            style: ButtonStyle(
-              backgroundColor:
-              MaterialStateProperty.all<Color>(Colors.black),
-            ),
-            onPressed: () async{
-              // code here to activate background
+                Text(
+                  'Emergency Listener',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 17,
+                  ),
+                ),
+                ElevatedButton(
+                  child: Text(textBackground),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.black),
+                  ),
+                  onPressed: () async {
+                    // code here to activate background
 
-                final service = FlutterBackgroundService();
-                var isRunning = await service.isServiceRunning();
-                if (isRunning) {
-                  service.sendData(
-                    {"action": "stopService"},
-                  );
-                } else {
-                  service.start();
-                }
+                    final service = FlutterBackgroundService();
+                    var isRunning = await service.isServiceRunning();
+                    if (isRunning) {
+                      service.sendData(
+                        {"action": "stopService"},
+                      );
+                    } else {
+                      service.start();
+                    }
 
-                if (!isRunning) {
-                  textBackground = 'Stop Service';
-                } else {
-                  textBackground = 'Start Service';
-                }
+                    if (!isRunning) {
+                      textBackground = 'Stop Service';
+                    } else {
+                      textBackground = 'Start Service';
+                    }
 
-                setState((){});
-            },
-        )
+                    setState(() {});
+                  },
+                )
               ],
             ),
           ),
@@ -765,3 +887,6 @@ class _ProfilePageState extends State<ProfilePage> {
   // functions for background se
 
 }
+
+// Sensor class for location
+

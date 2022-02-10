@@ -84,7 +84,8 @@ class SosHomePageState extends State<SosHomePage> {
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
                 ),
-                onPressed: () {
+                onPressed: () async{
+                  WidgetsFlutterBinding.ensureInitialized();
                   var now = new DateTime.now();
                   String? date = now.toString();
                   _callNumber(date);
@@ -92,6 +93,7 @@ class SosHomePageState extends State<SosHomePage> {
                   sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
+                  sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
                   personal(); //Test adding call type
                   Navigator.push(
                     context,
@@ -117,6 +119,7 @@ class SosHomePageState extends State<SosHomePage> {
                   sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
+                  sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
                   contact(); //Test adding call type
                   Navigator.push(
                     context,
@@ -140,6 +143,7 @@ class SosHomePageState extends State<SosHomePage> {
                   _callNumber(date);
                   updateSensors(date);
                   updateHistory(); //Test adding call history database
+                  sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
                   standby();
                   Navigator.push(
                     context,
