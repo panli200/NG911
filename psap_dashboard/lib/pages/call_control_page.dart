@@ -876,6 +876,20 @@ class StreetMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
+      //Get route before the call
+      List<googleMap.LatLng> previousLocs = [
+        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      ];
+
+
+
+
+      //Get the route after the call
+      List<googleMap.LatLng> newLocs = [
+        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      ];
+
+
       final myLatlng = googleMap.LatLng(
           double.tryParse(latitudePassed!), double.tryParse(longitudePassed!));
 
@@ -895,6 +909,16 @@ class StreetMap extends StatelessWidget {
         ..position = myLatlng
         ..map = map
         ..title = 'caller');
+
+      final line = googleMap.Polyline(googleMap.PolylineOptions()
+        ..map = map
+        ..path = previousLocs);
+
+      final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
+        ..map = map
+        ..path = newLocs
+        ..strokeColor = "#c4161b"
+      );
 
       return elem;
     });
