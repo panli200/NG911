@@ -140,6 +140,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
       await doc.reference.delete();
     }
 
+    // End records location
+    var collectionLocation = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection("location");
+    var snapshotsLocation = await collectionLocation.get();
+    for (var doc in snapshotsLocation.docs) {
+      await doc.reference.delete();
+    }
     // Ending the endState stream
     endedStateStream?.cancel();
   }
@@ -521,7 +530,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
                                           Row(
                                             children: [
-                                              const Icon(FlutterRemix.windy_line),
+                                              const Icon(
+                                                  FlutterRemix.windy_line),
                                               Text(
                                                 'Wind Speed: ' +
                                                     windSpeed!.toString(),
@@ -866,7 +876,6 @@ class StreetMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-
       final myLatlng = googleMap.LatLng(
           double.tryParse(latitudePassed!), double.tryParse(longitudePassed!));
 
