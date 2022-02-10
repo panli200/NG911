@@ -366,6 +366,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
+
             SizedBox // First Column (Contains Map and End Call Button)
             (
               height: MediaQuery.of(context).size.height * 0.9,
@@ -856,7 +857,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                       ),
                     ),
                   ]
-                )
+                ),
               ]
             )
           )

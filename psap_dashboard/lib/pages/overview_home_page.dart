@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 
 class OverviewHomePage extends StatefulWidget {
   final name;
@@ -78,10 +79,22 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
           Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                SizedBox(
+              children: <Widget>
+              [
+                SizedBox(width: MediaQuery.of(context).size.width * 0.01,), // SPACING
+
+                Container // Call History Chart
+                (
                   height: MediaQuery.of(context).size.height * 0.9,
-                  width: MediaQuery.of(context).size.width * 0.6,
+                  width: MediaQuery.of(context).size.width * 0.57,
+                  decoration:
+                      BoxDecoration
+                      (
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.white, width: 1)
+                      ),
                   child: StreamBuilder<QuerySnapshot>(
                       stream: history,
                       builder: (
@@ -148,116 +161,153 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                             ]);
                       }),
                 ),
-                SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.9,
-                    width: MediaQuery.of(context).size.width * 0.4,
-                    child: Column(
-                      children: <Widget>[
-                        const Text(
-                          'Call History',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 30,
-                          ),
-                          textAlign: TextAlign.center,
-                        ),
-                        Row(
-                          children: const [
-                            Expanded(
-                                child: Text(
-                              'Time',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )),
-                            Expanded(
-                                child: Text(
-                              'Mobile',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )),
-                            Expanded(
-                                child: Text(
-                              'Latitude',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )),
-                            Expanded(
-                                child: Text(
-                              'Longitude',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            )),
+
+                SizedBox(width: MediaQuery.of(context).size.width * 0.01,), // SPACING
+
+
+                Container // Call History Data
+                (
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  width: MediaQuery.of(context).size.width * 0.4,
+                  padding: EdgeInsets.all(10.0),
+                  decoration:
+                    BoxDecoration
+                    (
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.white, width: 1)
+                    ),
+                  child: 
+                    Column
+                    (
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                      children: <Widget>
+                      [
+                        const Text('Emergency History', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30,), textAlign: TextAlign.center,),
+
+                        Row
+                        (
+                          children: [
+                            Row
+                            (
+                              children: 
+                              [
+                                Icon(FlutterRemix.history_line), 
+                                Text('Time', style: TextStyle(fontWeight: FontWeight.bold,),)
+                              ] 
+                            ),
+
+                            SizedBox(width: MediaQuery.of(context).size.width * 0.05,),  // SPACING
+
+                            Row
+                            (
+                              children: 
+                              [
+                                Icon(FlutterRemix.smartphone_line), 
+                                Text('Mobile', style: TextStyle(fontWeight: FontWeight.bold,),)
+                              ] 
+                            ),
+
+                            SizedBox(width: MediaQuery.of(context).size.width * 0.05,),  // SPACING
+
+                            Row
+                            (
+                              children: 
+                              [
+                                Icon(FlutterRemix.global_line), 
+                                Text('Latitude', style: TextStyle(fontWeight: FontWeight.bold,),)
+                              ] 
+                            ),
+
+                            SizedBox(width: MediaQuery.of(context).size.width * 0.05,),  // SPACING
+
+                            Row
+                            (
+                              children: 
+                              [
+                                Icon(FlutterRemix.global_line), 
+                                Text('Longitude', style: TextStyle(fontWeight: FontWeight.bold,),)
+                              ] 
+                            ),
                           ],
                         ),
-                        Scrollbar(
+
+                        Scrollbar
+                        (
                           isAlwaysShown: true,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.8,
-                                  child: StreamBuilder<QuerySnapshot>(
-                                      stream: history,
-                                      builder: (
-                                        BuildContext context,
-                                        AsyncSnapshot<QuerySnapshot> snapshot,
-                                      ) {
-                                        if (snapshot.hasError) {
-                                          return Text(
-                                              'Something went wrong  ${snapshot.error}');
-                                        }
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return Text('Loading');
-                                        }
-                                        final data = snapshot.requireData;
-                                        return ListView.builder(
-                                            itemCount: data.size,
-                                            itemBuilder: (context, index) {
-                                              if (DateTime.parse(data
-                                                              .docs[index].id)
-                                                          .year ==
-                                                      currentDay.year &&
-                                                  DateTime.parse(data
-                                                              .docs[index].id)
-                                                          .month ==
-                                                      currentDay.month &&
-                                                  DateTime.parse(data
-                                                              .docs[index].id)
-                                                          .day ==
-                                                      currentDay.day) {
-                                                return Material(
-                                                  child: Container(
-                                                    height: 30,
-                                                    child:
-                                                        Row(children: <Widget>[
-                                                      Text(DateTime.parse(data
-                                                                  .docs[index]
-                                                                  .id)
-                                                              .toString() +
-                                                          '  ${data.docs[index]['Phone']} '
-                                                              '  ${data.docs[index]['Location'].latitude}  '
-                                                              '   ${data.docs[index]['Location'].longitude}'),
-                                                    ]),
-                                                  ),
-                                                );
-                                              } else {
-                                                return const Material();
-                                              }
-                                            });
-                                      }),
+                          child: 
+                            SingleChildScrollView
+                            (
+                              child: 
+                                Column
+                                (
+                                  children: [
+                                    SizedBox
+                                    (
+                                      height: MediaQuery.of(context).size.height * 0.8,
+                                      child: 
+                                        StreamBuilder<QuerySnapshot>
+                                        (
+                                          stream: history,
+                                          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                                            if (snapshot.hasError) 
+                                            {
+                                              return Text('Something went wrong  ${snapshot.error}');
+                                            }
+
+                                            if (snapshot.connectionState == ConnectionState.waiting) 
+                                            {
+                                              return Text('Loading');
+                                            }
+
+                                            final data = snapshot.requireData;
+
+                                            return ListView.builder (
+                                                itemCount: data.size,
+                                                itemBuilder: (context, index) {
+                                                  if (DateTime.parse(data.docs[index].id).year ==currentDay.year && DateTime.parse(data.docs[index].id).month ==  currentDay.month && DateTime.parse(data.docs[index].id).day == currentDay.day) 
+                                                  {
+                                                    return Material (
+                                                      child: 
+                                                        Container
+                                                        (
+                                                          height: 30,
+                                                          child:
+                                                            Row
+                                                            (
+                                                              children: <Widget> 
+                                                              [
+                                                                Text(DateTime.parse(data
+                                                                      .docs[index]
+                                                                      .id)
+                                                                  .toString() +
+                                                              '  ${data.docs[index]['Phone']} '
+                                                                  '  ${data.docs[index]['Location'].latitude}  '
+                                                                  '   ${data.docs[index]['Location'].longitude}'),
+                                                              ]
+                                                            ),
+                                                        ),
+                                                    );
+                                                  } 
+                                                  else 
+                                                  {
+                                                    return const Material();
+                                                  }
+                                                }
+                                            );
+                                          }
+                                        ),
+                                    ),
+                                  ],
                                 ),
-                              ],
+                              ),
                             ),
-                          ),
-                        ),
-                      ],
+                          ],
                     )),
+
+                    SizedBox(width: MediaQuery.of(context).size.width * 0.01,), // SPACING
               ]),
         ]),
       );
