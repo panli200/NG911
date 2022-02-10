@@ -4,6 +4,7 @@ import 'package:psap_dashboard/pages/maps_home_page.dart';
 import 'package:psap_dashboard/pages/overview_home_page.dart';
 import 'package:psap_dashboard/pages/settings_home_page.dart';
 import 'package:psap_dashboard/pages/user_data_page.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 
 class NavigationDrawerWidget extends StatefulWidget {
   final name;
@@ -47,15 +48,14 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
               email: email,
               onClicked: () {},
             ),
-            IconButton(
-              icon: const Icon(
-                Icons.logout,
-              ),
+            IconButton
+            (
+              icon: const Icon(FlutterRemix.logout_box_line),
               color: Colors.red,
               splashColor: Colors.white,
-              onPressed: () {
-                Navigator.pushReplacement(
-                    context, MaterialPageRoute(builder: (_) => LoginPage()));
+              onPressed: () 
+              {
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
               },
             ),
             Container(
@@ -64,20 +64,20 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                 children: [
                   const SizedBox(height: 24),
                   buildMenuItem(
-                    text: 'Map',
-                    icon: Icons.map,
+                    text: 'Emergencies',
+                    icon: FlutterRemix.alarm_warning_line,
                     onClicked: () => selectedItem(context, 0),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Overview',
-                    icon: Icons.assessment,
+                    icon: FlutterRemix.bar_chart_box_line,
                     onClicked: () => selectedItem(context, 1),
                   ),
                   const SizedBox(height: 16),
                   buildMenuItem(
                     text: 'Settings',
-                    icon: Icons.settings,
+                    icon: FlutterRemix.settings_3_line,
                     onClicked: () => selectedItem(context, 2),
                   ),
                 ],
