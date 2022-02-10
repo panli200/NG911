@@ -866,7 +866,7 @@ class StreetMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-      // if(double.tryParse(latitudePassed!) != null && double.tryParse(longitudePassed!) != null) {
+
       final myLatlng = googleMap.LatLng(
           double.tryParse(latitudePassed!), double.tryParse(longitudePassed!));
 
@@ -886,10 +886,6 @@ class StreetMap extends StatelessWidget {
         ..position = myLatlng
         ..map = map
         ..title = 'caller');
-
-      final infoWindow = googleMap.InfoWindow(
-          googleMap.InfoWindowOptions()..content = 'caller');
-      marker.onClick.listen((event) => infoWindow.open(map, marker));
 
       return elem;
     });
