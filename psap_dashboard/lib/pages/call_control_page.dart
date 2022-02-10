@@ -127,13 +127,23 @@ class _CallControlPanelState extends State<CallControlPanel> {
       'EndPointLongitude': longitudePassed
     });
 
-    // End records
+    // End records messages
     var collection = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(callerId)
         .collection("messages");
     var snapshots = await collection.get();
     for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+
+    // End records location
+    var collectionLocation = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection("location");
+    var snapshotsLocation = await collectionLocation.get();
+    for (var doc in snapshotsLocation.docs) {
       await doc.reference.delete();
     }
 
