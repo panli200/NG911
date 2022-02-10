@@ -14,7 +14,6 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:sos_app/services/location.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sos_app/services/TwentyPoints.dart';
-import 'package:sos_app/services/local_location.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -25,7 +24,6 @@ class ProfilePage extends StatefulWidget {
 
 
 Future<void> initializeService() async {
-  print("I am initialized");
   final service = FlutterBackgroundService();
   await service.configure(
     androidConfiguration: AndroidConfiguration(
@@ -58,16 +56,99 @@ void onIosBackground() {
 }
 
 Future<void> onStart() async {
-
-  var currentIndex = 0;
-
-
-  DatabaseClass? db;
-
-
-
-  print("I am Started");
   WidgetsFlutterBinding.ensureInitialized();
+  var currentIndex = 0;
+  final database = openDatabase(
+    join(await getDatabasesPath(), 'sensor_database.db'),
+    onCreate: (db, version) {
+      return db.execute(
+        'CREATE TABLE sensors(id INTEGER PRIMARY KEY, latitude TEXT, longitude TEXT)',
+      );
+    },
+    version: 1,
+  );
+
+  Future<void> insertSensor(Sensor sensor) async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    await db.insert(
+      'sensors',
+      sensor.toMap(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<List<Sensor>> sensors() async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Query the table for all sensor.
+    final List<Map<String, dynamic>> maps = await db.query('sensors');
+
+    // Convert the List<Map<String, dynamic> into a List<Sensor>.
+    return List.generate(maps.length, (i) {
+      return Sensor(
+        id: maps[i]['id'],
+        latitude: maps[i]['latitude'],
+        longitude: maps[i]['longitude'],
+      );
+    });
+  }
+
+  Future<Sensor> sensorItem(index) async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Query the table for all sensor.
+    final List<Map<String, dynamic>> maps = await db.query('sensors');
+
+    // Convert the List<Map<String, dynamic> into a List<Sensor>.
+
+    return Sensor(
+      id: index,
+      latitude: maps[index]['latitude'],
+      longitude: maps[index]['longitude'],
+    );
+  }
+
+
+  Future<void> updateSensor(Sensor sensor) async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Update the given sensor.
+    await db.update(
+      'sensors',
+      sensor.toMap(),
+      // Ensure that the sensor has a matching id.
+      where: 'id = ?',
+      // Pass the sensor's id as a whereArg to prevent SQL injection.
+      whereArgs: [sensor.id],
+    );
+  }
+
+  Future<void> deleteSensor(int id) async {
+
+    // Get a reference to the database.
+    final db = await database;
+
+    // Remove the sensor from the database.
+    await db.delete(
+      'sensors',
+      // Use a `where` clause to delete a specific sensor.
+      where: 'id = ?',
+      // Pass the sensor's id as a whereArg to prevent SQL injection.
+      whereArgs: [id],
+    );
+  }
+
+
+
   final service = FlutterBackgroundService();
   service.onDataReceived.listen((event) {
     if (event!["action"] == "stopService") {
@@ -83,31 +164,35 @@ Future<void> onStart() async {
       title: "SOS App",
       content: "Listening to background",
     );
-
     Location location = Location();
     await location.getCurrentLocation();
     if(currentIndex <20){ // getting points 0-19
-      print("I am here" + currentIndex.toString());
       var point = Sensor(
         id: currentIndex,
         latitude: location.latitude.toString(),
         longitude: location.longitude.toString(),
       );
-      await db?.insertSensor(point);
+       await insertSensor(point);
+
+
       currentIndex ++; // increment current index
     }else{ // current index is 20 -> first 20 points have been set
-      print("this is 20");
       var NewPoint = Sensor(
         id: 19,
         latitude: location.latitude.toString(),
         longitude: location.longitude.toString(),
       );
-      for(int i=0; i<19 ; i++){ // shifting all sensors in i to i-1, from 0-19
-        Sensor? sensorPlusOne = await db?.sensorItem(i+1);
+      final db = await database;
+      final List<Map<String, dynamic>> maps = await db.query('sensors');
+
+      // Convert the List<Map<String, dynamic> into a List<Sensor>.
+
+      for(int i=0; i<maps.length ; i++){ // shifting all sensors in i to i-1, from 0-19
+        Sensor? sensorPlusOne = await sensorItem(i+1);
         Sensor overWritten = Sensor(id: i, latitude: sensorPlusOne!.getLatitude(), longitude: sensorPlusOne.getLongitude());
-        db?.updateSensor(overWritten);
+        updateSensor(overWritten);
       }
-      db?.updateSensor(NewPoint); // Finally, write the new point to the index 19
+      updateSensor(NewPoint); // Finally, write the new point to the index 19
     }
 
 
