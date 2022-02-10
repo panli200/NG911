@@ -158,7 +158,7 @@ Future<void> onStart() async {
 
   // bring to foreground
   service.setForegroundMode(true);
-  Timer.periodic(Duration(seconds: 10), (timer) async {
+  Timer.periodic(Duration(seconds: 30), (timer) async {
     if (!(await service.isServiceRunning())) timer.cancel();
     service.setNotificationInfo(
       title: "SOS App",
