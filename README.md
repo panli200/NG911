@@ -11,11 +11,13 @@
   - [September 17 — Vlog #1](#september-17--vlog-1)
   - [October 15 — Vlog #2](#october-15--vlog-2)
   - [December 3 — Vlog #3](#december-3--vlog-3)
+  - [February 1 — Vlog #4](#february-1--vlog-4)
 - [Scrum Scripts/Slides](#scrum-scriptsslides)
   - [September 24 — Scrum #1](#september-24--scrum-1)
   - [October 8 — Scrum #2](#october-8--scrum-2)
   - [October 22 — Scrum #3](#october-22--scrum-3)
   - [November 19 — Scrum #4](#november-19--scrum-4)
+  - [Febuary 8 — Scrum #5](#february-8--scrum-5)
 - [Design Documentation](#design-documentation)
   - [Project  Definition](#project--definition)
   - [Empathy Mapping](#empathy-mapping)
@@ -41,7 +43,7 @@ ENSE 400/477(2021/2022) SSE Capstone Project - University of Regina
 - [Vlog #2: Project Update](https://youtu.be/kcOifqv1obA)
 ## December 3 — Vlog #3
 - [Vlog #3: Project Update — Needed PSAP-side complementary application with our original idea](https://youtu.be/2lo1vUUzE8Y)
-## February 1, 2022 — Vlog #4
+## February 1 — Vlog #4
 - [Vlog #4: Project Update — PSAP-side](https://youtu.be/V186NkOB2oY)
 ---
 
@@ -58,6 +60,8 @@ ENSE 400/477(2021/2022) SSE Capstone Project - University of Regina
 ## November 19 — Scrum #4
 - [Scrum #4 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%234.pdf)
 - [Scrum #4 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%234-Slide.pdf)
+## February 8 — Scrum #5
+- [Scrum #5 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%235-Slide.pdf)
 
 ---
 
