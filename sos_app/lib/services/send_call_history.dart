@@ -4,6 +4,8 @@ import 'package:sos_app/services/location.dart';
 import 'package:sos_app/services/TwentyPoints.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
+import 'dart:async';
+
 Future<void> updateHistory() async {
   Location location = Location();
   await location.getCurrentLocation();
@@ -18,6 +20,19 @@ Future<void> updateHistory() async {
   });
 }
 
+
+Future<void> sendUpdatedLocation() async {
+  String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+  DocumentReference emergency = FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile);
+  Timer.periodic(const Duration(seconds: 5), (timer) async {
+  Location location = Location();
+  await location.getCurrentLocation();
+  await emergency.collection("NewLocations").add({
+  'latitude': location.latitude,
+  'longitude': location.longitude,
+  });
+  });
+}
 
 Future<void> sendLocationHistory() async {
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
@@ -45,11 +60,12 @@ Future<void> sendLocationHistory() async {
 
   int numberOfPoints = await twentyPoints.length;
   for(int i=0; i<numberOfPoints ; i++){
-  String latitudePoint = "Latitude" + i.toString();
-  String longitudePoint = "Longitude" + i.toString();
+  String latitudePoint = "Latitude";
+  String longitudePoint = "Longitude";
   await Emergency.collection("location").add({
   latitudePoint: twentyPoints[i].getLatitude(),
-  longitudePoint: twentyPoints[i].getLongitude()
+  longitudePoint: twentyPoints[i].getLongitude(),
+  "id": i
   });
   }
 }
