@@ -19,7 +19,8 @@ import 'package:flutter_remix/flutter_remix.dart';
 String? latitudePassed = '';
 String? longitudePassed = '';
 
-List<googleMap.LatLng>? previousLocs ;
+List<googleMap.LatLng>? previousLocs;
+List<googleMap.LatLng>? newLocs;
 
 class CallControlPanel extends StatefulWidget {
   final CallerId;
@@ -150,6 +151,17 @@ class _CallControlPanelState extends State<CallControlPanel> {
     for (var doc in snapshotsLocation.docs) {
       await doc.reference.delete();
     }
+
+    // End records after call locations
+    var collectionNewLocation = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection("NewLocations");
+    var snapshotsNewLocation = await collectionNewLocation.get();
+    for (var doc in snapshotsNewLocation.docs) {
+      await doc.reference.delete();
+    }
+
     // Ending the endState stream
     endedStateStream?.cancel();
   }
@@ -290,19 +302,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
       previousLocs = [
         googleMap.LatLng(double.parse(startLan), double.parse(startLon))
       ];
-      // fetch the locations and add it to list at here:
-
 
       //Get the route after the call
-      // List<googleMap.LatLng> newLocs = [
-      //   googleMap.LatLng(double.parse(startLan), double.parse(startLon))
-      // ];
+      newLocs = [
+        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      ];
     }
-    print("-------------");
-    print(previousLocs);
-    var locSnapshot = await collection.doc(callerId).collection('location').get();
 
-
+    //fetch the previous locations at here
+    var locSnapshot =
+        await collection.doc(callerId).collection('location').get();
   }
 
   // Initialize
@@ -361,6 +370,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> locationsHistory = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection('NewLocations')
+        .snapshots();
     String? userMotion = '';
     double? speedDouble = 0.0;
     Future.delayed(Duration.zero, () async {
@@ -405,17 +419,38 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           Row //THE MAP
                               (children: <Widget>[
                             Container(
-                              height: MediaQuery.of(context).size.height * 0.74,
-                              width: MediaQuery.of(context).size.width * 0.43,
-                              padding: EdgeInsets.all(10.0),
-                              decoration: BoxDecoration(
-                                  shape: BoxShape.rectangle,
-                                  borderRadius: BorderRadius.circular(12),
-                                  color: Colors.white,
-                                  border: Border.all(
-                                      color: Colors.white, width: 1)),
-                              child: StreetMap(),
-                            )
+                                height:
+                                    MediaQuery.of(context).size.height * 0.74,
+                                width: MediaQuery.of(context).size.width * 0.43,
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: Colors.white, width: 1)),
+                                child: StreamBuilder<QuerySnapshot>(
+                                    stream: locationsHistory,
+                                    builder: (
+                                      BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot,
+                                    ) {
+                                      if (snapshot.hasError) {
+                                        return Text(
+                                            'Something went wrong  ${snapshot.error}');
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Text('Loading');
+                                      }
+                                      final data = snapshot.requireData;
+                                      for (var doc in data.docs) {
+                                        newLocs!.add(googleMap.LatLng(
+                                            double.parse(latitudePassed!),
+                                            double.parse(longitudePassed!)));
+                                      }
+                                      return StreetMap();
+                                    }))
                           ]),
                           SizedBox // SPACING
                               (
@@ -893,8 +928,6 @@ class StreetMap extends StatelessWidget {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-
-
       final myLatlng = googleMap.LatLng(
           double.tryParse(latitudePassed!), double.tryParse(longitudePassed!));
 
@@ -918,13 +951,14 @@ class StreetMap extends StatelessWidget {
       final line = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
         ..path = previousLocs);
-
-      // final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
-      //   ..map = map
-      //   ..path = newLocs
-      //   ..strokeColor = "#c4161b"
-      // );
-
+      print("*******------*********");
+      print(previousLocs);
+      final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
+        ..map = map
+        ..path = newLocs
+        ..strokeColor = "#c4161b");
+      print("+-+-++-+-++-+-+++--+++-+--+-++-");
+      print(newLocs);
       return elem;
     });
 
