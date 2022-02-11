@@ -5,6 +5,7 @@ import 'package:sos_app/services/TwentyPoints.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
 
 Future<void> updateHistory() async {
   Location location = Location();
@@ -20,26 +21,39 @@ Future<void> updateHistory() async {
   });
 }
 
-
 Future<void> sendUpdatedLocation() async {
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-  DocumentReference emergency = FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile);
+  DocumentReference emergency =
+      FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile);
+  DatabaseReference ref = FirebaseDatabase.instance.ref();
+  final databaseReal = ref.child('sensors').child(mobile);
+  StreamSubscription? streamSubscriptionEnded;
+  bool Ended = false;
   Timer.periodic(const Duration(seconds: 5), (timer) async {
-  Location location = Location();
-  await location.getCurrentLocation();
-  await emergency.collection("NewLocations").add({
-  'latitude': location.latitude,
-  'longitude': location.longitude,
-  });
+    streamSubscriptionEnded =
+        databaseReal.child('Ended').onValue.listen((event) async {
+      bool? EndedB = event.snapshot?.value as bool;
+      Ended = EndedB;
+      if (Ended == true) {
+        streamSubscriptionEnded?.pause();
+        timer.cancel();
+      }
+    });
+    Location location = Location();
+    await location.getCurrentLocation();
+    await emergency.collection("NewLocations").add({
+      'latitude': location.latitude,
+      'longitude': location.longitude,
+    });
   });
 }
 
 Future<void> sendLocationHistory() async {
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-  DocumentReference Emergency = FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile);
+  DocumentReference Emergency =
+      FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile);
   final database = openDatabase(
     join(await getDatabasesPath(), 'sensor_database.db'),
-
   );
   Future<List<Sensor>> sensors() async {
     final db = await database;
@@ -56,16 +70,17 @@ Future<void> sendLocationHistory() async {
       );
     });
   }
-  List<Sensor> twentyPoints =  List.from(await sensors());
+
+  List<Sensor> twentyPoints = List.from(await sensors());
 
   int numberOfPoints = await twentyPoints.length;
-  for(int i=0; i<numberOfPoints ; i++){
-  String latitudePoint = "Latitude";
-  String longitudePoint = "Longitude";
-  await Emergency.collection("location").add({
-  latitudePoint: twentyPoints[i].getLatitude(),
-  longitudePoint: twentyPoints[i].getLongitude(),
-  "id": i
-  });
+  for (int i = 0; i < numberOfPoints; i++) {
+    String latitudePoint = "Latitude";
+    String longitudePoint = "Longitude";
+    await Emergency.collection("location").add({
+      latitudePoint: twentyPoints[i].getLatitude(),
+      longitudePoint: twentyPoints[i].getLongitude(),
+      "id": i
+    });
   }
 }
