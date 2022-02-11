@@ -19,6 +19,9 @@ import 'package:flutter_remix/flutter_remix.dart';
 String? latitudePassed = '';
 String? longitudePassed = '';
 
+List<googleMap.LatLng>? previousLocs;
+List<googleMap.LatLng>? newLocs;
+
 class CallControlPanel extends StatefulWidget {
   final CallerId;
   final Snapshot;
@@ -49,6 +52,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   // database variables
   var callerId = '';
+  var startLan = '';
+  var startLon = '';
   var snapshot;
   Query? pastCalls;
   // States of the call
@@ -137,12 +142,31 @@ class _CallControlPanelState extends State<CallControlPanel> {
       await doc.reference.delete();
     }
 
+    // End records location
+    var collectionLocation = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection("location");
+    var snapshotsLocation = await collectionLocation.get();
+    for (var doc in snapshotsLocation.docs) {
+      await doc.reference.delete();
+    }
+
+    // End records after call locations
+    var collectionNewLocation = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection("NewLocations");
+    var snapshotsNewLocation = await collectionNewLocation.get();
+    for (var doc in snapshotsNewLocation.docs) {
+      await doc.reference.delete();
+    }
+
     // Ending the endState stream
     endedStateStream?.cancel();
-
   }
 
-  void activateListeners() async{
+  void activateListeners() async {
     WidgetsFlutterBinding.ensureInitialized();
     endedStateStream = ref
         .child('sensors')
@@ -236,10 +260,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         });
       }
     });
-
-
   }
-
 
   Future<void> getRoomId() async {
     roomIdStream = ref
@@ -248,18 +269,17 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .child('RoomID')
         .onValue
         .listen((event) {
-          setState(() {
-            roomId = event.snapshot.value.toString();
-            signaling = widget.signaling;
-            _localRenderer = widget.localRenderer;
-            _remoteRenderer = widget.remoteRenderer;
+      setState(() {
+        roomId = event.snapshot.value.toString();
+        signaling = widget.signaling;
+        _localRenderer = widget.localRenderer;
+        _remoteRenderer = widget.remoteRenderer;
 
-            signaling?.joinRoom(
-                roomId, _remoteRenderer!, callerId); //join the video stream
-          });
+        signaling?.joinRoom(
+            roomId, _remoteRenderer!, callerId); //join the video stream
+      });
     });
   }
-
 
   Future<void> getLocationWeather() async {
     WeatherFactory wf = WeatherFactory("5e1ad24d143d638f46a53ae6403ee651");
@@ -271,6 +291,28 @@ class _CallControlPanelState extends State<CallControlPanel> {
     temperature = w.temperature!.celsius!.toInt();
   }
 
+  Future<void> getStartLocation() async {
+    var collection = FirebaseFirestore.instance.collection('SOSEmergencies');
+    var docSnapshot = await collection.doc(callerId).get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic> data = docSnapshot.data()!;
+      startLan = data['StartLocation'].latitude.toString();
+      startLon = data['StartLocation'].longitude.toString();
+      //Get route before the call
+      previousLocs = [
+        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      ];
+
+      //Get the route after the call
+      newLocs = [
+        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      ];
+    }
+
+    //fetch the previous locations at here
+    var locSnapshot =
+        await collection.doc(callerId).collection('location').get();
+  }
 
   // Initialize
   @override
@@ -289,7 +331,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 //    streamLoc.streamLongitude.listen((event) {
 //      LongitudeStreamed = event;
 //    });
-    getRoomId();//get roomId and join the stream
+    getRoomId(); //get roomId and join the stream
 
     ref.child('sensors').child(callerId).update({'Online': true});
 
@@ -314,6 +356,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
       'Waiting': false,
       'Online': true
     }); // Changing the caller's Waiting state to be False and Online state to be True
+
+    getStartLocation();
     super.initState();
     //String UserMedicalReport = "";
   }
@@ -326,16 +370,21 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
-
+    final Stream<QuerySnapshot> locationsHistory = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection('NewLocations')
+        .snapshots();
     String? userMotion = '';
     double? speedDouble = 0.0;
-    Future.delayed(Duration.zero,() async{
+    Future.delayed(Duration.zero, () async {
       emergencyContactNumberString = await getEmergencyContactNumber(callerId);
-      emergencyHealthCardNumberString = await getEmergencyContactHealthCard(callerId);
+      emergencyHealthCardNumberString =
+          await getEmergencyContactHealthCard(callerId);
       personalHealthCardString = await getPersonalHealthCard(callerId);
       urlPMR = await getUrlPMR(callerId);
       urlECMR = await getUrlECMR(callerId);
-      setState((){});
+      setState(() {});
       if (double.tryParse('$speedString') != null) {
         WidgetsFlutterBinding.ensureInitialized();
         speedDouble = double.tryParse('$speedString');
@@ -346,566 +395,571 @@ class _CallControlPanelState extends State<CallControlPanel> {
           userMotion = 'still';
           setState(() {});
         }
-      }
-      else {
+      } else {
         WidgetsFlutterBinding.ensureInitialized();
         userMotion = 'unknown';
         setState(() {});
       }
     });
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           automaticallyImplyLeading: false,
           title: const Text("Emergency Control Panel"),
         ),
-        body: 
-        
-        Column
-        (
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-
-            SizedBox // First Column (Contains Map and End Call Button)
-            (
-              height: MediaQuery.of(context).size.height * 0.9,
-              child: 
-              Row
-              (
-                children: <Widget>[
-                Column
-                (
-                  children: <Widget>[
-                    Row //THE MAP
-                    (
-                      children: <Widget>[
-                        Container
-                        (
-                          height: MediaQuery.of(context).size.height * 0.74,
-                          width: MediaQuery.of(context).size.width * 0.43,
-                          padding: EdgeInsets.all(10.0),
-                          decoration:
-                          BoxDecoration
-                            (
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white,
-                              border: Border.all(color: Colors.white, width: 1)
-                            ),
-                          child: StreetMap(),
-                         )
-                      ]
-                    ),
-
-                    SizedBox  // SPACING
-                    (
-                      height: MediaQuery.of(context).size.height * 0.1,
-                      width: MediaQuery.of(context).size.width * 0.25,
-                    ),
-
-                    Row //END CONNECTION BUTTON
-                    (
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: <Widget>[
-                        SizedBox
-                        (
-                          height: MediaQuery.of(context).size.height * 0.06,
-                          width: MediaQuery.of(context).size.width * 0.25,
-                          child: 
-                            ElevatedButton
-                            (
-                              child: const Text("End Connection"),
-                              onPressed: () async {
-                                signaling!
-                                    .hangUp(_localRenderer!, roomId, callerId);
-                                FbDb.DatabaseReference real =
-                                    FbDb.FirebaseDatabase.instance.ref();
-                                final databaseReal =
-                                    real.child('sensors').child(callerId);
-
-                                await databaseReal
-                                    .update({'Online': false, 'Ended': true});
-
-                                // End the call
-                                _EndCall();
-
-                                // Going back to maps home page
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => MapsHomePage(
-                                          name: name,
-                                        )));
-                                // this will the method for your rejected Button
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.red,
-                              )
-                            ),
-                        )
-                    ]
-                  )
-                ]),
-                
-                SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
-
-                Column
-                (
-                  children: [
-                    Container // Second Column (Contains the user info and chat box)
-                    (
-                      height: MediaQuery.of(context).size.height * 0.45,
-                      width: MediaQuery.of(context).size.width * 0.25,
-                      padding: EdgeInsets.all(10.0),
-                      decoration:
-                        BoxDecoration
-                        (
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white,
-                          border: Border.all(color: Colors.white, width: 1)
-                        ),
-                      
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Caller Information',
-                                style: TextStyle(fontSize: 25),
-                                textAlign: TextAlign.center,
-                              ),
-                              Row 
-                              (
-                                children: 
-                                [
-                                    Icon(FlutterRemix.battery_2_charge_line),    
-                                    Text(mobileChargeString, style: TextStyle(fontSize: 15),)
-                                ],
-                              ),
-
-                              Row 
-                              (
-                                children: 
-                                [
-                                    Icon(FlutterRemix.smartphone_line),    
-                                    Text('Phone: ${snapshot['Phone']}', style: TextStyle(fontSize: 15),)
-                                ],
-                              ),
-
-                              Row 
-                              (
-                                children: 
-                                [
-                                  Icon(FlutterRemix.celsius_line),  
-                                  Text
-                                  (
-                                    'Weather: ' + temperature!.toString() + '° ' + weatherDescription!,
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              ),
-
-                              Row 
-                              (
-                                children: 
-                                [
-                                  Icon(FlutterRemix.contrast_drop_2_line),
-                                  Text
-                                  (
-                                    'Humidity: ' + humidity!.toString(),
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              ),
-
-                              Row 
-                              (
-                                children: 
-                                [
-                                  Icon(FlutterRemix.windy_line),
-                                  Text
-                                  (
-                                    'Wind Speed: ' + windSpeed!.toString(),
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              ),
-
-                              Row 
-                              (
-                                children: 
-                                [
-                                  Icon(FlutterRemix.map_pin_line),
-                                  Text
-                                  (
-                                    'Location of the call: ———',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              ),
-
-                              Row 
-                              (
-                                children: 
-                                [
-                                  Icon(FlutterRemix.user_location_line),
-                                  Text
-                                  (
-                                    'Location of the caller now:',
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              ),
-
-                              // Row
-                              // (
-                              //   children: 
-                              //   [
-                              //     Text
-                              //     (
-                              //       '$longitudeString',
-                              //     ),
-                              //     Text
-                              //     (
-                              //       '     ', // SPACING
-                              //     ),
-                              //     Text
-                              //     (
-                              //       '$latitudeString',
-                              //     ),
-                              //   ]
-                              // ),
-                              Text
-                              (
-                                '$longitudeString' + '°',
-                              ),
-                              Text
-                              (
-                                '$latitudeString' + '°',
-                              ),
-
-                              Row 
-                              (
-                                children: 
-                                [
-                                  Text
-                                  (
-                                    'Caller is' + userMotion!,
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                  Icon(FlutterRemix.walk_fill), 
-                                  Text
-                                  (
-                                    userMotion!,
-                                    style: TextStyle(fontSize: 15),
-                                  ),
-                                ],
-                              ),
-    CaseBasic(type: callType, phone: callerId, emergencyContactNumberString: emergencyContactNumberString, emergencyHealthCardNumberString: emergencyHealthCardNumberString, personalHealthCardString: personalHealthCardString, urlPMR: urlPMR, urlECMR: urlECMR),
-
-                              // Row 
-                              // (
-                              //   children: 
-                              //   [
-                              //     Text
-                              //     (
-                              //       '$AccelerationString',
-                              //       style: TextStyle(fontSize: 15),
-                              //     ),
-                              //   ],
-                              // ),
-                            ],
-                          ),
-                        ],
-                      )), 
-
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.01,), // SPACING
-
-                  Container  // CHAT BOX
+        body: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: <Widget>[
+              SizedBox // First Column (Contains Map and End Call Button)
                   (
-                    height: MediaQuery.of(context).size.height * 0.44,
-                    width: MediaQuery.of(context).size.width * 0.25,
-                    decoration:
-                      BoxDecoration
-                      (
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white,
-                        border: Border.all(color: Colors.white, width: 1)
-                      ),
-                      child: 
-                        Row
-                        (
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                      height: MediaQuery.of(context).size.height * 0.9,
+                      child: Row(children: <Widget>[
+                        Column(children: <Widget>[
+                          Row //THE MAP
+                              (children: <Widget>[
+                            Container(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.74,
+                                width: MediaQuery.of(context).size.width * 0.43,
+                                padding: EdgeInsets.all(10.0),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    borderRadius: BorderRadius.circular(12),
+                                    color: Colors.white,
+                                    border: Border.all(
+                                        color: Colors.white, width: 1)),
+                                child: StreamBuilder<QuerySnapshot>(
+                                    stream: locationsHistory,
+                                    builder: (
+                                      BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot,
+                                    ) {
+                                      if (snapshot.hasError) {
+                                        return Text(
+                                            'Something went wrong  ${snapshot.error}');
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return Text('Loading');
+                                      }
+                                      final data = snapshot.requireData;
+                                      for (var doc in data.docs) {
+                                        newLocs!.add(googleMap.LatLng(
+                                            double.parse(latitudePassed!),
+                                            double.parse(longitudePassed!)));
+                                      }
+                                      return StreetMap();
+                                    }))
+                          ]),
+                          SizedBox // SPACING
+                              (
+                            height: MediaQuery.of(context).size.height * 0.1,
+                            width: MediaQuery.of(context).size.width * 0.25,
+                          ),
+                          Row //END CONNECTION BUTTON
+                              (
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: <Widget>[
+                                SizedBox(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.06,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  child: ElevatedButton(
+                                      child: const Text("End Connection"),
+                                      onPressed: () async {
+                                        signaling!.hangUp(
+                                            _localRenderer!, roomId, callerId);
+                                        FbDb.DatabaseReference real = FbDb
+                                            .FirebaseDatabase.instance
+                                            .ref();
+                                        final databaseReal = real
+                                            .child('sensors')
+                                            .child(callerId);
 
-                          children: [
-                            Column
-                            (
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox  // SMS Area
-                                (
-                                  height: MediaQuery.of(context).size.height * 0.28,
-                                  width: MediaQuery.of(context).size.width * 0.24,
-                              
-                                  child: 
-                                  Row
-                                  (
+                                        await databaseReal.update(
+                                            {'Online': false, 'Ended': true});
+
+                                        // End the call
+                                        _EndCall();
+
+                                        // Going back to maps home page
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    MapsHomePage(
+                                                      name: name,
+                                                    )));
+                                        // this will the method for your rejected Button
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Colors.red,
+                                      )),
+                                )
+                              ])
+                        ]),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                        ),
+                        Column(children: [
+                          Container // Second Column (Contains the user info and chat box)
+                              (
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.45,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  padding: EdgeInsets.all(10.0),
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: Colors.white, width: 1)),
+                                  child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
-                          //////
-                          // This is the chat
-                          //////
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.31,
-                              width: MediaQuery.of(context).size.width * 0.24,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                      child: StreamBuilder<QuerySnapshot>(
-                                          stream: messages,
-                                          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot,) 
-                                          {
-                                            if (snapshot.hasError) 
-                                            {
-                                              return const Text(
-                                              'Something went wrong');
-                                            }
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          const Text(
+                                            'Caller Information',
+                                            style: TextStyle(fontSize: 25),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(FlutterRemix
+                                                  .battery_2_charge_line),
+                                              Text(
+                                                mobileChargeString,
+                                                style: TextStyle(fontSize: 15),
+                                              )
+                                            ],
+                                          ),
 
-                                            if (snapshot.connectionState == ConnectionState.waiting) 
-                                            {
-                                              return const Text('Loading');
-                                            }
+                                          Row(
+                                            children: [
+                                              Icon(
+                                                  FlutterRemix.smartphone_line),
+                                              Text(
+                                                'Phone: ${snapshot['Phone']}',
+                                                style: TextStyle(fontSize: 15),
+                                              )
+                                            ],
+                                          ),
 
-                                            final data = snapshot.requireData;
-
-                                            return ListView.builder(
-                                              addAutomaticKeepAlives: false,
-                                              addRepaintBoundaries: false,
-                                              reverse: true,
-                                              itemCount: data.size,
-                                              itemBuilder: (context, index) 
-                                              {
-                                                Color c;
-                                                Alignment a;
-                                                if (data.docs[index]['SAdmin'] == false) 
-                                                {
-                                                  c = Colors.black38;
-                                                  a = Alignment.centerLeft;
-                                                } 
-                                                else 
-                                                {
-                                                  c = Colors.blue;
-                                                  a = Alignment.centerRight;
-                                                }
-
-                                                return SizedBox(
-                                                  child: 
-                                                    Align
-                                                    (
-                                                      alignment: a,
-                                                      child: 
-                                                        Container
-                                                        (
-                                                          child: 
-                                                            Text
-                                                            (
-                                                              '${data.docs[index]['Message']}',
-                                                              style: const TextStyle(color: Colors.white),
-                                                            ),
-                                                            constraints:
-                                                              const BoxConstraints
-                                                              (
-                                                                maxHeight: double.infinity,
-                                                              ),
-                                                            padding: const EdgeInsets.all(10.0),
-                                                            margin: const EdgeInsets.all(10.0),
-                                                            decoration: 
-                                                              BoxDecoration
-                                                              (
-                                                                color: c,
-                                                                borderRadius:BorderRadius.circular(35.0),
-                                                                boxShadow: const [
-                                                                  BoxShadow
-                                                                  (
-                                                                    offset: Offset(0,3),
-                                                                    blurRadius: 5, 
-                                                                    color: Colors.grey
-                                                                  )
-                                                                ],
-                                                              ),
-                                                        )
-                                                    )
-                                                );
-                                              });
-                                          })
-                                        ),
-                                    ],
-                                  )
-                                ),
-    ]),
-    ),
-
-                                Container  // Reply button area
-                                (
-                                  height: 70,
-                                  constraints: 
-                                    const BoxConstraints
-                                    (
-                                      maxHeight: double.infinity,
-                                    ),
-                                  decoration: 
-                                    BoxDecoration
-                                    (
-                                      color: Colors.grey[100],
-                                      borderRadius: BorderRadius.circular(35.0),
-                                    ),
-                                  padding: const EdgeInsets.all(10.0),
-                                  margin: const EdgeInsets.all(20.0),
-                                  child: 
-                                    SizedBox
-                                    (
-                                      height: MediaQuery.of(context).size.height,
-                                      width: MediaQuery.of(context).size.width * 0.20,
-                                      child: 
-                                        Row
-                                        (
-                                          children: [
-                                            Expanded
-                                            (
-                                              child: 
-                                                TextField
-                                                (
-                                                  controller: sentText,
-                                                  style: 
-                                                  const TextStyle(color: Colors.black),
-                                                  decoration:
-                                                    const InputDecoration
-                                                    (
-                                                      hintText: "Type Something...",
-                                                      hintStyle: TextStyle(color: Colors.black),
-                                                      border: InputBorder.none
-                                                    ),
-                                                ),
+                                          Row(
+                                            children: [
+                                              Icon(FlutterRemix.celsius_line),
+                                              Text(
+                                                'Weather: ' +
+                                                    temperature!.toString() +
+                                                    '° ' +
+                                                    weatherDescription!,
+                                                style: TextStyle(fontSize: 15),
                                               ),
-                                            IconButton
-                                            (
-                                              icon: const Icon(FlutterRemix.send_plane_fill, color: Colors.blue),
-                                              onPressed: () {
-                                                String text = sentText.text;
-                                                if (text != '') 
-                                                {
-                                                  FirebaseFirestore.instance
-                                                      .collection(
-                                                          'SOSEmergencies')
-                                                      .doc(callerId)
-                                                      .collection('messages')
-                                                      .add({
-                                                    'Message': text,
-                                                    'SAdmin': true,
-                                                    'time': FieldValue
-                                                        .serverTimestamp()
-                                                  });
-                                                  sentText.text = '';
-                                                }
-                                              },
-                                            )
+                                            ],
+                                          ),
+
+                                          Row(
+                                            children: [
+                                              Icon(FlutterRemix
+                                                  .contrast_drop_2_line),
+                                              Text(
+                                                'Humidity: ' +
+                                                    humidity!.toString(),
+                                                style: TextStyle(fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+
+                                          Row(
+                                            children: [
+                                              const Icon(
+                                                  FlutterRemix.windy_line),
+                                              Text(
+                                                'Wind Speed: ' +
+                                                    windSpeed!.toString(),
+                                                style: TextStyle(fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+
+                                          Row(
+                                            children: const [
+                                              Icon(FlutterRemix.map_pin_line),
+                                              Text(
+                                                'Location of the call: ———',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            'Latitude: ' + startLan + '°',
+                                          ),
+                                          Text(
+                                            'Longitude: ' + startLon + '°',
+                                          ),
+                                          Row(
+                                            children: const [
+                                              Icon(FlutterRemix
+                                                  .user_location_line),
+                                              Text(
+                                                'Location of the caller now:',
+                                                style: TextStyle(fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            '$latitudeString' + '°',
+                                          ),
+                                          Text(
+                                            '$longitudeString' + '°',
+                                          ),
+
+                                          Row(
+                                            children: [
+                                              Text(
+                                                'Caller is' + userMotion!,
+                                                style: TextStyle(fontSize: 15),
+                                              ),
+                                              Icon(FlutterRemix.walk_fill),
+                                              Text(
+                                                userMotion!,
+                                                style: TextStyle(fontSize: 15),
+                                              ),
+                                            ],
+                                          ),
+                                          CaseBasic(
+                                              type: callType,
+                                              phone: callerId,
+                                              emergencyContactNumberString:
+                                                  emergencyContactNumberString,
+                                              emergencyHealthCardNumberString:
+                                                  emergencyHealthCardNumberString,
+                                              personalHealthCardString:
+                                                  personalHealthCardString,
+                                              urlPMR: urlPMR,
+                                              urlECMR: urlECMR),
+
+                                          // Row
+                                          // (
+                                          //   children:
+                                          //   [
+                                          //     Text
+                                          //     (
+                                          //       '$AccelerationString',
+                                          //       style: TextStyle(fontSize: 15),
+                                          //     ),
+                                          //   ],
+                                          // ),
+                                        ],
+                                      ),
+                                    ],
+                                  )),
+
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
+                          ), // SPACING
+
+                          Container // CHAT BOX
+                              (
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.44,
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.25,
+                                  decoration: BoxDecoration(
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.white,
+                                      border: Border.all(
+                                          color: Colors.white, width: 1)),
+                                  child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox // SMS Area
+                                                (
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.28,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.24,
+                                              child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.center,
+                                                  children: [
+                                                    //////
+                                                    // This is the chat
+                                                    //////
+                                                    SizedBox(
+                                                        height: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .height *
+                                                            0.31,
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.24,
+                                                        child: Row(
+                                                          mainAxisAlignment:
+                                                              MainAxisAlignment
+                                                                  .center,
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .center,
+                                                          children: [
+                                                            Expanded(
+                                                                child: StreamBuilder<
+                                                                        QuerySnapshot>(
+                                                                    stream:
+                                                                        messages,
+                                                                    builder: (
+                                                                      BuildContext
+                                                                          context,
+                                                                      AsyncSnapshot<
+                                                                              QuerySnapshot>
+                                                                          snapshot,
+                                                                    ) {
+                                                                      if (snapshot
+                                                                          .hasError) {
+                                                                        return const Text(
+                                                                            'Something went wrong');
+                                                                      }
+
+                                                                      if (snapshot
+                                                                              .connectionState ==
+                                                                          ConnectionState
+                                                                              .waiting) {
+                                                                        return const Text(
+                                                                            'Loading');
+                                                                      }
+
+                                                                      final data =
+                                                                          snapshot
+                                                                              .requireData;
+
+                                                                      return ListView.builder(
+                                                                          addAutomaticKeepAlives: false,
+                                                                          addRepaintBoundaries: false,
+                                                                          reverse: true,
+                                                                          itemCount: data.size,
+                                                                          itemBuilder: (context, index) {
+                                                                            Color
+                                                                                c;
+                                                                            Alignment
+                                                                                a;
+                                                                            if (data.docs[index]['SAdmin'] ==
+                                                                                false) {
+                                                                              c = Colors.black38;
+                                                                              a = Alignment.centerLeft;
+                                                                            } else {
+                                                                              c = Colors.blue;
+                                                                              a = Alignment.centerRight;
+                                                                            }
+
+                                                                            return SizedBox(
+                                                                                child: Align(
+                                                                                    alignment: a,
+                                                                                    child: Container(
+                                                                                      child: Text(
+                                                                                        '${data.docs[index]['Message']}',
+                                                                                        style: const TextStyle(color: Colors.white),
+                                                                                      ),
+                                                                                      constraints: const BoxConstraints(
+                                                                                        maxHeight: double.infinity,
+                                                                                      ),
+                                                                                      padding: const EdgeInsets.all(10.0),
+                                                                                      margin: const EdgeInsets.all(10.0),
+                                                                                      decoration: BoxDecoration(
+                                                                                        color: c,
+                                                                                        borderRadius: BorderRadius.circular(35.0),
+                                                                                        boxShadow: const [
+                                                                                          BoxShadow(offset: Offset(0, 3), blurRadius: 5, color: Colors.grey)
+                                                                                        ],
+                                                                                      ),
+                                                                                    )));
+                                                                          });
+                                                                    })),
+                                                          ],
+                                                        )),
+                                                  ]),
+                                            ),
+                                            Container // Reply button area
+                                                (
+                                                    height: 70,
+                                                    constraints:
+                                                        const BoxConstraints(
+                                                      maxHeight:
+                                                          double.infinity,
+                                                    ),
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.grey[100],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              35.0),
+                                                    ),
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10.0),
+                                                    margin:
+                                                        const EdgeInsets.all(
+                                                            20.0),
+                                                    child: SizedBox(
+                                                      height:
+                                                          MediaQuery.of(context)
+                                                              .size
+                                                              .height,
+                                                      width:
+                                                          MediaQuery.of(context)
+                                                                  .size
+                                                                  .width *
+                                                              0.20,
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: TextField(
+                                                              controller:
+                                                                  sentText,
+                                                              style: const TextStyle(
+                                                                  color: Colors
+                                                                      .black),
+                                                              decoration: const InputDecoration(
+                                                                  hintText:
+                                                                      "Type Something...",
+                                                                  hintStyle: TextStyle(
+                                                                      color: Colors
+                                                                          .black),
+                                                                  border:
+                                                                      InputBorder
+                                                                          .none),
+                                                            ),
+                                                          ),
+                                                          IconButton(
+                                                            icon: const Icon(
+                                                                FlutterRemix
+                                                                    .send_plane_fill,
+                                                                color: Colors
+                                                                    .blue),
+                                                            onPressed: () {
+                                                              String text =
+                                                                  sentText.text;
+                                                              if (text != '') {
+                                                                FirebaseFirestore
+                                                                    .instance
+                                                                    .collection(
+                                                                        'SOSEmergencies')
+                                                                    .doc(
+                                                                        callerId)
+                                                                    .collection(
+                                                                        'messages')
+                                                                    .add({
+                                                                  'Message':
+                                                                      text,
+                                                                  'SAdmin':
+                                                                      true,
+                                                                  'time': FieldValue
+                                                                      .serverTimestamp()
+                                                                });
+                                                                sentText.text =
+                                                                    '';
+                                                              }
+                                                            },
+                                                          )
+                                                        ],
+                                                      ),
+                                                    )),
                                           ],
                                         ),
-                                      )
-                                ),
+                                      ])),
+                        ]),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.01,
+                        ),
+                        Column // VIDEO COLUMN
+                            (children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height * 0.90,
+                            width: MediaQuery.of(context).size.width * 0.30,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.circular(12),
+                                color: Colors.white,
+                                border:
+                                    Border.all(color: Colors.white, width: 1)),
+                            child: Row(
+                              children: [
+                                Expanded(child: RTCVideoView(_remoteRenderer!)),
                               ],
                             ),
-
-                  ])),
-                ]),
-
-                SizedBox(width: MediaQuery.of(context).size.width * 0.01,),
-
-                Column  // VIDEO COLUMN
-                (
-                  children: [
-                    Container
-                    (
-                      height: MediaQuery.of(context).size.height * 0.90,
-                      width: MediaQuery.of(context).size.width * 0.30,
-
-                      decoration:
-                        BoxDecoration
-                        (
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.white,
-                          border: Border.all(color: Colors.white, width: 1)
-                        ),
-                      child: 
-                        Row
-                        (
-                        children: [
-                          Expanded(child: RTCVideoView(_remoteRenderer!)),
-                        ],
-                      ),
-                    ),
-                  ]
-                ),
-              ]
-            )
-          )
-        ]));
+                          ),
+                        ]),
+                      ]))
+            ]));
   }
 }
 
 class StreetMap extends StatelessWidget {
   const StreetMap({Key? key}) : super(key: key);
 
-
   @override
   Widget build(BuildContext context) {
     String htmlId = "8";
 
     // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId){
-     // if(double.tryParse(latitudePassed!) != null && double.tryParse(longitudePassed!) != null) {
-        final myLatlng = googleMap.LatLng(
+    ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
+      final myLatlng = googleMap.LatLng(
+          double.tryParse(latitudePassed!), double.tryParse(longitudePassed!));
 
-            double.tryParse(latitudePassed!),
-            double.tryParse(longitudePassed!));
+      final mapOptions = googleMap.MapOptions()
+        ..zoom = 19
+        ..center = myLatlng;
 
+      final elem = DivElement()
+        ..id = htmlId
+        ..style.width = "100%"
+        ..style.height = "100%"
+        ..style.border = 'none';
 
-        final mapOptions = googleMap.MapOptions()
-          ..zoom = 19
-          ..center = myLatlng;
+      final map = googleMap.GMap(elem, mapOptions);
 
-        final elem = DivElement()
-          ..id = htmlId
-          ..style.width = "100%"
-          ..style.height = "100%"
-          ..style.border = 'none';
+      final marker = googleMap.Marker(googleMap.MarkerOptions()
+        ..position = myLatlng
+        ..map = map
+        ..title = 'caller');
 
-        final map = googleMap.GMap(elem, mapOptions);
-
-        final marker = googleMap.Marker(googleMap.MarkerOptions()
-          ..position = myLatlng
-          ..map = map
-          ..title = 'caller');
-
-        final infoWindow = googleMap.InfoWindow(
-            googleMap.InfoWindowOptions()
-              ..content = 'caller');
-        marker.onClick.listen((event) => infoWindow.open(map, marker));
-
-        return elem;
-
+      final line = googleMap.Polyline(googleMap.PolylineOptions()
+        ..map = map
+        ..path = previousLocs);
+      print("*******------*********");
+      print(previousLocs);
+      final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
+        ..map = map
+        ..path = newLocs
+        ..strokeColor = "#c4161b");
+      print("+-+-++-+-++-+-+++--+++-+--+-++-");
+      print(newLocs);
+      return elem;
     });
 
     return HtmlElementView(viewType: htmlId);
