@@ -94,6 +94,7 @@ class SosHomePageState extends State<SosHomePage> {
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
                   sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
+                  sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
                   personal(); //Test adding call type
                   Navigator.push(
                     context,
@@ -120,6 +121,7 @@ class SosHomePageState extends State<SosHomePage> {
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
                   sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
+                  sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
                   contact(); //Test adding call type
                   Navigator.push(
                     context,
@@ -144,6 +146,7 @@ class SosHomePageState extends State<SosHomePage> {
                   updateSensors(date);
                   updateHistory(); //Test adding call history database
                   sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
+                  sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
                   standby();
                   Navigator.push(
                     context,
