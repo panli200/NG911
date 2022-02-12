@@ -325,14 +325,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
     QuerySnapshot queyPreviousLocation = await sortedPreviousLocation.get();
     List previousLocsFetched =
         queyPreviousLocation.docs.map((doc) => doc.data()).toList();
-    for (int i = 0; i < previousLocsFetched.length; i++) {
+    for (int i = previousLocsFetched.length -1; i >0; i--) {
       double? latitude = 0;
       double? longitude = 0;
-     // if(double.tryParse(previousLocsFetched[i]['Latitude']) != null && double.tryParse(previousLocsFetched[i]['Longitude']) != null){
+      if(double.tryParse(previousLocsFetched[i]['Latitude']) != null && double.tryParse(previousLocsFetched[i]['Longitude']) != null){
       latitude = double.tryParse(previousLocsFetched[i]['Latitude']);
       longitude = double.tryParse(previousLocsFetched[i]['Longitude']);
       previousLocs!.add(googleMap.LatLng(latitude, longitude));
-    //  }
+      }
 
     }
   }
@@ -470,9 +470,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       }
                                       final data = snapshot.requireData;
                                       for (var doc in data.docs) {
-                                        newLocs!.add(googleMap.LatLng(
-                                            double.parse(latitudePassed!),
-                                            double.parse(longitudePassed!)));
+                                        if (double.tryParse(latitudePassed!) !=
+                                            null &&
+                                            double.tryParse(longitudePassed!) !=
+                                                null) {
+                                          newLocs
+                                      !.add(googleMap.LatLng(
+                                      double.tryParse(latitudePassed!),
+                                      double.tryParse(longitudePassed!)));
+                                      }
                                       }
                                       return StreetMap();
                                     }))
