@@ -95,6 +95,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? roomIdStream;
 
   Stream<QuerySnapshot>? messages;
+  Stream<QuerySnapshot>? locationsHistory;
+  Query? sortedPreviousLocation;
   String? StartTime;
   final sentText = TextEditingController();
 
@@ -314,6 +316,27 @@ class _CallControlPanelState extends State<CallControlPanel> {
         await collection.doc(callerId).collection('location').get();
   }
 
+  Future<void> getLocationHistory() async {
+    Query sortedPreviousLocation = await FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection('location')
+        .orderBy("id", descending: true);
+    QuerySnapshot queyPreviousLocation = await sortedPreviousLocation.get();
+    List previousLocsFetched =
+        queyPreviousLocation.docs.map((doc) => doc.data()).toList();
+    for (int i = 0; i < previousLocsFetched.length; i++) {
+      double? latitude = 0;
+      double? longitude = 0;
+     // if(double.tryParse(previousLocsFetched[i]['Latitude']) != null && double.tryParse(previousLocsFetched[i]['Longitude']) != null){
+      latitude = double.tryParse(previousLocsFetched[i]['Latitude']);
+      longitude = double.tryParse(previousLocsFetched[i]['Longitude']);
+      previousLocs!.add(googleMap.LatLng(latitude, longitude));
+    //  }
+
+    }
+  }
+
   // Initialize
   @override
   void initState() {
@@ -343,6 +366,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .orderBy("time", descending: true);
     messages = sortedMessages.snapshots();
 
+    locationsHistory = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection('NewLocations')
+        .snapshots();
+
+    getLocationHistory();
     activateListeners();
     getLocationWeather();
 //    initialize Widgets
@@ -370,11 +400,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
-    final Stream<QuerySnapshot> locationsHistory = FirebaseFirestore.instance
-        .collection('SOSEmergencies')
-        .doc(callerId)
-        .collection('NewLocations')
-        .snapshots();
     String? userMotion = '';
     double? speedDouble = 0.0;
     Future.delayed(Duration.zero, () async {
@@ -509,7 +534,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           Container // Second Column (Contains the user info and chat box)
                               (
                                   height:
-                                      MediaQuery.of(context).size.height * 0.45,
+                                      MediaQuery.of(context).size.height * 0.44,
                                   width:
                                       MediaQuery.of(context).size.width * 0.25,
                                   padding: EdgeInsets.all(10.0),
@@ -715,7 +740,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                     context)
                                                                 .size
                                                                 .height *
-                                                            0.31,
+                                                            0.29,
                                                         width: MediaQuery.of(
                                                                     context)
                                                                 .size

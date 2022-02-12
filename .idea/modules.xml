@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SOSApp.iml" filepath="$PROJECT_DIR$/.idea/SOSApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/NG911.iml" filepath="$PROJECT_DIR$/.idea/NG911.iml" />
     </modules>
   </component>
 </project>
