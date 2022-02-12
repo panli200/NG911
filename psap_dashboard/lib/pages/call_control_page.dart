@@ -931,6 +931,8 @@ class StreetMap extends StatelessWidget {
       final myLatlng = googleMap.LatLng(
           double.tryParse(latitudePassed!), double.tryParse(longitudePassed!));
 
+      final policeLatLng = googleMap.LatLng(50.4182278, -104.594109);
+
       final mapOptions = googleMap.MapOptions()
         ..zoom = 19
         ..center = myLatlng;
@@ -942,6 +944,11 @@ class StreetMap extends StatelessWidget {
         ..style.border = 'none';
 
       final map = googleMap.GMap(elem, mapOptions);
+
+      final policeMarker = googleMap.Marker(googleMap.MarkerOptions()
+        ..position = policeLatLng
+        ..map = map
+        ..icon = 'https://maps.google.com/mapfiles/ms/icons/police.png');
 
       final marker = googleMap.Marker(googleMap.MarkerOptions()
         ..position = myLatlng
