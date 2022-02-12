@@ -470,9 +470,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       }
                                       final data = snapshot.requireData;
                                       for (var doc in data.docs) {
-                                        newLocs!.add(googleMap.LatLng(
-                                            double.parse(latitudePassed!),
-                                            double.parse(longitudePassed!)));
+                                        if (double.tryParse(latitudePassed!) !=
+                                            null &&
+                                            double.tryParse(longitudePassed!) !=
+                                                null) {
+                                          newLocs
+                                      !.add(googleMap.LatLng(
+                                      double.tryParse(latitudePassed!),
+                                      double.tryParse(longitudePassed!)));
+                                      }
                                       }
                                       return StreetMap();
                                     }))
