@@ -310,10 +310,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
         googleMap.LatLng(double.parse(startLan), double.parse(startLon))
       ];
     }
-
-    //fetch the previous locations at here
-    var locSnapshot =
-        await collection.doc(callerId).collection('location').get();
   }
 
   Future<void> getLocationHistory() async {
@@ -325,15 +321,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
     QuerySnapshot queyPreviousLocation = await sortedPreviousLocation.get();
     List previousLocsFetched =
         queyPreviousLocation.docs.map((doc) => doc.data()).toList();
-    for (int i = previousLocsFetched.length -1; i >0; i--) {
+    for (int i = previousLocsFetched.length - 1; i > 0; i--) {
       double? latitude = 0;
       double? longitude = 0;
-      if(double.tryParse(previousLocsFetched[i]['Latitude']) != null && double.tryParse(previousLocsFetched[i]['Longitude']) != null){
-      latitude = double.tryParse(previousLocsFetched[i]['Latitude']);
-      longitude = double.tryParse(previousLocsFetched[i]['Longitude']);
-      previousLocs!.add(googleMap.LatLng(latitude, longitude));
+      if (double.tryParse(previousLocsFetched[i]['Latitude']) != null &&
+          double.tryParse(previousLocsFetched[i]['Longitude']) != null) {
+        latitude = double.tryParse(previousLocsFetched[i]['Latitude']);
+        longitude = double.tryParse(previousLocsFetched[i]['Longitude']);
+        previousLocs!.add(googleMap.LatLng(latitude, longitude));
       }
-
     }
   }
 
@@ -372,7 +368,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .collection('NewLocations')
         .snapshots();
 
-    getLocationHistory();
     activateListeners();
     getLocationWeather();
 //    initialize Widgets
@@ -388,6 +383,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     }); // Changing the caller's Waiting state to be False and Online state to be True
 
     getStartLocation();
+    getLocationHistory();
     super.initState();
     //String UserMedicalReport = "";
   }
@@ -471,14 +467,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       final data = snapshot.requireData;
                                       for (var doc in data.docs) {
                                         if (double.tryParse(latitudePassed!) !=
-                                            null &&
+                                                null &&
                                             double.tryParse(longitudePassed!) !=
                                                 null) {
-                                          newLocs
-                                      !.add(googleMap.LatLng(
-                                      double.tryParse(latitudePassed!),
-                                      double.tryParse(longitudePassed!)));
-                                      }
+                                          newLocs!.add(googleMap.LatLng(
+                                              double.tryParse(latitudePassed!),
+                                              double.tryParse(
+                                                  longitudePassed!)));
+                                        }
                                       }
                                       return StreetMap();
                                     }))
