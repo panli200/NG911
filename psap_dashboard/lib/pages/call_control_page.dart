@@ -328,11 +328,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
     for (int i = 0; i < previousLocsFetched.length; i++) {
       double? latitude = 0;
       double? longitude = 0;
-     // if(double.tryParse(previousLocsFetched[i]['Latitude']) != null && double.tryParse(previousLocsFetched[i]['Longitude']) != null){
+      if(double.tryParse(previousLocsFetched[i]['Latitude']) != null && double.tryParse(previousLocsFetched[i]['Longitude']) != null){
       latitude = double.tryParse(previousLocsFetched[i]['Latitude']);
       longitude = double.tryParse(previousLocsFetched[i]['Longitude']);
       previousLocs!.add(googleMap.LatLng(latitude, longitude));
-    //  }
+      }
 
     }
   }
