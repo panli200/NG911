@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps_home_page.dart';
-
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -82,7 +85,9 @@ class _LoginPageState extends State<LoginPage> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    pwd = value;
+                    var bytes = utf8.encode(value);
+                    Digest sha256Result = sha256.convert(bytes);
+                    pwd =  sha256Result.toString();
                     FirebaseFirestore.instance
                         .collection('PSAPUser')
                         .get()
@@ -133,8 +138,7 @@ class _LoginPageState extends State<LoginPage> {
                         .collection('PSAPUser')
                         .get()
                         .then((QuerySnapshot querySnapshot) {
-                      for (var doc in querySnapshot.docs) {
-                        if (doc["username"] == name && doc["password"] == pwd) {
+                      for (var doc in querySnapshot.docs) {if (doc["username"] == name && doc["password"] == pwd) {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
