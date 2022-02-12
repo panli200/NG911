@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
           children: <Widget>[
             const Center(
               child: Text(
-                'Saskatchewan Public Safety Agency 911',
+                'Saskatchewan NG 911',
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 40),
                 textAlign: TextAlign.center,
               ),
