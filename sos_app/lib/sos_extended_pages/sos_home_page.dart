@@ -50,6 +50,9 @@ class SosHomePageState extends State<SosHomePage> {
       'Waiting': true,
       'caller_public_key': publicKey
     });
+  setState(() {
+
+  });
   }
 
   @override

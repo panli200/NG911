@@ -14,6 +14,9 @@ import 'health__info_buttons.dart';
 import 'user_data_page.dart';
 import 'location.dart';
 import 'package:flutter_remix/flutter_remix.dart';
+import 'package:pointycastle/api.dart' as crypto;
+import 'package:rsa_encrypt/rsa_encrypt.dart';
+import 'encryption.dart';
 
 // Enviromental variables
 String? latitudePassed = '';
@@ -46,6 +49,13 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
+  // For encryption
+  Future<crypto.AsymmetricKeyPair>? futureKeyPair;
+  crypto.AsymmetricKeyPair?
+      keyPair; //to store the KeyPair once we get data from our future
+  var publicKey;
+  var privKey;
+  var otherEndPublicKey;
   // RealTime database
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
@@ -333,13 +343,22 @@ class _CallControlPanelState extends State<CallControlPanel> {
     }
   }
 
+  void doEncryption() async {
+    futureKeyPair = getKeyPair();
+    keyPair = await futureKeyPair;
+    publicKey = keyPair!.publicKey;
+    privKey = keyPair!.privateKey;
+    setState(() {});
+  }
+
   // Initialize
   @override
   void initState() {
+    doEncryption();
     callerId = widget.CallerId; //Getting user ID from the previous page..
     name = widget.name;
     callType = widget.type;
-
+    otherEndPublicKey = getPublicKeyFromCaller(callerId);
     // Get Locaiton list Stream
 //    Location? streamLoc = Location(callerId);
 //    double? LatitudeStreamed = 0.0;
@@ -396,6 +415,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
+    List localMessages = [];
+    int localMessageIndex = 0;
     String? userMotion = '';
     double? speedDouble = 0.0;
     Future.delayed(Duration.zero, () async {
@@ -792,15 +813,22 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                           reverse: true,
                                                                           itemCount: data.size,
                                                                           itemBuilder: (context, index) {
+                                                                            String
+                                                                                decryptedMessage =
+                                                                                '';
                                                                             Color
                                                                                 c;
                                                                             Alignment
                                                                                 a;
                                                                             if (data.docs[index]['SAdmin'] ==
                                                                                 false) {
+                                                                              decryptedMessage = decrypt(data.docs[index]['Message'], privKey);
                                                                               c = Colors.black38;
                                                                               a = Alignment.centerLeft;
                                                                             } else {
+                                                                              // dispatcher
+                                                                              decryptedMessage = localMessages[localMessageIndex];
+                                                                              localMessageIndex++;
                                                                               c = Colors.blue;
                                                                               a = Alignment.centerRight;
                                                                             }
@@ -810,7 +838,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                                     alignment: a,
                                                                                     child: Container(
                                                                                       child: Text(
-                                                                                        '${data.docs[index]['Message']}',
+                                                                                        decryptedMessage,
                                                                                         style: const TextStyle(color: Colors.white),
                                                                                       ),
                                                                                       constraints: const BoxConstraints(
@@ -892,6 +920,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                               String text =
                                                                   sentText.text;
                                                               if (text != '') {
+                                                                localMessages
+                                                                    .add(text);
+                                                                // encrypt using the Other end's public key
+                                                                String
+                                                                    encryptedText =
+                                                                    '';
+                                                                encryptedText =
+                                                                    encrypt(
+                                                                        text,
+                                                                        otherEndPublicKey);
                                                                 FirebaseFirestore
                                                                     .instance
                                                                     .collection(
