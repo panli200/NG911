@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as Cloud;
@@ -7,15 +6,24 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:sos_app/sos_extended_pages/signaling.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sos_app/sos_extended_pages/videostream.dart';
+import 'package:pointycastle/api.dart' as crypto;
+import 'package:rsa_encrypt/rsa_encrypt.dart';
+import 'package:sos_app/services/encryption.dart';
 
 class CallPage extends StatefulWidget {
-  CallPage({Key? key}) : super(key: key);
+  final privateKey;
+  final publicKey;
+  CallPage({Key? key, required this.privateKey, required this.publicKey})
+      : super(key: key);
 
   @override
   _CallPageState createState() => _CallPageState();
 }
 
 class _CallPageState extends State<CallPage> {
+  late final publicKey;
+  late final privateKey;
+  late final otherEndPublicKey;
   final senttext = new TextEditingController();
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
@@ -29,6 +37,10 @@ class _CallPageState extends State<CallPage> {
 
   @override
   void initState() {
+    publicKey = widget.publicKey;
+    privateKey = widget.privateKey;
+
+    otherEndPublicKey = getPublicKeyFromDispatcher(mobile);
     final databaseReal = ref.child('sensors').child(mobile);
     StreamSubscription? streamSubscriptionEnded;
     streamSubscriptionEnded =
@@ -66,6 +78,8 @@ class _CallPageState extends State<CallPage> {
         .doc(mobile)
         .collection('messages')
         .orderBy("time", descending: true);
+    List localMessages = [];
+    int localMessageIndex = 0;
     final Stream<Cloud.QuerySnapshot> messages = sorted.snapshots();
 
     return Scaffold(
@@ -143,12 +157,21 @@ class _CallPageState extends State<CallPage> {
                               reverse: true,
                               itemCount: data.size,
                               itemBuilder: (context, index) {
+                                String decryptedMessage = '';
                                 Color c;
                                 Alignment a;
                                 if (data.docs[index]['SAdmin'] == false) {
+                                  // User
+                                  // get my message locally
+                                  decryptedMessage =
+                                      localMessages[localMessageIndex];
+                                  localMessageIndex ++;
                                   c = Colors.blueGrey;
                                   a = Alignment.centerRight;
                                 } else {
+                                  // Dispatcher
+                                  decryptedMessage = decrypt(
+                                      data.docs[index]['Message'], privateKey);
                                   c = Colors.lightGreen;
                                   a = Alignment.centerLeft;
                                 }
@@ -157,7 +180,7 @@ class _CallPageState extends State<CallPage> {
                                     alignment: a,
                                     child: Container(
                                       child: Text(
-                                        '  ${data.docs[index]['Message']}',
+                                        decryptedMessage,
                                         style: const TextStyle(
                                             color: Colors.black),
                                       ),
@@ -216,6 +239,11 @@ class _CallPageState extends State<CallPage> {
                         onPressed: () {
                           String text = senttext.text;
                           if (text != '') {
+                            // Store message locally in the List
+                            localMessages.add(text);
+                            // encrypt using the Other end's public key
+                            String encryptedText = '';
+                            encryptedText = encrypt(text, otherEndPublicKey);
                             String mobile = FirebaseAuth
                                 .instance.currentUser!.phoneNumber
                                 .toString();
@@ -224,7 +252,7 @@ class _CallPageState extends State<CallPage> {
                                 .doc(mobile)
                                 .collection('messages')
                                 .add({
-                              'Message': text,
+                              'Message': encryptedText,
                               'SAdmin': false,
                               'time': Cloud.FieldValue.serverTimestamp()
                             });

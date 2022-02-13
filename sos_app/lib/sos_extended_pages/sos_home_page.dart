@@ -13,7 +13,9 @@ import 'package:sos_app/sos_extended_pages/call.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
 import 'package:sos_app/profile_extended_pages/upload_file.dart';
-
+import 'package:pointycastle/api.dart' as crypto;
+import 'package:rsa_encrypt/rsa_encrypt.dart';
+import 'package:sos_app/services/encryption.dart';
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
 
@@ -22,9 +24,19 @@ class SosHomePage extends StatefulWidget {
 }
 
 class SosHomePageState extends State<SosHomePage> {
+  //For RSA encryption
+  Future<crypto.AsymmetricKeyPair>? futureKeyPair;
+  crypto.AsymmetricKeyPair? keyPair;   //to store the KeyPair once we get data from our future
+  var publicKey;
+  var privKey;
   final howToUsePopUp = HowToUseData.howToUsePopUp;
 
   void _callNumber(String? date) async {
+    // Encryption generate public and private keys
+    futureKeyPair    =  getKeyPair();
+    keyPair          =  await futureKeyPair;
+    publicKey =  keyPair!.publicKey;
+    privKey   =  keyPair!.privateKey;
     Location location = Location();
     await location.getCurrentLocation();
     String user = FirebaseAuth.instance.currentUser!.uid.toString();
@@ -36,6 +48,7 @@ class SosHomePageState extends State<SosHomePage> {
       'StartLocation': GeoPoint(location.latitude, location.longitude),
       'StartTime': date,
       'Waiting': true,
+      'caller_public_key': publicKey
     });
   }
 
@@ -98,7 +111,7 @@ class SosHomePageState extends State<SosHomePage> {
                   personal(); //Test adding call type
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CallPage()),
+                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey)),
                   );
                 },
                 child: Text("Yourself"),
@@ -125,7 +138,7 @@ class SosHomePageState extends State<SosHomePage> {
                   contact(); //Test adding call type
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CallPage()),
+                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey)),
                   );
                 },
                 child: Text("Emergency Contact"),
@@ -150,7 +163,7 @@ class SosHomePageState extends State<SosHomePage> {
                   standby();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CallPage()),
+                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey)),
                   );
                 },
                 child: Text("Third Party (Bystander)"),
