@@ -1,23 +1,30 @@
 <h1 align="center" style="font-size:100px" >
-  NG911 System
+  NG911
 </h1>
 
 ---
 
+# Introduction
+NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bugs(:octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha) :octocat:[Li Pan](https://github.com/panli200) :octocat:[Renz Rivero](https://github.com/renzrivero))
+
+---
+
 # Table of Contents
-- [Table of Contents](#table-of-contents)
 - [Introduction](#introduction)
+- [Table of Contents](#table-of-contents)
 - [Project Vlogs](#project-vlogs)
   - [September 17 — Vlog #1](#september-17--vlog-1)
   - [October 15 — Vlog #2](#october-15--vlog-2)
   - [December 3 — Vlog #3](#december-3--vlog-3)
   - [February 1 — Vlog #4](#february-1--vlog-4)
+  - [- Vlog #4: Project Update — PSAP-side](#--vlog-4-project-update--psap-side)
 - [Scrum Scripts/Slides](#scrum-scriptsslides)
   - [September 24 — Scrum #1](#september-24--scrum-1)
   - [October 8 — Scrum #2](#october-8--scrum-2)
   - [October 22 — Scrum #3](#october-22--scrum-3)
   - [November 19 — Scrum #4](#november-19--scrum-4)
-  - [Febuary 8 — Scrum #5](#february-8--scrum-5)
+  - [February 8 — Scrum #5](#february-8--scrum-5)
+  - [February 15 — Scrum #5](#february-15--scrum-5)
 - [Design Documentation](#design-documentation)
   - [Project  Definition](#project--definition)
   - [Empathy Mapping](#empathy-mapping)
@@ -25,14 +32,7 @@
   - [Prototypes](#prototypes)
 - [Project Demos](#project-demos)
   - [Client Side Hi-fidelity Prototype](#client-side-hi-fidelity-prototype)
-  - [PASP Side Hi-fidelity Prototype](#psap-side-hi-fidelity-prototype)
-
----
-
-# Introduction
-ENSE 400/477(2021/2022) SSE Capstone Project - University of Regina 
-- **Team Name**: Bugs
-- **Team member**: :octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha) :octocat:[Li Pan](https://github.com/panli200) :octocat:[Renz Rivero](https://github.com/renzrivero)
+  - [PSAP Side Hi-fidelity Prototype](#psap-side-hi-fidelity-prototype)
 
 ---
 
@@ -61,7 +61,11 @@ ENSE 400/477(2021/2022) SSE Capstone Project - University of Regina
 - [Scrum #4 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%234.pdf)
 - [Scrum #4 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%234-Slide.pdf)
 ## February 8 — Scrum #5
+- [Scrum #5 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%235.pdf)
 - [Scrum #5 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%235-Slide.pdf)
+## February 15 — Scrum #5
+- [Scrum #6 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%236.pdf)
+- [Scrum #6 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%236-Slide.pdf)
 
 ---
 
