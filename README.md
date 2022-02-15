@@ -49,46 +49,46 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
 
 # Scrum Scripts/Slides
 ## September 24 — Scrum #1
-- [Scrum #1 Script](https://github.com/panli200/SOSApp/Presentations/Scrums/Scrum-Scripts/"Scrum#1-Script.pdf")
-- [Scrum #1 Slide](https://github.com/panli200/SOSApp/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%231-Slide.pdf)
+- [Scrum #1 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%231-Script.pdf)
+- [Scrum #1 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%231-Slide.pdf)
 ## October 8 — Scrum #2
-- [Scrum #2 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%232.pdf)
-- [Scrum #2 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%232-Slide.pdf)
+- [Scrum #2 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%232-Script.pdf)
+- [Scrum #2 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%232-Slide.pdf)
 ## October 22 — Scrum #3
-- [Scrum #3 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%233.pdf)
-- [Scrum #3 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%233-Slide.pdf)
+- [Scrum #3 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%233-Script.pdf)
+- [Scrum #3 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%233-Slide.pdf)
 ## November 19 — Scrum #4
-- [Scrum #4 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%234.pdf)
-- [Scrum #4 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%234-Slide.pdf)
+- [Scrum #4 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%234-Script.pdf)
+- [Scrum #4 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%234-Slide.pdf)
 ## February 8 — Scrum #5
-- [Scrum #5 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%235.pdf)
-- [Scrum #5 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%235-Slide.pdf)
+- [Scrum #5 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%235-Script.pdf)
+- [Scrum #5 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%235-Slide.pdf)
 ## February 15 — Scrum #5
 - [Scrum #6 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%236.pdf)
-- [Scrum #6 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%236-Slide.pdf)
+- [Scrum #6 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%236-Slide.pdf)
 
 ---
 
 # Design Documentation
 ## Project  Definition
-- [Project Definition](https://github.com/panli200/SOSApp/tree/main/Documentation/Project-Definition) — Brief text of the project idea and background
+- [Project Definition](https://github.com/panli200/NG911/tree/main/Documentation/Project-Definition) — Brief text of the project idea and background
 
 ## Empathy Mapping
-- [Empathy Mapping](https://github.com/panli200/SOSApp/tree/main/Documentation/Empathy-Maps) — Empathy mapping for understanding the requirements in the lens of Public-Safety Access Point (PSAP) side operators and client side users
+- [Empathy Mapping](https://github.com/panli200/NG911/tree/main/Documentation/Empathy-Maps) — Empathy mapping for understanding the requirements in the lens of Public-Safety Access Point (PSAP) side operators and client side users
 
 ## Flowcharts
-- [Flowcharts](https://github.com/panli200/SOSApp/tree/main/Documentation/Flowcharts) — Diagrams to demonstrate the process of building our overall architecture and flow of the project
+- [Flowcharts](https://github.com/panli200/NG911/tree/main/Documentation/Flowcharts) — Diagrams to demonstrate the process of building our overall architecture and flow of the project
 
 ## Prototypes
-[Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes)
+[Prototypes](https://github.com/panli200/NG911/tree/main/Documentation/Design-Prototypes)
 
 Lo-fidelity Prototypes — Handrawn
-- [Client Side Lo-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes)
-- [PSAP Side Lo-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/Lofi-Prototypes)
+- [Client Side Lo-fidelity Prototypes](https://github.com/panli200/NG911/tree/main/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes)
+- [PSAP Side Lo-fidelity Prototypes](https://github.com/panli200/NG911/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/Lofi-Prototypes)
 
 Hi-fidelity Prototypes - Made in Adobe XD
-- [Client Side Hi-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/User-Client-Side/Hifi-Prototypes)
-- [PSAP Side Side Hi-fidelity Prototypes](https://github.com/panli200/SOSApp/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/HiFi-Prototypes)
+- [Client Side Hi-fidelity Prototypes](https://github.com/panli200/NG911/tree/main/Documentation/Design-Prototypes/User-Client-Side/Hifi-Prototypes)
+- [PSAP Side Side Hi-fidelity Prototypes](https://github.com/panli200/NG911/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/HiFi-Prototypes)
 
 ---
   
