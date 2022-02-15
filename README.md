@@ -5,7 +5,7 @@
 ---
 
 # Introduction
-NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bugs(:octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha) :octocat:[Li Pan](https://github.com/panli200) :octocat:[Renz Rivero](https://github.com/renzrivero))
+NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bugs (:octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha) :octocat:[Li Pan](https://github.com/panli200) :octocat:[Renz Rivero](https://github.com/renzrivero))
 
 ---
 
@@ -24,7 +24,7 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
   - [October 22 — Scrum #3](#october-22--scrum-3)
   - [November 19 — Scrum #4](#november-19--scrum-4)
   - [February 8 — Scrum #5](#february-8--scrum-5)
-  - [February 15 — Scrum #5](#february-15--scrum-5)
+  - [February 15 — Scrum #6](#february-15--scrum-6)
 - [Design Documentation](#design-documentation)
   - [Project  Definition](#project--definition)
   - [Empathy Mapping](#empathy-mapping)
@@ -63,7 +63,7 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
 ## February 8 — Scrum #5
 - [Scrum #5 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%235.pdf)
 - [Scrum #5 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%235-Slide.pdf)
-## February 15 — Scrum #5
+## February 15 — Scrum #6
 - [Scrum #6 Script](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%236.pdf)
 - [Scrum #6 Slide](https://github.com/panli200/SOSApp/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%236-Slide.pdf)
 
