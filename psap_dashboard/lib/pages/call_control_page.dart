@@ -424,6 +424,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
     super.initState();
     //String UserMedicalReport = "";
   }
+  List localMessages = [];
+
 
   @override
   void dispose() async {
@@ -433,7 +435,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
-    List localMessages = [];
     int localMessageIndex = 0;
     String? userMotion = '';
     double? speedDouble = 0.0;
@@ -846,8 +847,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                             } else {
                                                                               // dispatcher
                                                                               print("Sorry but the list is" + localMessages.length.toString());
-                                                                              if(localMessageIndex <= localMessages.length-1)
-                                                                              decryptedMessage = localMessages[localMessageIndex];
+                                                                              if(localMessageIndex < localMessages.length){
+                                                                                List reverse = List.from(localMessages.reversed);
+    decryptedMessage = reverse[localMessageIndex];
+    localMessageIndex++;
+    }
                                                                               print("The list now is: "+ localMessageIndex.toString() );
                                                                               c = Colors.blue;
                                                                               a = Alignment.centerRight;
@@ -942,7 +946,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                               if (text != '') {
                                                                 localMessages
                                                                     .add(text);
-                                                                localMessageIndex++;
+
 
                                                                 print("list tp [print" + localMessages.toString());
                                                                 // encrypt using the Other end's public key
