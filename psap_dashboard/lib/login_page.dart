@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/pages/maps_home_page.dart';
-
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -23,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-          body: Form(
+      body: Form(
         key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -82,19 +85,21 @@ class _LoginPageState extends State<LoginPage> {
               child: TextFormField(
                 onChanged: (value) {
                   setState(() {
-                    pwd = value;
+                    var bytes = utf8.encode(value);
+                    Digest sha256Result = sha256.convert(bytes);
+                    pwd =  sha256Result.toString();
                     FirebaseFirestore.instance
                         .collection('PSAPUser')
                         .get()
                         .then((QuerySnapshot querySnapshot) {
                       for (var doc in querySnapshot.docs) {
                         if (doc["username"] == username.text &&
-                            doc["password"] != value) {
+                            doc["password"] != sha256Result.toString()) {
                           validNAME = true;
                           validPWD = false;
                         }
                         if (doc["username"] == username.text &&
-                            doc["password"] == value) {
+                            doc["password"] == sha256Result.toString()) {
                           validNAME = true;
                           validPWD = true;
                         }
@@ -133,16 +138,16 @@ class _LoginPageState extends State<LoginPage> {
                         .collection('PSAPUser')
                         .get()
                         .then((QuerySnapshot querySnapshot) {
-                      for (var doc in querySnapshot.docs) {
-                        if (doc["username"] == name && doc["password"] == pwd) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => MapsHomePage(name: name)));
-                          username.clear();
-                          password.clear();
-                        }
-                      }
+                    for (var doc in querySnapshot.docs) {if (doc["username"] == name && doc["password"] == pwd) {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                    builder: (_) => MapsHomePage(name: name)));
+                    username.clear();
+                    password.clear();
+                    }
+                    }
+
                     });
                   },
                   child: const Text('LOGIN'),

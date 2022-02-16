@@ -60,7 +60,7 @@ class SosHomePageState extends State<SosHomePage> {
       'StartTime': date,
       'Waiting': true,
     },SetOptions(merge: true));
-  }
+
 
   @override
   void initState(){

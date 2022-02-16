@@ -6,7 +6,6 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:sos_app/sos_extended_pages/signaling.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sos_app/sos_extended_pages/videostream.dart';
-import 'package:pointycastle/api.dart' as crypto;
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'package:sos_app/services/encryption.dart';
 
