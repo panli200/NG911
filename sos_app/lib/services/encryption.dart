@@ -8,14 +8,3 @@ Future<crypto.AsymmetricKeyPair<crypto.PublicKey, crypto.PrivateKey>> getKeyPair
   return helper.computeRSAKeyPair(helper.getSecureRandom());
 }
 
-Future<crypto.PublicKey> getPublicKeyFromDispatcher (String phone)async{
-  CollectionReference EmergencyData =  FirebaseFirestore.instance.collection('SOSEmergencies');;
-  var details =  EmergencyData.doc(phone).get();
-
-  late var publicKey;
-  await details.then((snapshot) {
-    publicKey = snapshot['dispatcher_public_key'] as crypto.PublicKey;
-    return publicKey;
-  });
-  return publicKey;
-}
