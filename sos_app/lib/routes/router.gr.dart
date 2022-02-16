@@ -74,10 +74,13 @@ class AppRouter extends _i1.RootStackRouter {
           child: _i6.HowToUsePage(key: args.key, howToUseID: args.howToUseID));
     },
     CallRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<CallRouteArgs>(orElse: () => const CallRouteArgs());
+      final args = routeData.argsAs<CallRouteArgs>();
       return _i1.MaterialPageX<dynamic>(
-          routeData: routeData, child: _i7.CallPage(key: args.key));
+          routeData: routeData,
+          child: _i7.CallPage(
+              key: args.key,
+              privateKey: args.privateKey,
+              publicKey: args.publicKey));
     },
     ProfileRoute.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
@@ -254,20 +257,29 @@ class HowToUseRouteArgs {
 
 /// generated route for [_i7.CallPage]
 class CallRoute extends _i1.PageRouteInfo<CallRouteArgs> {
-  CallRoute({_i11.Key? key})
-      : super(name, path: '', args: CallRouteArgs(key: key));
+  CallRoute(
+      {_i11.Key? key, required dynamic privateKey, required dynamic publicKey})
+      : super(name,
+            path: '',
+            args: CallRouteArgs(
+                key: key, privateKey: privateKey, publicKey: publicKey));
 
   static const String name = 'CallRoute';
 }
 
 class CallRouteArgs {
-  const CallRouteArgs({this.key});
+  const CallRouteArgs(
+      {this.key, required this.privateKey, required this.publicKey});
 
   final _i11.Key? key;
 
+  final dynamic privateKey;
+
+  final dynamic publicKey;
+
   @override
   String toString() {
-    return 'CallRouteArgs{key: $key}';
+    return 'CallRouteArgs{key: $key, privateKey: $privateKey, publicKey: $publicKey}';
   }
 }
 

@@ -26,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-          body: Form(
+      body: Form(
         key: formKey,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,12 +94,12 @@ class _LoginPageState extends State<LoginPage> {
                         .then((QuerySnapshot querySnapshot) {
                       for (var doc in querySnapshot.docs) {
                         if (doc["username"] == username.text &&
-                            doc["password"] != value) {
+                            doc["password"] != sha256Result.toString()) {
                           validNAME = true;
                           validPWD = false;
                         }
                         if (doc["username"] == username.text &&
-                            doc["password"] == value) {
+                            doc["password"] == sha256Result.toString()) {
                           validNAME = true;
                           validPWD = true;
                         }
@@ -138,15 +138,16 @@ class _LoginPageState extends State<LoginPage> {
                         .collection('PSAPUser')
                         .get()
                         .then((QuerySnapshot querySnapshot) {
-                      for (var doc in querySnapshot.docs) {if (doc["username"] == name && doc["password"] == pwd) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => MapsHomePage(name: name)));
-                          username.clear();
-                          password.clear();
-                        }
-                      }
+                    for (var doc in querySnapshot.docs) {if (doc["username"] == name && doc["password"] == pwd) {
+                    Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                    builder: (_) => MapsHomePage(name: name)));
+                    username.clear();
+                    password.clear();
+                    }
+                    }
+
                     });
                   },
                   child: const Text('LOGIN'),

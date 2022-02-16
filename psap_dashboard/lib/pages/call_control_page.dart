@@ -14,6 +14,9 @@ import 'health__info_buttons.dart';
 import 'user_data_page.dart';
 import 'location.dart';
 import 'package:flutter_remix/flutter_remix.dart';
+import 'package:pointycastle/api.dart' as crypto;
+import 'package:rsa_encrypt/rsa_encrypt.dart';
+import 'encryption.dart';
 
 // Enviromental variables
 String? latitudePassed = '';
@@ -30,6 +33,8 @@ class CallControlPanel extends StatefulWidget {
   final localRenderer;
   final name;
   final type;
+  final publicKey;
+  final privateKey;
   const CallControlPanel(
       {Key? key,
       required this.CallerId,
@@ -37,6 +42,8 @@ class CallControlPanel extends StatefulWidget {
       required this.type,
       required this.signaling,
       required this.localRenderer,
+      required this.publicKey,
+      required this.privateKey,
       this.remoteRenderer,
       this.name})
       : super(key: key);
@@ -46,6 +53,13 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
+  // For encryption
+  Future<crypto.AsymmetricKeyPair>? futureKeyPair;
+  crypto.AsymmetricKeyPair?
+      keyPair; //to store the KeyPair once we get data from our future
+  var publicKey;
+  var privKey;
+  var otherEndPublicKey;
   // RealTime database
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
@@ -85,6 +99,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   RTCVideoRenderer? _remoteRenderer;
 
   // Listeners
+  StreamSubscription? publicKeyStream;
   StreamSubscription? endedStateStream;
   StreamSubscription? startTimeStream;
   StreamSubscription? batteryStream;
@@ -93,6 +108,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? speedStream;
   StreamSubscription? AccelerationStream;
   StreamSubscription? roomIdStream;
+
 
   Stream<QuerySnapshot>? messages;
   Stream<QuerySnapshot>? locationsHistory;
@@ -170,6 +186,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   void activateListeners() async {
     WidgetsFlutterBinding.ensureInitialized();
+
+
     endedStateStream = ref
         .child('sensors')
         .child(callerId)
@@ -178,6 +196,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .listen((event) async {
       bool? endedB = event.snapshot.value as bool;
       ended = endedB;
+    });
+
+    publicKeyStream = ref.child('sensors').child(callerId).child('caller_public_key').onValue.listen((event) {
+      if (ended != true) {
+        String publicKeyPassed = event.snapshot.value.toString();
+        var helper = RsaKeyHelper();
+        otherEndPublicKey = helper.parsePublicKeyFromPem(publicKeyPassed);
+        print("public key is passed......................()()()");
+        setState(() {});
+      }
     });
 
     startTimeStream = ref
@@ -333,13 +361,22 @@ class _CallControlPanelState extends State<CallControlPanel> {
     }
   }
 
+
+
   // Initialize
   @override
   void initState() {
+
+    privKey = widget.privateKey;
+    publicKey = widget.publicKey;
     callerId = widget.CallerId; //Getting user ID from the previous page..
     name = widget.name;
     callType = widget.type;
-
+    FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
+    final databaseReal = ref.child('sensors').child(callerId);
+    databaseReal.update({
+      'dispatcher_public_key': publicKey,
+    });
     // Get Locaiton list Stream
 //    Location? streamLoc = Location(callerId);
 //    double? LatitudeStreamed = 0.0;
@@ -387,6 +424,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
     super.initState();
     //String UserMedicalReport = "";
   }
+  List localMessages = [];
+
 
   @override
   void dispose() async {
@@ -396,6 +435,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   Widget build(BuildContext context) {
+    int localMessageIndex = 0;
     String? userMotion = '';
     double? speedDouble = 0.0;
     Future.delayed(Duration.zero, () async {
@@ -792,15 +832,27 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                           reverse: true,
                                                                           itemCount: data.size,
                                                                           itemBuilder: (context, index) {
+                                                                            String
+                                                                                decryptedMessage =
+                                                                                '';
                                                                             Color
                                                                                 c;
                                                                             Alignment
                                                                                 a;
                                                                             if (data.docs[index]['SAdmin'] ==
                                                                                 false) {
+                                                                              decryptedMessage = decrypt(data.docs[index]['Message'], privKey);
                                                                               c = Colors.black38;
                                                                               a = Alignment.centerLeft;
                                                                             } else {
+                                                                              // dispatcher
+                                                                              print("Sorry but the list is" + localMessages.length.toString());
+                                                                              if(localMessageIndex < localMessages.length){
+                                                                                List reverse = List.from(localMessages.reversed);
+    decryptedMessage = reverse[localMessageIndex];
+    localMessageIndex++;
+    }
+                                                                              print("The list now is: "+ localMessageIndex.toString() );
                                                                               c = Colors.blue;
                                                                               a = Alignment.centerRight;
                                                                             }
@@ -810,7 +862,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                                     alignment: a,
                                                                                     child: Container(
                                                                                       child: Text(
-                                                                                        '${data.docs[index]['Message']}',
+                                                                                        decryptedMessage,
                                                                                         style: const TextStyle(color: Colors.white),
                                                                                       ),
                                                                                       constraints: const BoxConstraints(
@@ -892,6 +944,19 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                               String text =
                                                                   sentText.text;
                                                               if (text != '') {
+                                                                localMessages
+                                                                    .add(text);
+
+
+                                                                print("list tp [print" + localMessages.toString());
+                                                                // encrypt using the Other end's public key
+                                                                String
+                                                                    encryptedText =
+                                                                    '';
+                                                                encryptedText =
+                                                                    encrypt(
+                                                                        text,
+                                                                        otherEndPublicKey);
                                                                 FirebaseFirestore
                                                                     .instance
                                                                     .collection(
@@ -902,7 +967,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                         'messages')
                                                                     .add({
                                                                   'Message':
-                                                                      text,
+                                                                  encryptedText,
                                                                   'SAdmin':
                                                                       true,
                                                                   'time': FieldValue

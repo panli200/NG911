@@ -6,7 +6,9 @@ import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
 import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart' as FbDb;
-
+import 'package:pointycastle/api.dart' as crypto;
+import 'package:rsa_encrypt/rsa_encrypt.dart';
+import 'encryption.dart';
 class MapsHomePage extends StatefulWidget {
   final name;
 
@@ -17,7 +19,12 @@ class MapsHomePage extends StatefulWidget {
 }
 
 class _MapsHomePageState extends State<MapsHomePage> {
-  
+  Future<crypto.AsymmetricKeyPair>? futureKeyPair;
+  crypto.AsymmetricKeyPair?
+  keyPair; //to store the KeyPair once we get data from our future
+  late var publicKey;
+  var privKey;
+  late String publicKeyString;
   String? timeWaited = "0";
   String timeWaitedString = '0';
   // video streaming
@@ -35,8 +42,17 @@ class _MapsHomePageState extends State<MapsHomePage> {
     });
   }
 
+  void doEncryption() async {
+    privKey = getPrivateKey();
+    publicKeyString = getPublicKey();
+    setState(() {
+
+    });
+  }
+
   @override
   void initState() {
+    doEncryption();
     getUSer();
     // Video streaming
     _remoteRenderer.initialize();
@@ -222,7 +238,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                 type: type,
                                                                 signaling:signaling,
                                                                 localRenderer:_localRenderer,
-                                                                remoteRenderer:_remoteRenderer,name: name,
+                                                                remoteRenderer:_remoteRenderer,name: name, publicKey: publicKeyString, privateKey: privKey,
                                                             )
                                                           )
                                                         );

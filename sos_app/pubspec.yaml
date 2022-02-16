@@ -23,6 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  # Hashes and Encryption
+  rsa_encrypt: ^2.0.0
+  encrypt: ^5.0.1
+
   file_picker: ^4.1.6
   fluttercontactpicker: ^4.5.1
   fluttertoast: ^8.0.8
