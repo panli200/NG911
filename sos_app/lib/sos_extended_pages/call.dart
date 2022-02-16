@@ -40,7 +40,6 @@ class _CallPageState extends State<CallPage> {
     publicKey = widget.publicKey;
     privateKey = widget.privateKey;
 
-    otherEndPublicKey = getPublicKeyFromDispatcher(mobile);
     final databaseReal = ref.child('sensors').child(mobile);
     StreamSubscription? streamSubscriptionEnded;
     streamSubscriptionEnded =
@@ -51,6 +50,17 @@ class _CallPageState extends State<CallPage> {
         Navigator.pop(context);
       }
     });
+    StreamSubscription? publicKeyStream;
+    streamSubscriptionEnded =
+        databaseReal.child('dispatcher_public_key').onValue.listen((event) async {
+          late String? publicPassed;
+          publicPassed = event.snapshot?.value.toString();
+          
+          if (Ended != true && publicPassed != null) {
+            var helper = RsaKeyHelper();
+            otherEndPublicKey = helper.parsePublicKeyFromPem(publicPassed);
+          }
+        });
 
     //Video Stream
     _localRenderer.initialize();

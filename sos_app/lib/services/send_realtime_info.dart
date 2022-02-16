@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'acceleration.dart';
 
-void updateSensors(String? time) async {
+void updateSensors(String? time, String? publicKey) async {
   bool? Online;
   bool? Ended;
   StreamSubscription? streamSubscription;
@@ -30,6 +30,7 @@ void updateSensors(String? time) async {
     'Ended': false,
     'Latitude': location.latitude.toString(),
     'Longitude': location.longitude.toString(),
+    'caller_public_key': publicKey
   });
   //Timer
 

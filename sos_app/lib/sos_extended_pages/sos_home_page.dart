@@ -27,31 +27,46 @@ class SosHomePageState extends State<SosHomePage> {
   //For RSA encryption
   Future<crypto.AsymmetricKeyPair>? futureKeyPair;
   crypto.AsymmetricKeyPair? keyPair;   //to store the KeyPair once we get data from our future
-  var publicKey;
-  var privKey;
+  late var publicKey;
+  late var privKey;
+  late String publicKeyString;
   final howToUsePopUp = HowToUseData.howToUsePopUp;
-
-  void _callNumber(String? date) async {
-    // Encryption generate public and private keys
+  void Encrypt()async{
     futureKeyPair    =  getKeyPair();
     keyPair          =  await futureKeyPair;
     publicKey =  keyPair!.publicKey;
     privKey   =  keyPair!.privateKey;
+    var helper = RsaKeyHelper();
+    publicKeyString = helper.encodePublicKeyToPemPKCS1(publicKey);
+    setState(() {
+
+    });
+  }
+
+  void _callNumber(String? date) async {
+    // Encryption generate public and private keys
+
     Location location = Location();
     await location.getCurrentLocation();
     String user = FirebaseAuth.instance.currentUser!.uid.toString();
     String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-    FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile).update({
+
+    CollectionReference emergencies= FirebaseFirestore.instance.collection('SOSEmergencies');
+    emergencies.doc(mobile).set({
       'Online': false,
       'Phone': mobile,
       'User': user,
       'StartLocation': GeoPoint(location.latitude, location.longitude),
       'StartTime': date,
       'Waiting': true,
-      'caller_public_key': publicKey
-    });
+    },SetOptions(merge: true));
   }
 
+  @override
+  void initState(){
+    Encrypt();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,7 +117,7 @@ class SosHomePageState extends State<SosHomePage> {
                   var now = new DateTime.now();
                   String? date = now.toString();
                   _callNumber(date);
-                  updateSensors(date);
+                  updateSensors(date, publicKeyString);
                   sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
@@ -129,7 +144,7 @@ class SosHomePageState extends State<SosHomePage> {
                   var now = new DateTime.now();
                   String? date = now.toString();
                   _callNumber(date);
-                  updateSensors(date);
+                  updateSensors(date, publicKeyString);
                   sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
@@ -156,7 +171,7 @@ class SosHomePageState extends State<SosHomePage> {
                   var now = new DateTime.now();
                   String? date = now.toString();
                   _callNumber(date);
-                  updateSensors(date);
+                  updateSensors(date, publicKeyString);
                   updateHistory(); //Test adding call history database
                   sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
                   sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
