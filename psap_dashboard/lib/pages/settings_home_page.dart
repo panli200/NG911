@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
-
+import 'package:crypto/crypto.dart';
+import 'dart:convert';
 class SettingsHomePage extends StatefulWidget {
   final name;
   const SettingsHomePage({Key? key, required this.name}) : super(key: key);
@@ -87,13 +88,16 @@ class _SettingsHomePageState extends State<SettingsHomePage> {
               child: ElevatedButton(
                 onPressed: () {
                   if (newPwd.text == newPWD.text) {
+                    var bytes = utf8.encode(newPwd.text);
+                    Digest sha256Result = sha256.convert(bytes);
+                    String pwdHashed =  sha256Result.toString();
                     users.get().then((QuerySnapshot querySnapshot) {
                       for (var doc in querySnapshot.docs) {
                         if (doc["username"] == name) {
                           Future<void> updateUser() {
                             return users
                                 .doc(doc.id)
-                                .update({'password': newPwd.text});
+                                .update({'password': pwdHashed});
                           }
 
                           updateUser();

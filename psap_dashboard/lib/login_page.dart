@@ -147,6 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                     password.clear();
                     }
                     }
+
                     });
                   },
                   child: const Text('LOGIN'),
