@@ -51,16 +51,18 @@ class _CallPageState extends State<CallPage> {
       }
     });
     StreamSubscription? publicKeyStream;
-    streamSubscriptionEnded =
-        databaseReal.child('dispatcher_public_key').onValue.listen((event) async {
-          late String? publicPassed;
-          publicPassed = event.snapshot?.value.toString();
-          
-          if (Ended != true && publicPassed != null) {
-            var helper = RsaKeyHelper();
-            otherEndPublicKey = helper.parsePublicKeyFromPem(publicPassed);
-          }
-        });
+    streamSubscriptionEnded = databaseReal
+        .child('dispatcher_public_key')
+        .onValue
+        .listen((event) async {
+      late String? publicPassed;
+      publicPassed = event.snapshot?.value.toString();
+
+      if (Ended != true && publicPassed != null) {
+        var helper = RsaKeyHelper();
+        otherEndPublicKey = helper.parsePublicKeyFromPem(publicPassed);
+      }
+    });
 
     //Video Stream
     _localRenderer.initialize();
@@ -80,6 +82,7 @@ class _CallPageState extends State<CallPage> {
     super.dispose();
   }
 
+  List localMessages = [];
   @override
   Widget build(BuildContext context) {
     String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
@@ -88,7 +91,7 @@ class _CallPageState extends State<CallPage> {
         .doc(mobile)
         .collection('messages')
         .orderBy("time", descending: true);
-    List localMessages = [];
+
     int localMessageIndex = 0;
     final Stream<Cloud.QuerySnapshot> messages = sorted.snapshots();
 
@@ -173,9 +176,14 @@ class _CallPageState extends State<CallPage> {
                                 if (data.docs[index]['SAdmin'] == false) {
                                   // User
                                   // get my message locally
-                                  decryptedMessage =
-                                      localMessages[localMessageIndex];
-                                  localMessageIndex ++;
+                                  if (localMessageIndex <
+                                      localMessages.length) {
+                                    List reverse =
+                                        List.from(localMessages.reversed);
+                                    decryptedMessage =
+                                        reverse[localMessageIndex];
+                                    localMessageIndex++;
+                                  }
                                   c = Colors.blueGrey;
                                   a = Alignment.centerRight;
                                 } else {
