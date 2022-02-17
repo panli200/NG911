@@ -7,7 +7,6 @@ import 'package:sos_app/sos_extended_pages/signaling.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sos_app/sos_extended_pages/videostream.dart';
 import 'package:rsa_encrypt/rsa_encrypt.dart';
-import 'package:sos_app/services/encryption.dart';
 import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
 
@@ -241,39 +240,41 @@ class _CallPageState extends State<CallPage> {
                                     future: decryptText(newBox),
                                     builder: (BuildContext context,
                                         AsyncSnapshot<dynamic> snapshot) {
-                                      if (snapshot.hasData) {
-                                        String decryptedMessage = snapshot.data;
-                                        return Align(
-                                            alignment: a,
-                                            child: Container(
-                                              child: Text(
-                                                decryptedMessage,
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                              constraints: const BoxConstraints(
-                                                maxHeight: double.infinity,
-                                              ),
-                                              padding: EdgeInsets.all(10.0),
-                                              margin: EdgeInsets.all(10.0),
-                                              decoration: BoxDecoration(
-                                                color: c,
-                                                borderRadius:
-                                                    BorderRadius.circular(35.0),
-                                                boxShadow: const [
-                                                  BoxShadow(
-                                                      offset: Offset(0, 2),
-                                                      blurRadius: 2,
-                                                      color: Colors.grey)
-                                                ],
-                                              ),
-                                            ));
-                                      } else {
+                                      if (snapshot.hasError) {
+                                        return Text('Something went wrong');
+                                      }
+                                      if (snapshot.connectionState ==
+                                          ConnectionState.waiting) {
                                         return CircularProgressIndicator();
                                       }
-                                    });
 
-                                //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
+                                      String decryptedMessage = snapshot.data;
+                                      return Align(
+                                          alignment: a,
+                                          child: Container(
+                                            child: Text(
+                                              decryptedMessage,
+                                              style: const TextStyle(
+                                                  color: Colors.black),
+                                            ),
+                                            constraints: const BoxConstraints(
+                                              maxHeight: double.infinity,
+                                            ),
+                                            padding: EdgeInsets.all(10.0),
+                                            margin: EdgeInsets.all(10.0),
+                                            decoration: BoxDecoration(
+                                              color: c,
+                                              borderRadius:
+                                                  BorderRadius.circular(35.0),
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                    offset: Offset(0, 2),
+                                                    blurRadius: 2,
+                                                    color: Colors.grey)
+                                              ],
+                                            ),
+                                          ));
+                                    });
                               });
                         })),
                 Container(
