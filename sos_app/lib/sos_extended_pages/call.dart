@@ -8,11 +8,18 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sos_app/sos_extended_pages/videostream.dart';
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'package:sos_app/services/encryption.dart';
+import 'dart:convert';
+import 'package:cryptography/cryptography.dart';
 
 class CallPage extends StatefulWidget {
   final privateKey;
   final publicKey;
-  CallPage({Key? key, required this.privateKey, required this.publicKey})
+  final aesKey;
+  CallPage(
+      {Key? key,
+      required this.privateKey,
+      required this.publicKey,
+      required this.aesKey})
       : super(key: key);
 
   @override
@@ -23,6 +30,9 @@ class _CallPageState extends State<CallPage> {
   late final publicKey;
   late final privateKey;
   late final otherEndPublicKey;
+  late final aesSecretKey;
+  late final aesSecretKeyString;
+  final algorithm = AesCtr.with256bits(macAlgorithm: Hmac.sha256());
   final senttext = new TextEditingController();
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
@@ -33,12 +43,46 @@ class _CallPageState extends State<CallPage> {
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String? roomId;
+  String decryptedMessage = '';
+  void decryptText(SecretBox secretBox)  {
+    setState(() async{
+      decryptedMessage =  utf8.decode(await algorithm.decrypt(secretBox, secretKey: await aesSecretKey));
+    });
+  }
+
+  /// Encrypt and sent to database
+  void encryptTextAndSend(String text) async {
+    // message to bytes
+    var message = utf8.encode(text);
+    // secret box
+    final secretBox = await algorithm.encrypt(
+      message,
+      secretKey: await aesSecretKey,
+    );
+    // send secret box attributes
+    String nonce = secretBox.nonce.toString();
+    String cipher = secretBox.cipherText.toString();
+    String mac = secretBox.mac.bytes.toString();
+    String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+    Cloud.FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(mobile)
+        .collection('messages')
+        .add({
+      'Message': message,
+      'SAdmin': false,
+      'time': Cloud.FieldValue.serverTimestamp(),
+      'nonce': nonce,
+      'cipher': cipher,
+      'mac': mac
+    });
+  }
 
   @override
   void initState() {
     publicKey = widget.publicKey;
     privateKey = widget.privateKey;
-
+    aesSecretKey = widget.aesKey;
     final databaseReal = ref.child('sensors').child(mobile);
     StreamSubscription? streamSubscriptionEnded;
     streamSubscriptionEnded =
@@ -81,7 +125,6 @@ class _CallPageState extends State<CallPage> {
     super.dispose();
   }
 
-  List localMessages = [];
   @override
   Widget build(BuildContext context) {
     String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
@@ -173,26 +216,30 @@ class _CallPageState extends State<CallPage> {
                                 Color c;
                                 Alignment a;
                                 if (data.docs[index]['SAdmin'] == false) {
-                                  // User
-                                  // get my message locally
-                                  if (localMessageIndex <
-                                      localMessages.length) {
-                                    List reverse =
-                                        List.from(localMessages.reversed);
-                                    decryptedMessage =
-                                        reverse[localMessageIndex];
-                                    localMessageIndex++;
-                                  }
                                   c = Colors.blueGrey;
                                   a = Alignment.centerRight;
                                 } else {
                                   // Dispatcher
-                                  decryptedMessage = decrypt(
-                                      data.docs[index]['Message'], privateKey);
                                   c = Colors.lightGreen;
                                   a = Alignment.centerLeft;
                                 }
+                                // getting values of SecretBox as string
+                                var nonceString = data.docs[index]['nonce'];
+                                var cipherString = data.docs[index]['cipher'];
+                                var macString = data.docs[index]['cipher'];
 
+                                var macBytes =
+                                    (jsonDecode(macString) as List<dynamic>)
+                                        .cast<int>();
+                                Mac macFinal = Mac(macBytes);
+                                List<int> nonceInt =
+                                    (jsonDecode(nonceString) as List<dynamic>)
+                                        .cast<int>();
+                                List<int> cipherInt =
+                                    (jsonDecode(cipherString) as List<dynamic>)
+                                        .cast<int>();
+                                SecretBox newBox = SecretBox(cipherInt,nonce: nonceInt, mac: macFinal);
+                                decryptText(newBox);
                                 return Align(
                                     alignment: a,
                                     child: Container(
@@ -257,22 +304,9 @@ class _CallPageState extends State<CallPage> {
                           String text = senttext.text;
                           if (text != '') {
                             // Store message locally in the List
-                            localMessages.add(text);
                             // encrypt using the Other end's public key
                             String encryptedText = '';
-                            encryptedText = encrypt(text, otherEndPublicKey);
-                            String mobile = FirebaseAuth
-                                .instance.currentUser!.phoneNumber
-                                .toString();
-                            Cloud.FirebaseFirestore.instance
-                                .collection('SOSEmergencies')
-                                .doc(mobile)
-                                .collection('messages')
-                                .add({
-                              'Message': encryptedText,
-                              'SAdmin': false,
-                              'time': Cloud.FieldValue.serverTimestamp()
-                            });
+                            encryptTextAndSend(text);
                             senttext.text = '';
                           }
                         },
