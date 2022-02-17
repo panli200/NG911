@@ -43,11 +43,9 @@ class _CallPageState extends State<CallPage> {
   RTCVideoRenderer _localRenderer = RTCVideoRenderer();
   RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
   String? roomId;
-  String decryptedMessage = '';
-  void decryptText(SecretBox secretBox)  {
-    setState(() async{
-      decryptedMessage =  utf8.decode(await algorithm.decrypt(secretBox, secretKey: await aesSecretKey));
-    });
+  Future<String> decryptText(SecretBox secretBox) async {
+    return utf8.decode(
+        await algorithm.decrypt(secretBox, secretKey: await aesSecretKey));
   }
 
   /// Encrypt and sent to database
@@ -212,7 +210,6 @@ class _CallPageState extends State<CallPage> {
                               reverse: true,
                               itemCount: data.size,
                               itemBuilder: (context, index) {
-                                String decryptedMessage = '';
                                 Color c;
                                 Alignment a;
                                 if (data.docs[index]['SAdmin'] == false) {
@@ -238,33 +235,43 @@ class _CallPageState extends State<CallPage> {
                                 List<int> cipherInt =
                                     (jsonDecode(cipherString) as List<dynamic>)
                                         .cast<int>();
-                                SecretBox newBox = SecretBox(cipherInt,nonce: nonceInt, mac: macFinal);
-                                decryptText(newBox);
-                                return Align(
-                                    alignment: a,
-                                    child: Container(
-                                      child: Text(
-                                        decryptedMessage,
-                                        style: const TextStyle(
-                                            color: Colors.black),
-                                      ),
-                                      constraints: const BoxConstraints(
-                                        maxHeight: double.infinity,
-                                      ),
-                                      padding: EdgeInsets.all(10.0),
-                                      margin: EdgeInsets.all(10.0),
-                                      decoration: BoxDecoration(
-                                        color: c,
-                                        borderRadius:
-                                            BorderRadius.circular(35.0),
-                                        boxShadow: const [
-                                          BoxShadow(
-                                              offset: Offset(0, 2),
-                                              blurRadius: 2,
-                                              color: Colors.grey)
-                                        ],
-                                      ),
-                                    ));
+                                SecretBox newBox = SecretBox(cipherInt,
+                                    nonce: nonceInt, mac: macFinal);
+                                return FutureBuilder(
+                                    future: decryptText(newBox),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<dynamic> snapshot) {
+                                      if (snapshot.hasData) {
+                                        String decryptedMessage = snapshot.data;
+                                        return Align(
+                                            alignment: a,
+                                            child: Container(
+                                              child: Text(
+                                                decryptedMessage,
+                                                style: const TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              constraints: const BoxConstraints(
+                                                maxHeight: double.infinity,
+                                              ),
+                                              padding: EdgeInsets.all(10.0),
+                                              margin: EdgeInsets.all(10.0),
+                                              decoration: BoxDecoration(
+                                                color: c,
+                                                borderRadius:
+                                                    BorderRadius.circular(35.0),
+                                                boxShadow: const [
+                                                  BoxShadow(
+                                                      offset: Offset(0, 2),
+                                                      blurRadius: 2,
+                                                      color: Colors.grey)
+                                                ],
+                                              ),
+                                            ));
+                                      } else {
+                                        return CircularProgressIndicator();
+                                      }
+                                    });
 
                                 //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
                               });
