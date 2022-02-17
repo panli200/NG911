@@ -226,7 +226,7 @@ class _CallPageState extends State<CallPage> {
                                 // getting values of SecretBox as string
                                 var nonceString = data.docs[index]['nonce'];
                                 var cipherString = data.docs[index]['cipher'];
-                                var macString = data.docs[index]['cipher'];
+                                var macString = data.docs[index]['mac'];
 
                                 var macBytes =
                                     (jsonDecode(macString) as List<dynamic>)

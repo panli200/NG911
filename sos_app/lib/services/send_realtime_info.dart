@@ -24,7 +24,8 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
   await location.getCurrentLocation();
   Stream<DatabaseEvent> stream = databaseReal.onValue;
   int? counts;
-  final keyString = await aesKey.extractBytes();
+  final key = await aesKey;
+  final keyString = await key.extractBytes();
   String  aesSecretKeyString = keyString.toString();
   databaseReal.set({
     'StartTime': time,
