@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:path/path.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:sos_app/profile_extended_pages/sos_user.dart';
@@ -303,7 +304,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     IconButton(
                         icon: Icon(
-                          Icons.comment_rounded,
+                          FlutterRemix.information_fill,
                           color: Colors.amber,
                           size: 30,
                         ),
@@ -357,7 +358,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Row(
                   children: [
                     Text(
-                      'Emergency Contract: ',
+                      'Emergency Cont act: ',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Expanded(
@@ -369,7 +370,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.account_circle,
+                        FlutterRemix.user_add_fill,
                         color: Colors.teal,
                         size: 26,
                       ),
@@ -386,7 +387,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.do_not_disturb_on,
+                        FlutterRemix.user_unfollow_fill,
                         color: Colors.red,
                         size: 26,
                       ),
@@ -476,7 +477,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     IconButton(
                         icon: Icon(
-                          Icons.comment_rounded,
+                          FlutterRemix.information_fill,
                           color: Colors.amber,
                           size: 30,
                         ),
@@ -567,7 +568,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.attach_file,
+                        FlutterRemix.attachment_2,
                         color: Colors.teal,
                         size: 26,
                       ),
@@ -579,7 +580,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.do_not_disturb_on,
+                        FlutterRemix.delete_bin_2_fill,
                         color: Colors.red,
                         size: 26,
                       ),
@@ -676,7 +677,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.attach_file,
+                        FlutterRemix.attachment_2,
                         color: Colors.teal,
                         size: 26,
                       ),
@@ -688,7 +689,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.do_not_disturb_on,
+                        FlutterRemix.delete_bin_2_fill,
                         color: Colors.red,
                         size: 26,
                       ),
