@@ -6,7 +6,7 @@ import 'dart:async';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'acceleration.dart';
 
-void updateSensors(String? time, String? publicKey) async {
+void updateSensors(String? time, String? publicKey, var aesKey) async {
   bool? Online;
   bool? Ended;
   StreamSubscription? streamSubscription;
@@ -24,13 +24,17 @@ void updateSensors(String? time, String? publicKey) async {
   await location.getCurrentLocation();
   Stream<DatabaseEvent> stream = databaseReal.onValue;
   int? counts;
+  final key = await aesKey;
+  final keyString = await key.extractBytes();
+  String  aesSecretKeyString = keyString.toString();
   databaseReal.set({
     'StartTime': time,
     'Online': false,
     'Ended': false,
     'Latitude': location.latitude.toString(),
     'Longitude': location.longitude.toString(),
-    'caller_public_key': publicKey
+    'caller_public_key': publicKey,
+    'caller_aes_key': aesSecretKeyString
   });
   //Timer
 

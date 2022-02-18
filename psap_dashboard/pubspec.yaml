@@ -34,6 +34,7 @@ dependencies:
   # Encryptions
   rsa_encrypt: ^2.0.0
   encrypt: ^5.0.1
+  cryptography: ^2.0.5
 
   # hashes
   crypto: ^3.0.1

@@ -12,11 +12,10 @@ import 'dart:ui' as ui;
 import 'dart:html';
 import 'health__info_buttons.dart';
 import 'user_data_page.dart';
-import 'location.dart';
-import 'package:flutter_remix/flutter_remix.dart';
 import 'package:pointycastle/api.dart' as crypto;
 import 'package:rsa_encrypt/rsa_encrypt.dart';
-import 'encryption.dart';
+import 'dart:convert';
+import 'package:cryptography/cryptography.dart';
 
 // Enviromental variables
 String? latitudePassed = '';
@@ -60,6 +59,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
   var publicKey;
   var privKey;
   var otherEndPublicKey;
+  late final aesSecretKey;
+  late final aesSecretKeyString;
+  final algorithm = AesCtr.with256bits(macAlgorithm: Hmac.sha256());
+
+
   // RealTime database
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
@@ -100,6 +104,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   // Listeners
   StreamSubscription? publicKeyStream;
+  StreamSubscription? aesKeyStream;
   StreamSubscription? endedStateStream;
   StreamSubscription? startTimeStream;
   StreamSubscription? batteryStream;
@@ -108,7 +113,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? speedStream;
   StreamSubscription? AccelerationStream;
   StreamSubscription? roomIdStream;
-
 
   Stream<QuerySnapshot>? messages;
   Stream<QuerySnapshot>? locationsHistory;
@@ -187,7 +191,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
   void activateListeners() async {
     WidgetsFlutterBinding.ensureInitialized();
 
-
     endedStateStream = ref
         .child('sensors')
         .child(callerId)
@@ -198,12 +201,31 @@ class _CallControlPanelState extends State<CallControlPanel> {
       ended = endedB;
     });
 
-    publicKeyStream = ref.child('sensors').child(callerId).child('caller_public_key').onValue.listen((event) {
+    aesKeyStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('caller_aes_key')
+        .onValue
+        .listen((event) {
+      if (ended != true) {
+        String publicKeyPassed = event.snapshot.value.toString();
+        aesSecretKeyString =
+            (jsonDecode(publicKeyPassed) as List<dynamic>).cast<int>();
+         aesSecretKey = SecretKey(aesSecretKeyString);
+        setState(() {});
+      }
+    });
+
+    publicKeyStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('caller_public_key')
+        .onValue
+        .listen((event) {
       if (ended != true) {
         String publicKeyPassed = event.snapshot.value.toString();
         var helper = RsaKeyHelper();
         otherEndPublicKey = helper.parsePublicKeyFromPem(publicKeyPassed);
-        print("public key is passed......................()()()");
         setState(() {});
       }
     });
@@ -366,7 +388,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
   // Initialize
   @override
   void initState() {
-
     privKey = widget.privateKey;
     publicKey = widget.publicKey;
     callerId = widget.CallerId; //Getting user ID from the previous page..
@@ -377,16 +398,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
     databaseReal.update({
       'dispatcher_public_key': publicKey,
     });
-    // Get Locaiton list Stream
-//    Location? streamLoc = Location(callerId);
-//    double? LatitudeStreamed = 0.0;
-//    streamLoc.streamLatitude.listen((event) {
-//      LatitudeStreamed = event;
-//    });
-//    double? LongitudeStreamed = 0.0;
-//    streamLoc.streamLongitude.listen((event) {
-//      LongitudeStreamed = event;
-//    });
+
+
     getRoomId(); //get roomId and join the stream
 
     ref.child('sensors').child(callerId).update({'Online': true});
@@ -422,9 +435,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     getStartLocation();
     getLocationHistory();
     super.initState();
-    //String UserMedicalReport = "";
   }
-  List localMessages = [];
 
 
   @override
@@ -432,10 +443,40 @@ class _CallControlPanelState extends State<CallControlPanel> {
     // clear users
     super.dispose();
   }
+  Future<String> decryptText(SecretBox secretBox) async {
+    return utf8.decode(
+        await algorithm.decrypt(secretBox, secretKey: await aesSecretKey));
+  }
 
   @override
   Widget build(BuildContext context) {
-    int localMessageIndex = 0;
+
+
+    /// Encrypt and sent to database
+    void encryptTextAndSend(String text) async {
+      // message to bytes
+      var message = utf8.encode(text);
+      // secret box
+      final secretBox = await algorithm.encrypt(
+        message,
+        secretKey: await aesSecretKey,
+      );
+      // send secret box attributes
+      String nonce = secretBox.nonce.toString();
+      String cipher = secretBox.cipherText.toString();
+      String mac = secretBox.mac.bytes.toString();
+      FirebaseFirestore.instance
+          .collection('SOSEmergencies')
+          .doc(callerId)
+          .collection('messages')
+          .add({
+        'SAdmin': true,
+        'time': FieldValue.serverTimestamp(),
+        'nonce': nonce,
+        'cipher': cipher,
+        'mac': mac
+      });
+    }
     String? userMotion = '';
     double? speedDouble = 0.0;
     Future.delayed(Duration.zero, () async {
@@ -716,17 +757,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               urlPMR: urlPMR,
                                               urlECMR: urlECMR),
 
-                                          // Row
-                                          // (
-                                          //   children:
-                                          //   [
-                                          //     Text
-                                          //     (
-                                          //       '$AccelerationString',
-                                          //       style: TextStyle(fontSize: 15),
-                                          //     ),
-                                          //   ],
-                                          // ),
                                         ],
                                       ),
                                     ],
@@ -841,43 +871,66 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                                 a;
                                                                             if (data.docs[index]['SAdmin'] ==
                                                                                 false) {
-                                                                              decryptedMessage = decrypt(data.docs[index]['Message'], privKey);
                                                                               c = Colors.black38;
                                                                               a = Alignment.centerLeft;
                                                                             } else {
                                                                               // dispatcher
-                                                                              print("Sorry but the list is" + localMessages.length.toString());
-                                                                              if(localMessageIndex < localMessages.length){
-                                                                                List reverse = List.from(localMessages.reversed);
-    decryptedMessage = reverse[localMessageIndex];
-    localMessageIndex++;
-    }
-                                                                              print("The list now is: "+ localMessageIndex.toString() );
                                                                               c = Colors.blue;
                                                                               a = Alignment.centerRight;
                                                                             }
 
-                                                                            return SizedBox(
-                                                                                child: Align(
-                                                                                    alignment: a,
-                                                                                    child: Container(
-                                                                                      child: Text(
-                                                                                        decryptedMessage,
-                                                                                        style: const TextStyle(color: Colors.white),
-                                                                                      ),
-                                                                                      constraints: const BoxConstraints(
-                                                                                        maxHeight: double.infinity,
-                                                                                      ),
-                                                                                      padding: const EdgeInsets.all(10.0),
-                                                                                      margin: const EdgeInsets.all(10.0),
-                                                                                      decoration: BoxDecoration(
-                                                                                        color: c,
-                                                                                        borderRadius: BorderRadius.circular(35.0),
-                                                                                        boxShadow: const [
-                                                                                          BoxShadow(offset: Offset(0, 3), blurRadius: 5, color: Colors.grey)
-                                                                                        ],
-                                                                                      ),
-                                                                                    )));
+                                                                            var nonceString =
+                                                                                data.docs[index]['nonce'];
+                                                                            var cipherString =
+                                                                                data.docs[index]['cipher'];
+                                                                            var macString =
+                                                                                data.docs[index]['mac'];
+
+                                                                            var macBytes =
+                                                                                (jsonDecode(macString) as List<dynamic>).cast<int>();
+                                                                            Mac macFinal =
+                                                                                Mac(macBytes);
+                                                                            List<int>
+                                                                                nonceInt =
+                                                                                (jsonDecode(nonceString) as List<dynamic>).cast<int>();
+                                                                            List<int>
+                                                                                cipherInt =
+                                                                                (jsonDecode(cipherString) as List<dynamic>).cast<int>();
+                                                                            SecretBox
+                                                                                newBox =
+                                                                                SecretBox(cipherInt, nonce: nonceInt, mac: macFinal);
+                                                                            return FutureBuilder(
+                                                                                future: decryptText(newBox),
+                                                                                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                                                                                  if (snapshot.hasError) {
+                                                                                    return Text('Something went wrong');
+                                                                                  }
+                                                                                  if (snapshot.connectionState == ConnectionState.waiting) {
+                                                                                    return CircularProgressIndicator();
+                                                                                  }
+
+                                                                                  String decryptedMessage = snapshot.data;
+                                                                                  return Align(
+                                                                                      alignment: a,
+                                                                                      child: Container(
+                                                                                        child: Text(
+                                                                                          decryptedMessage,
+                                                                                          style: const TextStyle(color: Colors.black),
+                                                                                        ),
+                                                                                        constraints: const BoxConstraints(
+                                                                                          maxHeight: double.infinity,
+                                                                                        ),
+                                                                                        padding: EdgeInsets.all(10.0),
+                                                                                        margin: EdgeInsets.all(10.0),
+                                                                                        decoration: BoxDecoration(
+                                                                                          color: c,
+                                                                                          borderRadius: BorderRadius.circular(35.0),
+                                                                                          boxShadow: const [
+                                                                                            BoxShadow(offset: Offset(0, 2), blurRadius: 2, color: Colors.grey)
+                                                                                          ],
+                                                                                        ),
+                                                                                      ));
+                                                                                });
                                                                           });
                                                                     })),
                                                           ],
@@ -944,35 +997,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                               String text =
                                                                   sentText.text;
                                                               if (text != '') {
-                                                                localMessages
-                                                                    .add(text);
-
-
-                                                                print("list tp [print" + localMessages.toString());
-                                                                // encrypt using the Other end's public key
-                                                                String
-                                                                    encryptedText =
-                                                                    '';
-                                                                encryptedText =
-                                                                    encrypt(
-                                                                        text,
-                                                                        otherEndPublicKey);
-                                                                FirebaseFirestore
-                                                                    .instance
-                                                                    .collection(
-                                                                        'SOSEmergencies')
-                                                                    .doc(
-                                                                        callerId)
-                                                                    .collection(
-                                                                        'messages')
-                                                                    .add({
-                                                                  'Message':
-                                                                  encryptedText,
-                                                                  'SAdmin':
-                                                                      true,
-                                                                  'time': FieldValue
-                                                                      .serverTimestamp()
-                                                                });
+                                                                encryptTextAndSend(
+                                                                    text);
                                                                 sentText.text =
                                                                     '';
                                                               }

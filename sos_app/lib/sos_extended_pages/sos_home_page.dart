@@ -16,6 +16,9 @@ import 'package:sos_app/profile_extended_pages/upload_file.dart';
 import 'package:pointycastle/api.dart' as crypto;
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'package:sos_app/services/encryption.dart';
+import 'dart:convert';
+import 'package:cryptography/cryptography.dart';
+
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
 
@@ -30,6 +33,8 @@ class SosHomePageState extends State<SosHomePage> {
   late var publicKey;
   late var privKey;
   late String publicKeyString;
+  late final aesAlgorithm;
+  late final aesSecretKey;
   final howToUsePopUp = HowToUseData.howToUsePopUp;
   void Encrypt()async{
     futureKeyPair    =  getKeyPair();
@@ -38,6 +43,8 @@ class SosHomePageState extends State<SosHomePage> {
     privKey   =  keyPair!.privateKey;
     var helper = RsaKeyHelper();
     publicKeyString = helper.encodePublicKeyToPemPKCS1(publicKey);
+    aesAlgorithm = AesCtr.with256bits(macAlgorithm: Hmac.sha256());
+    aesSecretKey = aesAlgorithm.newSecretKey();
     setState(() {
 
     });
@@ -118,7 +125,7 @@ class SosHomePageState extends State<SosHomePage> {
                   var now = new DateTime.now();
                   String? date = now.toString();
                   _callNumber(date);
-                  updateSensors(date, publicKeyString);
+                  updateSensors(date, publicKeyString, aesSecretKey);
                   sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
@@ -127,7 +134,7 @@ class SosHomePageState extends State<SosHomePage> {
                   personal(); //Test adding call type
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey)),
+                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
                   );
                 },
                 child: Text("Yourself"),
@@ -145,7 +152,7 @@ class SosHomePageState extends State<SosHomePage> {
                   var now = new DateTime.now();
                   String? date = now.toString();
                   _callNumber(date);
-                  updateSensors(date, publicKeyString);
+                  updateSensors(date, publicKeyString, aesSecretKey);
                   sendUserDate(); //TEST calling send the user profile function to send the data to firebase
                   uploadFile(); //TEST upload files to the firebase storage
                   updateHistory(); //Test adding call history database
@@ -154,7 +161,7 @@ class SosHomePageState extends State<SosHomePage> {
                   contact(); //Test adding call type
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey)),
+                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
                   );
                 },
                 child: Text("Emergency Contact"),
@@ -172,14 +179,14 @@ class SosHomePageState extends State<SosHomePage> {
                   var now = new DateTime.now();
                   String? date = now.toString();
                   _callNumber(date);
-                  updateSensors(date, publicKeyString);
+                  updateSensors(date, publicKeyString, aesSecretKey);
                   updateHistory(); //Test adding call history database
                   sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
                   sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
                   standby();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey)),
+                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
                   );
                 },
                 child: Text("Third Party (Bystander)"),

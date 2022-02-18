@@ -80,7 +80,8 @@ class AppRouter extends _i1.RootStackRouter {
           child: _i7.CallPage(
               key: args.key,
               privateKey: args.privateKey,
-              publicKey: args.publicKey));
+              publicKey: args.publicKey,
+              aesKey: args.aesKey));
     },
     ProfileRoute.name: (routeData) {
       return _i1.MaterialPageX<dynamic>(
@@ -258,18 +259,27 @@ class HowToUseRouteArgs {
 /// generated route for [_i7.CallPage]
 class CallRoute extends _i1.PageRouteInfo<CallRouteArgs> {
   CallRoute(
-      {_i11.Key? key, required dynamic privateKey, required dynamic publicKey})
+      {_i11.Key? key,
+      required dynamic privateKey,
+      required dynamic publicKey,
+      required dynamic aesKey})
       : super(name,
             path: '',
             args: CallRouteArgs(
-                key: key, privateKey: privateKey, publicKey: publicKey));
+                key: key,
+                privateKey: privateKey,
+                publicKey: publicKey,
+                aesKey: aesKey));
 
   static const String name = 'CallRoute';
 }
 
 class CallRouteArgs {
   const CallRouteArgs(
-      {this.key, required this.privateKey, required this.publicKey});
+      {this.key,
+      required this.privateKey,
+      required this.publicKey,
+      required this.aesKey});
 
   final _i11.Key? key;
 
@@ -277,9 +287,11 @@ class CallRouteArgs {
 
   final dynamic publicKey;
 
+  final dynamic aesKey;
+
   @override
   String toString() {
-    return 'CallRouteArgs{key: $key, privateKey: $privateKey, publicKey: $publicKey}';
+    return 'CallRouteArgs{key: $key, privateKey: $privateKey, publicKey: $publicKey, aesKey: $aesKey}';
   }
 }
 
