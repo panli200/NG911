@@ -313,7 +313,6 @@ class _CallPageState extends State<CallPage> {
                           if (text != '') {
                             // Store message locally in the List
                             // encrypt using the Other end's public key
-                            String encryptedText = '';
                             encryptTextAndSend(text);
                             senttext.text = '';
                           }
