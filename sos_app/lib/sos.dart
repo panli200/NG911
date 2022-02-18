@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 
 class SosPage extends StatelessWidget {
 
@@ -28,18 +29,18 @@ class SosPage extends StatelessWidget {
 
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(FlutterRemix.alarm_warning_line),
               label: 'SOS',
               backgroundColor: Colors.blue
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: Icon(FlutterRemix.profile_line),
               label: 'Profile',
               backgroundColor: Colors.blue
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.notifications),
-              label: 'Activities',
+              icon: Icon(FlutterRemix.folder_history_line),
+              label: 'Logs',
               backgroundColor: Colors.blue
             ),
           ],
