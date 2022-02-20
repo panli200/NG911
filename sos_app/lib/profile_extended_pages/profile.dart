@@ -22,8 +22,6 @@ class ProfilePage extends StatefulWidget {
   _ProfilePageState createState() => _ProfilePageState();
 }
 
-
-
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
   await service.configure(
@@ -46,7 +44,6 @@ Future<void> initializeService() async {
       onBackground: onIosBackground,
     ),
   );
-
 }
 
 // to ensure this executed
@@ -70,7 +67,6 @@ Future<void> onStart() async {
   );
 
   Future<void> insertSensor(Sensor sensor) async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -82,7 +78,6 @@ Future<void> onStart() async {
   }
 
   Future<List<Sensor>> sensors() async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -100,7 +95,6 @@ Future<void> onStart() async {
   }
 
   Future<Sensor> sensorItem(index) async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -116,9 +110,7 @@ Future<void> onStart() async {
     );
   }
 
-
   Future<void> updateSensor(Sensor sensor) async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -134,7 +126,6 @@ Future<void> onStart() async {
   }
 
   Future<void> deleteSensor(int id) async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -147,8 +138,6 @@ Future<void> onStart() async {
       whereArgs: [id],
     );
   }
-
-
 
   final service = FlutterBackgroundService();
   service.onDataReceived.listen((event) {
@@ -167,17 +156,18 @@ Future<void> onStart() async {
     );
     Location location = Location();
     await location.getCurrentLocation();
-    if(currentIndex <20){ // getting points 0-19
+    if (currentIndex < 20) {
+      // getting points 0-19
       var point = Sensor(
         id: currentIndex,
         latitude: location.latitude.toString(),
         longitude: location.longitude.toString(),
       );
-       await insertSensor(point);
+      await insertSensor(point);
 
-
-      currentIndex ++; // increment current index
-    }else{ // current index is 20 -> first 20 points have been set
+      currentIndex++; // increment current index
+    } else {
+      // current index is 20 -> first 20 points have been set
       var NewPoint = Sensor(
         id: 19,
         latitude: location.latitude.toString(),
@@ -188,15 +178,17 @@ Future<void> onStart() async {
 
       // Convert the List<Map<String, dynamic> into a List<Sensor>.
 
-      for(int i=0; i<maps.length ; i++){ // shifting all sensors in i to i-1, from 0-19
-        Sensor? sensorPlusOne = await sensorItem(i+1);
-        Sensor overWritten = Sensor(id: i, latitude: sensorPlusOne!.getLatitude(), longitude: sensorPlusOne.getLongitude());
+      for (int i = 0; i < maps.length; i++) {
+        // shifting all sensors in i to i-1, from 0-19
+        Sensor? sensorPlusOne = await sensorItem(i + 1);
+        Sensor overWritten = Sensor(
+            id: i,
+            latitude: sensorPlusOne!.getLatitude(),
+            longitude: sensorPlusOne.getLongitude());
         updateSensor(overWritten);
       }
       updateSensor(NewPoint); // Finally, write the new point to the index 19
     }
-
-
 
     service.sendData(
       {
@@ -358,7 +350,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Row(
                   children: [
                     Text(
-                      'Emergency Cont act: ',
+                      'Emergency Contact: ',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Expanded(
@@ -890,4 +882,3 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 // Sensor class for location
-
