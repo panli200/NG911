@@ -805,17 +805,26 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: const Text('SAVE MEDICAL INFORMATION'),
                 ),
+                SizedBox(
+                  height: 16.0,
+                ),
                 const Divider(
                   height: 10,
                   thickness: 5,
                 ),
+                SizedBox(
+                  height: 16.0,
+                ),
                 Text(
-                  'Emergency Listener',
+                  'Background Location Listener',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
                   ),
+                ),
+                SizedBox(
+                  height: 16.0,
                 ),
                 ElevatedButton(
                   child: Text(textBackground),
@@ -844,7 +853,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     setState(() {});
                   },
-                )
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
               ],
             ),
           ),
