@@ -39,7 +39,7 @@ class RingingPageState extends State<RingingPage> {
           bool? StartedB = event.snapshot?.value as bool;
           started = StartedB;
           if (started == true) {
-    Navigator.push(
+    Navigator.pushReplacement(
     context,
     MaterialPageRoute(builder: (context) => CallPage(privateKey: privateKey,publicKey: publicKey, aesKey: aesSecretKey)),
     );
@@ -57,11 +57,6 @@ class RingingPageState extends State<RingingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-      title: const Text(
-      "911 Dispatcher",
-      style: TextStyle(color: Colors.black),
-    )),
       body: Container(
     decoration: const BoxDecoration(
     color: Colors.white,

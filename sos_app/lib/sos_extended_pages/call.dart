@@ -35,6 +35,7 @@ class _CallPageState extends State<CallPage> {
   final senttext = new TextEditingController();
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+  StreamSubscription? streamSubscriptionEnded;
   bool? Ended;
 
   //Video Stream
@@ -81,13 +82,12 @@ class _CallPageState extends State<CallPage> {
     privateKey = widget.privateKey;
     aesSecretKey = widget.aesKey;
     final databaseReal = ref.child('sensors').child(mobile);
-    StreamSubscription? streamSubscriptionEnded;
     streamSubscriptionEnded =
         databaseReal.child('Ended').onValue.listen((event) async {
       bool? EndedB = event.snapshot?.value as bool;
       Ended = EndedB;
       if (Ended == true) {
-        Navigator.pop(context);
+        Navigator.popUntil(context, (route) => false);
       }
     });
     StreamSubscription? publicKeyStream;
@@ -119,6 +119,7 @@ class _CallPageState extends State<CallPage> {
   void dispose() {
     _localRenderer.dispose();
     _remoteRenderer.dispose();
+    streamSubscriptionEnded!.cancel();
     super.dispose();
   }
 
