@@ -17,7 +17,7 @@ import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'package:sos_app/services/encryption.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:sos_app/services/connectionStatus.dart';
-
+import 'package:sos_app/sos_extended_pages/ringing_page.dart';
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
 
@@ -157,7 +157,7 @@ class SosHomePageState extends State<SosHomePage> {
                   personal(); //Test adding call type
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
+                    MaterialPageRoute(builder: (context) => RingingPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
                   );
                 },
                 child: Text("Yourself"),
@@ -184,7 +184,7 @@ class SosHomePageState extends State<SosHomePage> {
                   contact(); //Test adding call type
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
+                    MaterialPageRoute(builder: (context) => RingingPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
                   );
                 },
                 child: Text("Emergency Contact"),
@@ -209,7 +209,7 @@ class SosHomePageState extends State<SosHomePage> {
                   standby();
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => CallPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
+                    MaterialPageRoute(builder: (context) => RingingPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
                   );
                 },
                 child: Text("Third Party (Bystander)"),
