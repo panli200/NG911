@@ -17,7 +17,6 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
   - [October 15 — Vlog #2](#october-15--vlog-2)
   - [December 3 — Vlog #3](#december-3--vlog-3)
   - [February 1 — Vlog #4](#february-1--vlog-4)
-  - [- Vlog #4: Project Update — PSAP-side](#--vlog-4-project-update--psap-side)
 - [Scrum Scripts/Slides](#scrum-scriptsslides)
   - [September 24 — Scrum #1](#september-24--scrum-1)
   - [October 8 — Scrum #2](#october-8--scrum-2)

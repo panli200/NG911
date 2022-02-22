@@ -4,7 +4,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter_remix/flutter_remix.dart';
 
 class ActivitiesPage extends StatefulWidget {
   ActivitiesPage({Key? key}) : super(key: key);
@@ -52,7 +52,7 @@ class ActivitiesPageState extends State<ActivitiesPage> {
                               child: Container(
                                 child: Row(
                                     children: <Widget>[
-                                      Icon(Icons.add_alert_outlined),
+                                      Icon(FlutterRemix.file_info_line),
                                       Container(
                                         child: Text(' Date: ${formatter.format(DateTime.parse(data.docs[index]['StartTime']))}',style: TextStyle(
                                           color: Colors.white,

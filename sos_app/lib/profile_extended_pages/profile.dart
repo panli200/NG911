@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:auto_route/annotations.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:path/path.dart';
 import 'package:fluttercontactpicker/fluttercontactpicker.dart';
 import 'package:sos_app/profile_extended_pages/sos_user.dart';
@@ -20,8 +21,6 @@ class ProfilePage extends StatefulWidget {
 
   _ProfilePageState createState() => _ProfilePageState();
 }
-
-
 
 Future<void> initializeService() async {
   final service = FlutterBackgroundService();
@@ -45,7 +44,6 @@ Future<void> initializeService() async {
       onBackground: onIosBackground,
     ),
   );
-
 }
 
 // to ensure this executed
@@ -69,7 +67,6 @@ Future<void> onStart() async {
   );
 
   Future<void> insertSensor(Sensor sensor) async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -81,7 +78,6 @@ Future<void> onStart() async {
   }
 
   Future<List<Sensor>> sensors() async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -99,7 +95,6 @@ Future<void> onStart() async {
   }
 
   Future<Sensor> sensorItem(index) async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -115,9 +110,7 @@ Future<void> onStart() async {
     );
   }
 
-
   Future<void> updateSensor(Sensor sensor) async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -133,7 +126,6 @@ Future<void> onStart() async {
   }
 
   Future<void> deleteSensor(int id) async {
-
     // Get a reference to the database.
     final db = await database;
 
@@ -146,8 +138,6 @@ Future<void> onStart() async {
       whereArgs: [id],
     );
   }
-
-
 
   final service = FlutterBackgroundService();
   service.onDataReceived.listen((event) {
@@ -166,17 +156,18 @@ Future<void> onStart() async {
     );
     Location location = Location();
     await location.getCurrentLocation();
-    if(currentIndex <20){ // getting points 0-19
+    if (currentIndex < 20) {
+      // getting points 0-19
       var point = Sensor(
         id: currentIndex,
         latitude: location.latitude.toString(),
         longitude: location.longitude.toString(),
       );
-       await insertSensor(point);
+      await insertSensor(point);
 
-
-      currentIndex ++; // increment current index
-    }else{ // current index is 20 -> first 20 points have been set
+      currentIndex++; // increment current index
+    } else {
+      // current index is 20 -> first 20 points have been set
       var NewPoint = Sensor(
         id: 19,
         latitude: location.latitude.toString(),
@@ -187,15 +178,17 @@ Future<void> onStart() async {
 
       // Convert the List<Map<String, dynamic> into a List<Sensor>.
 
-      for(int i=0; i<maps.length ; i++){ // shifting all sensors in i to i-1, from 0-19
-        Sensor? sensorPlusOne = await sensorItem(i+1);
-        Sensor overWritten = Sensor(id: i, latitude: sensorPlusOne!.getLatitude(), longitude: sensorPlusOne.getLongitude());
+      for (int i = 0; i < maps.length; i++) {
+        // shifting all sensors in i to i-1, from 0-19
+        Sensor? sensorPlusOne = await sensorItem(i + 1);
+        Sensor overWritten = Sensor(
+            id: i,
+            latitude: sensorPlusOne!.getLatitude(),
+            longitude: sensorPlusOne.getLongitude());
         updateSensor(overWritten);
       }
       updateSensor(NewPoint); // Finally, write the new point to the index 19
     }
-
-
 
     service.sendData(
       {
@@ -303,7 +296,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     IconButton(
                         icon: Icon(
-                          Icons.comment_rounded,
+                          FlutterRemix.information_fill,
                           color: Colors.amber,
                           size: 30,
                         ),
@@ -357,7 +350,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 Row(
                   children: [
                     Text(
-                      'Emergency Contract: ',
+                      'Emergency Contact: ',
                       style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     Expanded(
@@ -369,7 +362,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.account_circle,
+                        FlutterRemix.user_add_fill,
                         color: Colors.teal,
                         size: 26,
                       ),
@@ -386,7 +379,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.do_not_disturb_on,
+                        FlutterRemix.user_unfollow_fill,
                         color: Colors.red,
                         size: 26,
                       ),
@@ -476,7 +469,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     IconButton(
                         icon: Icon(
-                          Icons.comment_rounded,
+                          FlutterRemix.information_fill,
                           color: Colors.amber,
                           size: 30,
                         ),
@@ -567,7 +560,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.attach_file,
+                        FlutterRemix.attachment_2,
                         color: Colors.teal,
                         size: 26,
                       ),
@@ -579,7 +572,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.do_not_disturb_on,
+                        FlutterRemix.delete_bin_2_fill,
                         color: Colors.red,
                         size: 26,
                       ),
@@ -676,7 +669,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.attach_file,
+                        FlutterRemix.attachment_2,
                         color: Colors.teal,
                         size: 26,
                       ),
@@ -688,7 +681,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                     IconButton(
                       icon: Icon(
-                        Icons.do_not_disturb_on,
+                        FlutterRemix.delete_bin_2_fill,
                         color: Colors.red,
                         size: 26,
                       ),
@@ -812,17 +805,26 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   child: const Text('SAVE MEDICAL INFORMATION'),
                 ),
+                SizedBox(
+                  height: 16.0,
+                ),
                 const Divider(
                   height: 10,
                   thickness: 5,
                 ),
+                SizedBox(
+                  height: 16.0,
+                ),
                 Text(
-                  'Emergency Listener',
+                  'Background Location Listener',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 17,
                   ),
+                ),
+                SizedBox(
+                  height: 16.0,
                 ),
                 ElevatedButton(
                   child: Text(textBackground),
@@ -851,7 +853,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     setState(() {});
                   },
-                )
+                ),
+                SizedBox(
+                  height: 8.0,
+                ),
               ],
             ),
           ),
@@ -889,4 +894,3 @@ class _ProfilePageState extends State<ProfilePage> {
 }
 
 // Sensor class for location
-
