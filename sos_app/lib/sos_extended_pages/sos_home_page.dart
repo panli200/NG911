@@ -12,12 +12,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:sos_app/sos_extended_pages/call.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sos_app/profile_extended_pages/send_profile_data.dart';
-import 'package:sos_app/profile_extended_pages/upload_file.dart';
 import 'package:pointycastle/api.dart' as crypto;
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'package:sos_app/services/encryption.dart';
-import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
+import 'package:sos_app/services/connectionStatus.dart';
 
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
@@ -75,6 +74,7 @@ class SosHomePageState extends State<SosHomePage> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -85,6 +85,29 @@ class SosHomePageState extends State<SosHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
+          FutureBuilder(
+            future: isConnected(),
+            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+             bool isConnected = snapshot.data;
+             if(isConnected){
+               return Row(
+                 children: [
+                   Text("Internet connected")
+                 ],
+
+               );
+             }else{
+               return Row(
+                 children: [
+                   Text("Internet not connected")
+                 ],
+
+               );
+
+             }
+            },
+
+          ),
           Container(
             height: 40,
             width: 40,
