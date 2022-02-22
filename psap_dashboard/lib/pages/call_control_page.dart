@@ -16,6 +16,7 @@ import 'package:pointycastle/api.dart' as crypto;
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
+import 'messages.dart';
 
 // Enviromental variables
 String? latitudePassed = '';
@@ -899,38 +900,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                             SecretBox
                                                                                 newBox =
                                                                                 SecretBox(cipherInt, nonce: nonceInt, mac: macFinal);
-                                                                            return FutureBuilder(
-                                                                                future: decryptText(newBox),
-                                                                                builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-                                                                                  if (snapshot.hasError) {
-                                                                                    return Text('Something went wrong');
-                                                                                  }
-                                                                                  if (snapshot.connectionState == ConnectionState.waiting) {
-                                                                                    return CircularProgressIndicator();
-                                                                                  }
-
-                                                                                  String decryptedMessage = snapshot.data;
-                                                                                  return Align(
-                                                                                      alignment: a,
-                                                                                      child: Container(
-                                                                                        child: Text(
-                                                                                          decryptedMessage,
-                                                                                          style: const TextStyle(color: Colors.black),
-                                                                                        ),
-                                                                                        constraints: const BoxConstraints(
-                                                                                          maxHeight: double.infinity,
-                                                                                        ),
-                                                                                        padding: EdgeInsets.all(10.0),
-                                                                                        margin: EdgeInsets.all(10.0),
-                                                                                        decoration: BoxDecoration(
-                                                                                          color: c,
-                                                                                          borderRadius: BorderRadius.circular(35.0),
-                                                                                          boxShadow: const [
-                                                                                            BoxShadow(offset: Offset(0, 2), blurRadius: 2, color: Colors.grey)
-                                                                                          ],
-                                                                                        ),
-                                                                                      ));
-                                                                                });
+                                                                            return Message(newBox,  aesSecretKey,  a, c);
                                                                           });
                                                                     })),
                                                           ],

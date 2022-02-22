@@ -29,6 +29,8 @@ dependencies:
   encrypt: ^5.0.1
   cryptography: ^2.0.5
 
+  # Check for connectivity
+  connectivity_plus: ^2.2.1
 
   file_picker: ^4.1.6
   fluttercontactpicker: ^4.5.1
