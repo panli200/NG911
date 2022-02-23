@@ -21,7 +21,7 @@ class _ConnectionStatusState extends State<ConnectionStatus>{
      subscriptionConnection = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       if(result == ConnectivityResult.none) {
         setState(() {
-          connection = 'No internet connection';
+          connection = 'No internet connection!';
         });
       }else{
         setState(() {
