@@ -10,7 +10,8 @@ import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:sos_app/routes/router.gr.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class CallPage extends StatefulWidget {
   final privateKey;
   final publicKey;
@@ -147,6 +148,24 @@ class _CallPageState extends State<CallPage> {
           automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
           actions: <Widget>[
+            ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+              ),
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection('SOSEmergencies')
+                    .doc(mobile)
+                    .update({'Online': false, 'Ended': true});
+
+                signaling!.hangUp(_localRenderer!);
+                DatabaseReference real = FirebaseDatabase.instance.ref();
+                final databaseReal = real.child('sensors').child(mobile);
+
+                await databaseReal.update({'Online': false, 'Ended': true});
+              },
+              child: Text("End"),
+            ),
             IconButton(
                 icon: Icon(Icons.call, color: Colors.black),
                 onPressed: () async {
