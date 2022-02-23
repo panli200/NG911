@@ -69,7 +69,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
           name: name,
         ),
         appBar: AppBar(
-          title: Text('Overview'),
+          title: const Text('Overview'),
           centerTitle: true,
           backgroundColor: Colors.green,
         ),
@@ -79,22 +79,20 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
           Row(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>
-              [
-                SizedBox(width: MediaQuery.of(context).size.width * 0.01,), // SPACING
+              children: <Widget>[
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.01,
+                ), // SPACING
 
                 Container // Call History Chart
-                (
+                    (
                   height: MediaQuery.of(context).size.height * 0.9,
                   width: MediaQuery.of(context).size.width * 0.57,
-                  decoration:
-                      BoxDecoration
-                      (
-                        shape: BoxShape.rectangle,
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.white,
-                        border: Border.all(color: Colors.white, width: 1)
-                      ),
+                  decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      borderRadius: BorderRadius.circular(12),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.white, width: 1)),
                   child: StreamBuilder<QuerySnapshot>(
                       stream: history,
                       builder: (
@@ -107,7 +105,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                         }
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return Text('Loading');
+                          return const Text('Loading');
                         }
                         final data = snapshot.requireData;
                         for (var doc in data.docs) {
@@ -162,152 +160,165 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                       }),
                 ),
 
-                SizedBox(width: MediaQuery.of(context).size.width * 0.01,), // SPACING
-
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.01,
+                ), // SPACING
 
                 Container // Call History Data
-                (
-                  height: MediaQuery.of(context).size.height * 0.9,
-                  width: MediaQuery.of(context).size.width * 0.4,
-                  padding: EdgeInsets.all(10.0),
-                  decoration:
-                    BoxDecoration
                     (
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                      border: Border.all(color: Colors.white, width: 1)
-                    ),
-                  child: 
-                    Column
-                    (
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                      children: <Widget>
-                      [
-                        const Text('Emergency History', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30,), textAlign: TextAlign.center,),
-
-                        Row
-                        (
-                          children: [
-                            Row
-                            (
-                              children: 
-                              [
-                                Icon(FlutterRemix.history_line), 
-                                Text('Time', style: TextStyle(fontWeight: FontWeight.bold,),)
-                              ] 
+                        height: MediaQuery.of(context).size.height * 0.9,
+                        width: MediaQuery.of(context).size.width * 0.4,
+                        padding: const EdgeInsets.all(10.0),
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                            border: Border.all(color: Colors.white, width: 1)),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            const Text(
+                              'Emergency History',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 30,
+                              ),
+                              textAlign: TextAlign.center,
                             ),
+                            Row(
+                              children: [
+                                Row(children: const [
+                                  Icon(FlutterRemix.history_line),
+                                  Text(
+                                    'Time',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ]),
 
-                            SizedBox(width: MediaQuery.of(context).size.width * 0.05,),  // SPACING
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                ), // SPACING
 
-                            Row
-                            (
-                              children: 
-                              [
-                                Icon(FlutterRemix.smartphone_line), 
-                                Text('Mobile', style: TextStyle(fontWeight: FontWeight.bold,),)
-                              ] 
+                                Row(children: const [
+                                  Icon(FlutterRemix.smartphone_line),
+                                  Text(
+                                    'Mobile',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ]),
+
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.05,
+                                ), // SPACING
+
+                                Row(children: const [
+                                  Icon(FlutterRemix.global_line),
+                                  Text(
+                                    'Latitude',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ]),
+
+                                SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.03,
+                                ), // SPACING
+
+                                Row(children: const [
+                                  Icon(FlutterRemix.global_line),
+                                  Text(
+                                    'Longitude',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                ]),
+                              ],
                             ),
-
-                            SizedBox(width: MediaQuery.of(context).size.width * 0.05,),  // SPACING
-
-                            Row
-                            (
-                              children: 
-                              [
-                                Icon(FlutterRemix.global_line), 
-                                Text('Latitude', style: TextStyle(fontWeight: FontWeight.bold,),)
-                              ] 
-                            ),
-
-                            SizedBox(width: MediaQuery.of(context).size.width * 0.05,),  // SPACING
-
-                            Row
-                            (
-                              children: 
-                              [
-                                Icon(FlutterRemix.global_line), 
-                                Text('Longitude', style: TextStyle(fontWeight: FontWeight.bold,),)
-                              ] 
-                            ),
-                          ],
-                        ),
-
-                        Scrollbar
-                        (
-                          isAlwaysShown: true,
-                          child: 
-                            SingleChildScrollView
-                            (
-                              child: 
-                                Column
-                                (
+                            Scrollbar(
+                              isAlwaysShown: true,
+                              child: SingleChildScrollView(
+                                child: Column(
                                   children: [
-                                    SizedBox
-                                    (
-                                      height: MediaQuery.of(context).size.height * 0.8,
-                                      child: 
-                                        StreamBuilder<QuerySnapshot>
-                                        (
+                                    SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height *
+                                              0.8,
+                                      child: StreamBuilder<QuerySnapshot>(
                                           stream: history,
-                                          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                                            if (snapshot.hasError) 
-                                            {
-                                              return Text('Something went wrong  ${snapshot.error}');
+                                          builder: (BuildContext context,
+                                              AsyncSnapshot<QuerySnapshot>
+                                                  snapshot) {
+                                            if (snapshot.hasError) {
+                                              return Text(
+                                                  'Something went wrong  ${snapshot.error}');
                                             }
 
-                                            if (snapshot.connectionState == ConnectionState.waiting) 
-                                            {
-                                              return Text('Loading');
+                                            if (snapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return const Text('Loading');
                                             }
 
                                             final data = snapshot.requireData;
 
-                                            return ListView.builder (
+                                            return ListView.builder(
                                                 itemCount: data.size,
                                                 itemBuilder: (context, index) {
-                                                  if (DateTime.parse(data.docs[index].id).year ==currentDay.year && DateTime.parse(data.docs[index].id).month ==  currentDay.month && DateTime.parse(data.docs[index].id).day == currentDay.day) 
-                                                  {
-                                                    return Material (
-                                                      child: 
-                                                        Container
-                                                        (
-                                                          height: 30,
-                                                          child:
-                                                            Row
-                                                            (
-                                                              children: <Widget> 
-                                                              [
-                                                                Text(DateTime.parse(data
-                                                                      .docs[index]
-                                                                      .id)
-                                                                  .toString() +
-                                                              '  ${data.docs[index]['Phone']} '
-                                                                  '  ${data.docs[index]['Location'].latitude}  '
-                                                                  '   ${data.docs[index]['Location'].longitude}'),
-                                                              ]
-                                                            ),
-                                                        ),
+                                                  if (DateTime.parse(data
+                                                                  .docs[index]
+                                                                  .id)
+                                                              .year ==
+                                                          currentDay.year &&
+                                                      DateTime.parse(data
+                                                                  .docs[index]
+                                                                  .id)
+                                                              .month ==
+                                                          currentDay.month &&
+                                                      DateTime.parse(data
+                                                                  .docs[index]
+                                                                  .id)
+                                                              .day ==
+                                                          currentDay.day) {
+                                                    return Material(
+                                                      child: Container(
+                                                        height: 30,
+                                                        child: Row(
+                                                            children: <Widget>[
+                                                              Text(DateTime.parse(data
+                                                                          .docs[
+                                                                              index]
+                                                                          .id)
+                                                                      .toString() +
+                                                                  '  ${data.docs[index]['Phone']}' +'            '
+                                                                      '${data.docs[index]['Location'].latitude}'+'                 '
+                                                                      '${data.docs[index]['Location'].longitude}'),
+                                                            ]),
+                                                      ),
                                                     );
-                                                  } 
-                                                  else 
-                                                  {
+                                                  } else {
                                                     return const Material();
                                                   }
-                                                }
-                                            );
-                                          }
-                                        ),
+                                                });
+                                          }),
                                     ),
                                   ],
                                 ),
                               ),
                             ),
                           ],
-                    )),
+                        )),
 
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.01,), // SPACING
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.01,
+                ), // SPACING
               ]),
         ]),
       );
