@@ -9,7 +9,8 @@ import 'package:sos_app/sos_extended_pages/videostream.dart';
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
-
+import 'package:auto_route/auto_route.dart';
+import 'package:sos_app/routes/router.gr.dart';
 class CallPage extends StatefulWidget {
   final privateKey;
   final publicKey;
@@ -87,7 +88,8 @@ class _CallPageState extends State<CallPage> {
       bool? EndedB = event.snapshot?.value as bool;
       Ended = EndedB;
       if (Ended == true) {
-        Navigator.popUntil(context, (route) => false);
+        var router = context.router;
+        router.popUntilRoot();
       }
     });
     StreamSubscription? publicKeyStream;

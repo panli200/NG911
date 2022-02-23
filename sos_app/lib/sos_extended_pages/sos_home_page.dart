@@ -18,6 +18,8 @@ import 'package:sos_app/services/encryption.dart';
 import 'package:cryptography/cryptography.dart';
 import 'package:sos_app/services/connectionStatus.dart';
 import 'package:sos_app/sos_extended_pages/ringing_page.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:sos_app/routes/router.gr.dart';
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
 
@@ -77,6 +79,7 @@ class SosHomePageState extends State<SosHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var router = context.router;
     return Scaffold(
         body: Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
@@ -155,10 +158,8 @@ class SosHomePageState extends State<SosHomePage> {
                   sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
                   sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
                   personal(); //Test adding call type
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RingingPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
-                  );
+                  router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
+
                 },
                 child: Text("Yourself"),
               ))),
@@ -182,10 +183,7 @@ class SosHomePageState extends State<SosHomePage> {
                   sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
                   sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
                   contact(); //Test adding call type
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RingingPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
-                  );
+                  router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
                 },
                 child: Text("Emergency Contact"),
               ))),
@@ -207,10 +205,7 @@ class SosHomePageState extends State<SosHomePage> {
                   sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
                   sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
                   standby();
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RingingPage(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey)),
-                  );
+                  router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
                 },
                 child: Text("Third Party (Bystander)"),
               ))),
