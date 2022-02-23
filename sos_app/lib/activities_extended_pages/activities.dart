@@ -5,6 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_remix/flutter_remix.dart';
+import 'package:auto_route/auto_route.dart';
+import 'package:sos_app/routes/router.gr.dart';
 
 class ActivitiesPage extends StatefulWidget {
   ActivitiesPage({Key? key}) : super(key: key);
@@ -71,10 +73,12 @@ class ActivitiesPageState extends State<ActivitiesPage> {
                               ),
                               onTap: () {
 
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => ActivityDetailPage(Activity: id,Snapshot: data.docs[index])),
-                                );
+                                var router = context.router;
+                                router!.push( ActivityDetailRoute(Activity: id,Snapshot: data.docs[index]));
+//                                Navigator.push(
+//                                  context,
+//                                  MaterialPageRoute(builder: (context) => ActivityDetailPage(Activity: id,Snapshot: data.docs[index])),
+//                                );
                               },
                             );
 

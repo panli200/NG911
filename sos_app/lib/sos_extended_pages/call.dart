@@ -9,7 +9,8 @@ import 'package:sos_app/sos_extended_pages/videostream.dart';
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
-
+import 'package:auto_route/auto_route.dart';
+import 'package:sos_app/routes/router.gr.dart';
 class CallPage extends StatefulWidget {
   final privateKey;
   final publicKey;
@@ -35,6 +36,7 @@ class _CallPageState extends State<CallPage> {
   final senttext = new TextEditingController();
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+  StreamSubscription? streamSubscriptionEnded;
   bool? Ended;
 
   //Video Stream
@@ -81,13 +83,13 @@ class _CallPageState extends State<CallPage> {
     privateKey = widget.privateKey;
     aesSecretKey = widget.aesKey;
     final databaseReal = ref.child('sensors').child(mobile);
-    StreamSubscription? streamSubscriptionEnded;
     streamSubscriptionEnded =
         databaseReal.child('Ended').onValue.listen((event) async {
       bool? EndedB = event.snapshot?.value as bool;
       Ended = EndedB;
       if (Ended == true) {
-        Navigator.pop(context);
+        var router = context.router;
+        router.popUntilRoot();
       }
     });
     StreamSubscription? publicKeyStream;
@@ -119,6 +121,7 @@ class _CallPageState extends State<CallPage> {
   void dispose() {
     _localRenderer.dispose();
     _remoteRenderer.dispose();
+    streamSubscriptionEnded!.cancel();
     super.dispose();
   }
 
