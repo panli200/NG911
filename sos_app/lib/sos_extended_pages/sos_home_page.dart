@@ -88,29 +88,7 @@ class SosHomePageState extends State<SosHomePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          FutureBuilder(
-            future: isConnected(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-             bool isConnected = snapshot.data;
-             if(isConnected){
-               return Row(
-                 children: [
-                   Text("Internet connected")
-                 ],
-
-               );
-             }else{
-               return Row(
-                 children: [
-                   Text("Internet not connected")
-                 ],
-
-               );
-
-             }
-            },
-
-          ),
+          new ConnectionStatus(),
           Container(
             height: 40,
             width: 40,
