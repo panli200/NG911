@@ -416,7 +416,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: <Widget>[
                               const Text('Permission: '),
                               Text(
-                                _user.generalPermission.toString(),
+                                checkPermission(_user.generalPermission),
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.brown),
@@ -721,7 +721,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               children: <Widget>[
                                 const Text('Personal Permission: '),
                                 Text(
-                                  _user.personalMedicalPermission.toString(),
+                                  checkPermission(_user.personalMedicalPermission),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.brown),
@@ -754,7 +754,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                                 const Text('Emergency Contact Permission: '),
                                 Text(
-                                  _user.contactMedicalPermission.toString(),
+                                  checkPermission(_user.contactMedicalPermission),
                                   style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       color: Colors.brown),
@@ -864,7 +864,7 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
-
+  //function for select file
   Future selectFile() async {
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: false);
@@ -889,8 +889,14 @@ class _ProfilePageState extends State<ProfilePage> {
     _user.contactMedicalFile = fileT != null ? basename(fileT!.path) : '';
     _user.contactMedicalFilePath = path2;
   }
-  // functions for background se
 
+  //function for check the permission
+  String checkPermission(permission) {
+    if (permission == true)
+      return "Given";
+    else
+      return "Not Given";
+  }
 }
 
 // Sensor class for location
