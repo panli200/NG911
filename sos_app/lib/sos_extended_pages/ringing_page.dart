@@ -59,6 +59,10 @@ class RingingPageState extends State<RingingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text("SOS"),
+          centerTitle: true,
+        ),
         body: Container(
             decoration: const BoxDecoration(
               color: Colors.white,

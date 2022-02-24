@@ -24,51 +24,57 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
   }
   @override
   Widget build(BuildContext context) {
-    return Scrollbar(
-      child: SingleChildScrollView(
-        child: Column(
-            children: [
-              SizedBox(
-                  child: Row(
-                    children: [
-                      Text('Start time: ' + formatter.format(DateTime.parse(activitySnapshot['StartTime'])))
-                    ],
-
-                  )
-
-              ),
-              SizedBox(
-                  child: Row(
-                    children: [
-                      Text('End time: ' + formatter.format(activitySnapshot['EndTime'].toDate()))
-                    ],
-
-                  )
-
-              ),
-              SizedBox(
-                  child: Row(
-                    children: [
-                      Text('Latitude: ' + activitySnapshot['EndPointLatitude'])
-                    ],
-
-                  )
-
-              ),
-              SizedBox(
-                  child: Row(
-                    children: [
-                      Text('Longitude: ' + activitySnapshot['EndPointLongitude'])
-                    ],
-
-                  )
-
-              )
-
-            ]
-        ),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Logs"),
+        centerTitle: true,
       ),
+      body: Scrollbar(
+        child: SingleChildScrollView(
+          child: Column(
+              children: [
+                SizedBox(
+                    child: Row(
+                      children: [
+                        Text('Start time: ' + formatter.format(DateTime.parse(activitySnapshot['StartTime'])))
+                      ],
 
+                    )
+
+                ),
+                SizedBox(
+                    child: Row(
+                      children: [
+                        Text('End time: ' + formatter.format(activitySnapshot['EndTime'].toDate()))
+                      ],
+
+                    )
+
+                ),
+                SizedBox(
+                    child: Row(
+                      children: [
+                        Text('Latitude: ' + activitySnapshot['EndPointLatitude'])
+                      ],
+
+                    )
+
+                ),
+                SizedBox(
+                    child: Row(
+                      children: [
+                        Text('Longitude: ' + activitySnapshot['EndPointLongitude'])
+                      ],
+
+                    )
+
+                )
+
+              ]
+          ),
+        ),
+
+      ),
     );
   }
 //

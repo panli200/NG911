@@ -10,11 +10,15 @@ class SosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
-      appBarBuilder: (_, tabsRouter) => AppBar(
-        title: Text(tabsRouter.current.name),
-        centerTitle: true,
-        leading: const AutoBackButton(),
-      ),
+      // appBarBuilder: (_, tabsRouter) => AppBar(
+      //   title: Text(tabsRouter.current.name),
+      //   centerTitle: true,
+      //   leading: IconButton(
+      //     icon: Icon(Icons.chevron_left),
+      //     onPressed: () => Navigator.pop(context, false),
+      //   ),
+      //
+      // ),
       routes: const [
         SOS(),
         Profile(),
