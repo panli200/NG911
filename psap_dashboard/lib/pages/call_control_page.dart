@@ -64,7 +64,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
   late final aesSecretKeyString;
   final algorithm = AesCtr.with256bits(macAlgorithm: Hmac.sha256());
 
-
   // RealTime database
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
@@ -212,7 +211,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         String publicKeyPassed = event.snapshot.value.toString();
         aesSecretKeyString =
             (jsonDecode(publicKeyPassed) as List<dynamic>).cast<int>();
-         aesSecretKey = SecretKey(aesSecretKeyString);
+        aesSecretKey = SecretKey(aesSecretKeyString);
         setState(() {});
       }
     });
@@ -384,8 +383,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
     }
   }
 
-
-
   // Initialize
   @override
   void initState() {
@@ -399,7 +396,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
     databaseReal.update({
       'dispatcher_public_key': publicKey,
     });
-
 
     getRoomId(); //get roomId and join the stream
 
@@ -438,30 +434,25 @@ class _CallControlPanelState extends State<CallControlPanel> {
     super.initState();
   }
 
-
   @override
   void dispose() async {
-     publicKeyStream!.cancel();
-     aesKeyStream!.cancel();
-     endedStateStream!.cancel();
-     startTimeStream!.cancel();
-     batteryStream!.cancel();
-     longitudeStream!.cancel();
-     latitudeStream!.cancel();
-     speedStream!.cancel();
-     AccelerationStream!.cancel();
-     roomIdStream!.cancel();
+    publicKeyStream!.cancel();
+    aesKeyStream!.cancel();
+    endedStateStream!.cancel();
+    startTimeStream!.cancel();
+    batteryStream!.cancel();
+    longitudeStream!.cancel();
+    latitudeStream!.cancel();
+    speedStream!.cancel();
+    AccelerationStream!.cancel();
+    roomIdStream!.cancel();
     // clear users
     super.dispose();
-  }
-  Future<String> decryptText(SecretBox secretBox) async {
-    return utf8.decode(
-        await algorithm.decrypt(secretBox, secretKey: await aesSecretKey));
   }
 
   @override
   Widget build(BuildContext context) {
-
+    List<Message> messagesList = [];
 
     /// Encrypt and sent to database
     void encryptTextAndSend(String text) async {
@@ -488,6 +479,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         'mac': mac
       });
     }
+
     String? userMotion = '';
     double? speedDouble = 0.0;
     Future.delayed(Duration.zero, () async {
@@ -557,15 +549,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                         return Text('Loading');
                                       }
                                       final data = snapshot.requireData;
-                                        if (double.tryParse(latitudePassed!) !=
-                                                null &&
-                                            double.tryParse(longitudePassed!) !=
-                                                null) {
-                                          newLocs!.add(googleMap.LatLng(
-                                              double.tryParse(latitudePassed!),
-                                              double.tryParse(
-                                                  longitudePassed!)));
-                                        }
+                                      if (double.tryParse(latitudePassed!) !=
+                                              null &&
+                                          double.tryParse(longitudePassed!) !=
+                                              null) {
+                                        newLocs!.add(googleMap.LatLng(
+                                            double.tryParse(latitudePassed!),
+                                            double.tryParse(longitudePassed!)));
+                                      }
                                       return StreetMap();
                                     }))
                           ]),
@@ -660,7 +651,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               )
                                             ],
                                           ),
-
                                           Row(
                                             children: [
                                               Icon(
@@ -671,7 +661,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               )
                                             ],
                                           ),
-
                                           Row(
                                             children: [
                                               Icon(FlutterRemix.celsius_line),
@@ -684,7 +673,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               ),
                                             ],
                                           ),
-
                                           Row(
                                             children: [
                                               Icon(FlutterRemix
@@ -696,7 +684,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               ),
                                             ],
                                           ),
-
                                           Row(
                                             children: [
                                               const Icon(
@@ -708,7 +695,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               ),
                                             ],
                                           ),
-
                                           Row(
                                             children: const [
                                               Icon(FlutterRemix.map_pin_line),
@@ -740,7 +726,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                           Text(
                                             '$longitudeString' + '°',
                                           ),
-
                                           Row(
                                             children: [
                                               Text(
@@ -765,7 +750,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                   personalHealthCardString,
                                               urlPMR: urlPMR,
                                               urlECMR: urlECMR),
-
                                         ],
                                       ),
                                     ],
@@ -871,9 +855,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                           reverse: true,
                                                                           itemCount: data.size,
                                                                           itemBuilder: (context, index) {
-                                                                            String
-                                                                                decryptedMessage =
-                                                                                '';
                                                                             Color
                                                                                 c;
                                                                             Alignment
@@ -908,7 +889,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                             SecretBox
                                                                                 newBox =
                                                                                 SecretBox(cipherInt, nonce: nonceInt, mac: macFinal);
-                                                                            return Message(newBox,  aesSecretKey,  a, c);
+                                                                            messagesList.add( Message(
+                                                                                secretBox: newBox,
+                                                                                aesSecretKey: aesSecretKey,
+                                                                                alignment: a,
+                                                                                color: c));
+                                                                            return messagesList[index];
                                                                           });
                                                                     })),
                                                           ],
