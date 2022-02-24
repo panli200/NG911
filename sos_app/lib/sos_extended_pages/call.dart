@@ -145,27 +145,23 @@ class _CallPageState extends State<CallPage> {
             style: TextStyle(color: Colors.black),
           ),
           centerTitle: true,
-          automaticallyImplyLeading: false,
           backgroundColor: Colors.white,
-          actions: <Widget>[
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-              ),
-              onPressed: () async {
-                await FirebaseFirestore.instance
-                    .collection('SOSEmergencies')
-                    .doc(mobile)
-                    .update({'Online': false, 'Ended': true});
-
-                signaling!.hangUp(_localRenderer!);
-                DatabaseReference real = FirebaseDatabase.instance.ref();
-                final databaseReal = real.child('sensors').child(mobile);
-
-                await databaseReal.update({'Online': false, 'Ended': true});
-              },
-              child: Text("End"),
+          leading: GestureDetector(
+            onTap: () async {
+              await FirebaseFirestore.instance
+                  .collection('SOSEmergencies')
+                  .doc(mobile)
+                  .update({'Online': false, 'Ended': true});
+              signaling!.hangUp(_localRenderer!);
+              DatabaseReference real = FirebaseDatabase.instance.ref();
+              final databaseReal = real.child('sensors').child(mobile);
+              await databaseReal.update({'Online': false, 'Ended': true});
+            },
+            child: Icon(
+              Icons.dangerous, color: Colors.red,// add custom icons also
             ),
+          ),
+          actions: <Widget>[
             IconButton(
                 icon: Icon(Icons.call, color: Colors.black),
                 onPressed: () async {
@@ -179,7 +175,7 @@ class _CallPageState extends State<CallPage> {
                               new IconButton(
                                   alignment: Alignment.center,
                                   icon: new Icon(
-                                    Icons.phone,
+                                    Icons.call_end,
                                     color: Colors.red,
                                   ),
                                   onPressed: () {

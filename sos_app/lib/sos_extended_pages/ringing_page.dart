@@ -74,7 +74,8 @@ class RingingPageState extends State<RingingPage> {
               Center(
                 child: Text(" Connecting to 911  .  .  .",
                   style: TextStyle(fontWeight: FontWeight.bold,
-                  fontSize: 16),
+                  fontSize: 20,
+                  color: Colors.blueAccent),
                 ),
               )
             ])));
