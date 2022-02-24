@@ -59,13 +59,23 @@ class RingingPageState extends State<RingingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        appBar: AppBar(
+          title: Text("SOS"),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+        ),
         body: Container(
             decoration: const BoxDecoration(
               color: Colors.white,
             ),
-            child: Column(children: <Widget>[
-              Expanded(
-                child: Text("Hang on, contacting 911"),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+              Center(
+                child: Text(" Connecting to 911  .  .  .",
+                  style: TextStyle(fontWeight: FontWeight.bold,
+                  fontSize: 16),
+                ),
               )
             ])));
   }

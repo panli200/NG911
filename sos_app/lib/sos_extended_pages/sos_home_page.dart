@@ -81,6 +81,10 @@ class SosHomePageState extends State<SosHomePage> {
   Widget build(BuildContext context) {
     var router = context.router;
     return Scaffold(
+        appBar: AppBar(
+          title: Text("SOS"),
+          centerTitle: true,
+        ),
         body: Container(
       padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
       margin: EdgeInsets.symmetric(vertical: 20),

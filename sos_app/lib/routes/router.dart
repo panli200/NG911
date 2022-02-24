@@ -12,7 +12,7 @@ import 'package:sos_app/SignUp.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',
-  routes: [
+  routes:<AutoRoute> [
 
     AutoRoute(page: EmptyRouterPage, initial: true,
         children: [
@@ -71,14 +71,14 @@ import 'package:sos_app/SignUp.dart';
                 AutoRoute(
                   path: 'activities_extended_pages',
                   name: 'Activities',
-                  page: EmptyRouterPage,
+                  page: ActivitiesPage,
 
                   // FUTURE EXTENDED/POP-UP PAGES FOR Activities PAGE
                   children: [
-                    AutoRoute(
-                      path: '',
-                      page: ActivitiesPage,
-                    ),
+                    // AutoRoute(
+                    //   path: '',
+                    //   page: ActivitiesPage,
+                    // ),
                     AutoRoute(
                       path: ':details',
                       page: ActivityDetailPage,

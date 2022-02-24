@@ -17,6 +17,10 @@ class HowToUsePage extends StatelessWidget {
 
     return Scaffold (
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: Text("SOS"),
+        centerTitle: true,
+      ),
       body: Container(
         child: Padding( 
           padding: new EdgeInsets.only(top: 5.0),
