@@ -10,6 +10,7 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
   bool? Online;
   bool? Ended;
   StreamSubscription? streamSubscription;
+  StreamSubscription? streamLocationSubscription;
   StreamSubscription? streamSubscriptionEnded;
   double x = 0.0;
   double y = 0.0;
@@ -71,7 +72,7 @@ if(counts == null){
       });
 
 // Location and Speed
-      streamSubscription = stream.listen((DatabaseEvent event) {
+streamLocationSubscription = stream.listen((DatabaseEvent event) {
         if (Ended != true) {
           databaseReal.update({
             'Latitude': location.latitude.toString(),
@@ -98,7 +99,9 @@ if(counts == null){
         bool? EndedB = event.snapshot?.value as bool;
         Ended = EndedB;
         if (Ended == true) {
-          streamSubscription?.pause();
+          streamSubscription!.cancel();
+          streamLocationSubscription!.cancel();
+          streamSubscriptionEnded!.cancel();
           databaseReal.remove();
         }
       });
