@@ -441,6 +441,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   void dispose() async {
+     publicKeyStream!.cancel();
+     aesKeyStream!.cancel();
+     endedStateStream!.cancel();
+     startTimeStream!.cancel();
+     batteryStream!.cancel();
+     longitudeStream!.cancel();
+     latitudeStream!.cancel();
+     speedStream!.cancel();
+     AccelerationStream!.cancel();
+     roomIdStream!.cancel();
     // clear users
     super.dispose();
   }
@@ -547,7 +557,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                         return Text('Loading');
                                       }
                                       final data = snapshot.requireData;
-                                      for (var doc in data.docs) {
                                         if (double.tryParse(latitudePassed!) !=
                                                 null &&
                                             double.tryParse(longitudePassed!) !=
@@ -557,7 +566,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               double.tryParse(
                                                   longitudePassed!)));
                                         }
-                                      }
                                       return StreetMap();
                                     }))
                           ]),
