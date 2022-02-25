@@ -356,9 +356,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
       ];
 
       //Get the route after the call
-      newLocs = [
-        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
-      ];
+      // newLocs = [
+      //   googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      // ];
     }
   }
 
@@ -548,14 +548,31 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                         return Text('Loading');
                                       }
                                       final data = snapshot.requireData;
-                                      if (double.tryParse(latitudePassed!) !=
-                                              null &&
-                                          double.tryParse(longitudePassed!) !=
-                                              null) {
+
+                                      //Initial the new locations list
+                                      newLocs = [
+                                        googleMap.LatLng(double.parse(startLan),
+                                            double.parse(startLon))
+                                      ];
+                                      //Adding the location to 
+                                      for (int i = 0;
+                                          i < data.docs.length;
+                                          i++) {
+                                        String la = data.docs[i]['latitude'];
+                                        String lo = data.docs[i]['longitude'];
                                         newLocs!.add(googleMap.LatLng(
-                                            double.tryParse(latitudePassed!),
-                                            double.tryParse(longitudePassed!)));
+                                            double.tryParse(la),
+                                            double.tryParse(lo)));
                                       }
+
+                                      // if (double.tryParse(latitudePassed!) !=
+                                      //         null &&
+                                      //     double.tryParse(longitudePassed!) !=
+                                      //         null) {
+                                      //   newLocs!.add(googleMap.LatLng(
+                                      //       double.tryParse(latitudePassed!),
+                                      //       double.tryParse(longitudePassed!)));
+                                      // }
                                       return StreetMap();
                                     }))
                           ]),
@@ -888,12 +905,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                             SecretBox
                                                                                 newBox =
                                                                                 SecretBox(cipherInt, nonce: nonceInt, mac: macFinal);
-                                                                            messagesList.add( Message(
+                                                                            messagesList.add(Message(
                                                                                 secretBox: newBox,
                                                                                 aesSecretKey: aesSecretKey,
                                                                                 alignment: a,
                                                                                 color: c));
-                                                                            var lengthOfMessageList = messagesList.length;
+                                                                            var lengthOfMessageList =
+                                                                                messagesList.length;
                                                                             return messagesList[index];
                                                                           });
                                                                     })),

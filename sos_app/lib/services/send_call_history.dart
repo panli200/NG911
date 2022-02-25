@@ -43,8 +43,8 @@ Future<void> sendUpdatedLocation() async {
     Location location = Location();
     await location.getCurrentLocation();
     await emergency.collection("NewLocations").add({
-      'latitude': location.latitude,
-      'longitude': location.longitude,
+      'latitude': location.latitude.toString(),
+      'longitude': location.longitude.toString(),
       'id': counter
     });
     counter ++;
