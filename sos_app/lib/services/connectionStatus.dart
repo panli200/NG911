@@ -13,7 +13,7 @@ class ConnectionStatus extends StatefulWidget{
 
 class _ConnectionStatusState extends State<ConnectionStatus>{
   bool connected = false;
-  String connection = '';
+  String connection = 'No internet connection!';
   StreamSubscription? subscriptionConnection;
 
   @override
