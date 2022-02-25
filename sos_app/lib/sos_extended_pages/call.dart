@@ -6,6 +6,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:sos_app/sos_extended_pages/signaling.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sos_app/sos_extended_pages/videostream.dart';
+import 'package:sos_app/services/send_realtime_info.dart';
 import 'package:rsa_encrypt/rsa_encrypt.dart';
 import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
@@ -122,7 +123,7 @@ class _CallPageState extends State<CallPage> {
   void dispose() {
     _localRenderer.dispose();
     _remoteRenderer.dispose();
-    streamSubscriptionEnded!.cancel();
+    stopSensors();
     super.dispose();
   }
 
