@@ -317,6 +317,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         [
                           Row
                           (
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: 
                             [
                               IconButton
@@ -371,7 +372,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           (
                             children: 
                             [
-                              Text('Emergency Contact: ', style: const TextStyle(fontWeight: FontWeight.bold),),
+                              Text('Emergency Contact No: ', style: const TextStyle(fontWeight: FontWeight.bold),),
 
                               Expanded
                               (
@@ -403,6 +404,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                               ),
                             ],
+                          ),
+
+                          const Divider
+                          (
+                            height: 5,
+                            thickness: 3,
+                            color: Colors.black12,
                           ),
 
                           SizedBox(height: 8.0,), // SPACING
@@ -462,7 +470,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 ),
                               );
                             },
-
                             child: const Text('SAVE GENERAL INFORMATION'),
                           ),
 
@@ -493,6 +500,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         [
                           Row
                           (
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: 
                             [
                               IconButton
@@ -516,7 +524,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           SizedBox( height: 8.0,),  // SPACING
 
-                          Text('Personal ', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17,),),
+                          Text('Personal ', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline, fontSize: 17,),),
 
                           SizedBox(height: 16.0,),  // SPACING
 
@@ -538,15 +546,12 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           SizedBox(height: 16.0,),  // SPACING
 
-                          Row
+                          Column
                           (
                             children: 
                             [
-                              Text('Health Card No: ',style: const TextStyle(fontWeight: FontWeight.bold),),
+                              Text('Health Card Number', style: const TextStyle(fontWeight: FontWeight.bold),),
 
-                              Expanded
-                              (
-                                child: 
                                 TextFormField
                                 (
                                   validator: (value) {
@@ -571,7 +576,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   keyboardType: TextInputType.number,
                                   controller: ctlHealthCard,
                                 ),
-                              ),
                             ],
                           ),
 
@@ -625,9 +629,9 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           Text
                           (
-                            'Emergency Contact',
+                            'Emergency Contact Information',
                             textAlign: TextAlign.center,
-                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17,),
+                            style: const TextStyle(fontWeight: FontWeight.bold, decoration: TextDecoration.underline, fontSize: 17,),
                           ),
 
                           SizedBox(height: 16.0,),  // SPACING
@@ -637,6 +641,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             children: 
                             [
                               Text('Permission to Share: ', style: const TextStyle(fontWeight: FontWeight.bold,),),
+
 
                               SlidingSwitchWidget
                               (
@@ -652,14 +657,22 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(height: 16.0,),  // SPACING
 
                           Row
+                              (
+                                children: 
+                                [
+                                  Text('Full Legal Name: ', style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  Text('Dr. Morgan', style: const TextStyle(fontWeight: FontWeight.bold),),
+                                ],
+                              ),
+
+                          SizedBox(height: 16.0,),  // SPACING
+
+                          Column
                           (
                             children: 
                             [
-                              Text('Health Card No: ', style: const TextStyle(fontWeight: FontWeight.bold,),),
+                              Text('Health Card Number', style: const TextStyle(fontWeight: FontWeight.bold,),),
 
-                              Expanded
-                              (
-                                child: 
                                   TextFormField
                                   (
                                     validator: (value) {
@@ -683,7 +696,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     keyboardType: TextInputType.number,
                                     controller: ctlHealthCard2,
                                   ),
-                              ),
                             ],
                           ),
 
@@ -724,6 +736,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 },
                               ),
                             ],
+                          ),
+
+                          const Divider
+                          (
+                            height: 5,
+                            thickness: 3,
+                            color: Colors.black12,
                           ),
 
                           SizedBox(height: 16.0,),  // SPACING

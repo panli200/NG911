@@ -22,6 +22,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:sos_app/profile_extended_pages/dialog_widget.dart';
 
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
@@ -141,7 +142,7 @@ class SosHomePageState extends State<SosHomePage> {
                               IconButton
                               (
                                 icon: Icon(FlutterRemix.information_fill, color: Colors.amber, size: 30, ),
-                                onPressed: () {}
+                                onPressed: () {showTrackingDialogBox(context);}
                               ),
 
                               Text
@@ -225,7 +226,7 @@ class SosHomePageState extends State<SosHomePage> {
                           IconButton
                           (
                             icon: Icon(FlutterRemix.information_fill, color: Colors.amber, size: 30, ),
-                            onPressed: () {}
+                            onPressed: () {showSOSDialogBox(context);}
                           ),
 
                           Center
@@ -233,7 +234,7 @@ class SosHomePageState extends State<SosHomePage> {
                             child: 
                             Text
                             (
-                              'Make an emergency call for',
+                              'Send a distress signal for',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headline6,
                             ),
@@ -250,29 +251,33 @@ class SosHomePageState extends State<SosHomePage> {
                       
                       SizedBox(height: 10), // Spacing visuals
 
-                      Center(
-                          child: Container(
-                              child: ElevatedButton(
-                        style: ButtonStyle(
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                        ),
-                        onPressed: () async{
-                          WidgetsFlutterBinding.ensureInitialized();
-                          var now = new DateTime.now();
-                          String? date = now.toString();
-                          _callNumber(date);
-                          updateSensors(date, publicKeyString, aesSecretKey);
-                          sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                          uploadFile(); //TEST upload files to the firebase storage
-                          updateHistory(); //Test adding call history database
-                          sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
-                          sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
-                          personal(); //Test adding call type
-                          router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
-
-                        },
-                        child: Text("Yourself"),
-                      ))),
+                      Center
+                      (
+                        child: 
+                          Container
+                          (
+                            child: 
+                              ElevatedButton
+                              (
+                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red),),
+                                onPressed: () async {
+                                  WidgetsFlutterBinding.ensureInitialized();
+                                  var now = new DateTime.now();
+                                  String? date = now.toString();
+                                  _callNumber(date);
+                                  updateSensors(date, publicKeyString, aesSecretKey);
+                                  sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                                  uploadFile(); //TEST upload files to the firebase storage
+                                  updateHistory(); //Test adding call history database
+                                  sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
+                                  sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
+                                  personal(); //Test adding call type
+                                  router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
+                                },
+                                child: Text("Yourself"),
+                              )
+                          )
+                      ),
 
                       SizedBox(height: 20), // Spacing visuals
 
