@@ -409,10 +409,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .orderBy("time", descending: true);
     messages = sortedMessages.snapshots();
 
+    //new location read by order of id
     locationsHistory = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(callerId)
         .collection('NewLocations')
+        .orderBy("id")
         .snapshots();
 
     activateListeners();
@@ -554,7 +556,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                         googleMap.LatLng(double.parse(startLan),
                                             double.parse(startLon))
                                       ];
-                                      //Adding the location to 
+                                      //Adding the location to
                                       for (int i = 0;
                                           i < data.docs.length;
                                           i++) {
