@@ -42,6 +42,4 @@ class _ConnectionStatusState extends State<ConnectionStatus>{
 
     return Text(connection);
   }
-
-
 }
