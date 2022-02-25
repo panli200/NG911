@@ -436,9 +436,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   void dispose() async {
+    // clear users
     publicKeyStream!.cancel();
     aesKeyStream!.cancel();
-    endedStateStream!.cancel();
     startTimeStream!.cancel();
     batteryStream!.cancel();
     longitudeStream!.cancel();
@@ -446,7 +446,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
     speedStream!.cancel();
     AccelerationStream!.cancel();
     roomIdStream!.cancel();
-    // clear users
     super.dispose();
   }
 
@@ -894,6 +893,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                                 aesSecretKey: aesSecretKey,
                                                                                 alignment: a,
                                                                                 color: c));
+                                                                            var lengthOfMessageList = messagesList.length;
                                                                             return messagesList[index];
                                                                           });
                                                                     })),
