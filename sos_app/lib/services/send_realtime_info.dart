@@ -14,11 +14,11 @@ final databaseReal = ref.child('sensors').child(mobile);
 StreamSubscription? streamSubscription;
 StreamSubscription? streamLocationSubscription;
 StreamSubscription? streamSubscriptionEnded;
-final StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
 void updateSensors(String? time, String? publicKey, var aesKey) async {
   bool? Online;
   bool? Ended;
+  StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
   double x = 0.0;
   double y = 0.0;
@@ -78,15 +78,24 @@ if(counts == null){
       });
 
 // Location and Speed
-streamLocationSubscription = stream.listen((DatabaseEvent event) {
-        if (Ended != true) {
-          databaseReal.update({
-            'Latitude': location.latitude.toString(),
-            'Longitude': location.longitude.toString(),
-            'Speed': location.speed.toString()
-          });
-        }
-      });
+streamLocationSubscription = location.getCurrentLocation().asStream().listen((event) {
+  if (Ended != true) {
+    databaseReal.update({
+      'Latitude': location.latitude.toString(),
+      'Longitude': location.longitude.toString(),
+      'Speed': location.speed.toString()
+    });
+  }
+});
+// streamLocationSubscription = stream.listen((DatabaseEvent event) {
+//         if (Ended != true) {
+//           databaseReal.update({
+//             'Latitude': location.latitude.toString(),
+//             'Longitude': location.longitude.toString(),
+//             'Speed': location.speed.toString()
+//           });
+//         }
+//       });
 
 // Battery
       var _battery = Battery();
@@ -120,5 +129,4 @@ void stopSensors(){
   streamLocationSubscription!.cancel();
   streamSubscriptionEnded!.cancel();
   databaseReal.remove();
-  _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
 }
