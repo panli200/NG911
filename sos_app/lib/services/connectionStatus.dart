@@ -2,6 +2,8 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
+import 'package:flutter_remix/flutter_remix.dart';
+
 class ConnectionStatus extends StatefulWidget{
   ConnectionStatus(
       {Key? key}): super(key: key);
@@ -14,6 +16,7 @@ class ConnectionStatus extends StatefulWidget{
 class _ConnectionStatusState extends State<ConnectionStatus>{
   bool connected = false;
   String connection = 'No internet connection!';
+  Icon connectionIcon = Icon(FlutterRemix.signal_wifi_error_line);
   StreamSubscription? subscriptionConnection;
 
   @override
@@ -22,10 +25,12 @@ class _ConnectionStatusState extends State<ConnectionStatus>{
       if(result == ConnectivityResult.none) {
         setState(() {
           connection = 'No internet connection!';
+          connectionIcon = Icon(FlutterRemix.signal_wifi_error_line);
         });
       }else{
         setState(() {
           connection = 'Connected';
+          connectionIcon = Icon(FlutterRemix.wifi_line);
         });
       }
     });
@@ -39,7 +44,18 @@ class _ConnectionStatusState extends State<ConnectionStatus>{
   }
   @override
   Widget build(BuildContext context) {
-
-    return Text(connection);
+    return Center(
+      child: 
+        Row
+        (
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: 
+          [
+            connectionIcon,
+            Text(connection)
+          ],
+        )
+    );
   }
 }
