@@ -282,6 +282,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         title: Text("Profile"),
         centerTitle: true,
@@ -293,63 +294,78 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 // crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          icon: Icon(
-                            FlutterRemix.information_fill,
-                            color: Colors.amber,
-                            size: 30,
+/************************************************************* START OF GENERAL INFORMATION *************************************************************/   
+                  Container
+                  (
+                    padding: EdgeInsets.all(10.0),
+                    decoration: 
+                      BoxDecoration
+                      (
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.white, width: 1)),
+                    child:
+                      Column
+                      (
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: 
+                        [
+                          Row
+                          (
+                            children: 
+                            [
+                              IconButton
+                              (
+                                icon: Icon(FlutterRemix.information_fill, color: Colors.amber, size: 30, ),
+                                  onPressed: () {showGeneralDialogBox(context);}
+                              ),
+
+                              Text('General Information', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17,),),
+                            ],
                           ),
-                          onPressed: () {
-                            showGeneralDialogBox(context);
-                          }),
-                      Text(
-                        'General Information',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Permission to Share: ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SlidingSwitchWidget(
-                        choice: false,
-                        onClicked: (bool systemOverlaysAreVisible) async {
-                          sw1 = systemOverlaysAreVisible;
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 24.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Full Legal Name: ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        'Bugs Capstone ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
+
+                          const Divider
+                          (
+                            height: 5,
+                            thickness: 3,
+                            color: Colors.black12,
+                          ),
+
+                          SizedBox( height: 16.0,),
+
+                          Row
+                          (
+                            children: 
+                            [
+                              Text('Permission to Share: ',style: const TextStyle(fontWeight: FontWeight.bold),),
+
+                              SlidingSwitchWidget
+                              (
+                                choice: false,
+                                onClicked: (bool systemOverlaysAreVisible) async {
+                                sw1 = systemOverlaysAreVisible;
+                                },
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 24.0,),  // SPACING
+
+                          Row
+                          (
+                            children: 
+                            [
+                              Text('Full Legal Name: ', style: const TextStyle(fontWeight: FontWeight.bold),),
+                              Text('Bugs Capstone ', style: const TextStyle(fontWeight: FontWeight.bold),),
+                            ],
+                          ),
+
+                          SizedBox(
                     height: 16.0,
                   ),
                   Row(
@@ -462,43 +478,58 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(
                     height: 16.0,
                   ),
-                  const Divider(
-                    height: 10,
-                    thickness: 5,
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                          icon: Icon(
-                            FlutterRemix.information_fill,
-                            color: Colors.amber,
-                            size: 30,
-                          ),
-                          onPressed: () {
-                            showMedicalDialogBox(context);
-                          }),
-                      Text(
-                        'Medical Information',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 17,
-                        ),
+                        ],
                       ),
-                    ],
-                  ),
-                  Text(
-                    'Personal ',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                    ),
-                  ),
-                  SizedBox(
+),
+/************************************************************* END OF GENERAL INFORMATION *************************************************************/
+  
+                  SizedBox( height: 8.0,),
+
+/************************************************************* START OF MEDICAL INFORMATION *************************************************************/
+                  Container
+                  (
+                    padding: EdgeInsets.all(10.0),
+                    decoration: 
+                      BoxDecoration
+                      (
+                        shape: BoxShape.rectangle,
+                        borderRadius: BorderRadius.circular(12),
+                        color: Colors.white,
+                        border: Border.all(color: Colors.white, width: 1)),
+                    child:
+                      Column
+                      (
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: 
+                        [
+                          Row
+                          (
+                            children: 
+                            [
+                              IconButton
+                              (
+                                icon: Icon(FlutterRemix.information_fill,color: Colors.amber, size: 30,),
+                                onPressed: () {
+                                  showMedicalDialogBox(context);
+                                }
+                              ),
+
+                              Text('Medical Information', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17,),),
+                            ],
+                          ),
+
+                          const Divider
+                          (
+                            height: 5,
+                            thickness: 3,
+                            color: Colors.black12,
+                          ),
+
+                          SizedBox( height: 8.0,),
+
+                          Text('Personal ', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17,),),
+
+                          SizedBox(
                     height: 16.0,
                   ),
                   Row(
@@ -527,18 +558,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       Expanded(
                         child: TextFormField(
                           validator: (value) {
-                            if (value!.length >= 1 && value!.length <= 8) {
-                              return 'Please enter 9 digital';
+                            if (value!.length >= 1 && value!.length <= 11) {
+                              return 'Please enter 7-12 digits';
                             }
                             return null;
                           },
-                          maxLength: 9,
+                          maxLength: 12,
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(9),
+                            LengthLimitingTextInputFormatter(12),
                           ],
                           decoration: const InputDecoration(
-                            labelText: '9 digital ',
+                            labelText: '7-12 Digits',
                             border: OutlineInputBorder(),
                           ),
                           keyboardType: TextInputType.number,
@@ -590,9 +621,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                     ],
                   ),
-                  SizedBox(
-                    height: 18.0,
+
+                  const Divider
+                  (
+                    height: 5,
+                    thickness: 3,
+                    color: Colors.black12,
                   ),
+
+                  SizedBox( height: 8.0,),
+
                   Text(
                     'Emergency Contact',
                     textAlign: TextAlign.center,
@@ -634,18 +672,18 @@ class _ProfilePageState extends State<ProfilePage> {
                       Expanded(
                         child: TextFormField(
                           validator: (value) {
-                            if (value!.length >= 1 && value!.length <= 8) {
-                              return 'Please enter 9 digital';
+                            if (value!.length >= 1 && value!.length <= 11) {
+                              return 'Please enter 7-12 digits';
                             }
                             return null;
                           },
-                          maxLength: 9,
+                          maxLength: 12,
                           inputFormatters: <TextInputFormatter>[
                             FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(9),
+                            LengthLimitingTextInputFormatter(12),
                           ],
                           decoration: const InputDecoration(
-                            labelText: '9 digital ',
+                            labelText: '7-12 Digits',
                             border: OutlineInputBorder(),
                           ),
                           keyboardType: TextInputType.number,
@@ -809,10 +847,15 @@ class _ProfilePageState extends State<ProfilePage> {
                       }
                     },
                     child: const Text('SAVE MEDICAL INFORMATION'),
+                  )],
+                      ),
                   ),
+/************************************************************* END OF MEDICAL INFORMATION *************************************************************/
+
                   SizedBox(
                     height: 16.0,
                   ),
+
                   const Divider(
                     height: 10,
                     thickness: 5,
