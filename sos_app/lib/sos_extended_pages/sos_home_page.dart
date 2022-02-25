@@ -21,6 +21,7 @@ import 'package:sos_app/sos_extended_pages/ringing_page.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:flutter_remix/flutter_remix.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
 
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
@@ -82,7 +83,10 @@ class SosHomePageState extends State<SosHomePage> {
   @override
   Widget build(BuildContext context) {
     var router = context.router;
+    String textBackground = "Start Tracking";
+
     return Scaffold(
+      backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text("SOS"),
           centerTitle: true,
@@ -95,109 +99,229 @@ class SosHomePageState extends State<SosHomePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
           new ConnectionStatus(),
-          Container(
-            height: 40,
-            width: 40,
-            child: HowToUseButton(
-                tileColor: howToUsePopUp.color,
-                pageTitle: howToUsePopUp.title,
-                onTileTap: () => context.router.push(
-                      HowToUseRoute(
-                        howToUseID: howToUsePopUp.id,
-                      ),
-                    ) // onTileTap
-                ),
-          ), // How To Use App Placeholder
-
-          SizedBox(height: 20), // Spacing visuals
-
-          Center(
-            child: Text(
-              'Make an emergency call for:',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ),
+          // Container(
+          //   height: 40,
+          //   width: 40,
+          //   child: HowToUseButton(
+          //       tileColor: howToUsePopUp.color,
+          //       pageTitle: howToUsePopUp.title,
+          //       onTileTap: () => context.router.push(
+          //             HowToUseRoute(
+          //               howToUseID: howToUsePopUp.id,
+          //             ),
+          //           ) // onTileTap
+          //       ),
+          // ), // How To Use App Placeholder
 
           SizedBox(height: 20), // Spacing visuals
 
           Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Center(
-                  child: Container(
-                      child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                ),
-                onPressed: () async{
-                  WidgetsFlutterBinding.ensureInitialized();
-                  var now = new DateTime.now();
-                  String? date = now.toString();
-                  _callNumber(date);
-                  updateSensors(date, publicKeyString, aesSecretKey);
-                  sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                  uploadFile(); //TEST upload files to the firebase storage
-                  updateHistory(); //Test adding call history database
-                  sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
-                  sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
-                  personal(); //Test adding call type
-                  router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
+              Container
+              (
+                padding: EdgeInsets.all(10.0),
+                decoration: 
+                  BoxDecoration
+                  (
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.white, width: 1)),
+                    child:
+                      Column
+                      (
+                        children: 
+                        [
+                          Row
+                          (
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: 
+                            [
+                              IconButton
+                              (
+                                icon: Icon(FlutterRemix.information_fill, color: Colors.amber, size: 30, ),
+                                onPressed: () {}
+                              ),
 
-                },
-                child: Text("Yourself"),
-              ))),
+                              Text
+                              (
+                                'Track Location',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17,),
+                              ),
+                            ],
+                          ),
 
-              SizedBox(height: 20), // Spacing visuals
+                          const Divider
+                          (
+                            height: 5,
+                            thickness: 3,
+                            color: Colors.black12,
+                          ),
 
-              Center(
-                  child: Container(
-                      child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                ),
-                onPressed: () {
-                  var now = new DateTime.now();
-                  String? date = now.toString();
-                  _callNumber(date);
-                  updateSensors(date, publicKeyString, aesSecretKey);
-                  sendUserDate(); //TEST calling send the user profile function to send the data to firebase
-                  uploadFile(); //TEST upload files to the firebase storage
-                  updateHistory(); //Test adding call history database
-                  sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
-                  sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
-                  contact(); //Test adding call type
-                  router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
-                },
-                child: Text("Emergency Contact"),
-              ))),
+                          SizedBox(height: 10), // Spacing visuals
 
-              SizedBox(height: 20), // Spacing visuals
+                          Center
+                          (
+                            child: 
+                              Container
+                              (
+                                child: 
+                                  ElevatedButton
+                                  (
+                                    child: Text(textBackground),
+                                    style: ButtonStyle(backgroundColor:MaterialStateProperty.all<Color>(Colors.black),),
+                                    onPressed: () async { // code here to activate background
+                                      final service = FlutterBackgroundService();
+                                      var isRunning = await service.isServiceRunning();
+                                      if (isRunning) {
+                                        service.sendData(
+                                          {"action": "stopService"},
+                                        );
+                                      } else {
+                                        service.start();
+                                      }
 
-              Center(
-                  child: Container(
-                      child: ElevatedButton(
-                style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
-                ),
-                onPressed: () {
-                  var now = new DateTime.now();
-                  String? date = now.toString();
-                  _callNumber(date);
-                  updateSensors(date, publicKeyString, aesSecretKey);
-                  updateHistory(); //Test adding call history database
-                  sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
-                  sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
-                  standby();
-                  router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
-                },
-                child: Text("Third Party (Bystander)"),
-              ))),
+                                      if (!isRunning) {
+                                        textBackground = 'Stop Tracking';
+                                      } else {
+                                        textBackground = 'Start Tracking';
+                                      }
 
-              // const Divider(
-              //   height: 10,
-              //   thickness: 5,
-              // ),
+                                      setState(() {});
+                                    },
+                                  )
+                              )
+                          ),
+                        ],
+                      )
+              ),
+              
+
+              SizedBox(height: 10), // Spacing visuals
+
+              Container
+              (
+                padding: EdgeInsets.all(10.0),
+                decoration: 
+                  BoxDecoration
+                  (
+                    shape: BoxShape.rectangle,
+                    borderRadius: BorderRadius.circular(12),
+                    color: Colors.white,
+                    border: Border.all(color: Colors.white, width: 1)
+                  ),
+                child:
+                  Column
+                  (
+                    children: 
+                    [
+                      Row
+                      (
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: 
+                        [
+                          IconButton
+                          (
+                            icon: Icon(FlutterRemix.information_fill, color: Colors.amber, size: 30, ),
+                            onPressed: () {}
+                          ),
+
+                          Center
+                          (
+                            child: 
+                            Text
+                            (
+                              'Make an emergency call for',
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.headline6,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      const Divider
+                          (
+                            height: 5,
+                            thickness: 3,
+                            color: Colors.black12,
+                          ),
+                      
+                      SizedBox(height: 10), // Spacing visuals
+
+                      Center(
+                          child: Container(
+                              child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                        ),
+                        onPressed: () async{
+                          WidgetsFlutterBinding.ensureInitialized();
+                          var now = new DateTime.now();
+                          String? date = now.toString();
+                          _callNumber(date);
+                          updateSensors(date, publicKeyString, aesSecretKey);
+                          sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                          uploadFile(); //TEST upload files to the firebase storage
+                          updateHistory(); //Test adding call history database
+                          sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
+                          sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
+                          personal(); //Test adding call type
+                          router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
+
+                        },
+                        child: Text("Yourself"),
+                      ))),
+
+                      SizedBox(height: 20), // Spacing visuals
+
+                      Center(
+                          child: Container(
+                              child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                        ),
+                        onPressed: () {
+                          var now = new DateTime.now();
+                          String? date = now.toString();
+                          _callNumber(date);
+                          updateSensors(date, publicKeyString, aesSecretKey);
+                          sendUserDate(); //TEST calling send the user profile function to send the data to firebase
+                          uploadFile(); //TEST upload files to the firebase storage
+                          updateHistory(); //Test adding call history database
+                          sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
+                          sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
+                          contact(); //Test adding call type
+                          router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
+                        },
+                        child: Text("Emergency Contact"),
+                      ))),
+
+                      SizedBox(height: 20), // Spacing visuals
+
+                      Center(
+                          child: Container(
+                              child: ElevatedButton(
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.red),
+                        ),
+                        onPressed: () {
+                          var now = new DateTime.now();
+                          String? date = now.toString();
+                          _callNumber(date);
+                          updateSensors(date, publicKeyString, aesSecretKey);
+                          updateHistory(); //Test adding call history database
+                          sendLocationHistory();// send last 10 minutes "or less minutes since started" of location history
+                          sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
+                          standby();
+                          router.push(RingingRoute(privateKey: privKey,publicKey: publicKey, aesKey: aesSecretKey));
+                        },
+                        child: Text("Third Party (Bystander)"),
+                      ))),
+                    ],
+                  )
+              )
             ],
           ) // SOS Scenario Button Placeholders
         ],
