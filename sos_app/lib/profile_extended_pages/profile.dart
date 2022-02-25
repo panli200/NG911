@@ -365,119 +365,108 @@ class _ProfilePageState extends State<ProfilePage> {
                             ],
                           ),
 
-                          SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Emergency Contact: ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                        child: Text(
-                          _user.contactNum,
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          FlutterRemix.user_add_fill,
-                          color: Colors.teal,
-                          size: 26,
-                        ),
-                        onPressed: () async {
-                          final PhoneContact contact =
-                              await FlutterContactPicker.pickPhoneContact();
-                          setState(() {
-                            _phoneContact = contact;
-                            _user.contactNum = (_phoneContact != null
-                                ? _phoneContact!.phoneNumber!.number
-                                : '')!;
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          FlutterRemix.user_unfollow_fill,
-                          color: Colors.red,
-                          size: 26,
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            _phoneContact = null;
-                            _user.contactNum = '';
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red),
-                    ),
-                    //EDIT GENERAL INFORMATION DIALOG
-                    onPressed: () {
-                      setState(() {
-                        _user.generalPermission = sw1;
-                      });
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) => AlertDialog(
-                          title: const Text('Edit General Information'),
-                          content: SingleChildScrollView(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                const Text('Permission: '),
-                                Text(
-                                  checkPermission(_user.generalPermission),
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.brown),
-                                  textAlign: TextAlign.center,
-                                ),
-                                SizedBox(
-                                  height: 8.0,
-                                ),
-                                const Text('Emergency Contact: '),
-                                Text(
-                                  _user.contactNum,
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.brown),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
-                            ),
+                          SizedBox(height: 16.0,),  // SPACING
+
+                          Row
+                          (
+                            children: 
+                            [
+                              Text('Emergency Contact: ', style: const TextStyle(fontWeight: FontWeight.bold),),
+
+                              Expanded
+                              (
+                                child: 
+                                  Text(_user.contactNum,style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),),
+                              ),
+
+                              IconButton
+                              (
+                                icon: Icon(FlutterRemix.user_add_fill,color: Colors.teal,size: 26,),
+                                onPressed: () async {
+                                  final PhoneContact contact =
+                                      await FlutterContactPicker.pickPhoneContact();
+                                  setState(() {
+                                    _phoneContact = contact;
+                                    _user.contactNum = (_phoneContact != null ? _phoneContact!.phoneNumber!.number : '')!;
+                                  });
+                                },
+                              ),
+
+                              IconButton
+                              (
+                                icon: Icon(FlutterRemix.user_unfollow_fill, color: Colors.red, size: 26,),
+                                onPressed: () async {
+                                  setState(() {
+                                    _phoneContact = null;
+                                    _user.contactNum = '';
+                                  });
+                                },
+                              ),
+                            ],
                           ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context, 'Cancel'),
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                saveGeneralValue();
-                                Navigator.pop(context, 'OK');
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    child: const Text('SAVE GENERAL INFORMATION'),
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
+
+                          SizedBox(height: 8.0,), // SPACING
+
+                          ElevatedButton
+                          (
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red), ),
+                            //EDIT GENERAL INFORMATION DIALOG
+                            onPressed: () {
+                              setState(() {
+                                _user.generalPermission = sw1;
+                              });
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) => AlertDialog(
+                                  title: const Text('Edit General Information'),
+                                  content: SingleChildScrollView(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: <Widget>[
+                                        const Text('Permission: '),
+                                        Text(
+                                          checkPermission(_user.generalPermission),
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.brown),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                        SizedBox(
+                                          height: 8.0,
+                                        ),
+                                        const Text('Emergency Contact: '),
+                                        Text(
+                                          _user.contactNum,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.brown),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context, 'Cancel'),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        saveGeneralValue();
+                                        Navigator.pop(context, 'OK');
+                                      },
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
+
+                            child: const Text('SAVE GENERAL INFORMATION'),
+                          ),
+
+                          SizedBox (height: 16.0,),
                         ],
                       ),
 ),
@@ -525,331 +514,329 @@ class _ProfilePageState extends State<ProfilePage> {
                             color: Colors.black12,
                           ),
 
-                          SizedBox( height: 8.0,),
+                          SizedBox( height: 8.0,),  // SPACING
 
                           Text('Personal ', textAlign: TextAlign.center, style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17,),),
 
-                          SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Permission to Share: ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      SlidingSwitchWidget(
-                        choice: false,
-                        onClicked: (bool systemOverlaysAreVisible) async {
-                          sw2 = systemOverlaysAreVisible;
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Health Card No: ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value!.length >= 1 && value!.length <= 11) {
-                              return 'Please enter 7-12 digits';
-                            }
-                            return null;
-                          },
-                          maxLength: 12,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(12),
-                          ],
-                          decoration: const InputDecoration(
-                            labelText: '7-12 Digits',
-                            border: OutlineInputBorder(),
-                          ),
-                          keyboardType: TextInputType.number,
-                          controller: ctlHealthCard,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Medical History: ',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      Expanded(
-                        child: Text(
-                          _user.personalMedicalFile,
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          FlutterRemix.attachment_2,
-                          color: Colors.teal,
-                          size: 26,
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            selectFile();
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          FlutterRemix.delete_bin_2_fill,
-                          color: Colors.red,
-                          size: 26,
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            file = null;
-                            _user.personalMedicalFile = ''; // File is null
-                          });
-                        },
-                      ),
-                    ],
-                  ),
+                          SizedBox(height: 16.0,),  // SPACING
 
-                  const Divider
-                  (
-                    height: 5,
-                    thickness: 3,
-                    color: Colors.black12,
-                  ),
+                          Row
+                          (
+                            children: 
+                            [
+                              Text('Permission to Share: ', style: const TextStyle(fontWeight: FontWeight.bold),),
 
-                  SizedBox( height: 8.0,),
-
-                  Text(
-                    'Emergency Contact',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Permission to Share: ',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SlidingSwitchWidget(
-                        choice: false,
-                        onClicked: (bool systemOverlaysAreVisible) async {
-                          sw3 = systemOverlaysAreVisible;
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Health Card No: ',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          validator: (value) {
-                            if (value!.length >= 1 && value!.length <= 11) {
-                              return 'Please enter 7-12 digits';
-                            }
-                            return null;
-                          },
-                          maxLength: 12,
-                          inputFormatters: <TextInputFormatter>[
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(12),
-                          ],
-                          decoration: const InputDecoration(
-                            labelText: '7-12 Digits',
-                            border: OutlineInputBorder(),
-                          ),
-                          keyboardType: TextInputType.number,
-                          controller: ctlHealthCard2,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Medical History: ',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Expanded(
-                        child: Text(
-                          _user.contactMedicalFile,
-                          style: TextStyle(
-                              fontSize: 12, fontWeight: FontWeight.w500),
-                        ),
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          FlutterRemix.attachment_2,
-                          color: Colors.teal,
-                          size: 26,
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            selectFileT();
-                          });
-                        },
-                      ),
-                      IconButton(
-                        icon: Icon(
-                          FlutterRemix.delete_bin_2_fill,
-                          color: Colors.red,
-                          size: 26,
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            fileT = null;
-                            _user.contactMedicalFile = ''; // File is null
-                          });
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.red),
-                    ),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        setState(() {
-                          _user.personalHealthNum = ctlHealthCard.text;
-                          _user.contactHealthNum = ctlHealthCard2.text;
-                          _user.personalMedicalPermission = sw2;
-                          _user.contactMedicalPermission = sw3;
-                        });
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) => AlertDialog(
-                            title: const Text('Edit Medical Information'),
-                            content: SingleChildScrollView(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  const Text('Personal Permission: '),
-                                  Text(
-                                    checkPermission(_user.personalMedicalPermission),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.brown),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(
-                                    height: 8.0,
-                                  ),
-                                  const Text('Personal Health Card No:'),
-                                  Text(
-                                    _user.personalHealthNum,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.brown),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(
-                                    height: 8.0,
-                                  ),
-                                  const Text('Personal Medical History:'),
-                                  Text(
-                                    _user.personalMedicalFile,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.brown),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(
-                                    height: 8.0,
-                                  ),
-                                  const Text('Emergency Contact Permission: '),
-                                  Text(
-                                    checkPermission(_user.contactMedicalPermission),
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.brown),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(
-                                    height: 8.0,
-                                  ),
-                                  const Text('Emergency Contact Health Card No:'),
-                                  Text(
-                                    _user.contactHealthNum,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.brown),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(
-                                    height: 8.0,
-                                  ),
-                                  const Text(
-                                      'Emergency Contact Medical History:'),
-                                  Text(
-                                    _user.contactMedicalFile,
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.brown),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                onPressed: () => Navigator.pop(context, 'Cancel'),
-                                child: const Text('Cancel'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  saveMedicalValue();
-                                  Navigator.pop(context, 'OK');
+                              SlidingSwitchWidget
+                              (
+                                choice: false,
+                                onClicked: (bool systemOverlaysAreVisible) async {
+                                  sw2 = systemOverlaysAreVisible;
                                 },
-                                child: const Text('OK'),
                               ),
                             ],
                           ),
-                        );
-                      }
-                    },
-                    child: const Text('SAVE MEDICAL INFORMATION'),
-                  )],
-                      ),
-                  ),
+
+                          SizedBox(height: 16.0,),  // SPACING
+
+                          Row
+                          (
+                            children: 
+                            [
+                              Text('Health Card No: ',style: const TextStyle(fontWeight: FontWeight.bold),),
+
+                              Expanded
+                              (
+                                child: 
+                                TextFormField
+                                (
+                                  validator: (value) {
+                                    if (value!.length >= 1 && value!.length <= 11) 
+                                    {
+                                      return 'Please enter 7-12 digits';
+                                    }
+                                    return null;
+                                  },
+                                  maxLength: 12,
+                                  inputFormatters: <TextInputFormatter>
+                                  [
+                                    FilteringTextInputFormatter.digitsOnly,
+                                    LengthLimitingTextInputFormatter(12),
+                                  ],
+                                  decoration: 
+                                    const InputDecoration
+                                    (
+                                      labelText: '7-12 Digits',
+                                      border: OutlineInputBorder(),
+                                    ),
+                                  keyboardType: TextInputType.number,
+                                  controller: ctlHealthCard,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 8.0,),  // SPACING
+
+                          Row
+                          (
+                            children: 
+                            [
+                              Text('Medical History: ', style: const TextStyle(fontWeight: FontWeight.bold),),
+
+                              Expanded
+                              (
+                                child: 
+                                Text(_user.personalMedicalFile, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),),
+                              ),
+
+                              IconButton
+                              (
+                                icon: Icon(FlutterRemix.attachment_2,color: Colors.teal, size: 26,),
+                                onPressed: () async 
+                                {
+                                  setState(() {
+                                    selectFile();
+                                  });
+                                },
+                              ),
+
+                              IconButton
+                              (
+                                icon: Icon(FlutterRemix.delete_bin_2_fill,color: Colors.red, size: 26,),
+                                onPressed: () async 
+                                {
+                                  setState(() {
+                                    file = null;
+                                    _user.personalMedicalFile = ''; // File is null
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+
+                          const Divider
+                          (
+                            height: 5,
+                            thickness: 3,
+                            color: Colors.black12,
+                          ),
+
+                          SizedBox( height: 8.0,),  // SPACING
+
+                          Text
+                          (
+                            'Emergency Contact',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 17,),
+                          ),
+
+                          SizedBox(height: 16.0,),  // SPACING
+
+                          Row
+                          (
+                            children: 
+                            [
+                              Text('Permission to Share: ', style: const TextStyle(fontWeight: FontWeight.bold,),),
+
+                              SlidingSwitchWidget
+                              (
+                                choice: false,
+                                onClicked: (bool systemOverlaysAreVisible) async 
+                                {
+                                  sw3 = systemOverlaysAreVisible;
+                                },
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 16.0,),  // SPACING
+
+                          Row
+                          (
+                            children: 
+                            [
+                              Text('Health Card No: ', style: const TextStyle(fontWeight: FontWeight.bold,),),
+
+                              Expanded
+                              (
+                                child: 
+                                  TextFormField
+                                  (
+                                    validator: (value) {
+                                      if (value!.length >= 1 && value!.length <= 11) 
+                                      {
+                                        return 'Please enter 7-12 digits';
+                                      }
+                                      return null;
+                                    },
+                                    maxLength: 12,
+                                    inputFormatters: <TextInputFormatter>
+                                      [
+                                        FilteringTextInputFormatter.digitsOnly,
+                                        LengthLimitingTextInputFormatter(12),
+                                      ],
+                                    decoration: const 
+                                      InputDecoration(
+                                      labelText: '7-12 Digits',
+                                      border: OutlineInputBorder(),
+                                      ),
+                                    keyboardType: TextInputType.number,
+                                    controller: ctlHealthCard2,
+                                  ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 8.0,),  // SPACING
+
+                          Row
+                          (
+                            children: 
+                            [
+                              Text('Medical History: ', style: const TextStyle(fontWeight: FontWeight.bold,),),
+
+                              Expanded
+                              (
+                                child: Text(_user.contactMedicalFile,style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500),),
+                              ),
+
+                              IconButton
+                              (
+                                icon: Icon(FlutterRemix.attachment_2, color: Colors.teal, size: 26,),
+                              
+                                onPressed: () async 
+                                {
+                                  setState(() {
+                                    selectFileT();
+                                  });
+                                },
+                              ),
+
+                              IconButton
+                              (
+                                icon: Icon(FlutterRemix.delete_bin_2_fill, color: Colors.red, size: 26,),
+                                onPressed: () async 
+                                {
+                                  setState(() {
+                                    fileT = null;
+                                    _user.contactMedicalFile = ''; // File is null
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 16.0,),  // SPACING
+
+                          ElevatedButton
+                          (
+                            style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.red),),
+
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() {
+                                  _user.personalHealthNum = ctlHealthCard.text;
+                                  _user.contactHealthNum = ctlHealthCard2.text;
+                                  _user.personalMedicalPermission = sw2;
+                                  _user.contactMedicalPermission = sw3;
+                                });
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => AlertDialog(
+                                    title: const Text('Edit Medical Information'),
+                                    content: SingleChildScrollView(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                                        children: <Widget>[
+                                          const Text('Personal Permission: '),
+                                          Text(
+                                            checkPermission(_user.personalMedicalPermission),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.brown),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 8.0,
+                                          ),
+                                          const Text('Personal Health Card No:'),
+                                          Text(
+                                            _user.personalHealthNum,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.brown),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 8.0,
+                                          ),
+                                          const Text('Personal Medical History:'),
+                                          Text(
+                                            _user.personalMedicalFile,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.brown),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 8.0,
+                                          ),
+                                          const Text('Emergency Contact Permission: '),
+                                          Text(
+                                            checkPermission(_user.contactMedicalPermission),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.brown),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 8.0,
+                                          ),
+                                          const Text('Emergency Contact Health Card No:'),
+                                          Text(
+                                            _user.contactHealthNum,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.brown),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                          SizedBox(
+                                            height: 8.0,
+                                          ),
+                                          const Text(
+                                              'Emergency Contact Medical History:'),
+                                          Text(
+                                            _user.contactMedicalFile,
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.brown),
+                                            textAlign: TextAlign.center,
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () {
+                                          saveMedicalValue();
+                                          Navigator.pop(context, 'OK');
+                                        },
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            },
+                            child: const Text('SAVE MEDICAL INFORMATION'),
+                          )],
+                        ),
+                    ),
 /************************************************************* END OF MEDICAL INFORMATION *************************************************************/
 
                   SizedBox(
