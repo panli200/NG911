@@ -6,21 +6,27 @@ import 'dart:async';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 import 'acceleration.dart';
 
+DatabaseReference ref = FirebaseDatabase.instance.ref();
+String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
+final databaseReal = ref.child('sensors').child(mobile);
+
+
+StreamSubscription? streamSubscription;
+StreamSubscription? streamLocationSubscription;
+StreamSubscription? streamSubscriptionEnded;
+final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+
 void updateSensors(String? time, String? publicKey, var aesKey) async {
   bool? Online;
   bool? Ended;
-  StreamSubscription? streamSubscription;
-  StreamSubscription? streamLocationSubscription;
-  StreamSubscription? streamSubscriptionEnded;
+
   double x = 0.0;
   double y = 0.0;
   double z = 0.0;
   int batteryLevel = 0;
   Acceleration? accelerationC = Acceleration();
   String accelerationString = "";
-  DatabaseReference ref = FirebaseDatabase.instance.ref();
-  String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-  final databaseReal = ref.child('sensors').child(mobile);
+
   Location location = Location();
   await location.getCurrentLocation();
   Stream<DatabaseEvent> stream = databaseReal.onValue;
@@ -44,7 +50,7 @@ if(counts == null){
 }else{
   counts++;
 }
-  final StopWatchTimer _stopWatchTimer = StopWatchTimer();
+
 
     _stopWatchTimer.onExecute.add(StopWatchExecute.start);
     _stopWatchTimer.secondTime.listen((value) {
@@ -107,4 +113,12 @@ streamLocationSubscription = stream.listen((DatabaseEvent event) {
       });
     }
   });
+}
+
+void stopSensors(){
+  streamSubscription!.cancel();
+  streamLocationSubscription!.cancel();
+  streamSubscriptionEnded!.cancel();
+  databaseReal.remove();
+  _stopWatchTimer.onExecute.add(StopWatchExecute.stop);
 }
