@@ -839,59 +839,59 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
 /************************************************************* END OF MEDICAL INFORMATION *************************************************************/
 
-                  SizedBox(
-                    height: 16.0,
-                  ),
+                  // SizedBox(
+                  //   height: 16.0,
+                  // ),
 
-                  const Divider(
-                    height: 10,
-                    thickness: 5,
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  Text(
-                    'Background Location Listener',
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 17,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 16.0,
-                  ),
-                  ElevatedButton(
-                    child: Text(textBackground),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all<Color>(Colors.black),
-                    ),
-                    onPressed: () async {
-                      // code here to activate background
+                  // const Divider(
+                  //   height: 10,
+                  //   thickness: 5,
+                  // ),
+                  // SizedBox(
+                  //   height: 16.0,
+                  // ),
+                  // Text(
+                  //   'Background Location Listener',
+                  //   textAlign: TextAlign.center,
+                  //   style: const TextStyle(
+                  //     fontWeight: FontWeight.bold,
+                  //     fontSize: 17,
+                  //   ),
+                  // ),
+                  // SizedBox(
+                  //   height: 16.0,
+                  // ),
+                  // ElevatedButton(
+                  //   child: Text(textBackground),
+                  //   style: ButtonStyle(
+                  //     backgroundColor:
+                  //         MaterialStateProperty.all<Color>(Colors.black),
+                  //   ),
+                  //   onPressed: () async {
+                  //     // code here to activate background
 
-                      final service = FlutterBackgroundService();
-                      var isRunning = await service.isServiceRunning();
-                      if (isRunning) {
-                        service.sendData(
-                          {"action": "stopService"},
-                        );
-                      } else {
-                        service.start();
-                      }
+                  //     final service = FlutterBackgroundService();
+                  //     var isRunning = await service.isServiceRunning();
+                  //     if (isRunning) {
+                  //       service.sendData(
+                  //         {"action": "stopService"},
+                  //       );
+                  //     } else {
+                  //       service.start();
+                  //     }
 
-                      if (!isRunning) {
-                        textBackground = 'Stop Service';
-                      } else {
-                        textBackground = 'Start Service';
-                      }
+                  //     if (!isRunning) {
+                  //       textBackground = 'Stop Service';
+                  //     } else {
+                  //       textBackground = 'Start Service';
+                  //     }
 
-                      setState(() {});
-                    },
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
+                  //     setState(() {});
+                  //   },
+                  // ),
+                  // SizedBox(
+                  //   height: 8.0,
+                  // ),
                 ],
               ),
             ),
