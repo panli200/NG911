@@ -348,7 +348,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               (
                                 choice: false,
                                 onClicked: (bool systemOverlaysAreVisible) async {
-                                sw1 = systemOverlaysAreVisible;
+                                  sw1 = systemOverlaysAreVisible;
                                 },
                               ),
                             ],

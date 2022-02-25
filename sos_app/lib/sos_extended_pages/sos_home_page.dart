@@ -20,6 +20,8 @@ import 'package:sos_app/services/connectionStatus.dart';
 import 'package:sos_app/sos_extended_pages/ringing_page.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
+import 'package:flutter_remix/flutter_remix.dart';
+
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
 
