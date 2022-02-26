@@ -202,6 +202,7 @@ Future<void> onStart() async {
 class _ProfilePageState extends State<ProfilePage> {
   File? file, fileT;
   PhoneContact? _phoneContact;
+  String emergencyName='';
   TextEditingController ctlHealthCard = TextEditingController();
   TextEditingController ctlHealthCard2 = TextEditingController();
   bool sw1 = false;
@@ -388,7 +389,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                       await FlutterContactPicker.pickPhoneContact();
                                   setState(() {
                                     _phoneContact = contact;
-                                    _user.contactNum = (_phoneContact != null ? _phoneContact!.phoneNumber!.number : '')!;
+                                    _user.contactNum = (_phoneContact != null ? (_phoneContact!.fullName!+_phoneContact!.phoneNumber!.number! ): '')!;
+                                    emergencyName = _phoneContact!.fullName!;
                                   });
                                 },
                               ),
@@ -661,7 +663,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                 children: 
                                 [
                                   Text('Full Legal Name: ', style: const TextStyle(fontWeight: FontWeight.bold),),
-                                  Text('Dr. Morgan', style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  // Text('Dr. Morgan', style: const TextStyle(fontWeight: FontWeight.bold),),
+                                  Text(emergencyName, style: const TextStyle(fontWeight: FontWeight.bold),)
                                 ],
                               ),
 
