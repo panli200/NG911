@@ -402,6 +402,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   setState(() {
                                     _phoneContact = null;
                                     _user.contactNum = '';
+                                    emergencyName='';
                                   });
                                 },
                               ),
