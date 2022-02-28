@@ -25,12 +25,12 @@ class _ConnectionStatusState extends State<ConnectionStatus>{
       if(result == ConnectivityResult.none) {
         setState(() {
           connection = 'No internet connection!';
-          connectionIcon = Icon(FlutterRemix.signal_wifi_error_line);
+          connectionIcon = Icon(FlutterRemix.signal_wifi_error_line, color: Colors.red);
         });
       }else{
         setState(() {
           connection = 'Connected';
-          connectionIcon = Icon(FlutterRemix.wifi_line);
+          connectionIcon = Icon(FlutterRemix.wifi_line,color: Colors.teal);
         });
       }
     });
