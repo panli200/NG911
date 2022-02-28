@@ -234,7 +234,7 @@ class SosHomePageState extends State<SosHomePage> {
                             child: 
                             Text
                             (
-                              'Send a distress signal for',
+                              'Connect with 911 for',
                               textAlign: TextAlign.center,
                               style: Theme.of(context).textTheme.headline6,
                             ),
