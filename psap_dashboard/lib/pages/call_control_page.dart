@@ -446,6 +446,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
     speedStream!.cancel();
     AccelerationStream!.cancel();
     roomIdStream!.cancel();
+    FbDb.DatabaseReference real = FbDb
+        .FirebaseDatabase.instance
+        .ref();
+    final databaseReal = real
+        .child('sensors')
+        .child(callerId);
+    databaseReal.remove();
     super.dispose();
   }
 
