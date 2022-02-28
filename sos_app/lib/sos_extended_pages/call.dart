@@ -121,6 +121,7 @@ class _CallPageState extends State<CallPage> {
 
   @override
   void dispose() {
+    
     _localRenderer.dispose();
     _remoteRenderer.dispose();
     stopSensors();
