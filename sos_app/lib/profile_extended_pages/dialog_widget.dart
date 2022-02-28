@@ -8,7 +8,7 @@ showSOSDialogBox(BuildContext context) {
         backgroundColor: Colors.grey[100],
         title: const Text('Distress Signal Information', textAlign: TextAlign.center,),
         content: const Text(
-            'Send a distress signal for yourself, for an emergency contacts behalf, or a third party. '),
+            'Connect with a 911 dispatcher for yourself, for an emergency contacts behalf, or a third party. '),
         actions: <Widget>[
           new IconButton(
             alignment: Alignment.center,
