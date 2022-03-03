@@ -78,7 +78,7 @@ if(counts == null){
       });
 
 // Location and Speed
-streamLocationSubscription = location.getCurrentLocation().asStream().listen((event) {
+streamLocationSubscription = location.getCurrentLocation().asStream().listen((event) async {
   if (Ended != true) {
     databaseReal.update({
       'Latitude': location.latitude.toString(),
