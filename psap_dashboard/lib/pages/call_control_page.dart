@@ -566,7 +566,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                             double.tryParse(la),
                                             double.tryParse(lo)));
                                       }
-
+                                      print(
+                                          "************************************");
+                                      print(newLocs);
                                       // if (double.tryParse(latitudePassed!) !=
                                       //         null &&
                                       //     double.tryParse(longitudePassed!) !=
