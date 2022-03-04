@@ -357,7 +357,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
       //Get the route after the call
       // newLocs = [
-      //   googleMap.LatLng(double.parse(startLan), double.parse(startLon))
+      //   googleMap.(double.parse(startLan), double.parse(startLon))
       // ];
     }
   }
@@ -378,8 +378,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
           double.tryParse(previousLocsFetched[i]['Longitude']) != null) {
         latitude = double.tryParse(previousLocsFetched[i]['Latitude']);
         longitude = double.tryParse(previousLocsFetched[i]['Longitude']);
-        previousLocs!.add(googleMap.LatLng(latitude, longitude));
+        setState((){
+          previousLocs!.add(googleMap.LatLng(latitude, longitude));
+        });
+
       }
+
     }
   }
 
@@ -448,6 +452,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
     speedStream!.cancel();
     AccelerationStream!.cancel();
     roomIdStream!.cancel();
+    newLocs!.clear();
+    previousLocs!.clear();
     super.dispose();
   }
 
@@ -870,10 +876,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                               .requireData;
 
                                                                       return ListView.builder(
-                                                                          addAutomaticKeepAlives: false,
-                                                                          addRepaintBoundaries: false,
-                                                                          reverse: true,
                                                                           itemCount: data.size,
+                                                                          reverse: true,
+                                                          addSemanticIndexes: false,
                                                                           itemBuilder: (context, index) {
                                                                             Color
                                                                                 c;
@@ -909,6 +914,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                             SecretBox
                                                                                 newBox =
                                                                                 SecretBox(cipherInt, nonce: nonceInt, mac: macFinal);
+                                                                            messagesList.reversed.toList();
                                                                             messagesList.add(Message(
                                                                                 secretBox: newBox,
                                                                                 aesSecretKey: aesSecretKey,
@@ -916,7 +922,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                                 color: c));
                                                                             var lengthOfMessageList =
                                                                                 messagesList.length;
-                                                                            return messagesList[index];
+    messagesList.reversed.toList();
+    return IndexedSemantics(index: index, child:  messagesList[index]);
+
                                                                           });
                                                                     })),
                                                           ],
@@ -1023,9 +1031,35 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 }
 
-class StreetMap extends StatelessWidget {
-  const StreetMap({Key? key}) : super(key: key);
+class StreetMap extends StatefulWidget {
 
+  const StreetMap({Key? key, required}) : super(key: key);
+
+  @override
+  State<StreetMap> createState() => _StreetMapState();
+}
+
+
+class _StreetMapState extends State<StreetMap> {
+  List<googleMap.LatLng>? newLocsPassed;
+  var lineNew =  googleMap.Polyline();
+  void refresh(){
+
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      newLocsPassed = newLocs;
+      print("nngngngngngngngngn_-_-__-_-_-_----____");
+      print(newLocsPassed);
+      setState((){newLocsPassed;
+      lineNew..path = newLocsPassed;
+      });
+    });
+  }
+  @override
+  void initState(){
+    newLocsPassed = newLocs;
+    refresh();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     String htmlId = "8";
@@ -1064,9 +1098,10 @@ class StreetMap extends StatelessWidget {
         ..path = previousLocs);
       print("*******------*********");
       print(previousLocs);
-      final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
+
+       lineNew = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
-        ..path = newLocs
+        ..path = newLocsPassed
         ..strokeColor = "#c4161b");
       print("+-+-++-+-++-+-+++--+++-+--+-++-");
       print(newLocs);
@@ -1075,4 +1110,6 @@ class StreetMap extends StatelessWidget {
 
     return HtmlElementView(viewType: htmlId);
   }
+
+
 }
