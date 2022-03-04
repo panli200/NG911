@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart' as FbDb;
 import 'package:flutter_remix/flutter_remix.dart';
+import 'package:psap_dashboard/pages/maps_street.dart';
 import 'package:weather/weather.dart';
 import 'dart:async';
 import 'maps_home_page.dart';
@@ -18,12 +19,7 @@ import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
 import 'messages.dart';
 
-// Enviromental variables
-String? latitudePassed = '';
-String? longitudePassed = '';
 
-List<googleMap.LatLng>? previousLocs;
-List<googleMap.LatLng>? newLocs;
 
 class CallControlPanel extends StatefulWidget {
   final CallerId;
@@ -53,6 +49,12 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
+  // Enviromental variables
+  String? latitudePassed = '';
+  String? longitudePassed = '';
+
+  List<googleMap.LatLng>? previousLocs;
+  // List<googleMap.LatLng>? newLocs;
   // For encryption
   Future<crypto.AsymmetricKeyPair>? futureKeyPair;
   crypto.AsymmetricKeyPair?
@@ -78,7 +80,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   bool? ended = false;
   //used for map_street file
   String htmlId = "8";
-  StreetMap? streetMap;
+  // StreetMap? streetMap;
 
   // weather data
   double? humidity = 0.0;
@@ -535,40 +537,40 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                     color: Colors.white,
                                     border: Border.all(
                                         color: Colors.white, width: 1)),
-                                child: StreamBuilder<QuerySnapshot>(
-                                    stream: locationsHistory,
-                                    builder: (
-                                      BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot,
-                                    ) {
-                                      if (snapshot.hasError) {
-                                        return Text(
-                                            'Something went wrong  ${snapshot.error}');
-                                      }
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return Text('Loading');
-                                      }
-                                      final data = snapshot.requireData;
-
-                                      //Initial the new locations list
-                                      newLocs = [
-                                        googleMap.LatLng(double.parse(startLan),
-                                            double.parse(startLon))
-                                      ];
-                                      //Adding the location to
-                                      for (int i = 0;
-                                          i < data.docs.length;
-                                          i++) {
-                                        String la = data.docs[i]['latitude'];
-                                        String lo = data.docs[i]['longitude'];
-                                        newLocs!.add(googleMap.LatLng(
-                                            double.tryParse(la),
-                                            double.tryParse(lo)));
-                                      }
-                                      print(
-                                          "************************************");
-                                      print(newLocs);
+                                // child: StreamBuilder<QuerySnapshot>(
+                                //     stream: locationsHistory,
+                                //     builder: (
+                                //       BuildContext context,
+                                //       AsyncSnapshot<QuerySnapshot> snapshot,
+                                //     ) {
+                                //       if (snapshot.hasError) {
+                                //         return Text(
+                                //             'Something went wrong  ${snapshot.error}');
+                                //       }
+                                //       if (snapshot.connectionState ==
+                                //           ConnectionState.waiting) {
+                                //         return Text('Loading');
+                                //       }
+                                //       final data = snapshot.requireData;
+                                //
+                                //       //Initial the new locations list
+                                //       newLocs = [
+                                //         googleMap.LatLng(double.parse(startLan),
+                                //             double.parse(startLon))
+                                //       ];
+                                //       //Adding the location to
+                                //       for (int i = 0;
+                                //           i < data.docs.length;
+                                //           i++) {
+                                //         String la = data.docs[i]['latitude'];
+                                //         String lo = data.docs[i]['longitude'];
+                                //         newLocs!.add(googleMap.LatLng(
+                                //             double.tryParse(la),
+                                //             double.tryParse(lo)));
+                                //       }
+                                //       print(
+                                //           "************************************");
+                                //       print(newLocs);
                                       // if (double.tryParse(latitudePassed!) !=
                                       //         null &&
                                       //     double.tryParse(longitudePassed!) !=
@@ -577,8 +579,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       //       double.tryParse(latitudePassed!),
                                       //       double.tryParse(longitudePassed!)));
                                       // }
-                                      return StreetMap();
-                                    }))
+                                     child:StreetMap(previousLocs: previousLocs,callId:callerId,latitudePassed:latitudePassed,longitudePassed: longitudePassed,startLan: startLan,startLon: startLon,),),
+                                    // }))
+
                           ]),
                           SizedBox // SPACING
                               (
@@ -1023,56 +1026,56 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 }
 
-class StreetMap extends StatelessWidget {
-  const StreetMap({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    String htmlId = "8";
-
-    // ignore: undefined_prefixed_name
-    ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-      final myLatlng = googleMap.LatLng(
-          double.tryParse(latitudePassed!), double.tryParse(longitudePassed!));
-
-      final policeLatLng = googleMap.LatLng(50.4182278, -104.594109);
-
-      final mapOptions = googleMap.MapOptions()
-        ..zoom = 19
-        ..center = myLatlng;
-
-      final elem = DivElement()
-        ..id = htmlId
-        ..style.width = "100%"
-        ..style.height = "100%"
-        ..style.border = 'none';
-
-      final map = googleMap.GMap(elem, mapOptions);
-
-      final policeMarker = googleMap.Marker(googleMap.MarkerOptions()
-        ..position = policeLatLng
-        ..map = map
-        ..icon = 'https://maps.google.com/mapfiles/ms/icons/police.png');
-
-      final marker = googleMap.Marker(googleMap.MarkerOptions()
-        ..position = myLatlng
-        ..map = map
-        ..title = 'caller');
-
-      final line = googleMap.Polyline(googleMap.PolylineOptions()
-        ..map = map
-        ..path = previousLocs);
-      print("*******------*********");
-      print(previousLocs);
-      final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
-        ..map = map
-        ..path = newLocs
-        ..strokeColor = "#c4161b");
-      print("+-+-++-+-++-+-+++--+++-+--+-++-");
-      print(newLocs);
-      return elem;
-    });
-
-    return HtmlElementView(viewType: htmlId);
-  }
-}
+// class StreetMap extends StatelessWidget {
+//   const StreetMap({Key? key}) : super(key: key);
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     String htmlId = "8";
+//
+//     // ignore: undefined_prefixed_name
+//     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
+//       final myLatlng = googleMap.LatLng(
+//           double.tryParse(latitudePassed!), double.tryParse(longitudePassed!));
+//
+//       final policeLatLng = googleMap.LatLng(50.4182278, -104.594109);
+//
+//       final mapOptions = googleMap.MapOptions()
+//         ..zoom = 19
+//         ..center = myLatlng;
+//
+//       final elem = DivElement()
+//         ..id = htmlId
+//         ..style.width = "100%"
+//         ..style.height = "100%"
+//         ..style.border = 'none';
+//
+//       final map = googleMap.GMap(elem, mapOptions);
+//
+//       final policeMarker = googleMap.Marker(googleMap.MarkerOptions()
+//         ..position = policeLatLng
+//         ..map = map
+//         ..icon = 'https://maps.google.com/mapfiles/ms/icons/police.png');
+//
+//       final marker = googleMap.Marker(googleMap.MarkerOptions()
+//         ..position = myLatlng
+//         ..map = map
+//         ..title = 'caller');
+//
+//       final line = googleMap.Polyline(googleMap.PolylineOptions()
+//         ..map = map
+//         ..path = previousLocs);
+//       print("*******------*********");
+//       print(previousLocs);
+//       final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
+//         ..map = map
+//         ..path = newLocs
+//         ..strokeColor = "#c4161b");
+//       print("+-+-++-+-++-+-+++--+++-+--+-++-");
+//       print(newLocs);
+//       return elem;
+//     });
+//
+//     return HtmlElementView(viewType: htmlId);
+//   }
+// }
