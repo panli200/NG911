@@ -10,7 +10,6 @@ DatabaseReference ref = FirebaseDatabase.instance.ref();
 String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
 final databaseReal = ref.child('sensors').child(mobile);
 
-
 StreamSubscription? streamSubscription;
 StreamSubscription? streamLocationSubscription;
 StreamSubscription? streamSubscriptionEnded;
@@ -33,7 +32,7 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
   int? counts;
   final key = await aesKey;
   final keyString = await key.extractBytes();
-  String  aesSecretKeyString = keyString.toString();
+  String aesSecretKeyString = keyString.toString();
   databaseReal.set({
     'StartTime': time,
     'Online': false,
@@ -45,21 +44,21 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
   });
   //Timer
 
-if(counts == null){
-  counts = 0;
-}else{
-  counts++;
-}
+  if (counts == null) {
+    counts = 0;
+  } else {
+    counts++;
+  }
 
-
-    _stopWatchTimer.onExecute.add(StopWatchExecute.start);
-    _stopWatchTimer.secondTime.listen((value) {
-      if(counts! == 0){
+  _stopWatchTimer.onExecute.add(StopWatchExecute.start);
+  _stopWatchTimer.secondTime.listen((value) {
+    if (counts! == 0) {
       databaseReal.update({
         'Timer':
-        StopWatchTimer.getDisplayTime(value * 1000, milliSecond: false),
-      });}
-    });
+            StopWatchTimer.getDisplayTime(value * 1000, milliSecond: false),
+      });
+    }
+  });
 
   // Acceleration Data
   databaseReal.child('Online').onValue.listen((event) async {
@@ -78,24 +77,26 @@ if(counts == null){
       });
 
 // Location and Speed
-streamLocationSubscription = location.getCurrentLocation().asStream().listen((event) async {
-  if (Ended != true) {
-    databaseReal.update({
-      'Latitude': location.latitude.toString(),
-      'Longitude': location.longitude.toString(),
-      'Speed': location.speed.toString()
-    });
-  }
-});
-// streamLocationSubscription = stream.listen((DatabaseEvent event) {
-//         if (Ended != true) {
-//           databaseReal.update({
-//             'Latitude': location.latitude.toString(),
-//             'Longitude': location.longitude.toString(),
-//             'Speed': location.speed.toString()
-//           });
-//         }
-//       });
+// streamLocationSubscription = location.getCurrentLocation().asStream().listen((event) async {
+//   if (Ended != true) {
+//     databaseReal.update({
+//       'Latitude': location.latitude.toString(),
+//       'Longitude': location.longitude.toString(),
+//       'Speed': location.speed.toString()
+//     });
+//   }
+// });
+      Location loc = Location();
+      await loc.getCurrentLocation();
+      streamLocationSubscription = stream.listen((DatabaseEvent event) async {
+        if (Ended != true) {
+          databaseReal.update({
+            'Latitude': loc.latitude.toString(),
+            'Longitude': loc.longitude.toString(),
+            'Speed': loc.speed.toString()
+          });
+        }
+      });
 
 // Battery
       var _battery = Battery();
@@ -124,7 +125,7 @@ streamLocationSubscription = location.getCurrentLocation().asStream().listen((ev
   });
 }
 
-void stopSensors(){
+void stopSensors() {
   streamSubscription!.cancel();
   streamLocationSubscription!.cancel();
   streamSubscriptionEnded!.cancel();
