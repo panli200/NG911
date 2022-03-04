@@ -356,9 +356,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
       ];
 
       //Get the route after the call
-      newLocs = [
-        googleMap.LatLng(double.parse(startLan), double.parse(startLon))
-      ];
+      // newLocs = [
+      //   googleMap.(double.parse(startLan), double.parse(startLon))
+      // ];
     }
   }
 
@@ -378,8 +378,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
           double.tryParse(previousLocsFetched[i]['Longitude']) != null) {
         latitude = double.tryParse(previousLocsFetched[i]['Latitude']);
         longitude = double.tryParse(previousLocsFetched[i]['Longitude']);
-        previousLocs!.add(googleMap.LatLng(latitude, longitude));
+        setState((){
+          previousLocs!.add(googleMap.LatLng(latitude, longitude));
+        });
+
       }
+
     }
   }
 
@@ -409,10 +413,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .orderBy("time", descending: true);
     messages = sortedMessages.snapshots();
 
+    //new location read by order of id
     locationsHistory = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(callerId)
         .collection('NewLocations')
+        .orderBy("id")
         .snapshots();
 
     activateListeners();
@@ -449,6 +455,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
     speedStream!.cancel();
     AccelerationStream!.cancel();
     roomIdStream!.cancel();
+    newLocs!.clear();
+    previousLocs!.clear();
     FbDb.DatabaseReference real = FbDb
         .FirebaseDatabase.instance
         .ref();
@@ -558,14 +566,33 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                         return Text('Loading');
                                       }
                                       final data = snapshot.requireData;
-                                      if (double.tryParse(latitudePassed!) !=
-                                              null &&
-                                          double.tryParse(longitudePassed!) !=
-                                              null) {
+
+                                      //Initial the new locations list
+                                      newLocs = [
+                                        googleMap.LatLng(double.parse(startLan),
+                                            double.parse(startLon))
+                                      ];
+                                      //Adding the location to
+                                      for (int i = 0;
+                                          i < data.docs.length;
+                                          i++) {
+                                        String la = data.docs[i]['latitude'];
+                                        String lo = data.docs[i]['longitude'];
                                         newLocs!.add(googleMap.LatLng(
-                                            double.tryParse(latitudePassed!),
-                                            double.tryParse(longitudePassed!)));
+                                            double.tryParse(la),
+                                            double.tryParse(lo)));
                                       }
+                                      print(
+                                          "************************************");
+                                      print(newLocs);
+                                      // if (double.tryParse(latitudePassed!) !=
+                                      //         null &&
+                                      //     double.tryParse(longitudePassed!) !=
+                                      //         null) {
+                                      //   newLocs!.add(googleMap.LatLng(
+                                      //       double.tryParse(latitudePassed!),
+                                      //       double.tryParse(longitudePassed!)));
+                                      // }
                                       return StreetMap();
                                     }))
                           ]),
@@ -861,10 +888,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                               .requireData;
 
                                                                       return ListView.builder(
-                                                                          addAutomaticKeepAlives: false,
-                                                                          addRepaintBoundaries: false,
-                                                                          reverse: true,
                                                                           itemCount: data.size,
+                                                                          reverse: true,
+                                                          addSemanticIndexes: false,
                                                                           itemBuilder: (context, index) {
                                                                             Color
                                                                                 c;
@@ -900,13 +926,17 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                             SecretBox
                                                                                 newBox =
                                                                                 SecretBox(cipherInt, nonce: nonceInt, mac: macFinal);
-                                                                            messagesList.add( Message(
+                                                                            messagesList.reversed.toList();
+                                                                            messagesList.add(Message(
                                                                                 secretBox: newBox,
                                                                                 aesSecretKey: aesSecretKey,
                                                                                 alignment: a,
                                                                                 color: c));
-                                                                            var lengthOfMessageList = messagesList.length;
-                                                                            return messagesList[index];
+                                                                            var lengthOfMessageList =
+                                                                                messagesList.length;
+    messagesList.reversed.toList();
+    return IndexedSemantics(index: index, child:  messagesList[index]);
+
                                                                           });
                                                                     })),
                                                           ],
@@ -1013,9 +1043,35 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 }
 
-class StreetMap extends StatelessWidget {
-  const StreetMap({Key? key}) : super(key: key);
+class StreetMap extends StatefulWidget {
 
+  const StreetMap({Key? key, required}) : super(key: key);
+
+  @override
+  State<StreetMap> createState() => _StreetMapState();
+}
+
+
+class _StreetMapState extends State<StreetMap> {
+  List<googleMap.LatLng>? newLocsPassed;
+  var lineNew =  googleMap.Polyline();
+  void refresh(){
+
+    Timer.periodic(Duration(seconds: 5), (timer) async {
+      newLocsPassed = newLocs;
+      print("nngngngngngngngngn_-_-__-_-_-_----____");
+      print(newLocsPassed);
+      setState((){newLocsPassed;
+      lineNew..path = newLocsPassed;
+      });
+    });
+  }
+  @override
+  void initState(){
+    newLocsPassed = newLocs;
+    refresh();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     String htmlId = "8";
@@ -1054,9 +1110,10 @@ class StreetMap extends StatelessWidget {
         ..path = previousLocs);
       print("*******------*********");
       print(previousLocs);
-      final lineNew = googleMap.Polyline(googleMap.PolylineOptions()
+
+       lineNew = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
-        ..path = newLocs
+        ..path = newLocsPassed
         ..strokeColor = "#c4161b");
       print("+-+-++-+-++-+-+++--+++-+--+-++-");
       print(newLocs);
@@ -1065,4 +1122,6 @@ class StreetMap extends StatelessWidget {
 
     return HtmlElementView(viewType: htmlId);
   }
+
+
 }

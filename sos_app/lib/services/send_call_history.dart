@@ -29,6 +29,7 @@ Future<void> sendUpdatedLocation() async {
   final databaseReal = ref.child('sensors').child(mobile);
   StreamSubscription? streamSubscriptionEnded;
   bool Ended = false;
+  var counter = 0;
   Timer.periodic(const Duration(seconds: 5), (timer) async {
     streamSubscriptionEnded =
         databaseReal.child('Ended').onValue.listen((event) async {
@@ -42,9 +43,11 @@ Future<void> sendUpdatedLocation() async {
     Location location = Location();
     await location.getCurrentLocation();
     await emergency.collection("NewLocations").add({
-      'latitude': location.latitude,
-      'longitude': location.longitude,
+      'latitude': location.latitude.toString(),
+      'longitude': location.longitude.toString(),
+      'id': counter
     });
+    counter ++;
   });
 }
 

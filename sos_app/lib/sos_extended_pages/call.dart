@@ -158,6 +158,7 @@ class _CallPageState extends State<CallPage> {
               DatabaseReference real = FirebaseDatabase.instance.ref();
               final databaseReal = real.child('sensors').child(mobile);
               await databaseReal.update({'Online': false, 'Ended': true});
+
             },
             child: Icon(
               Icons.dangerous, color: Colors.red,// add custom icons also
