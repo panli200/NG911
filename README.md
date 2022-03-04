@@ -24,6 +24,8 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
   - [November 19 — Scrum #4](#november-19--scrum-4)
   - [February 8 — Scrum #5](#february-8--scrum-5)
   - [February 15 — Scrum #6](#february-15--scrum-6)
+- [Project Bazaar](#bazaar-scriptsslides)
+  - [March 1 — Bazaar #2](#march-1--bazaar-2)
 - [Design Documentation](#design-documentation)
   - [Project  Definition](#project--definition)
   - [Empathy Mapping](#empathy-mapping)
@@ -65,6 +67,13 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
 ## February 15 — Scrum #6
 - [Scrum #6 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%236-Script.pdf)
 - [Scrum #6 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%236-Slide.pdf)
+
+---
+
+# Bazaar Scripts/Slides
+## March 1 — Bazaar #2
+- [Bazaar #2 Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Capstone-Bazaar%232-Script.pdf)
+- [Bazaar #2 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Capstone-Bazaar%232-Slide.pdf)
 
 ---
 

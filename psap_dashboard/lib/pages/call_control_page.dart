@@ -442,7 +442,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   void dispose() async {
+    // previousLocs.remove();
+    // newLocs;
     // clear users
+    
     publicKeyStream!.cancel();
     aesKeyStream!.cancel();
     startTimeStream!.cancel();
@@ -454,6 +457,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
     roomIdStream!.cancel();
     newLocs!.clear();
     previousLocs!.clear();
+    FbDb.DatabaseReference real = FbDb
+        .FirebaseDatabase.instance
+        .ref();
+    final databaseReal = real
+        .child('sensors')
+        .child(callerId);
+    databaseReal.remove();
     super.dispose();
   }
 
@@ -658,125 +668,127 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          const Text(
-                                            'Caller Information',
-                                            style: TextStyle(fontSize: 25),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(FlutterRemix
-                                                  .battery_2_charge_line),
-                                              Text(
-                                                mobileChargeString,
-                                                style: TextStyle(fontSize: 15),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(
-                                                  FlutterRemix.smartphone_line),
-                                              Text(
-                                                'Phone: ${snapshot['Phone']}',
-                                                style: TextStyle(fontSize: 15),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(FlutterRemix.celsius_line),
-                                              Text(
-                                                'Weather: ' +
-                                                    temperature!.toString() +
-                                                    '° ' +
-                                                    weatherDescription!,
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Icon(FlutterRemix
-                                                  .contrast_drop_2_line),
-                                              Text(
-                                                'Humidity: ' +
-                                                    humidity!.toString(),
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              const Icon(
-                                                  FlutterRemix.windy_line),
-                                              Text(
-                                                'Wind Speed: ' +
-                                                    windSpeed!.toString(),
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: const [
-                                              Icon(FlutterRemix.map_pin_line),
-                                              Text(
-                                                'Location of the call: ———',
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            'Latitude: ' + startLan + '°',
-                                          ),
-                                          Text(
-                                            'Longitude: ' + startLon + '°',
-                                          ),
-                                          Row(
-                                            children: const [
-                                              Icon(FlutterRemix
-                                                  .user_location_line),
-                                              Text(
-                                                'Location of the caller now:',
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            '$latitudeString' + '°',
-                                          ),
-                                          Text(
-                                            '$longitudeString' + '°',
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                'Caller is' + userMotion!,
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                              Icon(FlutterRemix.walk_fill),
-                                              Text(
-                                                userMotion!,
-                                                style: TextStyle(fontSize: 15),
-                                              ),
-                                            ],
-                                          ),
-                                          CaseBasic(
-                                              type: callType,
-                                              phone: callerId,
-                                              emergencyContactNumberString:
-                                                  emergencyContactNumberString,
-                                              emergencyHealthCardNumberString:
-                                                  emergencyHealthCardNumberString,
-                                              personalHealthCardString:
-                                                  personalHealthCardString,
-                                              urlPMR: urlPMR,
-                                              urlECMR: urlECMR),
-                                        ],
+                                      SingleChildScrollView(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            const Text(
+                                              'Caller Information',
+                                              style: TextStyle(fontSize: 25),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(FlutterRemix
+                                                    .battery_2_charge_line),
+                                                Text(
+                                                  mobileChargeString,
+                                                  style: TextStyle(fontSize: 15),
+                                                )
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(
+                                                    FlutterRemix.smartphone_line),
+                                                Text(
+                                                  'Phone: ${snapshot['Phone']}',
+                                                  style: TextStyle(fontSize: 15),
+                                                )
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(FlutterRemix.celsius_line),
+                                                Text(
+                                                  'Weather: ' +
+                                                      temperature!.toString() +
+                                                      '° ' +
+                                                      weatherDescription!,
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Icon(FlutterRemix
+                                                    .contrast_drop_2_line),
+                                                Text(
+                                                  'Humidity: ' +
+                                                      humidity!.toString(),
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                const Icon(
+                                                    FlutterRemix.windy_line),
+                                                Text(
+                                                  'Wind Speed: ' +
+                                                      windSpeed!.toString(),
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: const [
+                                                Icon(FlutterRemix.map_pin_line),
+                                                Text(
+                                                  'Location of the call: ———',
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                            Text(
+                                              'Latitude: ' + startLan + '°',
+                                            ),
+                                            Text(
+                                              'Longitude: ' + startLon + '°',
+                                            ),
+                                            Row(
+                                              children: const [
+                                                Icon(FlutterRemix
+                                                    .user_location_line),
+                                                Text(
+                                                  'Location of the caller now:',
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                            Text(
+                                              '$latitudeString' + '°',
+                                            ),
+                                            Text(
+                                              '$longitudeString' + '°',
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  'Caller is' + userMotion!,
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                                Icon(FlutterRemix.walk_fill),
+                                                Text(
+                                                  userMotion!,
+                                                  style: TextStyle(fontSize: 15),
+                                                ),
+                                              ],
+                                            ),
+                                            CaseBasic(
+                                                type: callType,
+                                                phone: callerId,
+                                                emergencyContactNumberString:
+                                                    emergencyContactNumberString,
+                                                emergencyHealthCardNumberString:
+                                                    emergencyHealthCardNumberString,
+                                                personalHealthCardString:
+                                                    personalHealthCardString,
+                                                urlPMR: urlPMR,
+                                                urlECMR: urlECMR),
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   )),
