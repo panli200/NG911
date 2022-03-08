@@ -17,6 +17,9 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
   - [October 15 — Vlog #2](#october-15--vlog-2)
   - [December 3 — Vlog #3](#december-3--vlog-3)
   - [February 1 — Vlog #4](#february-1--vlog-4)
+  - [March 8 — Vlog #5](#march-8--vlog-5)
+- [Bazaar Scripts/Slides](#bazaar-scriptsslides)
+  - [March 1 — Bazaar #2](#march-1--bazaar-2)
 - [Scrum Scripts/Slides](#scrum-scriptsslides)
   - [September 24 — Scrum #1](#september-24--scrum-1)
   - [October 8 — Scrum #2](#october-8--scrum-2)
@@ -24,8 +27,6 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
   - [November 19 — Scrum #4](#november-19--scrum-4)
   - [February 8 — Scrum #5](#february-8--scrum-5)
   - [February 15 — Scrum #6](#february-15--scrum-6)
-- [Project Bazaar](#bazaar-scriptsslides)
-  - [March 1 — Bazaar #2](#march-1--bazaar-2)
 - [Design Documentation](#design-documentation)
   - [Project  Definition](#project--definition)
   - [Empathy Mapping](#empathy-mapping)
@@ -46,6 +47,16 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
 - [Vlog #3: Project Update — Needed PSAP-side complementary application with our original idea](https://youtu.be/2lo1vUUzE8Y)
 ## February 1 — Vlog #4
 - [Vlog #4: Project Update — PSAP-side](https://youtu.be/V186NkOB2oY)
+## March 8 — Vlog #5
+- [Vlog #5: Project Update — NG911 System](https://drive.google.com/file/d/1uWz0m9O6plWsbXXMKB6DZDe2_8104hAR/view?usp=sharing)
+
+---
+
+# Bazaar Scripts/Slides
+## March 1 — Bazaar #2
+- [Bazaar #2 Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Capstone-Bazaar%232-Script.pdf)
+- [Bazaar #2 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Capstone-Bazaar%232-Slide.pdf)
+
 ---
 
 # Scrum Scripts/Slides
@@ -67,13 +78,6 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
 ## February 15 — Scrum #6
 - [Scrum #6 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%236-Script.pdf)
 - [Scrum #6 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%236-Slide.pdf)
-
----
-
-# Bazaar Scripts/Slides
-## March 1 — Bazaar #2
-- [Bazaar #2 Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Capstone-Bazaar%232-Script.pdf)
-- [Bazaar #2 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Capstone-Bazaar%232-Slide.pdf)
 
 ---
 
