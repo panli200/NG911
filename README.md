@@ -48,7 +48,7 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
 ## February 1 — Vlog #4
 - [Vlog #4: Project Update — PSAP-side](https://youtu.be/V186NkOB2oY)
 ## March 8 — Vlog #5
-- [Vlog #5: Project Update — NG911 System](https://drive.google.com/file/d/1uWz0m9O6plWsbXXMKB6DZDe2_8104hAR/view?usp=sharing)
+- [Vlog #5: Project Update — NG911 System](https://youtu.be/th1kwh1v-o0)
 
 ---
 
