@@ -37,8 +37,6 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
     'StartTime': time,
     'Online': false,
     'Ended': false,
-    'Latitude': location.latitude.toString(),
-    'Longitude': location.longitude.toString(),
     'caller_public_key': publicKey,
     'caller_aes_key': aesSecretKeyString
   });
