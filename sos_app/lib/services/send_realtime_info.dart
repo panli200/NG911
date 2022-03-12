@@ -26,8 +26,8 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
   Acceleration? accelerationC = Acceleration();
   String accelerationString = "";
 
-  // Location location = Location();
-  // await location.getCurrentLocation();
+  Location startLocation = Location();
+  await startLocation.getCurrentLocation();
   Stream<DatabaseEvent> stream = databaseReal.onValue;
   int? counts;
   final key = await aesKey;
@@ -37,6 +37,8 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
     'StartTime': time,
     'Online': false,
     'Ended': false,
+    'startLatitude': startLocation.latitude.toString(),
+    'startLongitude': startLocation.longitude.toString(),
     'caller_public_key': publicKey,
     'caller_aes_key': aesSecretKeyString
   });
