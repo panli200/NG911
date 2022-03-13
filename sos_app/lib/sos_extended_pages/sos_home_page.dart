@@ -265,11 +265,11 @@ initializeService();
     super.initState();
   }
 
-
+String textBackground = "Start Tracking";
   @override
   Widget build(BuildContext context) {
     var router = context.router;
-    String textBackground = "Start Tracking";
+
 
     return Scaffold(
       backgroundColor: Colors.grey[100],
