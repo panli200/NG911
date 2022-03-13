@@ -583,9 +583,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                             double.tryParse(la),
                                             double.tryParse(lo)));
                                       }
-                                      print(
-                                          "************************************");
-                                      print(newLocs);
+                                    //  print(
+                                     //     "************************************");
+                                    //  print(newLocs);
                                       // if (double.tryParse(latitudePassed!) !=
                                       //         null &&
                                       //     double.tryParse(longitudePassed!) !=
@@ -594,7 +594,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       //       double.tryParse(latitudePassed!),
                                       //       double.tryParse(longitudePassed!)));
                                       // }
-                                      return StreetMap();
+                                      return StreetMap(callerid: callerId);
                                     }))
                           ]),
                           SizedBox // SPACING
@@ -1045,8 +1045,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
 }
 
 class StreetMap extends StatefulWidget {
-
-  const StreetMap({Key? key, required}) : super(key: key);
+  var callerid;
+  StreetMap({Key? key, required this.callerid}) : super(key: key);
 
   @override
   State<StreetMap> createState() => _StreetMapState();
@@ -1054,24 +1054,67 @@ class StreetMap extends StatefulWidget {
 
 
 class _StreetMapState extends State<StreetMap> {
+  final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
+  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
+  StreamSubscription? longitudeStream;
+  StreamSubscription? latitudeStream;
+  StreamSubscription? endedStateStream;
   List<googleMap.LatLng>? newLocsPassed;
+  late var myLatlng;
+  String latitudeString = '';
+  String longitudeString = '';
+  late var callerId;
   var lineNew =  googleMap.Polyline();
+  var  marker = googleMap.Marker();
+  bool? ended = false;
   void refresh(){
 
     Timer.periodic(Duration(seconds: 5), (timer) async {
       newLocsPassed = newLocs;
-      print("nngngngngngngngngn_-_-__-_-_-_----____");
-      print(newLocsPassed);
+   //   print("nngngngngngngngngn_-_-__-_-_-_----____");
+   //   print(newLocsPassed);
+      googleMap.LatLng Latest = newLocsPassed!.last;
+
       setState((){newLocsPassed;
       lineNew..path = newLocsPassed;
+      marker..position = Latest;
       });
+
+      if(ended == true){
+        timer.cancel();
+      }
     });
   }
+
+  void activateLocationListener(){
+    endedStateStream = ref
+        .child('sensors')
+        .child(callerId)
+        .child('Ended')
+        .onValue
+        .listen((event) async {
+      bool? endedB = event.snapshot.value as bool;
+      ended = endedB;
+    });
+
+  }
+
   @override
   void initState(){
+    callerId = widget.callerid;
+    activateLocationListener();
     newLocsPassed = newLocs;
     refresh();
+     myLatlng = previousLocs![0];
     super.initState();
+  }
+
+  @override
+  void dispose(){
+   // latitudeStream!.cancel();
+  //  longitudeStream!.cancel();
+    endedStateStream!.cancel();
+    super.dispose();
   }
   @override
   Widget build(BuildContext context) {
@@ -1079,8 +1122,7 @@ class _StreetMapState extends State<StreetMap> {
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-      final myLatlng = googleMap.LatLng(
-          double.tryParse(latitudePassed!), double.tryParse(longitudePassed!));
+
 
       final policeLatLng = googleMap.LatLng(50.4182278, -104.594109);
 
@@ -1101,7 +1143,7 @@ class _StreetMapState extends State<StreetMap> {
         ..map = map
         ..icon = 'https://maps.google.com/mapfiles/ms/icons/police.png');
 
-      final marker = googleMap.Marker(googleMap.MarkerOptions()
+       marker = googleMap.Marker(googleMap.MarkerOptions()
         ..position = myLatlng
         ..map = map
         ..title = 'caller');
@@ -1109,15 +1151,15 @@ class _StreetMapState extends State<StreetMap> {
       final line = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
         ..path = previousLocs);
-      print("*******------*********");
-      print(previousLocs);
+      //print("*******------*********");
+      //print(previousLocs);
 
        lineNew = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
         ..path = newLocsPassed
         ..strokeColor = "#c4161b");
-      print("+-+-++-+-++-+-+++--+++-+--+-++-");
-      print(newLocs);
+     // print("+-+-++-+-++-+-+++--+++-+--+-++-");
+     // print(newLocs);
       return elem;
     });
 
