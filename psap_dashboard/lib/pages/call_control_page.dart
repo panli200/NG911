@@ -147,6 +147,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     // Write activity
     CollectionReference user =
         FirebaseFirestore.instance.collection('SoSUsers');
+    StartTime ??= DateTime.now().toString(); // checking and assessing null date value for start time
     await user.doc(callerId).collection('Emergencies').add({
       'StartTime': StartTime,
       'EndTime': FieldValue.serverTimestamp(),
