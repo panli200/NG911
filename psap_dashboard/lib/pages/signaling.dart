@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
@@ -20,7 +18,7 @@ class Signaling {
   RTCPeerConnection? peerConnection;
   MediaStream? localStream;
   MediaStream? remoteStream;
- // String? roomId;
+  // String? roomId;
   String? currentRoomText;
   StreamStateCallback? onAddRemoteStream;
 

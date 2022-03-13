@@ -26,13 +26,13 @@ Future main() async {
 }
 
 class MyApp extends StatelessWidget {
-  static final String title = 'PSAP Control Panel';
+  static const String title = 'PSAP Control Panel';
   @override
   Widget build(BuildContext context) => MaterialApp(
         debugShowCheckedModeBanner: false,
         title: title,
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: LoginPage(),
+        home: const LoginPage(),
       );
 }
 

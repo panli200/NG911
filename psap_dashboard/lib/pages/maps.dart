@@ -41,31 +41,22 @@ class _GoogleMapState extends State<GoogleMap> {
       Stream<DatabaseEvent> stream = ref.onValue;
       stream.listen((DatabaseEvent event) async {
         for (var doc in event.snapshot.children) {
-          if(double.tryParse(doc.child('startLatitude').value.toString()) !=null && double.tryParse(doc.child('startLongitude').value.toString()) !=null) {
+          if (double.tryParse(doc.child('startLatitude').value.toString()) !=
+                  null &&
+              double.tryParse(doc.child('startLongitude').value.toString()) !=
+                  null) {
             var marker = LatLng(
-                double.tryParse(doc
-                    .child('startLatitude')
-                    .value
-                    .toString()),
-                double.tryParse(doc
-                    .child('startLongitude')
-                    .value
-                    .toString()));
+                double.tryParse(doc.child('startLatitude').value.toString()),
+                double.tryParse(doc.child('startLongitude').value.toString()));
 
-            if (doc
-                .child('Online')
-                .value == false && doc
-                .child('Ended')
-                .value == false) {
+            if (doc.child('Online').value == false &&
+                doc.child('Ended').value == false) {
               Marker(MarkerOptions()
                 ..position = marker
                 ..map = map);
             }
-            if (doc
-                .child('Online')
-                .value == true && doc
-                .child('Ended')
-                .value == false) {
+            if (doc.child('Online').value == true &&
+                doc.child('Ended').value == false) {
               Marker(MarkerOptions()
                 ..position = marker
                 ..map = map

@@ -147,7 +147,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
     // Write activity
     CollectionReference user =
         FirebaseFirestore.instance.collection('SoSUsers');
-    StartTime ??= DateTime.now().toString(); // checking and assessing null date value for start time
+    StartTime ??= DateTime.now()
+        .toString(); // checking and assessing null date value for start time
     await user.doc(callerId).collection('Emergencies').add({
       'StartTime': StartTime,
       'EndTime': FieldValue.serverTimestamp(),
@@ -355,11 +356,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
       previousLocs = [
         googleMap.LatLng(double.parse(startLan), double.parse(startLon))
       ];
-
-      //Get the route after the call
-      // newLocs = [
-      //   googleMap.(double.parse(startLan), double.parse(startLon))
-      // ];
     }
   }
 
@@ -379,12 +375,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
           double.tryParse(previousLocsFetched[i]['Longitude']) != null) {
         latitude = double.tryParse(previousLocsFetched[i]['Latitude']);
         longitude = double.tryParse(previousLocsFetched[i]['Longitude']);
-        setState((){
+        setState(() {
           previousLocs!.add(googleMap.LatLng(latitude, longitude));
         });
-
       }
-
     }
   }
 
@@ -424,7 +418,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     activateListeners();
     getLocationWeather();
-//    initialize Widgets
 
     // Changing states
     snapshot = widget.Snapshot;
@@ -443,10 +436,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   void dispose() async {
-    // previousLocs.remove();
-    // newLocs;
-    // clear users
-    
     publicKeyStream!.cancel();
     aesKeyStream!.cancel();
     startTimeStream!.cancel();
@@ -458,12 +447,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
     roomIdStream!.cancel();
     newLocs!.clear();
     previousLocs!.clear();
-    FbDb.DatabaseReference real = FbDb
-        .FirebaseDatabase.instance
-        .ref();
-    final databaseReal = real
-        .child('sensors')
-        .child(callerId);
+    FbDb.DatabaseReference real = FbDb.FirebaseDatabase.instance.ref();
+    final databaseReal = real.child('sensors').child(callerId);
     databaseReal.remove();
     super.dispose();
   }
@@ -583,17 +568,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                             double.tryParse(la),
                                             double.tryParse(lo)));
                                       }
-                                    //  print(
-                                     //     "************************************");
-                                    //  print(newLocs);
-                                      // if (double.tryParse(latitudePassed!) !=
-                                      //         null &&
-                                      //     double.tryParse(longitudePassed!) !=
-                                      //         null) {
-                                      //   newLocs!.add(googleMap.LatLng(
-                                      //       double.tryParse(latitudePassed!),
-                                      //       double.tryParse(longitudePassed!)));
-                                      // }
+
                                       return StreetMap(callerid: callerId);
                                     }))
                           ]),
@@ -657,7 +632,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       MediaQuery.of(context).size.height * 0.44,
                                   width:
                                       MediaQuery.of(context).size.width * 0.25,
-                                  padding: EdgeInsets.all(10.0),
+                                  padding: const EdgeInsets.all(10.0),
                                   decoration: BoxDecoration(
                                       shape: BoxShape.rectangle,
                                       borderRadius: BorderRadius.circular(12),
@@ -681,44 +656,49 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                             ),
                                             Row(
                                               children: [
-                                                Icon(FlutterRemix
+                                                const Icon(FlutterRemix
                                                     .battery_2_charge_line),
                                                 Text(
                                                   mobileChargeString,
-                                                  style: TextStyle(fontSize: 15),
+                                                  style:
+                                                      TextStyle(fontSize: 15),
                                                 )
                                               ],
                                             ),
                                             Row(
                                               children: [
-                                                Icon(
-                                                    FlutterRemix.smartphone_line),
+                                                const Icon(FlutterRemix
+                                                    .smartphone_line),
                                                 Text(
                                                   'Phone: ${snapshot['Phone']}',
-                                                  style: TextStyle(fontSize: 15),
+                                                  style:
+                                                      TextStyle(fontSize: 15),
                                                 )
                                               ],
                                             ),
                                             Row(
                                               children: [
-                                                Icon(FlutterRemix.celsius_line),
+                                                const Icon(
+                                                    FlutterRemix.celsius_line),
                                                 Text(
                                                   'Weather: ' +
                                                       temperature!.toString() +
                                                       '° ' +
                                                       weatherDescription!,
-                                                  style: TextStyle(fontSize: 15),
+                                                  style:
+                                                      TextStyle(fontSize: 15),
                                                 ),
                                               ],
                                             ),
                                             Row(
                                               children: [
-                                                Icon(FlutterRemix
+                                                const Icon(FlutterRemix
                                                     .contrast_drop_2_line),
                                                 Text(
                                                   'Humidity: ' +
                                                       humidity!.toString(),
-                                                  style: TextStyle(fontSize: 15),
+                                                  style: const TextStyle(
+                                                      fontSize: 15),
                                                 ),
                                               ],
                                             ),
@@ -729,7 +709,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 Text(
                                                   'Wind Speed: ' +
                                                       windSpeed!.toString(),
-                                                  style: TextStyle(fontSize: 15),
+                                                  style: const TextStyle(
+                                                      fontSize: 15),
                                                 ),
                                               ],
                                             ),
@@ -738,7 +719,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 Icon(FlutterRemix.map_pin_line),
                                                 Text(
                                                   'Location of the call: ———',
-                                                  style: TextStyle(fontSize: 15),
+                                                  style:
+                                                      TextStyle(fontSize: 15),
                                                 ),
                                               ],
                                             ),
@@ -754,7 +736,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                     .user_location_line),
                                                 Text(
                                                   'Location of the caller now:',
-                                                  style: TextStyle(fontSize: 15),
+                                                  style:
+                                                      TextStyle(fontSize: 15),
                                                 ),
                                               ],
                                             ),
@@ -768,12 +751,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               children: [
                                                 Text(
                                                   'Caller is' + userMotion!,
-                                                  style: TextStyle(fontSize: 15),
+                                                  style: const TextStyle(
+                                                      fontSize: 15),
                                                 ),
-                                                Icon(FlutterRemix.walk_fill),
+                                                const Icon(
+                                                    FlutterRemix.walk_fill),
                                                 Text(
                                                   userMotion!,
-                                                  style: TextStyle(fontSize: 15),
+                                                  style: const TextStyle(
+                                                      fontSize: 15),
                                                 ),
                                               ],
                                             ),
@@ -836,9 +822,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.center,
                                                   children: [
-                                                    //////
                                                     // This is the chat
-                                                    //////
                                                     SizedBox(
                                                         height: MediaQuery.of(
                                                                     context)
@@ -891,7 +875,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                       return ListView.builder(
                                                                           itemCount: data.size,
                                                                           reverse: true,
-                                                          addSemanticIndexes: false,
+                                                                          addSemanticIndexes: false,
                                                                           itemBuilder: (context, index) {
                                                                             Color
                                                                                 c;
@@ -935,9 +919,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                                 color: c));
                                                                             var lengthOfMessageList =
                                                                                 messagesList.length;
-    messagesList.reversed.toList();
-    return IndexedSemantics(index: index, child:  messagesList[index]);
-
+                                                                            messagesList.reversed.toList();
+                                                                            return IndexedSemantics(
+                                                                                index: index,
+                                                                                child: messagesList[index]);
                                                                           });
                                                                     })),
                                                           ],
@@ -1052,7 +1037,6 @@ class StreetMap extends StatefulWidget {
   State<StreetMap> createState() => _StreetMapState();
 }
 
-
 class _StreetMapState extends State<StreetMap> {
   final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
@@ -1064,29 +1048,27 @@ class _StreetMapState extends State<StreetMap> {
   String latitudeString = '';
   String longitudeString = '';
   late var callerId;
-  var lineNew =  googleMap.Polyline();
-  var  marker = googleMap.Marker();
+  var lineNew = googleMap.Polyline();
+  var marker = googleMap.Marker();
   bool? ended = false;
-  void refresh(){
-
+  void refresh() {
     Timer.periodic(Duration(seconds: 5), (timer) async {
       newLocsPassed = newLocs;
-   //   print("nngngngngngngngngn_-_-__-_-_-_----____");
-   //   print(newLocsPassed);
       googleMap.LatLng Latest = newLocsPassed!.last;
 
-      setState((){newLocsPassed;
-      lineNew..path = newLocsPassed;
-      marker..position = Latest;
+      setState(() {
+        newLocsPassed;
+        lineNew..path = newLocsPassed;
+        marker..position = Latest;
       });
 
-      if(ended == true){
+      if (ended == true) {
         timer.cancel();
       }
     });
   }
 
-  void activateLocationListener(){
+  void activateLocationListener() {
     endedStateStream = ref
         .child('sensors')
         .child(callerId)
@@ -1096,34 +1078,30 @@ class _StreetMapState extends State<StreetMap> {
       bool? endedB = event.snapshot.value as bool;
       ended = endedB;
     });
-
   }
 
   @override
-  void initState(){
+  void initState() {
     callerId = widget.callerid;
     activateLocationListener();
     newLocsPassed = newLocs;
     refresh();
-     myLatlng = previousLocs![0];
+    myLatlng = previousLocs![0];
     super.initState();
   }
 
   @override
-  void dispose(){
-   // latitudeStream!.cancel();
-  //  longitudeStream!.cancel();
+  void dispose() {
     endedStateStream!.cancel();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     String htmlId = "8";
 
     // ignore: undefined_prefixed_name
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
-
-
       final policeLatLng = googleMap.LatLng(50.4182278, -104.594109);
 
       final mapOptions = googleMap.MapOptions()
@@ -1143,7 +1121,7 @@ class _StreetMapState extends State<StreetMap> {
         ..map = map
         ..icon = 'https://maps.google.com/mapfiles/ms/icons/police.png');
 
-       marker = googleMap.Marker(googleMap.MarkerOptions()
+      marker = googleMap.Marker(googleMap.MarkerOptions()
         ..position = myLatlng
         ..map = map
         ..title = 'caller');
@@ -1151,20 +1129,15 @@ class _StreetMapState extends State<StreetMap> {
       final line = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
         ..path = previousLocs);
-      //print("*******------*********");
-      //print(previousLocs);
 
-       lineNew = googleMap.Polyline(googleMap.PolylineOptions()
+      lineNew = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
         ..path = newLocsPassed
         ..strokeColor = "#c4161b");
-     // print("+-+-++-+-++-+-+++--+++-+--+-++-");
-     // print(newLocs);
+
       return elem;
     });
 
     return HtmlElementView(viewType: htmlId);
   }
-
-
 }

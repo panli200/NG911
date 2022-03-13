@@ -2,43 +2,46 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
 
-
 class Message extends StatefulWidget {
-
   var secretBox;
   var aesSecretKey;
   var alignment;
   var color;
-   Message({Key? key, required this.secretBox, required this.aesSecretKey, required this.alignment, required this.color}) : super(key: key);
+  Message(
+      {Key? key,
+      required this.secretBox,
+      required this.aesSecretKey,
+      required this.alignment,
+      required this.color})
+      : super(key: key);
   @override
   State<Message> createState() => MessageState();
-
-
 }
 
 class MessageState extends State<Message> {
- final algorithm = AesCtr.with256bits(macAlgorithm: Hmac.sha256());
- var secretBox;
- var alignment;
- var color;
- var aesSecretKey;
- Future? decryptedMessage;
+  final algorithm = AesCtr.with256bits(macAlgorithm: Hmac.sha256());
+  var secretBox;
+  var alignment;
+  var color;
+  var aesSecretKey;
+  Future? decryptedMessage;
 
- Future<String> decryptText(SecretBox secretBox) async {
-   return utf8.decode(
-       await algorithm.decrypt(secretBox, secretKey: await aesSecretKey));
- }
+  Future<String> decryptText(SecretBox secretBox) async {
+    return utf8.decode(
+        await algorithm.decrypt(secretBox, secretKey: await aesSecretKey));
+  }
 
- @override
- void initState(){
-   secretBox = widget.secretBox;
-   aesSecretKey = widget.aesSecretKey;
-   color = widget.color;
-   alignment = widget.alignment;
-   decryptedMessage = decryptText(secretBox);
+  @override
+  void initState() {
+    secretBox = widget.secretBox;
+    aesSecretKey = widget.aesSecretKey;
+    color = widget.color;
+    alignment = widget.alignment;
+    decryptedMessage = decryptText(secretBox);
 
-   super.initState();
- }
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -68,16 +71,14 @@ class MessageState extends State<Message> {
                   color: color,
                   borderRadius: BorderRadius.circular(35.0),
                   boxShadow: const [
-                    BoxShadow(offset: Offset(0, 2), blurRadius: 2, color: Colors.grey)
+                    BoxShadow(
+                        offset: Offset(0, 2), blurRadius: 2, color: Colors.grey)
                   ],
                 ),
               ));
         });
   }
-
-
 }
-
 
 //class Message extends StatelessWidget{
 //  var secretBox;
