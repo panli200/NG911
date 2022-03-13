@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CaseBasic extends StatelessWidget {
@@ -36,17 +35,17 @@ class CaseBasic extends StatelessWidget {
     }
     void downloadTheURL() async {
       if (type != 4) {
-        if (await canLaunch(urlPMR))
+        if (await canLaunch(urlPMR)) {
           await launch(urlPMR);
-        else
-          // can't launch url, there is some error
+        } else {
           throw "Could not launch $urlPMR";
+        }
       } else {
-        if (await canLaunch(urlECMR))
+        if (await canLaunch(urlECMR)) {
           await launch(urlECMR);
-        else
-          // can't launch url, there is some error
+        } else {
           throw "Could not launch $urlECMR";
+        }
       }
     }
 
@@ -90,7 +89,6 @@ class CaseBasic extends StatelessWidget {
     }
   }
 
-  @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
     throw UnimplementedError();
