@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sos_app/routes/router.gr.dart';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -14,9 +13,6 @@ class MyApp extends StatelessWidget {
   MyApp({Key? key}) : super(key: key);
 
   final appRouter = AppRouter();
-
-  // @override
-  // _MyAppState createState() => _MyAppState();
 
   @override
   Widget build(BuildContext context) {

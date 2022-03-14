@@ -11,7 +11,8 @@ class HowToUseData {
 }
 
 class EmergencyCallPopUpData {
-  static final emergencyCallPopUp = EmergencyCallPopUpData(Colors.white, 'Emergency Call', 2);
+  static final emergencyCallPopUp =
+      EmergencyCallPopUpData(Colors.white, 'Emergency Call', 2);
 
   final Color color;
   final String title;
@@ -21,7 +22,8 @@ class EmergencyCallPopUpData {
 }
 
 class ConnectPsapData {
-  static final connectPsapData = ConnectPsapData(Colors.white, 'Emergency Call', 3);
+  static final connectPsapData =
+      ConnectPsapData(Colors.white, 'Emergency Call', 3);
 
   final Color color;
   final String title;
@@ -30,7 +32,7 @@ class ConnectPsapData {
   ConnectPsapData(this.color, this.title, this.id);
 }
 
-class EmergencySMS{
+class EmergencySMS {
   String? messageContent;
   String? messageType;
   EmergencySMS({@required this.messageContent, @required this.messageType});

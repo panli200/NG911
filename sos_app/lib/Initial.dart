@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sos_app/SignUp.dart';
-import 'package:sos_app/sos.dart';
 import 'package:sos_app/routes/router.gr.dart';
 import 'package:auto_route/src/router/auto_router_x.dart';
 
@@ -14,9 +13,6 @@ class InitializerWidgetPage extends StatelessWidget {
     _user = _auth!.currentUser;
   }
   InitializerWidgetPage({Key? key}) : super(key: key);
-
-
-
 
   bool isLoading = true;
   @override
