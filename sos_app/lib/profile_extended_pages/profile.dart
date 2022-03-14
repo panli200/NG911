@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:auto_route/annotations.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter_remix/flutter_remix.dart';
 import 'package:path/path.dart';
@@ -229,7 +228,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   _user.contactNum = (_phoneContact != null
                                       ? (_phoneContact!.fullName! +
                                           _phoneContact!.phoneNumber!.number!)
-                                      : '')!;
+                                      : '');
                                   emergencyName = _phoneContact!.fullName!;
                                 });
                               },
@@ -424,7 +423,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             TextFormField(
                               validator: (value) {
-                                if (value!.length >= 1 && value!.length <= 11) {
+                                if (value!.length >= 1 && value.length <= 11) {
                                   return 'Please enter 7-12 digits';
                                 }
                                 return null;
@@ -566,7 +565,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             TextFormField(
                               validator: (value) {
-                                if (value!.length >= 1 && value!.length <= 11) {
+                                if (value!.length >= 1 && value.length <= 11) {
                                   return 'Please enter 7-12 digits';
                                 }
                                 return null;
@@ -762,60 +761,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
 /************************************************************* END OF MEDICAL INFORMATION *************************************************************/
-
-                  // SizedBox(
-                  //   height: 16.0,
-                  // ),
-
-                  // const Divider(
-                  //   height: 10,
-                  //   thickness: 5,
-                  // ),
-                  // SizedBox(
-                  //   height: 16.0,
-                  // ),
-                  // Text(
-                  //   'Background Location Listener',
-                  //   textAlign: TextAlign.center,
-                  //   style: const TextStyle(
-                  //     fontWeight: FontWeight.bold,
-                  //     fontSize: 17,
-                  //   ),
-                  // ),
-                  // SizedBox(
-                  //   height: 16.0,
-                  // ),
-                  // ElevatedButton(
-                  //   child: Text(textBackground),
-                  //   style: ButtonStyle(
-                  //     backgroundColor:
-                  //         MaterialStateProperty.all<Color>(Colors.black),
-                  //   ),
-                  //   onPressed: () async {
-                  //     // code here to activate background
-
-                  //     final service = FlutterBackgroundService();
-                  //     var isRunning = await service.isServiceRunning();
-                  //     if (isRunning) {
-                  //       service.sendData(
-                  //         {"action": "stopService"},
-                  //       );
-                  //     } else {
-                  //       service.start();
-                  //     }
-
-                  //     if (!isRunning) {
-                  //       textBackground = 'Stop Service';
-                  //     } else {
-                  //       textBackground = 'Start Service';
-                  //     }
-
-                  //     setState(() {});
-                  //   },
-                  // ),
-                  // SizedBox(
-                  //   height: 8.0,
-                  // ),
                 ],
               ),
             ),
@@ -859,5 +804,3 @@ class _ProfilePageState extends State<ProfilePage> {
       return "Not Given";
   }
 }
-
-// Sensor class for location

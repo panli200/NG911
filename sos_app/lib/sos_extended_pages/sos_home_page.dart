@@ -414,7 +414,7 @@ class SosHomePageState extends State<SosHomePage> {
                               uploadFile(); //TEST upload files to the firebase storage
                               updateHistory(); //Test adding call history database
                               sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
-                              sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
+                              sendUpdatedLocation(); // send location on Firebase each 5 seconds to be accessed on callcontrol page map
                               personal(); //Test adding call type
                               router.push(RingingRoute(
                                   privateKey: privKey,
@@ -443,7 +443,7 @@ class SosHomePageState extends State<SosHomePage> {
                               uploadFile(); //TEST upload files to the firebase storage
                               updateHistory(); //Test adding call history database
                               sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
-                              sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
+                              sendUpdatedLocation(); // send location on Firebase each 5 seconds to be accessed on callcontrol page map
                               contact(); //Test adding call type
                               router.push(RingingRoute(
                                   privateKey: privKey,
@@ -470,7 +470,7 @@ class SosHomePageState extends State<SosHomePage> {
                                   date, publicKeyString, aesSecretKey);
                               updateHistory(); //Test adding call history database
                               sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
-                              sendUpdatedLocation(); // send location on FireBbase each 5 seconds to be accessed on callcontrol page map
+                              sendUpdatedLocation(); // send location on Firebase each 5 seconds to be accessed on callcontrol page map
                               standby();
                               router.push(RingingRoute(
                                   privateKey: privKey,
