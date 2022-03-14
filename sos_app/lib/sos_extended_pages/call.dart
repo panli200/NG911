@@ -121,7 +121,6 @@ class _CallPageState extends State<CallPage> {
 
   @override
   void dispose() {
-    
     _localRenderer.dispose();
     _remoteRenderer.dispose();
     stopSensors();
@@ -158,10 +157,9 @@ class _CallPageState extends State<CallPage> {
               DatabaseReference real = FirebaseDatabase.instance.ref();
               final databaseReal = real.child('sensors').child(mobile);
               await databaseReal.update({'Online': false, 'Ended': true});
-
             },
             child: Icon(
-              Icons.dangerous, color: Colors.red,// add custom icons also
+              Icons.dangerous, color: Colors.red, // add custom icons also
             ),
           ),
           actions: <Widget>[

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sos_app/sos_extended_pages/call.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
 
