@@ -491,7 +491,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
           await getEmergencyContactHealthCard(callerId);
       personalHealthCardString = await getPersonalHealthCard(callerId);
       urlPMR = await getUrlPMR(callerId);
+      // ignore: unnecessary_null_comparison
       urlECMR = await getUrlECMR(callerId);
+      urlPMR ??= '';
+      urlECMR ??= '';
       setState(() {});
       if (double.tryParse('$speedString') != null) {
         WidgetsFlutterBinding.ensureInitialized();
@@ -874,8 +877,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
                                                                       return ListView.builder(
                                                                           itemCount: data.size,
-                                                                          reverse: true,
-                                                                          addSemanticIndexes: false,
+                                                                          shrinkWrap: true,
+                                                                          reverse: false,
                                                                           itemBuilder: (context, index) {
                                                                             Color
                                                                                 c;
@@ -911,18 +914,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                             SecretBox
                                                                                 newBox =
                                                                                 SecretBox(cipherInt, nonce: nonceInt, mac: macFinal);
-                                                                            messagesList.reversed.toList();
                                                                             messagesList.add(Message(
                                                                                 secretBox: newBox,
                                                                                 aesSecretKey: aesSecretKey,
                                                                                 alignment: a,
                                                                                 color: c));
-                                                                            var lengthOfMessageList =
-                                                                                messagesList.length;
-                                                                            messagesList.reversed.toList();
-                                                                            return IndexedSemantics(
-                                                                                index: index,
-                                                                                child: messagesList[index]);
+                                                                            return messagesList[index];
                                                                           });
                                                                     })),
                                                           ],
