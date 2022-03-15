@@ -27,6 +27,7 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
   - [November 19 — Scrum #4](#november-19--scrum-4)
   - [February 8 — Scrum #5](#february-8--scrum-5)
   - [February 15 — Scrum #6](#february-15--scrum-6)
+  - [March 15 — Scrum #6](#march-15--scrum-6)
 - [Design Documentation](#design-documentation)
   - [Project  Definition](#project--definition)
   - [Empathy Mapping](#empathy-mapping)
@@ -78,6 +79,9 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
 ## February 15 — Scrum #6
 - [Scrum #6 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%236-Script.pdf)
 - [Scrum #6 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%236-Slide.pdf)
+## March 15 — Scrum #6
+- [Scrum #7 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%237-Script.pdf)
+- [Scrum #7 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%237-Slide.pdf)
 
 ---
 
