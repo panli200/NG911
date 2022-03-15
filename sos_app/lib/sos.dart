@@ -9,7 +9,7 @@ class SosPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
-        routes: const [
+        routes: [
           SOS(),
           Profile(),
           Activities(),

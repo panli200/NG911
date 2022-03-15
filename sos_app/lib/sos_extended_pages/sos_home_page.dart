@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:sos_app/routes/router.gr.dart';
-import 'package:sos_app/data/application_data.dart';
 import 'package:sos_app/services/call_type.dart';
 import 'package:sos_app/profile_extended_pages/upload_file.dart';
 import 'package:sos_app/services/location.dart';
@@ -217,7 +216,7 @@ class SosHomePageState extends State<SosHomePage> {
   late String publicKeyString;
   late final aesAlgorithm;
   late final aesSecretKey;
-  final howToUsePopUp = HowToUseData.howToUsePopUp;
+  // final howToUsePopUp = HowToUseData.howToUsePopUp;
   void Encrypt() async {
     futureKeyPair = getKeyPair();
     keyPair = await futureKeyPair;
