@@ -79,7 +79,7 @@ NG911 is a Software Systems Engineering Capstone (2021/2022) project by Team Bug
 ## February 15 — Scrum #6
 - [Scrum #6 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%236-Script.pdf)
 - [Scrum #6 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%236-Slide.pdf)
-## March 15 — Scrum #6
+## March 15 — Scrum #7
 - [Scrum #7 Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%237-Script.pdf)
 - [Scrum #7 Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%237-Slide.pdf)
 
