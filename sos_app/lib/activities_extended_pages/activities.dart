@@ -28,12 +28,12 @@ class ActivitiesPageState extends State<ActivitiesPage> {
     Query activities = FirebaseFirestore.instance.collection('SoSUsers').doc(mobile).collection('Emergencies').orderBy('StartTime', descending: true);
     final Stream<QuerySnapshot> activitiesList = activities.snapshots();
       return Scaffold(
+        backgroundColor: Colors.grey[100],
         appBar: AppBar(
           title: Text("Logs"),
           centerTitle: true,
         ),
         body: Container(
-
           child: Column(
             children: <Widget>[
               Expanded(
@@ -56,24 +56,31 @@ class ActivitiesPageState extends State<ActivitiesPage> {
                             itemBuilder: (context, index){
                               var id = data.docs[index].id;
                               return  InkWell(
-                                child: Container(
-                                  child: Row(
-                                      children: <Widget>[
-                                        Icon(FlutterRemix.file_info_line),
-                                        Container(
-                                          child: Text(' Date: ${formatter.format(DateTime.parse(data.docs[index]['StartTime']))}',style: TextStyle(
-                                            color: Colors.white,
-                                          ),),
-                                        )
-
-                                      ]
-
-                                  ),
+                                child: Container
+                                (
                                   padding: EdgeInsets.all(20.0),
                                   margin: EdgeInsets.all(20.0),
                                   decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    color: Colors.blue,
+                                      shape: BoxShape.rectangle,
+                                      borderRadius: BorderRadius.circular(12),
+                                      color: Colors.white,
+                                      border: Border.all(color: Colors.white, width: 1)),
+                                  child: Row(
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: <Widget>
+                                      [
+                                        Icon(FlutterRemix.file_info_line, color: Colors.amber, size: 30,),
+                                        Container
+                                        (
+                                          child: Text(' Date: ${formatter.format(DateTime.parse(data.docs[index]['StartTime']))}', 
+                                            style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                            ),
+                                          ),
+                                        )
+                                      ]
+
                                   ),
                                 ),
                                 onTap: () {
