@@ -245,7 +245,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                 return ListView.builder(
                                     itemCount: data.size,
                                     itemBuilder: (context, index) {
-                                      var id = data.docs[index].id;
+                                      //var id = data.docs[index].id;
                                       if (data.docs[index]['Online']) {
                                         return Material(
                                           child: Container(
