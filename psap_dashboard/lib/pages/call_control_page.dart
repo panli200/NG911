@@ -28,9 +28,9 @@ List<googleMap.LatLng>? newLocs;
 class CallControlPanel extends StatefulWidget {
   final CallerId;
   final Snapshot;
-  final signaling;
-  final remoteRenderer;
-  final localRenderer;
+  // final signaling;
+  // final remoteRenderer;
+  // final localRenderer;
   final name;
   final type;
   final publicKey;
@@ -40,11 +40,11 @@ class CallControlPanel extends StatefulWidget {
       required this.CallerId,
       required this.Snapshot,
       required this.type,
-      required this.signaling,
-      required this.localRenderer,
+      // required this.signaling,
+      // required this.localRenderer,
       required this.publicKey,
       required this.privateKey,
-      this.remoteRenderer,
+      // this.remoteRenderer,
       this.name})
       : super(key: key);
 
@@ -53,6 +53,11 @@ class CallControlPanel extends StatefulWidget {
 }
 
 class _CallControlPanelState extends State<CallControlPanel> {
+  // video streaming
+  Signaling signaling = Signaling();
+  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
+  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+
   // For encryption
   Future<crypto.AsymmetricKeyPair>? futureKeyPair;
   crypto.AsymmetricKeyPair?
@@ -96,11 +101,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   // other sensors
   String mobileChargeString = '';
-
-  //Video Audio Stream
-  Signaling? signaling;
-  RTCVideoRenderer? _localRenderer;
-  RTCVideoRenderer? _remoteRenderer;
 
   // Listeners
   StreamSubscription? publicKeyStream;
@@ -324,25 +324,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
       if (ended != true) {
         setState(() {
           roomId = event.snapshot.value.toString();
-          signaling = widget.signaling;
-          _localRenderer = widget.localRenderer;
-          _remoteRenderer = widget.remoteRenderer;
-
           signaling?.joinRoom(
               roomId, _remoteRenderer!, callerId); //join the video stream
         });
       }
     });
-  }
-
-  Future<void> getLocationWeather() async {
-    WeatherFactory wf = WeatherFactory("5e1ad24d143d638f46a53ae6403ee651");
-    Weather w = await wf.currentWeatherByLocation(
-        double.parse(latitudePassed!), double.parse(longitudePassed!));
-    weatherDescription = w.weatherDescription;
-    humidity = w.humidity!;
-    windSpeed = w.windSpeed!;
-    temperature = w.temperature!.celsius!.toInt();
   }
 
   Future<void> getStartLocation() async {
@@ -357,6 +343,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
         googleMap.LatLng(double.parse(startLan), double.parse(startLon))
       ];
     }
+    // Get weather info
+    WeatherFactory wf = WeatherFactory("5e1ad24d143d638f46a53ae6403ee651");
+    Weather w = await wf.currentWeatherByLocation(
+        double.parse(startLan), double.parse(startLon));
+    setState(() {
+      weatherDescription = w.weatherDescription!;
+      humidity = w.humidity!;
+      windSpeed = w.windSpeed!;
+      temperature = w.temperature!.celsius!.toInt();
+    });
   }
 
   Future<void> getLocationHistory() async {
@@ -385,6 +381,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
   // Initialize
   @override
   void initState() {
+    // Video streaming
+    _remoteRenderer.initialize();
+    _localRenderer.initialize();
+
+    signaling.onAddRemoteStream = ((stream) {
+      _remoteRenderer.srcObject = stream;
+      setState(() {});
+    });
+    signaling.openUserMedia(_localRenderer, _remoteRenderer);
+
     privKey = widget.privateKey;
     publicKey = widget.publicKey;
     callerId = widget.CallerId; //Getting user ID from the previous page..
@@ -415,7 +421,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .snapshots();
 
     activateListeners();
-    getLocationWeather();
 
     // Changing states
     snapshot = widget.Snapshot;
@@ -434,6 +439,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   @override
   void dispose() async {
+    // clean video streaming
+    _localRenderer.dispose();
+    _remoteRenderer.dispose();
+
     publicKeyStream!.cancel();
     aesKeyStream!.cancel();
     startTimeStream!.cancel();

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:psap_dashboard/pages/maps.dart';
-import 'package:psap_dashboard/pages/signaling.dart';
 import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
 import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,7 +9,6 @@ import 'encryption.dart';
 
 class MapsHomePage extends StatefulWidget {
   final name;
-
   const MapsHomePage({Key? key, required this.name}) : super(key: key);
 
   @override
@@ -27,10 +24,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
   late String publicKeyString;
   String? timeWaited = "0";
   String timeWaitedString = '0';
-  // video streaming
-  Signaling signaling = Signaling();
-  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
-  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+
   String name = '';
 
   void getUSer() async {
@@ -51,25 +45,11 @@ class _MapsHomePageState extends State<MapsHomePage> {
   void initState() {
     doEncryption();
     getUSer();
-    // Video streaming
-    _remoteRenderer.initialize();
-    _localRenderer.initialize();
-
-    signaling.onAddRemoteStream = ((stream) {
-      _remoteRenderer.srcObject = stream;
-      setState(() {});
-    });
-    signaling.openUserMedia(_localRenderer, _remoteRenderer);
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   void dispose() async {
-    // clean video streaming
-    _localRenderer.dispose();
-    _remoteRenderer.dispose();
-
     // clear users
     super.dispose();
   }
@@ -217,12 +197,6 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                     data.docs[
                                                                         index],
                                                                 type: type,
-                                                                signaling:
-                                                                    signaling,
-                                                                localRenderer:
-                                                                    _localRenderer,
-                                                                remoteRenderer:
-                                                                    _remoteRenderer,
                                                                 name: name,
                                                                 publicKey:
                                                                     publicKeyString,
@@ -239,7 +213,6 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                       } else {
                                         return const Material();
                                       }
-                                      //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
                                     });
                               }))
                     ]),
@@ -295,7 +268,6 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                       } else {
                                         return const Material();
                                       }
-                                      //return Text('Date: ${data.docs[index]['date']}\n Start time: ${data.docs[index]['Start time']}\n End Time: ${data.docs[index]['End time']}\n Status: ${data.docs[index]['Status']}');
                                     });
                               }))
                     ]),
