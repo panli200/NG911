@@ -314,24 +314,24 @@ class _CallControlPanelState extends State<CallControlPanel> {
         });
       }
     });
-  }
 
-  Future<void> getRoomId() async {
     roomIdStream = ref
         .child('sensors')
         .child(callerId)
         .child('RoomID')
         .onValue
         .listen((event) {
-      setState(() {
-        roomId = event.snapshot.value.toString();
-        signaling = widget.signaling;
-        _localRenderer = widget.localRenderer;
-        _remoteRenderer = widget.remoteRenderer;
+      if (ended != true) {
+        setState(() {
+          roomId = event.snapshot.value.toString();
+          signaling = widget.signaling;
+          _localRenderer = widget.localRenderer;
+          _remoteRenderer = widget.remoteRenderer;
 
-        signaling?.joinRoom(
-            roomId, _remoteRenderer!, callerId); //join the video stream
-      });
+          signaling?.joinRoom(
+              roomId, _remoteRenderer!, callerId); //join the video stream
+        });
+      }
     });
   }
 
@@ -395,8 +395,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
     databaseReal.update({
       'dispatcher_public_key': publicKey,
     });
-
-    getRoomId(); //get roomId and join the stream
 
     ref.child('sensors').child(callerId).update({'Online': true});
 
