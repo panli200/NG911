@@ -28,9 +28,6 @@ List<googleMap.LatLng>? newLocs;
 class CallControlPanel extends StatefulWidget {
   final CallerId;
   final Snapshot;
-  // final signaling;
-  // final remoteRenderer;
-  // final localRenderer;
   final name;
   final type;
   final publicKey;
@@ -40,11 +37,8 @@ class CallControlPanel extends StatefulWidget {
       required this.CallerId,
       required this.Snapshot,
       required this.type,
-      // required this.signaling,
-      // required this.localRenderer,
       required this.publicKey,
       required this.privateKey,
-      // this.remoteRenderer,
       this.name})
       : super(key: key);
 
@@ -324,8 +318,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
       if (ended != true) {
         setState(() {
           roomId = event.snapshot.value.toString();
-          signaling?.joinRoom(
-              roomId, _remoteRenderer!, callerId); //join the video stream
+          print(
+              "+++++++++++++++++++++++++++-----------------------------------------------------------------++++++++++++++++++++++++++++++++++++++++++++++++");
+          print(roomId);
+          signaling.joinRoom(
+              roomId, _remoteRenderer, callerId); //join the video stream
         });
       }
     });
