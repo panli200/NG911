@@ -21,7 +21,8 @@ import 'messages.dart';
 // Enviromental variables
 String? latitudePassed = '';
 String? longitudePassed = '';
-
+bool? ended;
+late Timer locationTimer;
 List<googleMap.LatLng>? previousLocs;
 List<googleMap.LatLng>? newLocs;
 
@@ -74,7 +75,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
   var snapshot;
   Query? pastCalls;
   // States of the call
-  bool? ended = false;
   //used for map_street file
   String htmlId = "8";
   StreetMap? streetMap;
@@ -318,9 +318,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
       if (ended != true) {
         setState(() {
           roomId = event.snapshot.value.toString();
-          print(
-              "+++++++++++++++++++++++++++-----------------------------------------------------------------++++++++++++++++++++++++++++++++++++++++++++++++");
-          print(roomId);
           signaling.joinRoom(
               roomId, _remoteRenderer, callerId); //join the video stream
         });
@@ -378,6 +375,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   // Initialize
   @override
   void initState() {
+    ended = false;
     // Video streaming
     _remoteRenderer.initialize();
     _localRenderer.initialize();
@@ -576,7 +574,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                             double.tryParse(lo)));
                                       }
 
-                                      return StreetMap(callerid: callerId);
+                                      return StreetMap();
                                     }))
                           ]),
                           SizedBox // SPACING
@@ -1030,9 +1028,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 }
 
+
 class StreetMap extends StatefulWidget {
-  var callerid;
-  StreetMap({Key? key, required this.callerid}) : super(key: key);
+  StreetMap({Key? key}) : super(key: key);
 
   @override
   State<StreetMap> createState() => _StreetMapState();
@@ -1043,48 +1041,41 @@ class _StreetMapState extends State<StreetMap> {
   FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
   StreamSubscription? longitudeStream;
   StreamSubscription? latitudeStream;
-  StreamSubscription? endedStateStream;
+  var mapOptions = googleMap.MapOptions();
+
+  late var map;
+  late var elem = DivElement();
   List<googleMap.LatLng>? newLocsPassed;
   late var myLatlng;
   String latitudeString = '';
   String longitudeString = '';
-  late var callerId;
   var lineNew = googleMap.Polyline();
+  var line = googleMap.Polyline();
   var marker = googleMap.Marker();
-  bool? ended = false;
   void refresh() {
-    Timer.periodic(Duration(seconds: 5), (timer) async {
-      newLocsPassed = newLocs;
-      googleMap.LatLng Latest = newLocsPassed!.last;
-
-      setState(() {
-        newLocsPassed;
-        lineNew..path = newLocsPassed;
-        marker..position = Latest;
-      });
-
-      if (ended == true) {
-        timer.cancel();
+    Timer.periodic(Duration(seconds: 5), (locationTimer) async {
+      if(ended != true){
+        newLocsPassed = newLocs;
+        googleMap.LatLng Latest = newLocsPassed!.last;
+        setState(() {
+          mapOptions!..center = Latest;
+          map = googleMap.GMap(elem, mapOptions);
+          newLocsPassed;
+          lineNew..path = newLocsPassed;
+          lineNew..map = map;
+          line..map = map;
+          marker..position = Latest;
+          marker..map = map;
+        });
       }
+
     });
   }
 
-  void activateLocationListener() {
-    endedStateStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('Ended')
-        .onValue
-        .listen((event) async {
-      bool? endedB = event.snapshot.value as bool;
-      ended = endedB;
-    });
-  }
+
 
   @override
   void initState() {
-    callerId = widget.callerid;
-    activateLocationListener();
     newLocsPassed = newLocs;
     refresh();
     myLatlng = previousLocs![0];
@@ -1093,7 +1084,6 @@ class _StreetMapState extends State<StreetMap> {
 
   @override
   void dispose() {
-    endedStateStream!.cancel();
     super.dispose();
   }
 
@@ -1105,17 +1095,17 @@ class _StreetMapState extends State<StreetMap> {
     ui.platformViewRegistry.registerViewFactory(htmlId, (int viewId) {
       final policeLatLng = googleMap.LatLng(50.4182278, -104.594109);
 
-      final mapOptions = googleMap.MapOptions()
+      mapOptions = googleMap.MapOptions()
         ..zoom = 19
         ..center = myLatlng;
 
-      final elem = DivElement()
+      elem = DivElement()
         ..id = htmlId
         ..style.width = "100%"
         ..style.height = "100%"
         ..style.border = 'none';
 
-      final map = googleMap.GMap(elem, mapOptions);
+      map = googleMap.GMap(elem, mapOptions);
 
       final policeMarker = googleMap.Marker(googleMap.MarkerOptions()
         ..position = policeLatLng
@@ -1127,7 +1117,7 @@ class _StreetMapState extends State<StreetMap> {
         ..map = map
         ..title = 'caller');
 
-      final line = googleMap.Polyline(googleMap.PolylineOptions()
+      line = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
         ..path = previousLocs);
 
