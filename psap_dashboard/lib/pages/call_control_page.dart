@@ -150,7 +150,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
       'EndPointLongitude': longitudePassed
     });
 
-    // End records
+    // End records messages
     var collection = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(callerId)
@@ -170,13 +170,23 @@ class _CallControlPanelState extends State<CallControlPanel> {
       await doc.reference.delete();
     }
 
-    // End records after call locations
+    // End records new locations
     var collectionNewLocation = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(callerId)
         .collection("NewLocations");
     var snapshotsNewLocation = await collectionNewLocation.get();
     for (var doc in snapshotsNewLocation.docs) {
+      await doc.reference.delete();
+    }
+
+    // End records rooms
+    var collectionRoom = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection("rooms");
+    var snapshotsRooms = await collectionRoom.get();
+    for (var doc in snapshotsRooms.docs) {
       await doc.reference.delete();
     }
 
