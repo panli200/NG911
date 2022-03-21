@@ -115,7 +115,6 @@ class _CallPageState extends State<CallPage> {
       _remoteRenderer.srcObject = stream;
       setState(() {});
     });
-    signaling.openUserMedia(_localRenderer, _remoteRenderer);
 
     super.initState();
   }
@@ -154,7 +153,7 @@ class _CallPageState extends State<CallPage> {
                   .collection('SOSEmergencies')
                   .doc(mobile)
                   .update({'Online': false, 'Ended': true});
-              //signaling!.hangUp(_localRenderer!);
+              signaling!.hangUp(_localRenderer!);
               DatabaseReference real = FirebaseDatabase.instance.ref();
               final databaseReal = real.child('sensors').child(mobile);
               await databaseReal.update({'Online': false, 'Ended': true});
@@ -167,7 +166,7 @@ class _CallPageState extends State<CallPage> {
             IconButton(
                 icon: Icon(Icons.call, color: Colors.black),
                 onPressed: () async {
-                  //signaling.openUserAudio(_localRenderer, _remoteRenderer);
+                  signaling.openUserAudio(_localRenderer, _remoteRenderer);
                   roomId = await signaling.createRoom(_remoteRenderer);
                   setState(() {});
                   showDialog(
@@ -190,15 +189,15 @@ class _CallPageState extends State<CallPage> {
             IconButton(
                 icon: Icon(Icons.video_call_rounded, color: Colors.black),
                 onPressed: () async {
+                  signaling.openUserMedia(_localRenderer, _remoteRenderer);
+                  roomId = await signaling.createRoom(_remoteRenderer);
                   setState(() {});
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => VideoStream(
-                              signaling: signaling,
-                              remoteRenderer: _remoteRenderer,
-                              localRenderer: _localRenderer,
-                            )),
+                            signaling: signaling,
+                            localRenderer: _localRenderer)),
                   );
                 }),
           ],
