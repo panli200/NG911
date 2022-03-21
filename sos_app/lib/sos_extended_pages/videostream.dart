@@ -1,11 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 
-class VideoStream extends StatelessWidget {
+class VideoStream extends StatefulWidget {
   final signaling;
   final localRenderer;
-  VideoStream({Key? key, required this.signaling, required this.localRenderer})
+  final remoteRenderer;
+  VideoStream(
+      {Key? key,
+      required this.signaling,
+      required this.localRenderer,
+      required this.remoteRenderer})
       : super(key: key);
+
+  @override
+  State<VideoStream> createState() => _VideoStreamState();
+}
+
+class _VideoStreamState extends State<VideoStream> {
+  Future<void> createRoom() async {
+    await widget.signaling.createRoom(widget.remoteRenderer);
+  }
+
+  @override
+  void initState() {
+    createRoom();
+    super.initState();
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +38,7 @@ class VideoStream extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.videocam_off),
             onPressed: () {
-              signaling.hangUp(localRenderer);
+              widget.signaling.hangUp(widget.localRenderer);
               Navigator.of(context).pop(null);
             },
           )
@@ -31,7 +52,7 @@ class VideoStream extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: RTCVideoView(localRenderer)),
+                  Expanded(child: RTCVideoView(widget.localRenderer)),
                 ],
               ),
             ),
