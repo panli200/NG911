@@ -559,25 +559,19 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       final data = snapshot.requireData;
 
                                       //Initial the new locations list
-                                      if(double.tryParse(startLan) !=null && double.tryParse(startLon) != null) {
-                                        newLocs = [
-                                          googleMap.LatLng(
-                                              double.tryParse(startLan),
-                                              double.tryParse(startLon))
-                                        ];
-                                      }
+                                      newLocs = [
+                                        googleMap.LatLng(double.parse(startLan),
+                                            double.parse(startLon))
+                                      ];
                                       //Adding the location to
                                       for (int i = 0;
                                           i < data.docs.length;
                                           i++) {
                                         String la = data.docs[i]['latitude'];
                                         String lo = data.docs[i]['longitude'];
-                                        if(double.tryParse(la) != null && double.tryParse(lo) != null) {
-                                          newLocs
-                                      !.add(googleMap.LatLng(
-                                      double.tryParse(la),
-                                      double.tryParse(lo)));
-                                      }
+                                        newLocs!.add(googleMap.LatLng(
+                                            double.tryParse(la),
+                                            double.tryParse(lo)));
                                       }
 
                                       return StreetMap();
@@ -1051,7 +1045,7 @@ class _StreetMapState extends State<StreetMap> {
 
   late var map;
   late var elem = DivElement();
-  List<googleMap.LatLng>? newLocsPassed = [];
+  List<googleMap.LatLng>? newLocsPassed;
   late var myLatlng;
   String latitudeString = '';
   String longitudeString = '';
@@ -1082,14 +1076,9 @@ class _StreetMapState extends State<StreetMap> {
 
   @override
   void initState() {
-    if(newLocs != null){
-      newLocsPassed = newLocs;
-    }
+    newLocsPassed = newLocs;
     refresh();
-    if( previousLocs![0] != null){
-      myLatlng = previousLocs![0];
-    }
-
+    myLatlng = previousLocs![0];
     super.initState();
   }
 
@@ -1134,6 +1123,7 @@ class _StreetMapState extends State<StreetMap> {
 
       lineNew = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
+        ..path = newLocsPassed
         ..strokeColor = "#c4161b");
 
       return elem;
