@@ -150,7 +150,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
       'EndPointLongitude': longitudePassed
     });
 
-    // End records
+    // End records messages
     var collection = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(callerId)
@@ -170,13 +170,23 @@ class _CallControlPanelState extends State<CallControlPanel> {
       await doc.reference.delete();
     }
 
-    // End records after call locations
+    // End records new locations
     var collectionNewLocation = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(callerId)
         .collection("NewLocations");
     var snapshotsNewLocation = await collectionNewLocation.get();
     for (var doc in snapshotsNewLocation.docs) {
+      await doc.reference.delete();
+    }
+
+    // End records rooms
+    var collectionRoom = FirebaseFirestore.instance
+        .collection('SOSEmergencies')
+        .doc(callerId)
+        .collection("rooms");
+    var snapshotsRooms = await collectionRoom.get();
+    for (var doc in snapshotsRooms.docs) {
       await doc.reference.delete();
     }
 
@@ -579,25 +589,20 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       final data = snapshot.requireData;
 
                                       //Initial the new locations list
-                                      if(double.tryParse(startLan) !=null && double.tryParse(startLon) != null) {
-                                        newLocs = [
-                                          googleMap.LatLng(
-                                              double.tryParse(startLan),
-                                              double.tryParse(startLon))
-                                        ];
-                                      }
+                                      newLocs = [
+                                        googleMap.LatLng(double.parse(startLan),
+                                            double.parse(startLon))
+                                      ];
                                       //Adding the location to
                                       for (int i = 0;
                                           i < data.docs.length;
                                           i++) {
                                         String la = data.docs[i]['latitude'];
                                         String lo = data.docs[i]['longitude'];
-                                        if(double.tryParse(la) != null && double.tryParse(lo) != null && newLocs != null) {
-                                          newLocs
-                                      !.add(googleMap.LatLng(
-                                      double.tryParse(la),
-                                      double.tryParse(lo)));
-                                      }
+
+                                        newLocs!.add(googleMap.LatLng(
+                                            double.tryParse(la),
+                                            double.tryParse(lo)));
                                       }
 
                                       return StreetMap();
@@ -1067,7 +1072,7 @@ class _StreetMapState extends State<StreetMap> {
 
   late var map;
   late var elem = DivElement();
-  List<googleMap.LatLng>? newLocsPassed = [];
+  List<googleMap.LatLng>? newLocsPassed;
   late var myLatlng;
   var lineNew = googleMap.Polyline();
   var line = googleMap.Polyline();
@@ -1096,14 +1101,9 @@ class _StreetMapState extends State<StreetMap> {
 
   @override
   void initState() {
-    if(newLocs != null){
-      newLocsPassed = newLocs;
-    }
+    newLocsPassed = newLocs;
     refresh();
-    if( previousLocs![0] != null){
-      myLatlng = previousLocs![0];
-    }
-
+    myLatlng = previousLocs![0];
     super.initState();
   }
 
@@ -1148,6 +1148,7 @@ class _StreetMapState extends State<StreetMap> {
 
       lineNew = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
+        ..path = newLocsPassed
         ..strokeColor = "#c4161b");
 
       return elem;
