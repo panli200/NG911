@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as Cloud;
 import 'package:firebase_database/firebase_database.dart';
+import 'package:sos_app/sos_extended_pages/audiostream.dart';
 import 'package:sos_app/sos_extended_pages/signaling.dart';
 import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sos_app/sos_extended_pages/videostream.dart';
@@ -123,7 +124,7 @@ class _CallPageState extends State<CallPage> {
   void dispose() {
     signaling.hangUp(_localRenderer);
     _localRenderer.dispose();
-    _remoteRenderer.dispose() ;
+    _remoteRenderer.dispose();
     stopSensors();
     super.dispose();
   }
@@ -137,7 +138,6 @@ class _CallPageState extends State<CallPage> {
         .collection('messages')
         .orderBy("time", descending: true);
 
-    int localMessageIndex = 0;
     final Stream<Cloud.QuerySnapshot> messages = sorted.snapshots();
 
     return Scaffold(
@@ -170,22 +170,13 @@ class _CallPageState extends State<CallPage> {
                   signaling.openUserAudio(_localRenderer, _remoteRenderer);
                   roomId = await signaling.createRoom(_remoteRenderer);
                   setState(() {});
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                            actions: <Widget>[
-                              new IconButton(
-                                  alignment: Alignment.center,
-                                  icon: new Icon(
-                                    Icons.call_end,
-                                    color: Colors.red,
-                                  ),
-                                  onPressed: () {
-                                    signaling.hangUp(_localRenderer);
-                                    Navigator.of(context).pop(null);
-                                  }),
-                            ],
-                          ));
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AudioStream(
+                            signaling: signaling,
+                            localRenderer: _localRenderer)),
+                  );
                 }),
             IconButton(
                 icon: Icon(Icons.video_call_rounded, color: Colors.black),
