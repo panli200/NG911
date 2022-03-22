@@ -66,14 +66,14 @@ import 'package:sos_app/SignUp.dart';
                 AutoRoute(
                   path: 'activities_extended_pages',
                   name: 'Activities',
-                  page: ActivitiesPage,
+                  page: EmptyRouterPage,
 
                   // FUTURE EXTENDED/POP-UP PAGES FOR Activities PAGE
                   children: [
-                    // AutoRoute(
-                    //   path: '',
-                    //   page: ActivitiesPage,
-                    // ),
+                     AutoRoute(
+                       path: '',
+                       page: ActivitiesPage,
+                     ),
                     AutoRoute(
                       path: ':details',
                       page: ActivityDetailPage,

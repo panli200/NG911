@@ -193,8 +193,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .child('Ended')
         .onValue
         .listen((event) async {
-      bool? endedB = event.snapshot.value as bool;
-      ended = endedB;
+      if (event.snapshot.value  != null) {
+        bool ? endedB = event.snapshot.value as bool;
+        ended = endedB;
+      }
     });
 
     aesKeyStream = ref
@@ -204,11 +206,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        String publicKeyPassed = event.snapshot.value.toString();
-        aesSecretKeyString =
-            (jsonDecode(publicKeyPassed) as List<dynamic>).cast<int>();
-        aesSecretKey = SecretKey(aesSecretKeyString);
-        setState(() {});
+        if (event.snapshot.value.toString() != null) {
+          String publicKeyPassed = event.snapshot.value.toString();
+          aesSecretKeyString =
+              (jsonDecode(publicKeyPassed) as List<dynamic>).cast<int>();
+          aesSecretKey = SecretKey(aesSecretKeyString);
+          setState(() {});
+        }
       }
     });
 
@@ -219,10 +223,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        String publicKeyPassed = event.snapshot.value.toString();
-        var helper = RsaKeyHelper();
-        otherEndPublicKey = helper.parsePublicKeyFromPem(publicKeyPassed);
-        setState(() {});
+        if (event.snapshot.value.toString() != null) {
+          String publicKeyPassed = event.snapshot.value.toString();
+          var helper = RsaKeyHelper();
+          otherEndPublicKey = helper.parsePublicKeyFromPem(publicKeyPassed);
+          setState(() {});
+        }
       }
     });
 
@@ -233,9 +239,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        setState(() {
-          StartTime = event.snapshot.value.toString();
-        });
+        if (event.snapshot.value.toString() != null) {
+          setState(() {
+            StartTime = event.snapshot.value.toString();
+          });
+        }
       }
     });
 
@@ -246,10 +254,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        String mobileCharge = event.snapshot.value.toString();
-        setState(() {
-          mobileChargeString = 'Mobile Charge: ' + mobileCharge;
-        });
+        if (event.snapshot.value.toString() != null) {
+          String mobileCharge = event.snapshot.value.toString();
+          setState(() {
+            mobileChargeString = 'Mobile Charge: ' + mobileCharge;
+          });
+        }
       }
     });
 
@@ -260,10 +270,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        longitudePassed = event.snapshot.value.toString();
-        setState(() {
-          longitudeString = 'Longitude: ' + longitudePassed!;
-        });
+        if (event.snapshot.value.toString() != null) {
+          longitudePassed = event.snapshot.value.toString();
+          setState(() {
+            longitudeString = 'Longitude: ' + longitudePassed
+            !;
+          });
+        }
       }
     });
 
@@ -274,10 +287,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        latitudePassed = event.snapshot.value.toString();
-        setState(() {
-          latitudeString = 'Latitude: ' + latitudePassed!;
-        });
+        if (event.snapshot.value.toString() != null) {
+          latitudePassed = event.snapshot.value.toString();
+          setState(() {
+            latitudeString = 'Latitude: ' + latitudePassed
+            !;
+          });
+        }
       }
     });
 
@@ -288,10 +304,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        String speed = event.snapshot.value.toString();
-        setState(() {
-          speedString = speed;
-        });
+        if (event.snapshot.value.toString() != null) {
+          String speed = event.snapshot.value.toString();
+          setState(() {
+            speedString = speed;
+          });
+        }
       }
     });
 
@@ -302,10 +320,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        String AccelerationValue = event.snapshot.value.toString();
-        setState(() {
-          AccelerationString = AccelerationValue;
-        });
+        if (event.snapshot.value.toString() != null) {
+          String AccelerationValue = event.snapshot.value.toString();
+          setState(() {
+            AccelerationString = AccelerationValue;
+          });
+        }
       }
     });
 
@@ -572,7 +592,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                           i++) {
                                         String la = data.docs[i]['latitude'];
                                         String lo = data.docs[i]['longitude'];
-                                        if(double.tryParse(la) != null && double.tryParse(lo) != null) {
+                                        if(double.tryParse(la) != null && double.tryParse(lo) != null && newLocs != null) {
                                           newLocs
                                       !.add(googleMap.LatLng(
                                       double.tryParse(la),
@@ -1043,18 +1063,12 @@ class StreetMap extends StatefulWidget {
 }
 
 class _StreetMapState extends State<StreetMap> {
-  final FbDb.FirebaseDatabase database = FbDb.FirebaseDatabase.instance;
-  FbDb.DatabaseReference ref = FbDb.FirebaseDatabase.instance.ref();
-  StreamSubscription? longitudeStream;
-  StreamSubscription? latitudeStream;
   var mapOptions = googleMap.MapOptions();
 
   late var map;
   late var elem = DivElement();
   List<googleMap.LatLng>? newLocsPassed = [];
   late var myLatlng;
-  String latitudeString = '';
-  String longitudeString = '';
   var lineNew = googleMap.Polyline();
   var line = googleMap.Polyline();
   var marker = googleMap.Marker();

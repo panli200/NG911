@@ -47,9 +47,9 @@ Future<String> getUrlECMR (String phone)async{
     CollectionReference EmergencyData = FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
     var details =  await EmergencyData.doc('Contact Medical Info ').get();
 
-      if ((details.data() as dynamic)['contact medical file download'] != null) {
-        return (details.data() as dynamic)['contact medical file download'];
-      }
+    if (details['contact medical file download'] != null){
+      return details['contact medical file download'];
+    }
 
 
     return '';
