@@ -121,8 +121,9 @@ class _CallPageState extends State<CallPage> {
 
   @override
   void dispose() {
+    signaling.hangUp(_localRenderer);
     _localRenderer.dispose();
-    _remoteRenderer.dispose();
+    _remoteRenderer.dispose() ;
     stopSensors();
     super.dispose();
   }
