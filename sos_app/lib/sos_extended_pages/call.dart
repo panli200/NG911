@@ -124,7 +124,7 @@ class _CallPageState extends State<CallPage> {
   void dispose() {
     signaling.hangUp(_localRenderer);
     _localRenderer.dispose();
-    _remoteRenderer.dispose() ;
+    _remoteRenderer.dispose();
     stopSensors();
     super.dispose();
   }
@@ -138,7 +138,6 @@ class _CallPageState extends State<CallPage> {
         .collection('messages')
         .orderBy("time", descending: true);
 
-    int localMessageIndex = 0;
     final Stream<Cloud.QuerySnapshot> messages = sorted.snapshots();
 
     return Scaffold(
@@ -178,22 +177,6 @@ class _CallPageState extends State<CallPage> {
                             signaling: signaling,
                             localRenderer: _localRenderer)),
                   );
-                  // showDialog(
-                  //     context: context,
-                  //     builder: (BuildContext context) => AlertDialog(
-                  //           actions: <Widget>[
-                  //             new IconButton(
-                  //                 alignment: Alignment.center,
-                  //                 icon: new Icon(
-                  //                   Icons.call_end,
-                  //                   color: Colors.red,
-                  //                 ),
-                  //                 onPressed: () {
-                  //                   signaling.hangUp(_localRenderer);
-                  //                   Navigator.of(context).pop(null);
-                  //                 }),
-                  //           ],
-                  //         ));
                 }),
             IconButton(
                 icon: Icon(Icons.video_call_rounded, color: Colors.black),

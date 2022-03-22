@@ -23,21 +23,17 @@ class AudioStream extends StatelessWidget {
           )
         ],
       ),
-      // body: Column(
-      //   children: [
-      //     Expanded(
-      //       child: Padding(
-      //         padding: const EdgeInsets.all(8.0),
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.center,
-      //           children: [
-      //             Expanded(child: RTCVideoView(localRenderer)),
-      //           ],
-      //         ),
-      //       ),
-      //     ),
-      //   ],
-      // ),
+      body: Column(
+        children: [
+          Center(
+            child: Text(" online .  .  .",
+              style: TextStyle(fontWeight: FontWeight.bold,
+                  fontSize: 20,
+                  color: Colors.blue),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
