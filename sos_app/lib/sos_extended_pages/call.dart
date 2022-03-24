@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart' as Cloud;
 import 'package:firebase_database/firebase_database.dart';
 import 'package:sos_app/sos_extended_pages/audiostream.dart';
-import 'package:sos_app/sos_extended_pages/signaling.dart';
-import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sos_app/sos_extended_pages/videostream.dart';
 import 'package:sos_app/services/send_realtime_info.dart';
 import 'package:rsa_encrypt/rsa_encrypt.dart';
@@ -32,22 +30,17 @@ class CallPage extends StatefulWidget {
 class _CallPageState extends State<CallPage> {
   late final publicKey;
   var signaling;
-  var _localRenderer;
-  var _remoteRenderer;
   late final privateKey;
   late final otherEndPublicKey;
   late final aesSecretKey;
   late final aesSecretKeyString;
   final algorithm = AesCtr.with256bits(macAlgorithm: Hmac.sha256());
-  final senttext = new TextEditingController();
+  final sentText = new TextEditingController();
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
   StreamSubscription? streamSubscriptionEnded;
-  bool? Ended;
+  bool? ended;
 
-  //Video Stream
-
-  String? roomId;
   Future<String> decryptText(SecretBox secretBox) async {
     return utf8.decode(
         await algorithm.decrypt(secretBox, secretKey: await aesSecretKey));
@@ -90,22 +83,22 @@ class _CallPageState extends State<CallPage> {
     final databaseReal = ref.child('sensors').child(mobile);
     streamSubscriptionEnded =
         databaseReal.child('Ended').onValue.listen((event) async {
-      bool? EndedB = event.snapshot?.value as bool;
-      Ended = EndedB;
-      if (Ended == true) {
+      bool? endedB = event.snapshot.value as bool;
+      ended = endedB;
+      if (ended == true) {
         var router = context.router;
         router.popUntilRoot();
       }
     });
-    StreamSubscription? publicKeyStream;
+
     streamSubscriptionEnded = databaseReal
         .child('dispatcher_public_key')
         .onValue
         .listen((event) async {
       late String? publicPassed;
-      publicPassed = event.snapshot?.value.toString();
+      publicPassed = event.snapshot.value.toString();
 
-      if (Ended != true && publicPassed != null) {
+      if (ended != true && publicPassed != null) {
         var helper = RsaKeyHelper();
         otherEndPublicKey = helper.parsePublicKeyFromPem(publicPassed);
       }
@@ -161,8 +154,7 @@ class _CallPageState extends State<CallPage> {
                 onPressed: () async {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => AudioStream()),
+                    MaterialPageRoute(builder: (context) => AudioStream()),
                   );
                 }),
             IconButton(
@@ -171,8 +163,7 @@ class _CallPageState extends State<CallPage> {
                   setState(() {});
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => VideoStream()),
+                    MaterialPageRoute(builder: (context) => VideoStream()),
                   );
                 }),
           ],
@@ -292,7 +283,7 @@ class _CallPageState extends State<CallPage> {
                     children: [
                       Expanded(
                         child: TextField(
-                          controller: senttext,
+                          controller: sentText,
                           style: TextStyle(color: Colors.black),
                           decoration: const InputDecoration(
                               hintText: "Type Something...",
@@ -303,12 +294,12 @@ class _CallPageState extends State<CallPage> {
                       IconButton(
                         icon: const Icon(Icons.send, color: Colors.blue),
                         onPressed: () {
-                          String text = senttext.text;
+                          String text = sentText.text;
                           if (text != '') {
                             // Store message locally in the List
                             // encrypt using the Other end's public key
                             encryptTextAndSend(text);
-                            senttext.text = '';
+                            sentText.text = '';
                           }
                         },
                       )

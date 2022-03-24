@@ -1,7 +1,7 @@
 class Sensor {
-   int id;
-   String latitude;
-   String longitude;
+  int id;
+  String latitude;
+  String longitude;
 
   Sensor({
     required this.id,
@@ -17,13 +17,13 @@ class Sensor {
     };
   }
 
-  String getLongitude(){
+  String getLongitude() {
     return this.longitude;
   }
 
-   String getLatitude(){
-     return this.latitude;
-   }
+  String getLatitude() {
+    return this.latitude;
+  }
 
   @override
   String toString() {

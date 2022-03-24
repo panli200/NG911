@@ -15,13 +15,10 @@ StreamSubscription? streamLocationSubscription;
 StreamSubscription? streamSubscriptionEnded;
 
 void updateSensors(String? time, String? publicKey, var aesKey) async {
-  bool? Online;
-  bool? Ended;
+  bool? online;
+  bool? ended;
   StopWatchTimer _stopWatchTimer = StopWatchTimer();
 
-  double x = 0.0;
-  double y = 0.0;
-  double z = 0.0;
   int batteryLevel = 0;
   Acceleration? accelerationC = Acceleration();
   String accelerationString = "";
@@ -42,7 +39,6 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
     'caller_public_key': publicKey,
     'caller_aes_key': aesSecretKeyString
   });
-  //Timer
 
   if (counts == null) {
     counts = 0;
@@ -50,6 +46,7 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
     counts++;
   }
 
+  //Timer
   _stopWatchTimer.onExecute.add(StopWatchExecute.start);
   _stopWatchTimer.secondTime.listen((value) {
     if (counts! == 0) {
@@ -62,34 +59,25 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
 
   // Acceleration Data
   databaseReal.child('Online').onValue.listen((event) async {
-    bool OnlineB = event.snapshot.value as bool;
-    Online = OnlineB;
-    if (Online! == true && Ended != true) {
+    bool onlineB = event.snapshot.value as bool;
+    online = onlineB;
+    if (online! == true && ended != true) {
       _stopWatchTimer.onExecute.add(StopWatchExecute.stop); //Stop timer
 
-      streamSubscription = accelerationC?.stream.listen((event) {
+      streamSubscription = accelerationC.stream.listen((event) {
         accelerationString = event;
-        if (Ended != true) {
+        if (ended != true) {
           databaseReal.update({
             'Acceleration': accelerationString,
           });
         }
       });
 
-// Location and Speed
-// streamLocationSubscription = location.getCurrentLocation().asStream().listen((event) async {
-//   if (Ended != true) {
-//     databaseReal.update({
-//       'Latitude': location.latitude.toString(),
-//       'Longitude': location.longitude.toString(),
-//       'Speed': location.speed.toString()
-//     });
-//   }
-// });
+      // Location Data
       Location location = Location();
       await location.getCurrentLocation();
       streamLocationSubscription = stream.listen((DatabaseEvent event) async {
-        if (Ended != true) {
+        if (ended != true) {
           databaseReal.update({
             'Latitude': location.latitude.toString(),
             'Longitude': location.longitude.toString(),
@@ -98,12 +86,12 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
         }
       });
 
-// Battery
+      // Battery
       var _battery = Battery();
       streamSubscription =
           _battery.onBatteryStateChanged.listen((BatteryState state) async {
         batteryLevel = await _battery.batteryLevel;
-        if (Ended != true) {
+        if (ended != true) {
           databaseReal.update({
             'MobileCharge': batteryLevel.toString(),
           });
@@ -112,9 +100,9 @@ void updateSensors(String? time, String? publicKey, var aesKey) async {
 
       streamSubscriptionEnded =
           databaseReal.child('Ended').onValue.listen((event) async {
-        bool? EndedB = event.snapshot?.value as bool;
-        Ended = EndedB;
-        if (Ended == true) {
+        bool? endedB = event.snapshot.value as bool;
+        ended = endedB;
+        if (ended == true) {
           streamSubscription!.cancel();
           streamLocationSubscription!.cancel();
           streamSubscriptionEnded!.cancel();

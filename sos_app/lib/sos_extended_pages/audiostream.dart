@@ -3,8 +3,7 @@ import 'package:flutter_webrtc/flutter_webrtc.dart';
 import 'package:sos_app/sos_extended_pages/signaling.dart';
 
 class AudioStream extends StatefulWidget {
-  AudioStream({Key? key})
-      : super(key: key);
+  AudioStream({Key? key}) : super(key: key);
 
   @override
   _AudioStreamState createState() => _AudioStreamState();
@@ -62,7 +61,7 @@ class _AudioStreamState extends State<AudioStream> {
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor:
-                  MaterialStateProperty.all<Color>(agreeToVideoColor),
+                      MaterialStateProperty.all<Color>(agreeToVideoColor),
                 ),
                 onPressed: () {
                   signaling.openUserAudio(_localRenderer, _remoteRenderer);
@@ -71,9 +70,6 @@ class _AudioStreamState extends State<AudioStream> {
                 },
                 child: Text("I agree to open my mic"),
               ),
-              // SizedBox(
-              //   width: 8,
-              // ),
             ],
           ),
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -85,11 +81,9 @@ class _AudioStreamState extends State<AudioStream> {
               },
               child: Text("Start Audio call"),
             ),
-
             SizedBox(
               width: 8,
             ),
-
           ]),
           SizedBox(height: 8),
           Expanded(
@@ -99,8 +93,10 @@ class _AudioStreamState extends State<AudioStream> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Center(
-                    child: Text(" online .  .  .",
-                      style: TextStyle(fontWeight: FontWeight.bold,
+                    child: Text(
+                      " online .  .  .",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
                           fontSize: 20,
                           color: Colors.blue),
                     ),
@@ -109,7 +105,6 @@ class _AudioStreamState extends State<AudioStream> {
               ),
             ),
           ),
-
           SizedBox(height: 8)
         ],
       ),
