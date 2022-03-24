@@ -31,6 +31,9 @@ class CallPage extends StatefulWidget {
 
 class _CallPageState extends State<CallPage> {
   late final publicKey;
+  var signaling;
+  var _localRenderer;
+  var _remoteRenderer;
   late final privateKey;
   late final otherEndPublicKey;
   late final aesSecretKey;
@@ -43,9 +46,7 @@ class _CallPageState extends State<CallPage> {
   bool? Ended;
 
   //Video Stream
-  Signaling signaling = Signaling();
-  RTCVideoRenderer _localRenderer = RTCVideoRenderer();
-  RTCVideoRenderer _remoteRenderer = RTCVideoRenderer();
+
   String? roomId;
   Future<String> decryptText(SecretBox secretBox) async {
     return utf8.decode(
@@ -85,6 +86,7 @@ class _CallPageState extends State<CallPage> {
     publicKey = widget.publicKey;
     privateKey = widget.privateKey;
     aesSecretKey = widget.aesKey;
+
     final databaseReal = ref.child('sensors').child(mobile);
     streamSubscriptionEnded =
         databaseReal.child('Ended').onValue.listen((event) async {
@@ -110,21 +112,12 @@ class _CallPageState extends State<CallPage> {
     });
 
     //Video Stream
-    _localRenderer.initialize();
-    _remoteRenderer.initialize();
-    signaling.onAddRemoteStream = ((stream) {
-      _remoteRenderer.srcObject = stream;
-      setState(() {});
-    });
 
     super.initState();
   }
 
   @override
   void dispose() {
-    signaling.hangUp(_localRenderer);
-    _localRenderer.dispose();
-    _remoteRenderer.dispose();
     stopSensors();
     super.dispose();
   }
@@ -154,7 +147,6 @@ class _CallPageState extends State<CallPage> {
                   .collection('SOSEmergencies')
                   .doc(mobile)
                   .update({'Online': false, 'Ended': true});
-              signaling!.hangUp(_localRenderer!);
               DatabaseReference real = FirebaseDatabase.instance.ref();
               final databaseReal = real.child('sensors').child(mobile);
               await databaseReal.update({'Online': false, 'Ended': true});
@@ -167,29 +159,20 @@ class _CallPageState extends State<CallPage> {
             IconButton(
                 icon: Icon(Icons.call, color: Colors.black),
                 onPressed: () async {
-                  signaling.openUserAudio(_localRenderer, _remoteRenderer);
-                  roomId = await signaling.createRoom(_remoteRenderer);
-                  setState(() {});
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => AudioStream(
-                            signaling: signaling,
-                            localRenderer: _localRenderer)),
+                        builder: (context) => AudioStream()),
                   );
                 }),
             IconButton(
                 icon: Icon(Icons.video_call_rounded, color: Colors.black),
                 onPressed: () async {
-                  signaling.openUserMedia(_localRenderer, _remoteRenderer);
-                  roomId = await signaling.createRoom(_remoteRenderer);
                   setState(() {});
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => VideoStream(
-                            signaling: signaling,
-                            localRenderer: _localRenderer)),
+                        builder: (context) => VideoStream()),
                   );
                 }),
           ],

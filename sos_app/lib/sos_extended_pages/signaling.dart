@@ -34,8 +34,9 @@ class Signaling {
     peerConnection = await createPeerConnection(configuration);
 
     registerPeerConnectionListeners();
-
+    print("created the stream! yaaaaaaay");
     localStream?.getTracks().forEach((track) {
+      print("here we go!");
       peerConnection?.addTrack(track, localStream!);
     });
 
@@ -220,6 +221,7 @@ class Signaling {
   Future<void> hangUp(RTCVideoRenderer localVideo) async {
     List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
     tracks.forEach((track) {
+      print("Hey, removing tracks");
       track.stop();
     });
 

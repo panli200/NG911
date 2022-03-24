@@ -24,6 +24,7 @@ class Signaling {
 
   Future<void> joinRoom(
       String roomId, RTCVideoRenderer remoteVideo, String CallerId) async {
+    print("Halo, I joined the followiing room: " + roomId.toString());
     FirebaseFirestore db = FirebaseFirestore.instance;
     DocumentReference roomRef = db
         .collection('SOSEmergencies')
@@ -113,13 +114,7 @@ class Signaling {
     remoteVideo.srcObject = await createLocalMediaStream('key');
   }
 
-  Future<void> hangUp(
-      RTCVideoRenderer localVideo, String roomId, String CallerId) async {
-    List<MediaStreamTrack> tracks = localVideo.srcObject!.getTracks();
-    tracks.forEach((track) {
-      track.stop();
-    });
-
+  Future<void> hangUp( String roomId, String CallerId) async {
     if (remoteStream != null) {
       remoteStream!.getTracks().forEach((track) => track.stop());
     }
