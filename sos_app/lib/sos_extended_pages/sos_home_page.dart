@@ -295,9 +295,7 @@ class SosHomePageState extends State<SosHomePage> {
 
                             SizedBox(height: 10), // Spacing visuals
 
-                            Center(
-                                child: Container(
-                                    child: ElevatedButton(
+                            ElevatedButton(
                               child: Text(textBackground),
                               style: ButtonStyle(
                                 backgroundColor:
@@ -325,7 +323,7 @@ class SosHomePageState extends State<SosHomePage> {
 
                                 setState(() {});
                               },
-                            ))),
+                            ),
                           ],
                         )),
 
@@ -371,9 +369,7 @@ class SosHomePageState extends State<SosHomePage> {
 
                             SizedBox(height: 10), // Spacing visuals
 
-                            Center(
-                                child: Container(
-                                    child: ElevatedButton(
+                            ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
@@ -389,22 +385,20 @@ class SosHomePageState extends State<SosHomePage> {
                                 sendUserDate(); //send the user profile function to send the data to firebase
                                 uploadFile(); //upload files to the firebase storage
                                 updateHistory(); //add call history database
-                                sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
-                                sendUpdatedLocation(); // send location on Firebase each 5 seconds to be accessed on callcontrol page map
-                                personal(); //Test adding call type
+                                sendLocationHistory(); //send last 10 minutes "or less minutes since started" of location history
+                                sendUpdatedLocation(); //send location on Firebase each 5 seconds to be accessed on callcontrol page map
+                                personal(); //add call type
                                 router.push(RingingRoute(
                                     privateKey: privateKey,
                                     publicKey: publicKey,
                                     aesKey: aesSecretKey));
                               },
                               child: Text("Yourself"),
-                            ))),
+                            ),
 
                             SizedBox(height: 20), // Spacing visuals
 
-                            Center(
-                                child: Container(
-                                    child: ElevatedButton(
+                            ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
@@ -419,22 +413,20 @@ class SosHomePageState extends State<SosHomePage> {
                                 sendUserDate(); //send the user profile function to send the data to firebase
                                 uploadFile(); //upload files to the firebase storage
                                 updateHistory(); //add call history database
-                                sendLocationHistory(); // send last 10 minutes "or less minutes since started" of location history
-                                sendUpdatedLocation(); // send location on Firebase each 5 seconds to be accessed on callcontrol page map
-                                contact(); //Test adding call type
+                                sendLocationHistory(); //send last 10 minutes "or less minutes since started" of location history
+                                sendUpdatedLocation(); //send location on Firebase each 5 seconds to be accessed on callcontrol page map
+                                contact(); //add call type
                                 router.push(RingingRoute(
                                     privateKey: privateKey,
                                     publicKey: publicKey,
                                     aesKey: aesSecretKey));
                               },
                               child: Text("Emergency Contact"),
-                            ))),
+                            ),
 
                             SizedBox(height: 20), // Spacing visuals
 
-                            Center(
-                                child: Container(
-                                    child: ElevatedButton(
+                            ElevatedButton(
                               style: ButtonStyle(
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
@@ -456,7 +448,7 @@ class SosHomePageState extends State<SosHomePage> {
                                     aesKey: aesSecretKey));
                               },
                               child: Text("Third Party (Bystander)"),
-                            ))),
+                            ),
                           ],
                         ))
                   ],
