@@ -4,6 +4,7 @@ import 'dart:html';
 import 'package:flutter/material.dart';
 import 'dart:ui' as ui;
 import 'dart:async';
+
 class GoogleMap extends StatefulWidget {
   const GoogleMap({Key? key}) : super(key: key);
 
@@ -17,21 +18,22 @@ class _GoogleMapState extends State<GoogleMap> {
   var mapOptions = MapOptions()
     ..zoom = 6
     ..center = LatLng(53.2, -104.70);
-  void refresh(){
+  void refresh() {
     DatabaseReference ref = FirebaseDatabase.instance.ref('sensors');
     Stream<DatabaseEvent> stream = ref.onValue;
-    Timer.periodic(Duration(seconds: 10), (locationTimer) async {
-      setState((){
+    Timer.periodic(const Duration(seconds: 10), (locationTimer) async {
+      setState(() {
         map = GMap(elem, mapOptions);
         stream.listen((DatabaseEvent event) async {
           for (var doc in event.snapshot.children) {
             if (double.tryParse(doc.child('startLatitude').value.toString()) !=
-                null &&
+                    null &&
                 double.tryParse(doc.child('startLongitude').value.toString()) !=
                     null) {
               var marker = LatLng(
                   double.tryParse(doc.child('startLatitude').value.toString()),
-                  double.tryParse(doc.child('startLongitude').value.toString()));
+                  double.tryParse(
+                      doc.child('startLongitude').value.toString()));
 
               if (doc.child('Online').value == false &&
                   doc.child('Ended').value == false) {
@@ -51,12 +53,11 @@ class _GoogleMapState extends State<GoogleMap> {
           }
         });
       });
-
     });
   }
+
   @override
   void initState() {
-    // TODO: implement initState
     refresh();
     super.initState();
   }
@@ -84,5 +85,3 @@ class _GoogleMapState extends State<GoogleMap> {
     return HtmlElementView(viewType: htmlId);
   }
 }
-
-

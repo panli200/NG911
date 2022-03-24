@@ -1,57 +1,66 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Future<String> getEmergencyContactNumber (String phone)async{
-  CollectionReference EmergencyData =  FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
-  var details =  EmergencyData.doc('General Info').get();
+Future<String> getEmergencyContactNumber(String phone) async {
+  CollectionReference emergencyData = FirebaseFirestore.instance
+      .collection('SoSUsers')
+      .doc(phone)
+      .collection('Profile Information');
+  var details = emergencyData.doc('General Info').get();
 
-  String Number = '';
+  String number = '';
   await details.then((snapshot) {
-    Number = snapshot['emergency number'].toString();
-    return Number;
+    number = snapshot['emergency number'].toString();
+    return number;
   });
-  return Number;
+  return number;
 }
-Future<String> getEmergencyContactHealthCard (String phone)async{
-  CollectionReference EmergencyData = FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
-  var details =  await EmergencyData.doc('Contact Medical Info').get();
-  if(details['contact health card'] != null) {
+
+Future<String> getEmergencyContactHealthCard(String phone) async {
+  CollectionReference emergencyData = FirebaseFirestore.instance
+      .collection('SoSUsers')
+      .doc(phone)
+      .collection('Profile Information');
+  var details = await emergencyData.doc('Contact Medical Info').get();
+  if (details['contact health card'] != null) {
     return details['contact health card'];
   }
   return '';
 }
-Future<String> getPersonalHealthCard (String phone)async{
-  CollectionReference EmergencyData = FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
-  var details =  await EmergencyData.doc('Medical Info').get();
-  if (details['personal health card'] != null){
+
+Future<String> getPersonalHealthCard(String phone) async {
+  CollectionReference emergencyData = FirebaseFirestore.instance
+      .collection('SoSUsers')
+      .doc(phone)
+      .collection('Profile Information');
+  var details = await emergencyData.doc('Medical Info').get();
+  if (details['personal health card'] != null) {
     return details['personal health card'];
   }
   return '';
 }
 
-Future<String> getUrlPMR (String phone)async{
+Future<String> getUrlPMR(String phone) async {
+  CollectionReference? emergencyData = FirebaseFirestore.instance
+      .collection('SoSUsers')
+      .doc(phone)
+      .collection('Profile Information');
+  var details = await emergencyData.doc('Medical Info').get();
 
-    CollectionReference? EmergencyData = FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
-    var details =  await EmergencyData!.doc('Medical Info').get();
-
-
-  if((details.data() as dynamic)['personal medical file download'] !=null ) {
-  return (details.data() as dynamic)['personal medical file download'];
+  if ((details.data() as dynamic)['personal medical file download'] != null) {
+    return (details.data() as dynamic)['personal medical file download'];
   }
-
-
-
   return '';
 }
 
-Future<String> getUrlECMR (String phone)async{
-    CollectionReference EmergencyData = FirebaseFirestore.instance.collection('SoSUsers').doc(phone).collection('Profile Information');
-    var details =  await EmergencyData.doc('Contact Medical Info ').get();
+Future<String> getUrlECMR(String phone) async {
+  CollectionReference emergencyData = FirebaseFirestore.instance
+      .collection('SoSUsers')
+      .doc(phone)
+      .collection('Profile Information');
+  var details = await emergencyData.doc('Contact Medical Info ').get();
 
-    if (details['contact medical file download'] != null){
-      return details['contact medical file download'];
-    }
-
-
-    return '';
-
+  if (details['contact medical file download'] != null) {
+    return details['contact medical file download'];
+  }
+  return '';
 }
