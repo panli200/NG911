@@ -24,6 +24,9 @@ class RingingPageState extends State<RingingPage> {
   late final publicKey;
   late final privateKey;
   late final aesSecretKey;
+  late final signaling;
+  late final localRenderer;
+  late final remoteRenderer;
   StreamSubscription? streamSubscriptionStarted;
   bool started = false;
   @override

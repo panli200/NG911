@@ -348,8 +348,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
       if (ended != true) {
         setState(() {
           roomId = event.snapshot.value.toString();
-          signaling.joinRoom(
-              roomId, _remoteRenderer, callerId); //join the video stream
+          print("Will join that: " + roomId.toString());
+          if(roomId != null) {
+            signaling.joinRoom(
+                roomId, _remoteRenderer, callerId); //join the video stream
+          }
         });
       }
     });
@@ -412,6 +415,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     signaling.onAddRemoteStream = ((stream) {
       _remoteRenderer.srcObject = stream;
+      print("hi darling");
       setState(() {});
     });
     signaling.openUserMedia(_localRenderer, _remoteRenderer);
@@ -627,8 +631,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                   child: ElevatedButton(
                                       child: const Text("End Connection"),
                                       onPressed: () async {
-                                        signaling!.hangUp(
-                                            _localRenderer!, roomId, callerId);
+                                        signaling!.hangUp(roomId, callerId);
                                         FbDb.DatabaseReference real = FbDb
                                             .FirebaseDatabase.instance
                                             .ref();

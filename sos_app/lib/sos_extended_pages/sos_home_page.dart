@@ -22,6 +22,7 @@ import 'package:sos_app/services/TwentyPoints.dart';
 import 'dart:async';
 import 'package:path/path.dart';
 
+
 class SosHomePage extends StatefulWidget {
   SosHomePage({Key? key}) : super(key: key);
 
@@ -216,6 +217,7 @@ class SosHomePageState extends State<SosHomePage> {
   late String publicKeyString;
   late final aesAlgorithm;
   late final aesSecretKey;
+
   // final howToUsePopUp = HowToUseData.howToUsePopUp;
   void Encrypt() async {
     futureKeyPair = getKeyPair();
@@ -252,11 +254,14 @@ class SosHomePageState extends State<SosHomePage> {
   @override
   void initState() {
     Encrypt();
-
     initializeService();
     super.initState();
   }
 
+  @override
+  void dispose(){
+    super.dispose();
+  }
   String textBackground = "Start Tracking";
   @override
   Widget build(BuildContext context) {
