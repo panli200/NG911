@@ -593,20 +593,27 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       final data = snapshot.requireData;
 
                                       //Initial the new locations list
-                                      newLocs = [
-                                        googleMap.LatLng(double.parse(startLan),
-                                            double.parse(startLon))
-                                      ];
+                                      double ?startLatitudePassed = double.tryParse(startLan);
+                                      double ?startLongitudePassed = double.tryParse(startLon);
+                                      if(startLatitudePassed != null && startLongitudePassed != null){
+                                        newLocs = [
+                                          googleMap.LatLng(startLatitudePassed,
+                                              startLongitudePassed)
+                                        ];
+                                      }
+
                                       //Adding the location to
                                       for (int i = 0;
                                           i < data.docs.length;
                                           i++) {
-                                        String la = data.docs[i]['latitude'];
-                                        String lo = data.docs[i]['longitude'];
+                                        double ?latitudeNew = double.tryParse(data.docs[i]['latitude']);
+                                        double ?longitudeNew = double.tryParse(data.docs[i]['longitude']);
 
-                                        newLocs!.add(googleMap.LatLng(
-                                            double.tryParse(la),
-                                            double.tryParse(lo)));
+                                        if(latitudeNew != null && longitudeNew != null) {
+                                          newLocs!.add(googleMap.LatLng(
+                                              latitudeNew,
+                                              longitudeNew));
+                                        }
                                       }
 
                                       return StreetMap();
@@ -1075,7 +1082,8 @@ class _StreetMapState extends State<StreetMap> {
 
   late var map;
   late var elem = DivElement();
-  List<googleMap.LatLng>? newLocsPassed;
+  late List<googleMap.LatLng> newLocsPassed;
+  List<googleMap.LatLng> starterNewListNullExclusion = [googleMap.LatLng(50.4182278, -104.594109)];
   late var myLatlng;
   var lineNew = googleMap.Polyline();
   var line = googleMap.Polyline();
@@ -1083,7 +1091,7 @@ class _StreetMapState extends State<StreetMap> {
   void refresh() {
     Timer.periodic(Duration(seconds: 5), (locationTimer) async {
       if(ended != true){
-        newLocsPassed = newLocs;
+        newLocsPassed = newLocs!;
         googleMap.LatLng Latest = newLocsPassed!.last;
         setState(() {
           mapOptions!..center = Latest;
@@ -1104,9 +1112,17 @@ class _StreetMapState extends State<StreetMap> {
 
   @override
   void initState() {
-    newLocsPassed = newLocs;
+    if(newLocs != null) {
+      newLocsPassed = newLocs!;
+    }else{
+      newLocsPassed = starterNewListNullExclusion;
+    }
     refresh();
-    myLatlng = previousLocs![0];
+    if(previousLocs![0] != null) {
+      myLatlng = previousLocs![0];
+    }else{
+      myLatlng = googleMap.LatLng(50.4182278, -104.594109);
+    }
     super.initState();
   }
 
