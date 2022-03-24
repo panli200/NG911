@@ -39,8 +39,8 @@ class RingingPageState extends State<RingingPage> {
     final databaseReal = ref.child('sensors').child(mobile);
     streamSubscriptionStarted =
         databaseReal.child('Online').onValue.listen((event) async {
-      bool? StartedB = event.snapshot?.value as bool;
-      started = StartedB;
+      bool? startedB = event.snapshot.value as bool;
+      started = startedB;
       if (started == true) {
         var router = context.router;
         router.popAndPush(CallRoute(
@@ -71,15 +71,17 @@ class RingingPageState extends State<RingingPage> {
               color: Colors.white,
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-              Center(
-                child: Text(" Connecting to 911  .  .  .",
-                  style: TextStyle(fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                  color: Colors.blueAccent),
-                ),
-              )
-            ])));
+                  Center(
+                    child: Text(
+                      " Connecting to 911  .  .  .",
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          color: Colors.blueAccent),
+                    ),
+                  )
+                ])));
   }
 }

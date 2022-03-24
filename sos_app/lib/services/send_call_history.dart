@@ -28,14 +28,14 @@ Future<void> sendUpdatedLocation() async {
   DatabaseReference ref = FirebaseDatabase.instance.ref();
   final databaseReal = ref.child('sensors').child(mobile);
   StreamSubscription? streamSubscriptionEnded;
-  bool Ended = false;
+  bool ended = false;
   var counter = 0;
   Timer.periodic(const Duration(seconds: 5), (timer) async {
     streamSubscriptionEnded =
         databaseReal.child('Ended').onValue.listen((event) async {
-      bool? EndedB = event.snapshot?.value as bool;
-      Ended = EndedB;
-      if (Ended == true) {
+      bool? endedB = event.snapshot.value as bool;
+      ended = endedB;
+      if (ended == true) {
         streamSubscriptionEnded?.pause();
         timer.cancel();
       }
@@ -53,7 +53,7 @@ Future<void> sendUpdatedLocation() async {
 
 Future<void> sendLocationHistory() async {
   String mobile = FirebaseAuth.instance.currentUser!.phoneNumber.toString();
-  DocumentReference Emergency =
+  DocumentReference emergency =
       FirebaseFirestore.instance.collection('SOSEmergencies').doc(mobile);
   final database = openDatabase(
     join(await getDatabasesPath(), 'sensor_database.db'),
@@ -76,11 +76,11 @@ Future<void> sendLocationHistory() async {
 
   List<Sensor> twentyPoints = List.from(await sensors());
 
-  int numberOfPoints = await twentyPoints.length;
+  int numberOfPoints =  twentyPoints.length;
   for (int i = 0; i < numberOfPoints; i++) {
     String latitudePoint = "Latitude";
     String longitudePoint = "Longitude";
-    await Emergency.collection("location").add({
+    await emergency.collection("location").add({
       latitudePoint: twentyPoints[i].getLatitude(),
       longitudePoint: twentyPoints[i].getLongitude(),
       "id": i

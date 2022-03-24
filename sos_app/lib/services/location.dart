@@ -12,6 +12,5 @@ class Location {
     latitude = position.latitude;
     longitude = position.longitude;
     speed = position.speed;
-
   }
 }
