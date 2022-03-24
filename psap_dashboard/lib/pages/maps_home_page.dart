@@ -3,7 +3,7 @@ import 'package:psap_dashboard/pages/maps.dart';
 import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
 import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_database/firebase_database.dart' as FbDb;
+import 'package:firebase_database/firebase_database.dart' as fbdb;
 import 'package:pointycastle/api.dart' as crypto;
 import 'encryption.dart';
 import 'dart:async';
@@ -21,11 +21,10 @@ class _MapsHomePageState extends State<MapsHomePage> {
   crypto.AsymmetricKeyPair?
       keyPair; //to store the KeyPair once we get data from our future
   late var publicKey;
-  var privKey;
+  late var privKey;
   late String publicKeyString;
   String? timeWaited = "0";
   String timeWaitedString = '0';
-
   String name = '';
 
   void getUSer() async {
@@ -55,7 +54,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
     super.dispose();
   }
 
-  final Stream<QuerySnapshot> Waiting =
+  final Stream<QuerySnapshot> waitingList =
       FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -77,7 +76,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
               Container(
                 height: MediaQuery.of(context).size.height * 0.9,
                 width: MediaQuery.of(context).size.width * 0.6,
-                padding: EdgeInsets.all(10.0),
+                padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(12),
@@ -128,7 +127,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                           child: StreamBuilder<
                                   QuerySnapshot> // This will read the Waiting list from Firebase (SOSEmergencies)
                               (
-                              stream: Waiting,
+                              stream: waitingList,
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
@@ -137,18 +136,17 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                 }
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return Text('Loading');
+                                  return const Text('Loading');
                                 }
 
                                 final data = snapshot.requireData;
-
                                 return ListView.builder(
                                     itemCount: data.size,
                                     itemBuilder: (context, index) {
                                       void getTimeWaited(String? phone) async {
                                         WidgetsFlutterBinding
                                             .ensureInitialized();
-                                        FbDb.DatabaseReference ref = FbDb
+                                        fbdb.DatabaseReference ref = fbdb
                                             .FirebaseDatabase.instance
                                             .ref();
                                         ref
@@ -228,19 +226,17 @@ class _MapsHomePageState extends State<MapsHomePage> {
                       SizedBox(
                           height: 200.0,
                           child: StreamBuilder<QuerySnapshot>(
-                              stream: Waiting,
+                              stream: waitingList,
                               builder: (BuildContext context,
                                   AsyncSnapshot<QuerySnapshot> snapshot) {
                                 if (snapshot.hasError) {
                                   return Text(
                                       'Something went wrong  ${snapshot.error}');
                                 }
-
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return Text('Loading');
+                                  return const Text('Loading');
                                 }
-
                                 final data = snapshot.requireData;
 
                                 return ListView.builder(
@@ -280,4 +276,3 @@ class _MapsHomePageState extends State<MapsHomePage> {
         ],
       ));
 }
-

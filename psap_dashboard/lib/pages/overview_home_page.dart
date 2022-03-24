@@ -18,7 +18,7 @@ class OverviewHomePage extends StatefulWidget {
 class _OverviewHomePageState extends State<OverviewHomePage> {
   Timer? timer;
   var currentDay = DateTime.now();
-  NumberFormat formatter = new NumberFormat("0000");
+  NumberFormat formatter = NumberFormat("0000");
   final Stream<QuerySnapshot> history =
       FirebaseFirestore.instance.collection('History').snapshots();
 
@@ -287,7 +287,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                                               .day ==
                                                           currentDay.day) {
                                                     return Material(
-                                                      child: Container(
+                                                      child: SizedBox(
                                                         height: 30,
                                                         child: Row(
                                                             children: <Widget>[
