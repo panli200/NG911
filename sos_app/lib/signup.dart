@@ -84,7 +84,6 @@ class SignUpPageState extends State<SignUpPage> {
                 setState(() {
                   showLoading = false;
                 });
-                //signInWithPhoneAuthCredential(phoneAuthCredential);
               },
               verificationFailed: (verificationFailed) async {
                 setState(() {
