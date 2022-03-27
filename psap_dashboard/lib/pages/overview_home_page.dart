@@ -186,60 +186,57 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                             ),
                             Row(
                               children: [
-                                Row(children: const [
-                                  Icon(FlutterRemix.history_line),
-                                  Text(
-                                    'Time',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ]),
-
                                 SizedBox(
                                   width:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                ), // SPACING
+                                  MediaQuery.of(context).size.width * 0.04,
+                                ),
+                                Expanded(
+                                  child: Row(children: const [
+                                    Icon(FlutterRemix.history_line),
+                                    Text(
+                                      'Time',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ]),
+                                ),
 
-                                Row(children: const [
-                                  Icon(FlutterRemix.smartphone_line),
-                                  Text(
-                                    'Mobile',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ]),
+                                Expanded(
+                                  child: Row(children: const [
+                                    Icon(FlutterRemix.smartphone_line),
+                                    Text(
+                                      'Mobile',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ]),
+                                ),
 
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.05,
-                                ), // SPACING
+                                Expanded(
+                                  child: Row(children: const [
+                                    Icon(FlutterRemix.global_line),
+                                    Text(
+                                      'Latitude',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ]),
+                                ),
 
-                                Row(children: const [
-                                  Icon(FlutterRemix.global_line),
-                                  Text(
-                                    'Latitude',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ]),
-
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.03,
-                                ), // SPACING
-
-                                Row(children: const [
-                                  Icon(FlutterRemix.global_line),
-                                  Text(
-                                    'Longitude',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                ]),
+                                Expanded(
+                                  child: Row(children: const [
+                                    Icon(FlutterRemix.global_line),
+                                    Text(
+                                      'Longitude',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    )
+                                  ]),
+                                ),
                               ],
                             ),
                             Scrollbar(
@@ -249,8 +246,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                   children: [
                                     SizedBox(
                                       height:
-                                          MediaQuery.of(context).size.height *
-                                              0.8,
+                                          MediaQuery.of(context).size.height * 0.7,
                                       child: StreamBuilder<QuerySnapshot>(
                                           stream: history,
                                           builder: (BuildContext context,
@@ -289,19 +285,17 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                                     return Material(
                                                       child: SizedBox(
                                                         height: 30,
-                                                        child: Row(
-                                                            children: <Widget>[
-                                                              Text(DateTime.parse(data
-                                                                          .docs[
-                                                                              index]
-                                                                          .id)
-                                                                      .toString() +
-                                                                  '  ${data.docs[index]['Phone']}' +
-                                                                  '            '
-                                                                      '${data.docs[index]['Location'].latitude}' +
-                                                                  '                 '
-                                                                      '${data.docs[index]['Location'].longitude}'),
-                                                            ]),
+                                                        child: Flexible(
+                                                          child: Row(
+                                                              children: <Widget>[
+                                                                Text(DateTime.parse(data.docs[index].id).toString() +
+                                                                    '    ${data.docs[index]['Phone']}' +
+                                                                    '             '
+                                                                        '${(data.docs[index]['Location'].latitude).toStringAsFixed(6)}' +
+                                                                    '                '
+                                                                        '${(data.docs[index]['Location'].longitude).toStringAsFixed(6)}'),
+                                                              ]),
+                                                        ),
                                                       ),
                                                     );
                                                   } else {
