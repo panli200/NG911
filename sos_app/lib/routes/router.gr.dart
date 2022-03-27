@@ -7,6 +7,8 @@
 // **************************************************************************
 // AutoRouteGenerator
 // **************************************************************************
+//
+// ignore_for_file: type=lint
 
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i11;
@@ -15,7 +17,7 @@ import '../activities_extended_pages/activities.dart' as _i9;
 import '../activities_extended_pages/activity_detail.dart' as _i10;
 import '../Initial.dart' as _i2;
 import '../profile_extended_pages/profile.dart' as _i8;
-import '../SignUp.dart' as _i3;
+import '../signup.dart' as _i3;
 import '../sos.dart' as _i4;
 import '../sos_extended_pages/call.dart' as _i6;
 import '../sos_extended_pages/ringing_page.dart' as _i7;
@@ -146,19 +148,22 @@ class AppRouter extends _i1.RootStackRouter {
       ];
 }
 
-/// generated route for [_i1.EmptyRouterPage]
+/// generated route for
+/// [_i1.EmptyRouterPage]
 class EmptyRouterRoute extends _i1.PageRouteInfo<void> {
   const EmptyRouterRoute({List<_i1.PageRouteInfo>? children})
-      : super(name, path: '/', initialChildren: children);
+      : super(EmptyRouterRoute.name, path: '/', initialChildren: children);
 
   static const String name = 'EmptyRouterRoute';
 }
 
-/// generated route for [_i2.InitializerWidgetPage]
+/// generated route for
+/// [_i2.InitializerWidgetPage]
 class InitializerWidgetRoute
     extends _i1.PageRouteInfo<InitializerWidgetRouteArgs> {
   InitializerWidgetRoute({_i11.Key? key})
-      : super(name, path: '', args: InitializerWidgetRouteArgs(key: key));
+      : super(InitializerWidgetRoute.name,
+            path: '', args: InitializerWidgetRouteArgs(key: key));
 
   static const String name = 'InitializerWidgetRoute';
 }
@@ -174,50 +179,57 @@ class InitializerWidgetRouteArgs {
   }
 }
 
-/// generated route for [_i3.SignUpPage]
+/// generated route for
+/// [_i3.SignUpPage]
 class SignUpRoute extends _i1.PageRouteInfo<void> {
-  const SignUpRoute() : super(name, path: '');
+  const SignUpRoute() : super(SignUpRoute.name, path: '');
 
   static const String name = 'SignUpRoute';
 }
 
-/// generated route for [_i4.SosPage]
+/// generated route for
+/// [_i4.SosPage]
 class HomeRouter extends _i1.PageRouteInfo<void> {
   const HomeRouter({List<_i1.PageRouteInfo>? children})
-      : super(name, path: '', initialChildren: children);
+      : super(HomeRouter.name, path: '', initialChildren: children);
 
   static const String name = 'HomeRouter';
 }
 
-/// generated route for [_i1.EmptyRouterPage]
+/// generated route for
+/// [_i1.EmptyRouterPage]
 class SOS extends _i1.PageRouteInfo<void> {
   const SOS({List<_i1.PageRouteInfo>? children})
-      : super(name, path: 'sos_extended_pages', initialChildren: children);
+      : super(SOS.name, path: 'sos_extended_pages', initialChildren: children);
 
   static const String name = 'SOS';
 }
 
-/// generated route for [_i1.EmptyRouterPage]
+/// generated route for
+/// [_i1.EmptyRouterPage]
 class Profile extends _i1.PageRouteInfo<void> {
   const Profile({List<_i1.PageRouteInfo>? children})
-      : super(name, path: 'profile_extended_pages', initialChildren: children);
+      : super(Profile.name,
+            path: 'profile_extended_pages', initialChildren: children);
 
   static const String name = 'Profile';
 }
 
-/// generated route for [_i1.EmptyRouterPage]
+/// generated route for
+/// [_i1.EmptyRouterPage]
 class Activities extends _i1.PageRouteInfo<void> {
   const Activities({List<_i1.PageRouteInfo>? children})
-      : super(name,
+      : super(Activities.name,
             path: 'activities_extended_pages', initialChildren: children);
 
   static const String name = 'Activities';
 }
 
-/// generated route for [_i5.SosHomePage]
+/// generated route for
+/// [_i5.SosHomePage]
 class SosHomeRoute extends _i1.PageRouteInfo<SosHomeRouteArgs> {
   SosHomeRoute({_i11.Key? key})
-      : super(name, path: '', args: SosHomeRouteArgs(key: key));
+      : super(SosHomeRoute.name, path: '', args: SosHomeRouteArgs(key: key));
 
   static const String name = 'SosHomeRoute';
 }
@@ -233,14 +245,15 @@ class SosHomeRouteArgs {
   }
 }
 
-/// generated route for [_i6.CallPage]
+/// generated route for
+/// [_i6.CallPage]
 class CallRoute extends _i1.PageRouteInfo<CallRouteArgs> {
   CallRoute(
       {_i11.Key? key,
       required dynamic privateKey,
       required dynamic publicKey,
       required dynamic aesKey})
-      : super(name,
+      : super(CallRoute.name,
             path: '',
             args: CallRouteArgs(
                 key: key,
@@ -272,14 +285,15 @@ class CallRouteArgs {
   }
 }
 
-/// generated route for [_i7.RingingPage]
+/// generated route for
+/// [_i7.RingingPage]
 class RingingRoute extends _i1.PageRouteInfo<RingingRouteArgs> {
   RingingRoute(
       {_i11.Key? key,
       required dynamic privateKey,
       required dynamic publicKey,
       required dynamic aesKey})
-      : super(name,
+      : super(RingingRoute.name,
             path: '',
             args: RingingRouteArgs(
                 key: key,
@@ -311,17 +325,20 @@ class RingingRouteArgs {
   }
 }
 
-/// generated route for [_i8.ProfilePage]
+/// generated route for
+/// [_i8.ProfilePage]
 class ProfileRoute extends _i1.PageRouteInfo<void> {
-  const ProfileRoute() : super(name, path: '');
+  const ProfileRoute() : super(ProfileRoute.name, path: '');
 
   static const String name = 'ProfileRoute';
 }
 
-/// generated route for [_i9.ActivitiesPage]
+/// generated route for
+/// [_i9.ActivitiesPage]
 class ActivitiesRoute extends _i1.PageRouteInfo<ActivitiesRouteArgs> {
   ActivitiesRoute({_i11.Key? key})
-      : super(name, path: '', args: ActivitiesRouteArgs(key: key));
+      : super(ActivitiesRoute.name,
+            path: '', args: ActivitiesRouteArgs(key: key));
 
   static const String name = 'ActivitiesRoute';
 }
@@ -337,11 +354,12 @@ class ActivitiesRouteArgs {
   }
 }
 
-/// generated route for [_i10.ActivityDetailPage]
+/// generated route for
+/// [_i10.ActivityDetailPage]
 class ActivityDetailRoute extends _i1.PageRouteInfo<ActivityDetailRouteArgs> {
   ActivityDetailRoute(
       {_i11.Key? key, required dynamic Activity, required dynamic Snapshot})
-      : super(name,
+      : super(ActivityDetailRoute.name,
             path: ':details',
             args: ActivityDetailRouteArgs(
                 key: key, Activity: Activity, Snapshot: Snapshot));
