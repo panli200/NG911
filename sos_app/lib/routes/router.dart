@@ -7,7 +7,7 @@ import 'package:sos_app/activities_extended_pages/activities.dart';
 import 'package:sos_app/activities_extended_pages/activity_detail.dart';
 import 'package:sos_app/profile_extended_pages/profile.dart';
 import 'package:sos_app/Initial.dart';
-import 'package:sos_app/SignUp.dart';
+import 'package:sos_app/signup.dart';
 
 @MaterialAutoRouter(
   replaceInRouteName: 'Page,Route',

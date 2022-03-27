@@ -15,7 +15,7 @@ import '../activities_extended_pages/activities.dart' as _i9;
 import '../activities_extended_pages/activity_detail.dart' as _i10;
 import '../Initial.dart' as _i2;
 import '../profile_extended_pages/profile.dart' as _i8;
-import '../SignUp.dart' as _i3;
+import '../signup.dart' as _i3;
 import '../sos.dart' as _i4;
 import '../sos_extended_pages/call.dart' as _i6;
 import '../sos_extended_pages/ringing_page.dart' as _i7;

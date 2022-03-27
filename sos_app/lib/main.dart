@@ -6,11 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(SOSApp());
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+class SOSApp extends StatelessWidget {
+  SOSApp({Key? key}) : super(key: key);
 
   final appRouter = AppRouter();
 
