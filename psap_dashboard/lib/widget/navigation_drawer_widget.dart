@@ -48,16 +48,9 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
               email: email,
               onClicked: () {},
             ),
-            IconButton
-            (
-              icon: const Icon(FlutterRemix.logout_box_line),
-              color: Colors.red,
-              splashColor: Colors.white,
-              onPressed: () 
-              {
-                Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
-              },
-            ),
+
+            const Divider(height: 5, thickness: 3, color: Colors.black12),
+            
             Container(
               padding: padding,
               child: Column(
@@ -83,6 +76,32 @@ class _NavigationDrawerWidgetState extends State<NavigationDrawerWidget> {
                 ],
               ),
             ),
+
+            const SizedBox(height: 16),
+
+            const Divider(height: 5, thickness: 3, color: Colors.black12),
+
+            const SizedBox(height: 16),
+
+            Row
+            (
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget> 
+              [
+                const Text('Log out ', style: TextStyle(color: Colors.white)),
+                IconButton
+                (
+                  icon: const Icon(FlutterRemix.logout_box_line),
+                  color: Colors.red,
+                  splashColor: Colors.white,
+                  onPressed: () 
+                  {
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
+                  },
+                ),
+              ],
+            ),
+            
           ],
         ),
       ),

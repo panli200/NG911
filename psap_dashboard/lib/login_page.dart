@@ -151,7 +151,7 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     });
                   },
-                  child: const Text('LOGIN'),
+                  child: const Text('LOG IN'),
                   style: ElevatedButton.styleFrom(
                     primary: Colors.red, // background
                   ),

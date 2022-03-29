@@ -186,11 +186,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                               textAlign: TextAlign.center,
                             ),
 
-                            const Divider(
-                              height: 5,
-                              thickness: 3,
-                              color: Colors.black12,
-                            ),
+                            const Divider(height: 5, thickness: 3, color: Colors.black12),
                             
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
