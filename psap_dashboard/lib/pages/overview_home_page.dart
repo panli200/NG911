@@ -86,7 +86,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                 Container // Call History Chart
                     (
                   height: MediaQuery.of(context).size.height * 0.9,
-                  width: MediaQuery.of(context).size.width * 0.57,
+                  width: MediaQuery.of(context).size.width * 0.48,
                   decoration: BoxDecoration(
                       shape: BoxShape.rectangle,
                       borderRadius: BorderRadius.circular(12),
@@ -166,7 +166,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                 Container // Call History Data
                     (
                         height: MediaQuery.of(context).size.height * 0.9,
-                        width: MediaQuery.of(context).size.width * 0.4,
+                        width: MediaQuery.of(context).size.width * 0.48,
                         padding: const EdgeInsets.all(10.0),
                         decoration: BoxDecoration(
                             shape: BoxShape.rectangle,
@@ -174,8 +174,9 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                             color: Colors.white,
                             border: Border.all(color: Colors.white, width: 1)),
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: <Widget>
+                          [
                             const Text(
                               'Emergency History',
                               style: TextStyle(
@@ -184,14 +185,18 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                               ),
                               textAlign: TextAlign.center,
                             ),
+
+                            const Divider(
+                              height: 5,
+                              thickness: 3,
+                              color: Colors.black12,
+                            ),
+                            
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.04,
-                                ),
                                 Expanded(
-                                  child: Row(children: const [
+                                  child: Column(children: const [
                                     Icon(FlutterRemix.history_line),
                                     Text(
                                       'Time',
@@ -201,8 +206,11 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                     )
                                   ]),
                                 ),
+
+                                SizedBox(width: MediaQuery.of(context).size.width * 0.025),
+                                
                                 Expanded(
-                                  child: Row(children: const [
+                                  child: Column(children: const [
                                     Icon(FlutterRemix.smartphone_line),
                                     Text(
                                       'Mobile',
@@ -212,8 +220,11 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                     )
                                   ]),
                                 ),
+
+                                SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+
                                 Expanded(
-                                  child: Row(children: const [
+                                  child: Column(children: const [
                                     Icon(FlutterRemix.global_line),
                                     Text(
                                       'Latitude',
@@ -223,8 +234,11 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                     )
                                   ]),
                                 ),
+
+                                SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+
                                 Expanded(
-                                  child: Row(children: const [
+                                  child: Column(children: const [
                                     Icon(FlutterRemix.global_line),
                                     Text(
                                       'Longitude',
@@ -236,6 +250,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                 ),
                               ],
                             ),
+
                             Scrollbar(
                               isAlwaysShown: true,
                               child: SingleChildScrollView(
@@ -280,61 +295,79 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                                                   .id)
                                                               .day ==
                                                           currentDay.day) {
-                                                    return Material(
+                                                    return Padding(
+                                                      padding: const EdgeInsets.symmetric(vertical: 10.0),
                                                       child: SizedBox(
                                                         height: 30,
                                                         child: Flexible(
-                                                          child: Row(children: <
-                                                              Widget>[
-                                                            Expanded(
-                                                              child: Text(DateTime.parse(
-                                                                      data
-                                                                          .docs[
-                                                                              index]
-                                                                          .id)
-                                                                  .toString()),
-                                                            ),
-                                                            SizedBox(
-                                                              width:
-                                                              MediaQuery.of(context).size.width * 0.02,
-                                                            ),
-                                                            Expanded(
-                                                              child: Text(
-                                                                  data.docs[index]
-                                                                      ['Phone']),
-                                                            ),
-                                                            Expanded(
-                                                              child: Text((data
-                                                                      .docs[index]
-                                                                          [
-                                                                          'Location']
-                                                                      .latitude)
-                                                                  .toStringAsFixed(
-                                                                      6)),
-                                                            ),
-                                                            Expanded(
-                                                              child: Text((data
-                                                                      .docs[index]
-                                                                          [
-                                                                          'Location']
-                                                                      .longitude)
-                                                                  .toStringAsFixed(
-                                                                      6)),
-                                                            )
-                                                          ]),
+                                                          child: 
+                                                          Row
+                                                          (
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            children: <Widget>
+                                                            [
+                                                              SizedBox(width: MediaQuery.of(context).size.width * 0.020),
+
+                                                              Expanded(
+                                                                child: Text(DateTime.parse(
+                                                                        data
+                                                                            .docs[
+                                                                                index]
+                                                                            .id)
+                                                                    .toString()),
+                                                              ),
+
+                                                              SizedBox(width: MediaQuery.of(context).size.width * 0.03),
+
+                                                              Expanded(
+                                                                child: Text(
+                                                                    data.docs[index]
+                                                                        ['Phone']),
+                                                              ),
+
+                                                              SizedBox(width: MediaQuery.of(context).size.width * 0.035),
+
+                                                              Expanded(
+                                                                child: Text((data
+                                                                        .docs[index]
+                                                                            [
+                                                                            'Location']
+                                                                        .latitude)
+                                                                    .toStringAsFixed(
+                                                                        6)),
+                                                              ),
+
+                                                              SizedBox(width: MediaQuery.of(context).size.width * 0.035),
+
+                                                              Expanded(
+                                                                child: Text((data
+                                                                        .docs[index]
+                                                                            [
+                                                                            'Location']
+                                                                        .longitude)
+                                                                    .toStringAsFixed(
+                                                                        6)),
+                                                              )
+                                                            ]
+                                                          ),
                                                         ),
                                                       ),
+
+                                                      
                                                     );
                                                   } else {
                                                     return const Material();
                                                   }
                                                 });
                                           }),
+                                          
                                     ),
                                   ],
                                 ),
                               ),
                             ),
+
+                            
                           ],
                         )),
 
