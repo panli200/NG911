@@ -188,7 +188,7 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                               children: [
                                 SizedBox(
                                   width:
-                                  MediaQuery.of(context).size.width * 0.04,
+                                      MediaQuery.of(context).size.width * 0.04,
                                 ),
                                 Expanded(
                                   child: Row(children: const [
@@ -201,7 +201,6 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                     )
                                   ]),
                                 ),
-
                                 Expanded(
                                   child: Row(children: const [
                                     Icon(FlutterRemix.smartphone_line),
@@ -213,7 +212,6 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                     )
                                   ]),
                                 ),
-
                                 Expanded(
                                   child: Row(children: const [
                                     Icon(FlutterRemix.global_line),
@@ -225,7 +223,6 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                     )
                                   ]),
                                 ),
-
                                 Expanded(
                                   child: Row(children: const [
                                     Icon(FlutterRemix.global_line),
@@ -246,7 +243,8 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                   children: [
                                     SizedBox(
                                       height:
-                                          MediaQuery.of(context).size.height * 0.7,
+                                          MediaQuery.of(context).size.height *
+                                              0.7,
                                       child: StreamBuilder<QuerySnapshot>(
                                           stream: history,
                                           builder: (BuildContext context,
@@ -286,15 +284,44 @@ class _OverviewHomePageState extends State<OverviewHomePage> {
                                                       child: SizedBox(
                                                         height: 30,
                                                         child: Flexible(
-                                                          child: Row(
-                                                              children: <Widget>[
-                                                                Text(DateTime.parse(data.docs[index].id).toString() +
-                                                                    '    ${data.docs[index]['Phone']}' +
-                                                                    '             '
-                                                                        '${(data.docs[index]['Location'].latitude).toStringAsFixed(6)}' +
-                                                                    '                '
-                                                                        '${(data.docs[index]['Location'].longitude).toStringAsFixed(6)}'),
-                                                              ]),
+                                                          child: Row(children: <
+                                                              Widget>[
+                                                            Expanded(
+                                                              child: Text(DateTime.parse(
+                                                                      data
+                                                                          .docs[
+                                                                              index]
+                                                                          .id)
+                                                                  .toString()),
+                                                            ),
+                                                            SizedBox(
+                                                              width:
+                                                              MediaQuery.of(context).size.width * 0.02,
+                                                            ),
+                                                            Expanded(
+                                                              child: Text(
+                                                                  data.docs[index]
+                                                                      ['Phone']),
+                                                            ),
+                                                            Expanded(
+                                                              child: Text((data
+                                                                      .docs[index]
+                                                                          [
+                                                                          'Location']
+                                                                      .latitude)
+                                                                  .toStringAsFixed(
+                                                                      6)),
+                                                            ),
+                                                            Expanded(
+                                                              child: Text((data
+                                                                      .docs[index]
+                                                                          [
+                                                                          'Location']
+                                                                      .longitude)
+                                                                  .toStringAsFixed(
+                                                                      6)),
+                                                            )
+                                                          ]),
                                                         ),
                                                       ),
                                                     );
