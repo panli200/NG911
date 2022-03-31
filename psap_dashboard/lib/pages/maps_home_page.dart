@@ -156,7 +156,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
 
                           SizedBox(
                               height: MediaQuery.of(context).size.height * 0.68,
-                              width: MediaQuery.of(context).size.width * 0.17,
+                              width: MediaQuery.of(context).size.width * 0.18,
                               // height: 200.0,
                               child: StreamBuilder<
                                       QuerySnapshot> // This will read the Waiting list from Firebase (SOSEmergencies)
@@ -242,13 +242,24 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                                   )));
                                                     },
                                                     child: 
-                                                      Row
+                                                      Column
                                                       (
                                                         children: [
-                                                          const Icon(FlutterRemix.hotspot_line),
+                                                          Row
+                                                          (
+                                                            children:
+                                                            [
+                                                              const Icon(FlutterRemix.hotspot_line),
 
-                                                          Text(
-                                                          ' ${phone + "  Time waited: " + timeWaitedString}'),
+                                                              Text(' ${" " + phone}'),
+                                                            ]
+                                                          ),
+
+                                                          SizedBox(height: MediaQuery.of(context).size.height * 0.001),
+
+                                                          const Text("Time waited", textAlign: TextAlign.center),
+
+                                                          Text(' ${timeWaitedString + ""}'),
                                                         ],
                                                       )
                                                   ),
@@ -277,7 +288,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                           SizedBox(
                               // height: 200.0,
                               height: MediaQuery.of(context).size.height * 0.68,
-                              width: MediaQuery.of(context).size.width * 0.17,
+                              width: MediaQuery.of(context).size.width * 0.18,
                               child: StreamBuilder<QuerySnapshot>(
                                   stream: waitingList,
                                   builder: (BuildContext context,
@@ -302,7 +313,6 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                               child: Container(
                                                 color: Colors.white,
                                                 margin: const EdgeInsets.all(10.0),
-                                                height: 30,
                                                 child: Row(
                                                   mainAxisAlignment: MainAxisAlignment.center,
                                                   children: <Widget>[
@@ -314,13 +324,16 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                     ),
                                                     onPressed: () {},
                                                     child: 
-                                                    Row
+
+                                                    Column
                                                       (
-                                                        children: [
+                                                        children: 
+                                                        [
                                                           const Icon(FlutterRemix.hotspot_fill),
 
-                                                          Text(
-                                                          '${data.docs[index]['Phone']}'),
+                                                          SizedBox(height: MediaQuery.of(context).size.height * 0.001),
+
+                                                          Text('${data.docs[index]['Phone']}'),
                                                         ],
                                                       )
                                                     
