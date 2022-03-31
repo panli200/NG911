@@ -23,8 +23,8 @@ String? latitudePassed = '';
 String? longitudePassed = '';
 bool? ended;
 late Timer locationTimer;
-List<googleMap.LatLng>? previousLocs;
-List<googleMap.LatLng>? newLocs;
+List<googleMap.LatLng>? previousLocs; // list of location before call
+List<googleMap.LatLng>? newLocs; // list of location during the call
 
 class CallControlPanel extends StatefulWidget {
   final CallerId;
@@ -55,8 +55,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   // For encryption
   Future<crypto.AsymmetricKeyPair>? futureKeyPair;
-  crypto.AsymmetricKeyPair?
-      keyPair; //to store the KeyPair once we get data from our future
+  crypto.AsymmetricKeyPair? keyPair; //to store the KeyPair once we get data from our future
   var publicKey;
   var privKey;
   var otherEndPublicKey;
@@ -108,13 +107,17 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? AccelerationStream;
   StreamSubscription? roomIdStream;
 
+  // Queries
   Stream<QuerySnapshot>? messages;
   Stream<QuerySnapshot>? locationsHistory;
   Query? sortedPreviousLocation;
-  String? StartTime;
+
+  // Chat contoller
   final sentText = TextEditingController();
 
+  // Page variables
   var roomId;
+  String? StartTime;
   String name = '';
   int callType = 4;
   String emergencyContactNumberString = '';
@@ -122,6 +125,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   String personalHealthCardString = '';
   String urlPMR = '';
   String urlECMR = '';
+
   // Function to end the call
   void _EndCall() async {
     // Closing the listeners
@@ -192,6 +196,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     // Ending the endState stream
     endedStateStream?.cancel();
+    dispose();
   }
 
   void activateListeners() async {
@@ -273,39 +278,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
       }
     });
 
-    longitudeStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('Longitude')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        if (event.snapshot.value.toString() != null) {
-          longitudePassed = event.snapshot.value.toString();
-          setState(() {
-            longitudeString = 'Longitude: ' + longitudePassed
-            !;
-          });
-        }
-      }
-    });
 
-    latitudeStream = ref
-        .child('sensors')
-        .child(callerId)
-        .child('Latitude')
-        .onValue
-        .listen((event) {
-      if (ended != true) {
-        if (event.snapshot.value.toString() != null) {
-          latitudePassed = event.snapshot.value.toString();
-          setState(() {
-            latitudeString = 'Latitude: ' + latitudePassed
-            !;
-          });
-        }
-      }
-    });
+
 
     speedStream = ref
         .child('sensors')
@@ -348,7 +322,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
       if (ended != true) {
         setState(() {
           roomId = event.snapshot.value.toString();
-          print("Will join that: " + roomId.toString());
           if(roomId != null) {
             signaling.joinRoom(
                 roomId, _remoteRenderer, callerId); //join the video stream
@@ -415,7 +388,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     signaling.onAddRemoteStream = ((stream) {
       _remoteRenderer.srcObject = stream;
-      print("hi darling");
       setState(() {});
     });
     signaling.openUserMedia(_localRenderer, _remoteRenderer);
@@ -777,23 +749,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               'Longitude: ' + startLon + '°',
                                             ),
                                             Row(
-                                              children: const [
-                                                Icon(FlutterRemix
-                                                    .user_location_line),
-                                                Text(
-                                                  'Location of the caller now:',
-                                                  style:
-                                                      TextStyle(fontSize: 15),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              '$latitudeString' + '°',
-                                            ),
-                                            Text(
-                                              '$longitudeString' + '°',
-                                            ),
-                                            Row(
                                               children: [
                                                 Text(
                                                   'Caller is' + userMotion!,
@@ -1096,13 +1051,17 @@ class _StreetMapState extends State<StreetMap> {
         setState(() {
           mapOptions!..center = Latest;
           map = googleMap.GMap(elem, mapOptions);
-          newLocsPassed;
           lineNew..path = newLocsPassed;
           lineNew..map = map;
           line..map = map;
           marker..position = Latest;
           marker..map = map;
         });
+      }
+      if(ended == true){
+        newLocsPassed.clear();
+      //  locationTimer.cancel();
+       // dispose();
       }
 
     });
