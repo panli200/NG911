@@ -3,6 +3,7 @@ import 'package:psap_dashboard/pages/maps.dart';
 import 'package:psap_dashboard/widget/navigation_drawer_widget.dart';
 import 'call_control_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_remix/flutter_remix.dart';
 import 'package:firebase_database/firebase_database.dart' as fbdb;
 import 'package:pointycastle/api.dart' as crypto;
 import 'encryption.dart';
@@ -73,9 +74,13 @@ class _MapsHomePageState extends State<MapsHomePage> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.01,
+                ), 
+
               Container(
                 height: MediaQuery.of(context).size.height * 0.9,
-                width: MediaQuery.of(context).size.width * 0.6,
+                width: MediaQuery.of(context).size.width * 0.59,
                 padding: const EdgeInsets.all(10.0),
                 decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
@@ -91,15 +96,19 @@ class _MapsHomePageState extends State<MapsHomePage> {
 
               Container(
                 height: MediaQuery.of(context).size.height * 0.9,
-                width: MediaQuery.of(context).size.width * 0.39,
+                width: MediaQuery.of(context).size.width * 0.38,
                 decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     borderRadius: BorderRadius.circular(12),
                     color: Colors.white,
                     border: Border.all(color: Colors.white, width: 1)),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  // mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ), 
+
                     const Text(
                       'Index',
                       style: TextStyle(
@@ -108,169 +117,232 @@ class _MapsHomePageState extends State<MapsHomePage> {
                       ),
                       textAlign: TextAlign.center,
                     ),
+
+                    SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
+                          ), 
+
                     const Divider(
                       height: 5,
                       thickness: 3,
                       color: Colors.black12,
                     ),
-                    const Text(
-                      'Waiting List',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    Column(children: <Widget>[
-                      SizedBox(
-                          height: 200.0,
-                          child: StreamBuilder<
-                                  QuerySnapshot> // This will read the Waiting list from Firebase (SOSEmergencies)
-                              (
-                              stream: waitingList,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text(
-                                      'Something went wrong  ${snapshot.error}');
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Text('Loading');
-                                }
 
-                                final data = snapshot.requireData;
-                                return ListView.builder(
-                                    itemCount: data.size,
-                                    itemBuilder: (context, index) {
-                                      void getTimeWaited(String? phone) async {
-                                        WidgetsFlutterBinding
-                                            .ensureInitialized();
-                                        fbdb.DatabaseReference ref = fbdb
-                                            .FirebaseDatabase.instance
-                                            .ref();
-                                        ref
-                                            .child('sensors')
-                                            .child(phone!)
-                                            .child('Timer')
-                                            .onValue
-                                            .listen((event) async {
-                                          timeWaited =
-                                              event.snapshot.value!.toString();
+                    SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
+                          ), 
 
-                                          if (timeWaited != null) {
-                                            timeWaitedString = timeWaited!;
-                                            Future.delayed(Duration.zero, () {
-                                              setState(() {});
+                    Row
+                    (
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: 
+                      [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                          const Text(
+                            'Waiting List',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
+                          ), 
+
+                          SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.68,
+                              width: MediaQuery.of(context).size.width * 0.17,
+                              // height: 200.0,
+                              child: StreamBuilder<
+                                      QuerySnapshot> // This will read the Waiting list from Firebase (SOSEmergencies)
+                                  (
+                                  stream: waitingList,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text(
+                                          'Something went wrong  ${snapshot.error}');
+                                    }
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Text('Loading');
+                                    }
+
+                                    final data = snapshot.requireData;
+                                    return ListView.builder(
+                                        itemCount: data.size,
+                                        itemBuilder: (context, index) {
+                                          void getTimeWaited(String? phone) async {
+                                            WidgetsFlutterBinding
+                                                .ensureInitialized();
+                                            fbdb.DatabaseReference ref = fbdb
+                                                .FirebaseDatabase.instance
+                                                .ref();
+                                            ref
+                                                .child('sensors')
+                                                .child(phone!)
+                                                .child('Timer')
+                                                .onValue
+                                                .listen((event) async {
+                                              timeWaited =
+                                                  event.snapshot.value!.toString();
+
+                                              if (timeWaited != null) {
+                                                timeWaitedString = timeWaited!;
+                                                Future.delayed(Duration.zero, () {
+                                                  setState(() {});
+                                                });
+                                              }
                                             });
                                           }
+
+                                          String phone = "";
+                                          int? type = 5;
+                                          var id = data.docs[index].id;
+                                          phone =
+                                              data.docs[index]['Phone'].toString();
+                                          type = data.docs[index]['type'];
+                                          if (data.docs[index]['Waiting']) {
+                                            getTimeWaited(data.docs[index].id);
+                                            return Material(
+                                              color: Colors.white,
+                                              child: Container(
+                                                color: Colors.white,
+                                                margin: const EdgeInsets.all(10.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                  ElevatedButton(
+                                                    style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty.all<
+                                                              Color>(Colors.red),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  CallControlPanel(
+                                                                    CallerId: id,
+                                                                    Snapshot:
+                                                                        data.docs[
+                                                                            index],
+                                                                    type: type,
+                                                                    name: name,
+                                                                    publicKey:
+                                                                        publicKeyString,
+                                                                    privateKey:
+                                                                        privKey,  
+                                                                  )));
+                                                    },
+                                                    child: 
+                                                      Row
+                                                      (
+                                                        children: [
+                                                          const Icon(FlutterRemix.hotspot_line),
+
+                                                          Text(
+                                                          ' ${phone + "  Time waited: " + timeWaitedString}'),
+                                                        ],
+                                                      )
+                                                  ),
+                                                ]),
+                                              ),
+                                            );
+                                          } else {
+                                            return const Material( /*child: Text('test'),*/);
+                                          }
                                         });
-                                      }
+                                  }))
+                        ]),
 
-                                      String phone = "";
-                                      int? type = 5;
-                                      var id = data.docs[index].id;
-                                      phone =
-                                          data.docs[index]['Phone'].toString();
-                                      type = data.docs[index]['type'];
-                                      if (data.docs[index]['Waiting']) {
-                                        getTimeWaited(data.docs[index].id);
-                                        return Material(
-                                          child: Container(
-                                            margin: const EdgeInsets.all(10.0),
-                                            child: Row(children: <Widget>[
-                                              ElevatedButton(
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(Colors.red),
-                                                ),
-                                                onPressed: () {
-                                                  Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              CallControlPanel(
-                                                                CallerId: id,
-                                                                Snapshot:
-                                                                    data.docs[
-                                                                        index],
-                                                                type: type,
-                                                                name: name,
-                                                                publicKey:
-                                                                    publicKeyString,
-                                                                privateKey:
-                                                                    privKey,
-                                                              )));
-                                                },
-                                                child: Text(
-                                                    ' ${phone + "  Time waited: " + timeWaitedString}'),
-                                              ),
-                                            ]),
-                                          ),
-                                        );
-                                      } else {
-                                        return const Material();
-                                      }
-                                    });
-                              }))
-                    ]),
-                    const Divider(
-                        height: 5, thickness: 3, color: Colors.black12),
-                    const Text('Online List',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 20),
-                        textAlign: TextAlign.center),
-                    Column // This will read the Online list from Firebase (SOSEmergencies)
+
+                        Column // This will read the Online list from Firebase (SOSEmergencies)
                         (children: <Widget>[
-                      SizedBox(
-                          height: 200.0,
-                          child: StreamBuilder<QuerySnapshot>(
-                              stream: waitingList,
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<QuerySnapshot> snapshot) {
-                                if (snapshot.hasError) {
-                                  return Text(
-                                      'Something went wrong  ${snapshot.error}');
-                                }
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Text('Loading');
-                                }
-                                final data = snapshot.requireData;
+                          const Text('Online List',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 20),
+                            textAlign: TextAlign.center),
 
-                                return ListView.builder(
-                                    itemCount: data.size,
-                                    itemBuilder: (context, index) {
-                                      //var id = data.docs[index].id;
-                                      if (data.docs[index]['Online']) {
-                                        return Material(
-                                          child: Container(
-                                            margin: const EdgeInsets.all(10.0),
-                                            height: 30,
-                                            child: Row(children: <Widget>[
-                                              ElevatedButton(
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all<
-                                                          Color>(Colors.blue),
-                                                ),
-                                                onPressed: () {},
-                                                child: Text(
-                                                    '${data.docs[index]['Phone']}'),
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.01,
+                          ), 
+
+                          SizedBox(
+                              // height: 200.0,
+                              height: MediaQuery.of(context).size.height * 0.68,
+                              width: MediaQuery.of(context).size.width * 0.17,
+                              child: StreamBuilder<QuerySnapshot>(
+                                  stream: waitingList,
+                                  builder: (BuildContext context,
+                                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Text(
+                                          'Something went wrong  ${snapshot.error}');
+                                    }
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Text('Loading');
+                                    }
+                                    final data = snapshot.requireData;
+
+                                    return ListView.builder(
+                                        itemCount: data.size,
+                                        itemBuilder: (context, index) {
+                                          //var id = data.docs[index].id;
+                                          if (data.docs[index]['Online']) {
+                                            return Material(
+                                              color: Colors.white,
+                                              child: Container(
+                                                color: Colors.white,
+                                                margin: const EdgeInsets.all(10.0),
+                                                height: 30,
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: <Widget>[
+                                                  ElevatedButton(
+                                                    style: ButtonStyle(
+                                                      backgroundColor:
+                                                          MaterialStateProperty.all<
+                                                              Color>(Colors.blue),
+                                                    ),
+                                                    onPressed: () {},
+                                                    child: 
+                                                    Row
+                                                      (
+                                                        children: [
+                                                          const Icon(FlutterRemix.hotspot_fill),
+
+                                                          Text(
+                                                          '${data.docs[index]['Phone']}'),
+                                                        ],
+                                                      )
+                                                    
+                                                  ),
+                                                ]),
                                               ),
-                                            ]),
-                                          ),
-                                        );
-                                      } else {
-                                        return const Material();
-                                      }
-                                    });
-                              }))
-                    ]),
+                                            );
+                                          } else {
+                                            return const Material();
+                                          }
+                                        });
+                                  }))
+                        ]),
+                      ],
+                    )
                   ],
                 ),
               ),
+
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.01,
+              ), 
             ],
           ),
         ],
