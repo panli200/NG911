@@ -549,6 +549,11 @@ class _CallControlPanelState extends State<CallControlPanel> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
+
+              SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.01,
+                ), 
+
               SizedBox // First Column (Contains Map and End Call Button)
                   (
                       height: MediaQuery.of(context).size.height * 0.9,
@@ -559,7 +564,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                             Container(
                                 height:
                                     MediaQuery.of(context).size.height * 0.74,
-                                width: MediaQuery.of(context).size.width * 0.43,
+                                width: MediaQuery.of(context).size.width * 0.40,
                                 padding: const EdgeInsets.all(10.0),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.rectangle,
@@ -667,13 +672,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
                         SizedBox(
                           width: MediaQuery.of(context).size.width * 0.01,
                         ),
-                        Column(children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
                           Container // Second Column (Contains the user info and chat box)
                               (
                                   height:
-                                      MediaQuery.of(context).size.height * 0.44,
+                                      MediaQuery.of(context).size.height * 0.53,
                                   width:
-                                      MediaQuery.of(context).size.width * 0.25,
+                                      MediaQuery.of(context).size.width * 0.28,
                                   padding: const EdgeInsets.all(10.0),
                                   decoration: BoxDecoration(
                                       shape: BoxShape.rectangle,
@@ -681,114 +688,217 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       color: Colors.white,
                                       border: Border.all(
                                           color: Colors.white, width: 1)),
-                                  child: Row(
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: [
-                                      SingleChildScrollView(
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            const Text(
+                                      const Text(
                                               'Caller Information',
-                                              style: TextStyle(fontSize: 25),
+                                              style: TextStyle(fontSize: 20),
                                               textAlign: TextAlign.center,
                                             ),
-                                            Row(
-                                              children: [
-                                                const Icon(FlutterRemix
-                                                    .battery_2_charge_line),
+
+                                      SizedBox // SPACING
+                                      (
+                                        height: MediaQuery.of(context).size.height * 0.01,
+                                      ),
+
+                                      const Divider(
+                                        height: 5,
+                                        thickness: 3,
+                                        color: Colors.black12,
+                                      ),
+
+                                      SizedBox // SPACING
+                                      (
+                                        height: MediaQuery.of(context).size.height * 0.01,
+                                      ),
+
+                                      Container
+                                          (
+                                            color: Colors.white,
+
+                                            child: Column
+                                            (
+                                              children: 
+                                              [
+                                                Row
+                                                (
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: 
+                                                  [
+                                                    const Icon(FlutterRemix.smartphone_line),
+
+                                                    const Text(' Device', style: TextStyle(fontSize: 15), textAlign: TextAlign.center),
+                                                  ],
+                                                ),
+
+                                                SizedBox // SPACING
+                                                (
+                                                  height: MediaQuery.of(context).size.height * 0.01,
+                                                ),
+
                                                 Text(
-                                                  mobileChargeString,
-                                                  style:
-                                                      const TextStyle(fontSize: 15),
+                                                      mobileChargeString + '%',
+                                                      style:
+                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
+                                                    ),
+
+                                                Text(
+                                                      'Phone #: ${snapshot['Phone']}',
+                                                      style:
+                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
+                                                    )
+                                              ]
+                                            ),
+                                          ),
+
+                                          SizedBox // SPACING
+                                          (
+                                            height: MediaQuery.of(context).size.height * 0.01,
+                                          ),
+
+                                          const Divider(
+                                            height: 5,
+                                            thickness: 3,
+                                            color: Colors.black12,
+                                          ),
+
+                                          SizedBox // SPACING
+                                          (
+                                            height: MediaQuery.of(context).size.height * 0.01,
+                                          ),
+
+                                          Container
+                                          (
+                                            color: Colors.white,
+
+                                            child: Column
+                                            (
+                                              children: 
+                                              [
+                                                Row
+                                                (
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: 
+                                                  [
+                                                    const Icon(FlutterRemix.celsius_line),
+
+                                                    const Text(' Weather', style: TextStyle(fontSize: 15), textAlign: TextAlign.center),
+                                                  ],
+                                                ),
+
+                                                SizedBox // SPACING
+                                                (
+                                                  height: MediaQuery.of(context).size.height * 0.01,
+                                                ),
+
+                                                Text(
+                                                      'Weather: ' +
+                                                          temperature!.toString() +
+                                                          '° ' +
+                                                          weatherDescription!,
+                                                      style:
+                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
+                                                    ),
+
+                                                Text(
+                                                      'Humidity: ' +
+                                                          humidity!.toString(),
+                                                      style:
+                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
+                                                    ),
+
+                                                Text(
+                                                      'Wind Speed: ' +
+                                                          windSpeed!.toString(),
+                                                      style:
+                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
+                                                    ),
+                                              ]
+                                            ),
+                                          ),
+
+                                          SizedBox // SPACING
+                                          (
+                                            height: MediaQuery.of(context).size.height * 0.01,
+                                          ),
+
+                                          const Divider(
+                                            height: 5,
+                                            thickness: 3,
+                                            color: Colors.black12,
+                                          ),
+
+                                          SizedBox // SPACING
+                                          (
+                                            height: MediaQuery.of(context).size.height * 0.01,
+                                          ),
+
+                                          Container
+                                          (
+                                            color: Colors.white,
+
+                                            child: Column
+                                            (
+                                              children: 
+                                              [
+                                                Row
+                                                (
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: 
+                                                  [
+                                                    const Icon(FlutterRemix.map_pin_line),
+
+                                                    const Text(' Location', style: TextStyle(fontSize: 15), textAlign: TextAlign.center),
+                                                  ],
+                                                ),
+
+                                                SizedBox // SPACING
+                                                (
+                                                  height: MediaQuery.of(context).size.height * 0.015,
+                                                ),
+
+                                                Row
+                                                (
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: const 
+                                                  [ 
+                                                    Text('At Moment of Connection',style:TextStyle(fontSize: 10)),
+                                                  ],
+                                                ),
+
+                                                Row
+                                                (
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: 
+                                                  [
+                                                    Column
+                                                    (
+                                                      children: 
+                                                      [
+                                                        const Text('Latitude', style: TextStyle(fontSize: 10), textAlign: TextAlign.center),
+                                                        Text(startLan + '°', style: const TextStyle(fontSize: 10), textAlign: TextAlign.center),
+                                                      ],
+                                                    ),
+
+                                                    Column
+                                                    (
+                                                      children: 
+                                                      [
+                                                        const Text('Longitude', style: TextStyle(fontSize: 10), textAlign: TextAlign.center),
+                                                        Text(startLon + '°', style: const TextStyle(fontSize: 10), textAlign: TextAlign.center),
+                                                      ],
+                                                    )
+                                                  ],
                                                 )
-                                              ],
+                                                
+                                              ]
                                             ),
-                                            Row(
-                                              children: [
-                                                const Icon(FlutterRemix
-                                                    .smartphone_line),
-                                                Text(
-                                                  'Phone: ${snapshot['Phone']}',
-                                                  style:
-                                                      const TextStyle(fontSize: 15),
-                                                )
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                    FlutterRemix.celsius_line),
-                                                Text(
-                                                  'Weather: ' +
-                                                      temperature!.toString() +
-                                                      '° ' +
-                                                      weatherDescription!,
-                                                  style:
-                                                      const TextStyle(fontSize: 15),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Icon(FlutterRemix
-                                                    .contrast_drop_2_line),
-                                                Text(
-                                                  'Humidity: ' +
-                                                      humidity!.toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 15),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                const Icon(
-                                                    FlutterRemix.windy_line),
-                                                Text(
-                                                  'Wind Speed: ' +
-                                                      windSpeed!.toString(),
-                                                  style: const TextStyle(
-                                                      fontSize: 15),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: const [
-                                                Icon(FlutterRemix.map_pin_line),
-                                                Text(
-                                                  'Location of the call: ———',
-                                                  style:
-                                                      TextStyle(fontSize: 15),
-                                                ),
-                                              ],
-                                            ),
-                                            Text(
-                                              'Latitude: ' + startLan + '°',
-                                            ),
-                                            Text(
-                                              'Longitude: ' + startLon + '°',
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  'Caller is' + userMotion!,
-                                                  style: const TextStyle(
-                                                      fontSize: 15),
-                                                ),
-                                                const Icon(
-                                                    FlutterRemix.walk_fill),
-                                                Text(
-                                                  userMotion!,
-                                                  style: const TextStyle(
-                                                      fontSize: 15),
-                                                ),
-                                              ],
-                                            ),
-                                            CaseBasic(
+                                          ),
+
+                                      CaseBasic(
                                                 type: callType,
                                                 phone: callerId,
                                                 emergencyContactNumberString:
@@ -799,9 +909,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                     personalHealthCardString,
                                                 urlPMR: urlPMR,
                                                 urlECMR: urlECMR),
-                                          ],
-                                        ),
-                                      ),
                                     ],
                                   )),
 
@@ -812,9 +919,9 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           Container // CHAT BOX
                               (
                                   height:
-                                      MediaQuery.of(context).size.height * 0.44,
+                                      MediaQuery.of(context).size.height * 0.35,
                                   width:
-                                      MediaQuery.of(context).size.width * 0.25,
+                                      MediaQuery.of(context).size.width * 0.28,
                                   decoration: BoxDecoration(
                                       shape: BoxShape.rectangle,
                                       borderRadius: BorderRadius.circular(12),
@@ -836,7 +943,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                               height: MediaQuery.of(context)
                                                       .size
                                                       .height *
-                                                  0.28,
+                                                  0.20,
                                               width: MediaQuery.of(context)
                                                       .size
                                                       .width *
@@ -853,7 +960,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                     context)
                                                                 .size
                                                                 .height *
-                                                            0.29,
+                                                            0.20,
                                                         width: MediaQuery.of(
                                                                     context)
                                                                 .size
@@ -950,7 +1057,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                             ),
                                             Container // Reply button area
                                                 (
-                                                    height: 70,
+                                                    height: 50,
                                                     constraints:
                                                         const BoxConstraints(
                                                       maxHeight:
@@ -964,10 +1071,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                     ),
                                                     padding:
                                                         const EdgeInsets.all(
-                                                            10.0),
+                                                            18.0),
                                                     margin:
                                                         const EdgeInsets.all(
-                                                            20.0),
+                                                            10.0),
                                                     child: SizedBox(
                                                       height:
                                                           MediaQuery.of(context)
@@ -986,7 +1093,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                   sentText,
                                                               style: const TextStyle(
                                                                   color: Colors
-                                                                      .black),
+                                                                      .black, fontSize: 12),
                                                               decoration: const InputDecoration(
                                                                   hintText:
                                                                       "Type Something...",
@@ -1004,6 +1111,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                                     .send_plane_fill,
                                                                 color: Colors
                                                                     .blue),
+                                                                    // alignment: Alignment.topCenter,
+                                                                    padding:  const EdgeInsets.all(0),
                                                             onPressed: () {
                                                               String text =
                                                                   sentText.text;
@@ -1029,7 +1138,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                             (children: [
                           Container(
                             height: MediaQuery.of(context).size.height * 0.90,
-                            width: MediaQuery.of(context).size.width * 0.30,
+                            width: MediaQuery.of(context).size.width * 0.28,
                             decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(12),
