@@ -53,7 +53,19 @@ class ActivitiesPageState extends State<ActivitiesPage> {
                       return ListView.builder(
                           itemCount: data.size,
                           itemBuilder: (context, index) {
+                            print("I am inside");
+                            print(data.docs[index]['StartTime']);
                             var id = data.docs[index].id;
+                            var date = 'Unknown';
+                            if(data.docs[index]['StartTime'] != null){
+                              print("I made a mistake");
+                              try {
+                                date = formatter.format(DateTime.parse(
+                                    data.docs[index]['StartTime']));
+                              }catch(e){
+
+                              }
+                            }
                             return InkWell(
                               child: Container(
                                 padding: EdgeInsets.all(20.0),
@@ -75,7 +87,7 @@ class ActivitiesPageState extends State<ActivitiesPage> {
                                       ),
                                       Container(
                                         child: Text(
-                                          ' Date: ${formatter.format(DateTime.parse(data.docs[index]['StartTime']))}',
+                                          ' Date: ${date}',
                                           style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             fontSize: 17,

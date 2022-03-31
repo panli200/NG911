@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, avoid_web_libraries_in_flutter
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart' as FbDb;
@@ -18,13 +20,13 @@ import 'dart:convert';
 import 'package:cryptography/cryptography.dart';
 import 'messages.dart';
 
-// Enviromental variables
+// Environmental variables
 String? latitudePassed = '';
 String? longitudePassed = '';
 bool? ended;
 late Timer locationTimer;
-List<googleMap.LatLng>? previousLocs; // list of location before call
-List<googleMap.LatLng>? newLocs; // list of location during the call
+List<googleMap.LatLng>? previousLocations; // list of location before call
+List<googleMap.LatLng>? newLocations; // list of location during the call
 
 class CallControlPanel extends StatefulWidget {
   final CallerId;
@@ -55,7 +57,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
   // For encryption
   Future<crypto.AsymmetricKeyPair>? futureKeyPair;
-  crypto.AsymmetricKeyPair? keyPair; //to store the KeyPair once we get data from our future
+  crypto.AsymmetricKeyPair?
+      keyPair; //to store the KeyPair once we get data from our future
   var publicKey;
   var privKey;
   var otherEndPublicKey;
@@ -104,7 +107,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   StreamSubscription? longitudeStream;
   StreamSubscription? latitudeStream;
   StreamSubscription? speedStream;
-  StreamSubscription? AccelerationStream;
+  StreamSubscription? accelerationStream;
   StreamSubscription? roomIdStream;
 
   // Queries
@@ -112,12 +115,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
   Stream<QuerySnapshot>? locationsHistory;
   Query? sortedPreviousLocation;
 
-  // Chat contoller
+  // Chat controller
   final sentText = TextEditingController();
 
   // Page variables
   var roomId;
-  String? StartTime;
+  String? startTime;
   String name = '';
   int callType = 4;
   String emergencyContactNumberString = '';
@@ -145,10 +148,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
     // Write activity
     CollectionReference user =
         FirebaseFirestore.instance.collection('SoSUsers');
-    StartTime ??= DateTime.now()
+    startTime ??= DateTime.now()
         .toString(); // checking and assessing null date value for start time
     await user.doc(callerId).collection('Emergencies').add({
-      'StartTime': StartTime,
+      'StartTime': startTime,
       'EndTime': FieldValue.serverTimestamp(),
       'EndPointLatitude': latitudePassed,
       'EndPointLongitude': longitudePassed
@@ -208,9 +211,12 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .child('Ended')
         .onValue
         .listen((event) async {
-      if (event.snapshot.value  != null) {
-        bool ? endedB = event.snapshot.value as bool;
+      try{
+        bool? endedB = event.snapshot.value as bool;
         ended = endedB;
+      // ignore: empty_catches
+      }catch(e){
+
       }
     });
 
@@ -221,12 +227,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        if (event.snapshot.value.toString() != null) {
+        try{
           String publicKeyPassed = event.snapshot.value.toString();
           aesSecretKeyString =
               (jsonDecode(publicKeyPassed) as List<dynamic>).cast<int>();
           aesSecretKey = SecretKey(aesSecretKeyString);
           setState(() {});
+        // ignore: empty_catches
+        }catch(e){
+
         }
       }
     });
@@ -238,11 +247,14 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        if (event.snapshot.value.toString() != null) {
+        try{
           String publicKeyPassed = event.snapshot.value.toString();
           var helper = RsaKeyHelper();
           otherEndPublicKey = helper.parsePublicKeyFromPem(publicKeyPassed);
           setState(() {});
+        // ignore: empty_catches
+        }catch(e){
+
         }
       }
     });
@@ -254,10 +266,13 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        if (event.snapshot.value.toString() != null) {
+        try {
           setState(() {
-            StartTime = event.snapshot.value.toString();
+            startTime = event.snapshot.value.toString();
           });
+        // ignore: empty_catches
+        }catch(e){
+
         }
       }
     });
@@ -269,17 +284,17 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        if (event.snapshot.value.toString() != null) {
+        try{
           String mobileCharge = event.snapshot.value.toString();
           setState(() {
             mobileChargeString = 'Mobile Charge: ' + mobileCharge;
           });
+        // ignore: empty_catches
+        }catch(e){
+
         }
       }
     });
-
-
-
 
     speedStream = ref
         .child('sensors')
@@ -288,27 +303,33 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .onValue
         .listen((event) {
       if (ended != true) {
-        if (event.snapshot.value.toString() != null) {
+        try{
           String speed = event.snapshot.value.toString();
           setState(() {
             speedString = speed;
           });
+        // ignore: empty_catches
+        }catch(e){
+
         }
       }
     });
 
-    AccelerationStream = ref
+    accelerationStream = ref
         .child('sensors')
         .child(callerId)
         .child('Acceleration')
         .onValue
         .listen((event) {
       if (ended != true) {
-        if (event.snapshot.value.toString() != null) {
-          String AccelerationValue = event.snapshot.value.toString();
+        try{
+          String accelerationValue = event.snapshot.value.toString();
           setState(() {
-            AccelerationString = AccelerationValue;
+            AccelerationString = accelerationValue;
           });
+        // ignore: empty_catches
+        }catch(e){
+
         }
       }
     });
@@ -322,7 +343,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
       if (ended != true) {
         setState(() {
           roomId = event.snapshot.value.toString();
-          if(roomId != null) {
+          if (roomId != null) {
             signaling.joinRoom(
                 roomId, _remoteRenderer, callerId); //join the video stream
           }
@@ -339,7 +360,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
       startLan = data['StartLocation'].latitude.toString();
       startLon = data['StartLocation'].longitude.toString();
       //Get route before the call
-      previousLocs = [
+      previousLocations = [
         googleMap.LatLng(double.parse(startLan), double.parse(startLon))
       ];
     }
@@ -356,23 +377,23 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 
   Future<void> getLocationHistory() async {
-    Query sortedPreviousLocation = await FirebaseFirestore.instance
+    Query sortedPreviousLocation = FirebaseFirestore.instance
         .collection('SOSEmergencies')
         .doc(callerId)
         .collection('location')
         .orderBy("id", descending: true);
-    QuerySnapshot queyPreviousLocation = await sortedPreviousLocation.get();
-    List previousLocsFetched =
-        queyPreviousLocation.docs.map((doc) => doc.data()).toList();
-    for (int i = previousLocsFetched.length - 1; i > 0; i--) {
+    QuerySnapshot queryPreviousLocation = await sortedPreviousLocation.get();
+    List previousLocationsFetched =
+        queryPreviousLocation.docs.map((doc) => doc.data()).toList();
+    for (int i = previousLocationsFetched.length - 1; i > 0; i--) {
       double? latitude = 0;
       double? longitude = 0;
-      if (double.tryParse(previousLocsFetched[i]['Latitude']) != null &&
-          double.tryParse(previousLocsFetched[i]['Longitude']) != null) {
-        latitude = double.tryParse(previousLocsFetched[i]['Latitude']);
-        longitude = double.tryParse(previousLocsFetched[i]['Longitude']);
+      if (double.tryParse(previousLocationsFetched[i]['Latitude']) != null &&
+          double.tryParse(previousLocationsFetched[i]['Longitude']) != null) {
+        latitude = double.tryParse(previousLocationsFetched[i]['Latitude']);
+        longitude = double.tryParse(previousLocationsFetched[i]['Longitude']);
         setState(() {
-          previousLocs!.add(googleMap.LatLng(latitude, longitude));
+          previousLocations!.add(googleMap.LatLng(latitude, longitude));
         });
       }
     }
@@ -451,10 +472,10 @@ class _CallControlPanelState extends State<CallControlPanel> {
     longitudeStream!.cancel();
     latitudeStream!.cancel();
     speedStream!.cancel();
-    AccelerationStream!.cancel();
+    accelerationStream!.cancel();
     roomIdStream!.cancel();
-    newLocs!.clear();
-    previousLocs!.clear();
+    newLocations!.clear();
+    previousLocations!.clear();
     FbDb.DatabaseReference real = FbDb.FirebaseDatabase.instance.ref();
     final databaseReal = real.child('sensors').child(callerId);
     databaseReal.remove();
@@ -501,8 +522,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
       urlPMR = await getUrlPMR(callerId);
       // ignore: unnecessary_null_comparison
       urlECMR = await getUrlECMR(callerId);
-      urlPMR ??= '';
-      urlECMR ??= '';
       setState(() {});
       if (double.tryParse('$speedString') != null) {
         WidgetsFlutterBinding.ensureInitialized();
@@ -541,7 +560,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 height:
                                     MediaQuery.of(context).size.height * 0.74,
                                 width: MediaQuery.of(context).size.width * 0.43,
-                                padding: EdgeInsets.all(10.0),
+                                padding: const EdgeInsets.all(10.0),
                                 decoration: BoxDecoration(
                                     shape: BoxShape.rectangle,
                                     borderRadius: BorderRadius.circular(12),
@@ -560,15 +579,18 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       }
                                       if (snapshot.connectionState ==
                                           ConnectionState.waiting) {
-                                        return Text('Loading');
+                                        return const Text('Loading');
                                       }
                                       final data = snapshot.requireData;
 
                                       //Initial the new locations list
-                                      double ?startLatitudePassed = double.tryParse(startLan);
-                                      double ?startLongitudePassed = double.tryParse(startLon);
-                                      if(startLatitudePassed != null && startLongitudePassed != null){
-                                        newLocs = [
+                                      double? startLatitudePassed =
+                                          double.tryParse(startLan);
+                                      double? startLongitudePassed =
+                                          double.tryParse(startLon);
+                                      if (startLatitudePassed != null &&
+                                          startLongitudePassed != null) {
+                                        newLocations = [
                                           googleMap.LatLng(startLatitudePassed,
                                               startLongitudePassed)
                                         ];
@@ -578,13 +600,15 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       for (int i = 0;
                                           i < data.docs.length;
                                           i++) {
-                                        double ?latitudeNew = double.tryParse(data.docs[i]['latitude']);
-                                        double ?longitudeNew = double.tryParse(data.docs[i]['longitude']);
+                                        double? latitudeNew = double.tryParse(
+                                            data.docs[i]['latitude']);
+                                        double? longitudeNew = double.tryParse(
+                                            data.docs[i]['longitude']);
 
-                                        if(latitudeNew != null && longitudeNew != null) {
-                                          newLocs!.add(googleMap.LatLng(
-                                              latitudeNew,
-                                              longitudeNew));
+                                        if (latitudeNew != null &&
+                                            longitudeNew != null) {
+                                          newLocations!.add(googleMap.LatLng(
+                                              latitudeNew, longitudeNew));
                                         }
                                       }
 
@@ -610,7 +634,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                   child: ElevatedButton(
                                       child: const Text("End Connection"),
                                       onPressed: () async {
-                                        signaling!.hangUp(roomId, callerId);
+                                        signaling.hangUp(roomId, callerId);
                                         FbDb.DatabaseReference real = FbDb
                                             .FirebaseDatabase.instance
                                             .ref();
@@ -679,7 +703,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 Text(
                                                   mobileChargeString,
                                                   style:
-                                                      TextStyle(fontSize: 15),
+                                                      const TextStyle(fontSize: 15),
                                                 )
                                               ],
                                             ),
@@ -690,7 +714,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                 Text(
                                                   'Phone: ${snapshot['Phone']}',
                                                   style:
-                                                      TextStyle(fontSize: 15),
+                                                      const TextStyle(fontSize: 15),
                                                 )
                                               ],
                                             ),
@@ -704,7 +728,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                       '° ' +
                                                       weatherDescription!,
                                                   style:
-                                                      TextStyle(fontSize: 15),
+                                                      const TextStyle(fontSize: 15),
                                                 ),
                                               ],
                                             ),
@@ -1024,7 +1048,6 @@ class _CallControlPanelState extends State<CallControlPanel> {
   }
 }
 
-
 class StreetMap extends StatefulWidget {
   StreetMap({Key? key}) : super(key: key);
 
@@ -1037,50 +1060,50 @@ class _StreetMapState extends State<StreetMap> {
 
   late var map;
   late var elem = DivElement();
-  late List<googleMap.LatLng> newLocsPassed;
-  List<googleMap.LatLng> starterNewListNullExclusion = [googleMap.LatLng(50.4182278, -104.594109)];
+  late List<googleMap.LatLng> newLocationsPassed;
+  List<googleMap.LatLng> starterNewListNullExclusion = [
+    googleMap.LatLng(50.4182278, -104.594109)
+  ];
   late var myLatlng;
   var lineNew = googleMap.Polyline();
   var line = googleMap.Polyline();
   var marker = googleMap.Marker();
   void refresh() {
-    Timer.periodic(Duration(seconds: 5), (locationTimer) async {
-      if(ended != true){
-        newLocsPassed = newLocs!;
-        googleMap.LatLng Latest = newLocsPassed!.last;
+    Timer.periodic(const Duration(seconds: 5), (locationTimer) async {
+      if (ended != true) {
+        newLocationsPassed = newLocations!;
+        googleMap.LatLng Latest = newLocationsPassed!.last;
         setState(() {
-          mapOptions!..center = Latest;
+          mapOptions..center = Latest;
           map = googleMap.GMap(elem, mapOptions);
-          lineNew..path = newLocsPassed;
+          lineNew..path = newLocationsPassed;
           lineNew..map = map;
           line..map = map;
           marker..position = Latest;
           marker..map = map;
         });
       }
-      if(ended == true){
-        newLocsPassed.clear();
-      //  locationTimer.cancel();
-       // dispose();
+      if (ended == true) {
+        newLocationsPassed.clear();
+        //  locationTimer.cancel();
+        // dispose();
       }
-
     });
   }
 
-
-
   @override
   void initState() {
-    if(newLocs != null) {
-      newLocsPassed = newLocs!;
-    }else{
-      newLocsPassed = starterNewListNullExclusion;
+    if (newLocations != null) {
+      newLocationsPassed = newLocations!;
+    } else {
+      newLocationsPassed = starterNewListNullExclusion;
     }
     refresh();
-    if(previousLocs![0] != null) {
-      myLatlng = previousLocs![0];
-    }else{
-      myLatlng = googleMap.LatLng(50.4182278, -104.594109);
+    try{
+      myLatlng = previousLocations![0];
+    // ignore: empty_catches
+    } catch(e){
+
     }
     super.initState();
   }
@@ -1122,11 +1145,11 @@ class _StreetMapState extends State<StreetMap> {
 
       line = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
-        ..path = previousLocs);
+        ..path = previousLocations);
 
       lineNew = googleMap.Polyline(googleMap.PolylineOptions()
         ..map = map
-        ..path = newLocsPassed
+        ..path = newLocationsPassed
         ..strokeColor = "#c4161b");
 
       return elem;
@@ -1135,5 +1158,3 @@ class _StreetMapState extends State<StreetMap> {
     return HtmlElementView(viewType: htmlId);
   }
 }
-
-
