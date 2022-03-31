@@ -40,27 +40,35 @@ Future<String> getPersonalHealthCard(String phone) async {
 }
 
 Future<String> getUrlPMR(String phone) async {
-  CollectionReference? emergencyData = FirebaseFirestore.instance
-      .collection('SoSUsers')
-      .doc(phone)
-      .collection('Profile Information');
-  var details = await emergencyData.doc('Medical Info').get();
+  try {
+    CollectionReference? emergencyData = FirebaseFirestore.instance
+        .collection('SoSUsers')
+        .doc(phone)
+        .collection('Profile Information');
+    var details = await emergencyData.doc('Medical Info').get();
 
-  if ((details.data() as dynamic)['personal medical file download'] != null) {
-    return (details.data() as dynamic)['personal medical file download'];
+    if ((details.data() as dynamic)['personal medical file download'] != null) {
+      return (details.data() as dynamic)['personal medical file download'];
+    }
+  }catch(e){
+
   }
   return '';
 }
 
 Future<String> getUrlECMR(String phone) async {
-  CollectionReference emergencyData = FirebaseFirestore.instance
-      .collection('SoSUsers')
-      .doc(phone)
-      .collection('Profile Information');
-  var details = await emergencyData.doc('Contact Medical Info ').get();
+  try {
+    CollectionReference emergencyData = FirebaseFirestore.instance
+        .collection('SoSUsers')
+        .doc(phone)
+        .collection('Profile Information');
+    var details = await emergencyData.doc('Contact Medical Info ').get();
 
-  if (details['contact medical file download'] != null) {
-    return details['contact medical file download'];
+    if (details['contact medical file download'] != null) {
+      return details['contact medical file download'];
+    }
+  }catch(e){
+
   }
   return '';
 }

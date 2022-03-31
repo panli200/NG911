@@ -26,8 +26,17 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
     activitySnapshot = widget.Snapshot;
   }
 
+  var startTimeText = 'Unknown';
+  var endTimeText = 'Unknown';
+
   @override
   Widget build(BuildContext context) {
+     try{
+       startTimeText = formatter.format(DateTime.parse(activitySnapshot['StartTime']));
+       endTimeText = formatter.format(activitySnapshot['EndTime'].toDate());
+    }catch(e){
+
+    }
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -82,7 +91,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
                             Text
                             (
-                              ' Start time: ' + formatter.format(DateTime.parse(activitySnapshot['StartTime'])),
+                              ' Start time: ' + startTimeText,
                               style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17,),
                             )
                           ],
@@ -102,7 +111,7 @@ class _ActivityDetailPageState extends State<ActivityDetailPage> {
 
                             Text
                             (
-                              ' End time: ' + formatter.format(activitySnapshot['EndTime'].toDate()),
+                              ' End time: ' + endTimeText,
                               style: const TextStyle(fontWeight: FontWeight.bold,fontSize: 17,),
                             ),
                           ],
