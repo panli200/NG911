@@ -99,7 +99,7 @@ class _VideoStreamState extends State<VideoStream> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(child: RTCVideoView(_localRenderer, mirror: true)),
+                  Expanded(child: RTCVideoView(_localRenderer, mirror: false)),
                 ],
               ),
             ),
