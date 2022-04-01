@@ -37,12 +37,12 @@ class CallControlPanel extends StatefulWidget {
   final privateKey;
   const CallControlPanel(
       {Key? key,
-      required this.CallerId,
-      required this.Snapshot,
-      required this.type,
-      required this.publicKey,
-      required this.privateKey,
-      this.name})
+        required this.CallerId,
+        required this.Snapshot,
+        required this.type,
+        required this.publicKey,
+        required this.privateKey,
+        this.name})
       : super(key: key);
 
   @override
@@ -58,7 +58,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
   // For encryption
   Future<crypto.AsymmetricKeyPair>? futureKeyPair;
   crypto.AsymmetricKeyPair?
-      keyPair; //to store the KeyPair once we get data from our future
+  keyPair; //to store the KeyPair once we get data from our future
   var publicKey;
   var privKey;
   var otherEndPublicKey;
@@ -147,7 +147,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
     // Write activity
     CollectionReference user =
-        FirebaseFirestore.instance.collection('SoSUsers');
+    FirebaseFirestore.instance.collection('SoSUsers');
     startTime ??= DateTime.now()
         .toString(); // checking and assessing null date value for start time
     await user.doc(callerId).collection('Emergencies').add({
@@ -214,7 +214,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
       try{
         bool? endedB = event.snapshot.value as bool;
         ended = endedB;
-      // ignore: empty_catches
+        // ignore: empty_catches
       }catch(e){
 
       }
@@ -233,7 +233,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
               (jsonDecode(publicKeyPassed) as List<dynamic>).cast<int>();
           aesSecretKey = SecretKey(aesSecretKeyString);
           setState(() {});
-        // ignore: empty_catches
+          // ignore: empty_catches
         }catch(e){
 
         }
@@ -252,7 +252,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
           var helper = RsaKeyHelper();
           otherEndPublicKey = helper.parsePublicKeyFromPem(publicKeyPassed);
           setState(() {});
-        // ignore: empty_catches
+          // ignore: empty_catches
         }catch(e){
 
         }
@@ -270,7 +270,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
           setState(() {
             startTime = event.snapshot.value.toString();
           });
-        // ignore: empty_catches
+          // ignore: empty_catches
         }catch(e){
 
         }
@@ -289,7 +289,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
           setState(() {
             mobileChargeString = 'Mobile Charge: ' + mobileCharge;
           });
-        // ignore: empty_catches
+          // ignore: empty_catches
         }catch(e){
 
         }
@@ -308,7 +308,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
           setState(() {
             speedString = speed;
           });
-        // ignore: empty_catches
+          // ignore: empty_catches
         }catch(e){
 
         }
@@ -327,7 +327,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
           setState(() {
             AccelerationString = accelerationValue;
           });
-        // ignore: empty_catches
+          // ignore: empty_catches
         }catch(e){
 
         }
@@ -384,7 +384,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
         .orderBy("id", descending: true);
     QuerySnapshot queryPreviousLocation = await sortedPreviousLocation.get();
     List previousLocationsFetched =
-        queryPreviousLocation.docs.map((doc) => doc.data()).toList();
+    queryPreviousLocation.docs.map((doc) => doc.data()).toList();
     for (int i = previousLocationsFetched.length - 1; i > 0; i--) {
       double? latitude = 0;
       double? longitude = 0;
@@ -517,7 +517,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
     Future.delayed(Duration.zero, () async {
       emergencyContactNumberString = await getEmergencyContactNumber(callerId);
       emergencyHealthCardNumberString =
-          await getEmergencyContactHealthCard(callerId);
+      await getEmergencyContactHealthCard(callerId);
       personalHealthCardString = await getPersonalHealthCard(callerId);
       urlPMR = await getUrlPMR(callerId);
       // ignore: unnecessary_null_comparison
@@ -549,610 +549,501 @@ class _CallControlPanelState extends State<CallControlPanel> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-
-              SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.01,
-                ), 
-
               SizedBox // First Column (Contains Map and End Call Button)
-                  (
-                      height: MediaQuery.of(context).size.height * 0.9,
-                      child: Row(children: <Widget>[
-                        Column(children: <Widget>[
-                          Row //THE MAP
-                              (children: <Widget>[
-                            Container(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.74,
-                                width: MediaQuery.of(context).size.width * 0.40,
-                                padding: const EdgeInsets.all(10.0),
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.rectangle,
-                                    borderRadius: BorderRadius.circular(12),
-                                    color: Colors.white,
-                                    border: Border.all(
-                                        color: Colors.white, width: 1)),
-                                child: StreamBuilder<QuerySnapshot>(
-                                    stream: locationsHistory,
-                                    builder: (
-                                      BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot,
-                                    ) {
-                                      if (snapshot.hasError) {
-                                        return Text(
-                                            'Something went wrong  ${snapshot.error}');
-                                      }
-                                      if (snapshot.connectionState ==
-                                          ConnectionState.waiting) {
-                                        return const Text('Loading');
-                                      }
-                                      final data = snapshot.requireData;
-
-                                      //Initial the new locations list
-                                      double? startLatitudePassed =
-                                          double.tryParse(startLan);
-                                      double? startLongitudePassed =
-                                          double.tryParse(startLon);
-                                      if (startLatitudePassed != null &&
-                                          startLongitudePassed != null) {
-                                        newLocations = [
-                                          googleMap.LatLng(startLatitudePassed,
-                                              startLongitudePassed)
-                                        ];
-                                      }
-
-                                      //Adding the location to
-                                      for (int i = 0;
-                                          i < data.docs.length;
-                                          i++) {
-                                        double? latitudeNew = double.tryParse(
-                                            data.docs[i]['latitude']);
-                                        double? longitudeNew = double.tryParse(
-                                            data.docs[i]['longitude']);
-
-                                        if (latitudeNew != null &&
-                                            longitudeNew != null) {
-                                          newLocations!.add(googleMap.LatLng(
-                                              latitudeNew, longitudeNew));
-                                        }
-                                      }
-
-                                      return StreetMap();
-                                    }))
-                          ]),
-                          SizedBox // SPACING
-                              (
-                            height: MediaQuery.of(context).size.height * 0.1,
-                            width: MediaQuery.of(context).size.width * 0.25,
-                          ),
-                          Row //END CONNECTION BUTTON
-                              (
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.06,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.25,
-                                  child: ElevatedButton(
-                                      child: const Text("End Connection"),
-                                      onPressed: () async {
-                                        signaling.hangUp(roomId, callerId);
-                                        FbDb.DatabaseReference real = FbDb
-                                            .FirebaseDatabase.instance
-                                            .ref();
-                                        final databaseReal = real
-                                            .child('sensors')
-                                            .child(callerId);
-
-                                        await databaseReal.update(
-                                            {'Online': false, 'Ended': true});
-
-                                        // End the call
-                                        _EndCall();
-
-                                        // Going back to maps home page
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    MapsHomePage(
-                                                      name: name,
-                                                    )));
-                                        // this will the method for your rejected Button
-                                      },
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Colors.red,
-                                      )),
-                                )
-                              ])
-                        ]),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.01,
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                          Container // Second Column (Contains the user info and chat box)
-                              (
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.53,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.28,
-                                  padding: const EdgeInsets.all(10.0),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: Colors.white, width: 1)),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      const Text(
-                                              'Caller Information',
-                                              style: TextStyle(fontSize: 20),
-                                              textAlign: TextAlign.center,
-                                            ),
-
-                                      SizedBox // SPACING
-                                      (
-                                        height: MediaQuery.of(context).size.height * 0.01,
-                                      ),
-
-                                      const Divider(
-                                        height: 5,
-                                        thickness: 3,
-                                        color: Colors.black12,
-                                      ),
-
-                                      SizedBox // SPACING
-                                      (
-                                        height: MediaQuery.of(context).size.height * 0.01,
-                                      ),
-
-                                      Container
-                                          (
-                                            color: Colors.white,
-
-                                            child: Column
-                                            (
-                                              children: 
-                                              [
-                                                Row
-                                                (
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: 
-                                                  [
-                                                    const Icon(FlutterRemix.smartphone_line),
-
-                                                    const Text(' Device', style: TextStyle(fontSize: 15), textAlign: TextAlign.center),
-                                                  ],
-                                                ),
-
-                                                SizedBox // SPACING
-                                                (
-                                                  height: MediaQuery.of(context).size.height * 0.01,
-                                                ),
-
-                                                Text(
-                                                      mobileChargeString + '%',
-                                                      style:
-                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
-                                                    ),
-
-                                                Text(
-                                                      'Phone #: ${snapshot['Phone']}',
-                                                      style:
-                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
-                                                    )
-                                              ]
-                                            ),
-                                          ),
-
-                                          SizedBox // SPACING
-                                          (
-                                            height: MediaQuery.of(context).size.height * 0.01,
-                                          ),
-
-                                          const Divider(
-                                            height: 5,
-                                            thickness: 3,
-                                            color: Colors.black12,
-                                          ),
-
-                                          SizedBox // SPACING
-                                          (
-                                            height: MediaQuery.of(context).size.height * 0.01,
-                                          ),
-
-                                          Container
-                                          (
-                                            color: Colors.white,
-
-                                            child: Column
-                                            (
-                                              children: 
-                                              [
-                                                Row
-                                                (
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: 
-                                                  [
-                                                    const Icon(FlutterRemix.celsius_line),
-
-                                                    const Text(' Weather', style: TextStyle(fontSize: 15), textAlign: TextAlign.center),
-                                                  ],
-                                                ),
-
-                                                SizedBox // SPACING
-                                                (
-                                                  height: MediaQuery.of(context).size.height * 0.01,
-                                                ),
-
-                                                Text(
-                                                      'Weather: ' +
-                                                          temperature!.toString() +
-                                                          '° ' +
-                                                          weatherDescription!,
-                                                      style:
-                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
-                                                    ),
-
-                                                Text(
-                                                      'Humidity: ' +
-                                                          humidity!.toString(),
-                                                      style:
-                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
-                                                    ),
-
-                                                Text(
-                                                      'Wind Speed: ' +
-                                                          windSpeed!.toString(),
-                                                      style:
-                                                          const TextStyle(fontSize: 10), textAlign: TextAlign.center,
-                                                    ),
-                                              ]
-                                            ),
-                                          ),
-
-                                          SizedBox // SPACING
-                                          (
-                                            height: MediaQuery.of(context).size.height * 0.01,
-                                          ),
-
-                                          const Divider(
-                                            height: 5,
-                                            thickness: 3,
-                                            color: Colors.black12,
-                                          ),
-
-                                          SizedBox // SPACING
-                                          (
-                                            height: MediaQuery.of(context).size.height * 0.01,
-                                          ),
-
-                                          Container
-                                          (
-                                            color: Colors.white,
-
-                                            child: Column
-                                            (
-                                              children: 
-                                              [
-                                                Row
-                                                (
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: 
-                                                  [
-                                                    const Icon(FlutterRemix.map_pin_line),
-
-                                                    const Text(' Location', style: TextStyle(fontSize: 15), textAlign: TextAlign.center),
-                                                  ],
-                                                ),
-
-                                                SizedBox // SPACING
-                                                (
-                                                  height: MediaQuery.of(context).size.height * 0.015,
-                                                ),
-
-                                                Row
-                                                (
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: const 
-                                                  [ 
-                                                    Text('At Moment of Connection',style:TextStyle(fontSize: 10)),
-                                                  ],
-                                                ),
-
-                                                Row
-                                                (
-                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                  children: 
-                                                  [
-                                                    Column
-                                                    (
-                                                      children: 
-                                                      [
-                                                        const Text('Latitude', style: TextStyle(fontSize: 10), textAlign: TextAlign.center),
-                                                        Text(startLan + '°', style: const TextStyle(fontSize: 10), textAlign: TextAlign.center),
-                                                      ],
-                                                    ),
-
-                                                    Column
-                                                    (
-                                                      children: 
-                                                      [
-                                                        const Text('Longitude', style: TextStyle(fontSize: 10), textAlign: TextAlign.center),
-                                                        Text(startLon + '°', style: const TextStyle(fontSize: 10), textAlign: TextAlign.center),
-                                                      ],
-                                                    )
-                                                  ],
-                                                )
-                                                
-                                              ]
-                                            ),
-                                          ),
-
-                                      CaseBasic(
-                                                type: callType,
-                                                phone: callerId,
-                                                emergencyContactNumberString:
-                                                    emergencyContactNumberString,
-                                                emergencyHealthCardNumberString:
-                                                    emergencyHealthCardNumberString,
-                                                personalHealthCardString:
-                                                    personalHealthCardString,
-                                                urlPMR: urlPMR,
-                                                urlECMR: urlECMR),
-                                    ],
-                                  )),
-
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ), // SPACING
-
-                          Container // CHAT BOX
-                              (
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.35,
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.28,
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.rectangle,
-                                      borderRadius: BorderRadius.circular(12),
-                                      color: Colors.white,
-                                      border: Border.all(
-                                          color: Colors.white, width: 1)),
-                                  child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            SizedBox // SMS Area
-                                                (
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.20,
-                                              width: MediaQuery.of(context)
-                                                      .size
-                                                      .width *
-                                                  0.24,
-                                              child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.center,
-                                                  crossAxisAlignment:
-                                                      CrossAxisAlignment.center,
-                                                  children: [
-                                                    // This is the chat
-                                                    SizedBox(
-                                                        height: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .height *
-                                                            0.20,
-                                                        width: MediaQuery.of(
-                                                                    context)
-                                                                .size
-                                                                .width *
-                                                            0.24,
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .center,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .center,
-                                                          children: [
-                                                            Expanded(
-                                                                child: StreamBuilder<
-                                                                        QuerySnapshot>(
-                                                                    stream:
-                                                                        messages,
-                                                                    builder: (
-                                                                      BuildContext
-                                                                          context,
-                                                                      AsyncSnapshot<
-                                                                              QuerySnapshot>
-                                                                          snapshot,
-                                                                    ) {
-                                                                      if (snapshot
-                                                                          .hasError) {
-                                                                        return const Text(
-                                                                            'Something went wrong');
-                                                                      }
-
-                                                                      if (snapshot
-                                                                              .connectionState ==
-                                                                          ConnectionState
-                                                                              .waiting) {
-                                                                        return const Text(
-                                                                            'Loading');
-                                                                      }
-
-                                                                      final data =
-                                                                          snapshot
-                                                                              .requireData;
-
-                                                                      return ListView.builder(
-                                                                          itemCount: data.size,
-                                                                          shrinkWrap: true,
-                                                                          reverse: false,
-                                                                          itemBuilder: (context, index) {
-                                                                            Color
-                                                                                c;
-                                                                            Alignment
-                                                                                a;
-                                                                            if (data.docs[index]['SAdmin'] ==
-                                                                                false) {
-                                                                              c = Colors.black38;
-                                                                              a = Alignment.centerLeft;
-                                                                            } else {
-                                                                              // dispatcher
-                                                                              c = Colors.blue;
-                                                                              a = Alignment.centerRight;
-                                                                            }
-
-                                                                            var nonceString =
-                                                                                data.docs[index]['nonce'];
-                                                                            var cipherString =
-                                                                                data.docs[index]['cipher'];
-                                                                            var macString =
-                                                                                data.docs[index]['mac'];
-
-                                                                            var macBytes =
-                                                                                (jsonDecode(macString) as List<dynamic>).cast<int>();
-                                                                            Mac macFinal =
-                                                                                Mac(macBytes);
-                                                                            List<int>
-                                                                                nonceInt =
-                                                                                (jsonDecode(nonceString) as List<dynamic>).cast<int>();
-                                                                            List<int>
-                                                                                cipherInt =
-                                                                                (jsonDecode(cipherString) as List<dynamic>).cast<int>();
-                                                                            SecretBox
-                                                                                newBox =
-                                                                                SecretBox(cipherInt, nonce: nonceInt, mac: macFinal);
-                                                                            messagesList.add(Message(
-                                                                                secretBox: newBox,
-                                                                                aesSecretKey: aesSecretKey,
-                                                                                alignment: a,
-                                                                                color: c));
-                                                                            return messagesList[index];
-                                                                          });
-                                                                    })),
-                                                          ],
-                                                        )),
-                                                  ]),
-                                            ),
-                                            Container // Reply button area
-                                                (
-                                                    height: 50,
-                                                    constraints:
-                                                        const BoxConstraints(
-                                                      maxHeight:
-                                                          double.infinity,
-                                                    ),
-                                                    decoration: BoxDecoration(
-                                                      color: Colors.grey[100],
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              35.0),
-                                                    ),
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            18.0),
-                                                    margin:
-                                                        const EdgeInsets.all(
-                                                            10.0),
-                                                    child: SizedBox(
-                                                      height:
-                                                          MediaQuery.of(context)
-                                                              .size
-                                                              .height,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width *
-                                                              0.20,
-                                                      child: Row(
-                                                        children: [
-                                                          Expanded(
-                                                            child: TextField(
-                                                              controller:
-                                                                  sentText,
-                                                              style: const TextStyle(
-                                                                  color: Colors
-                                                                      .black, fontSize: 12),
-                                                              decoration: const InputDecoration(
-                                                                  hintText:
-                                                                      "Type Something...",
-                                                                  hintStyle: TextStyle(
-                                                                      color: Colors
-                                                                          .black),
-                                                                  border:
-                                                                      InputBorder
-                                                                          .none),
-                                                            ),
-                                                          ),
-                                                          IconButton(
-                                                            icon: const Icon(
-                                                                FlutterRemix
-                                                                    .send_plane_fill,
-                                                                color: Colors
-                                                                    .blue),
-                                                                    // alignment: Alignment.topCenter,
-                                                                    padding:  const EdgeInsets.all(0),
-                                                            onPressed: () {
-                                                              String text =
-                                                                  sentText.text;
-                                                              if (text != '') {
-                                                                encryptTextAndSend(
-                                                                    text);
-                                                                sentText.text =
-                                                                    '';
-                                                              }
-                                                            },
-                                                          )
-                                                        ],
-                                                      ),
-                                                    )),
-                                          ],
-                                        ),
-                                      ])),
-                        ]),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.01,
-                        ),
-                        Column // VIDEO COLUMN
-                            (children: [
-                          Container(
-                            height: MediaQuery.of(context).size.height * 0.90,
-                            width: MediaQuery.of(context).size.width * 0.28,
+                (
+                  height: MediaQuery.of(context).size.height * 0.9,
+                  child: Row(children: <Widget>[
+                    Column(children: <Widget>[
+                      Row //THE MAP
+                        (children: <Widget>[
+                        Container(
+                            height:
+                            MediaQuery.of(context).size.height * 0.74,
+                            width: MediaQuery.of(context).size.width * 0.43,
+                            padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
                                 borderRadius: BorderRadius.circular(12),
                                 color: Colors.white,
-                                border:
-                                    Border.all(color: Colors.white, width: 1)),
-                            child: Row(
+                                border: Border.all(
+                                    color: Colors.white, width: 1)),
+                            child: StreamBuilder<QuerySnapshot>(
+                                stream: locationsHistory,
+                                builder: (
+                                    BuildContext context,
+                                    AsyncSnapshot<QuerySnapshot> snapshot,
+                                    ) {
+                                  if (snapshot.hasError) {
+                                    return Text(
+                                        'Something went wrong  ${snapshot.error}');
+                                  }
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Text('Loading');
+                                  }
+                                  final data = snapshot.requireData;
+
+                                  //Initial the new locations list
+                                  double? startLatitudePassed =
+                                  double.tryParse(startLan);
+                                  double? startLongitudePassed =
+                                  double.tryParse(startLon);
+                                  if (startLatitudePassed != null &&
+                                      startLongitudePassed != null) {
+                                    newLocations = [
+                                      googleMap.LatLng(startLatitudePassed,
+                                          startLongitudePassed)
+                                    ];
+                                  }
+
+                                  //Adding the location to
+                                  for (int i = 0;
+                                  i < data.docs.length;
+                                  i++) {
+                                    double? latitudeNew = double.tryParse(
+                                        data.docs[i]['latitude']);
+                                    double? longitudeNew = double.tryParse(
+                                        data.docs[i]['longitude']);
+
+                                    if (latitudeNew != null &&
+                                        longitudeNew != null) {
+                                      newLocations!.add(googleMap.LatLng(
+                                          latitudeNew, longitudeNew));
+                                    }
+                                  }
+
+                                  return StreetMap();
+                                }))
+                      ]),
+                      SizedBox // SPACING
+                        (
+                        height: MediaQuery.of(context).size.height * 0.1,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                      ),
+                      Row //END CONNECTION BUTTON
+                        (
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceAround,
+                          children: <Widget>[
+                            SizedBox(
+                              height:
+                              MediaQuery.of(context).size.height * 0.06,
+                              width:
+                              MediaQuery.of(context).size.width * 0.25,
+                              child: ElevatedButton(
+                                  child: const Text("End Connection"),
+                                  onPressed: () async {
+                                    signaling.hangUp(roomId, callerId);
+                                    FbDb.DatabaseReference real = FbDb
+                                        .FirebaseDatabase.instance
+                                        .ref();
+                                    final databaseReal = real
+                                        .child('sensors')
+                                        .child(callerId);
+
+                                    await databaseReal.update(
+                                        {'Online': false, 'Ended': true});
+
+                                    // End the call
+                                    _EndCall();
+
+                                    // Going back to maps home page
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MapsHomePage(
+                                                  name: name,
+                                                )));
+                                    // this will the method for your rejected Button
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.red,
+                                  )),
+                            )
+                          ])
+                    ]),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.01,
+                    ),
+                    Column(children: [
+                      Container // Second Column (Contains the user info and chat box)
+                        (
+                          height:
+                          MediaQuery.of(context).size.height * 0.44,
+                          width:
+                          MediaQuery.of(context).size.width * 0.25,
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: Colors.white, width: 1)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment:
+                            CrossAxisAlignment.center,
+                            children: [
+                              SingleChildScrollView(
+                                child: Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text(
+                                      'Caller Information',
+                                      style: TextStyle(fontSize: 25),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(FlutterRemix
+                                            .battery_2_charge_line),
+                                        Text(
+                                          mobileChargeString,
+                                          style:
+                                          const TextStyle(fontSize: 15),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(FlutterRemix
+                                            .smartphone_line),
+                                        Text(
+                                          'Phone: ${snapshot['Phone']}',
+                                          style:
+                                          const TextStyle(fontSize: 15),
+                                        )
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                            FlutterRemix.celsius_line),
+                                        Text(
+                                          'Weather: ' +
+                                              temperature!.toString() +
+                                              '° ' +
+                                              weatherDescription!,
+                                          style:
+                                          const TextStyle(fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(FlutterRemix
+                                            .contrast_drop_2_line),
+                                        Text(
+                                          'Humidity: ' +
+                                              humidity!.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                            FlutterRemix.windy_line),
+                                        Text(
+                                          'Wind Speed: ' +
+                                              windSpeed!.toString(),
+                                          style: const TextStyle(
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                    Row(
+                                      children: const [
+                                        Icon(FlutterRemix.map_pin_line),
+                                        Text(
+                                          'Location of the call: ———',
+                                          style:
+                                          TextStyle(fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      'Latitude: ' + startLan + '°',
+                                    ),
+                                    Text(
+                                      'Longitude: ' + startLon + '°',
+                                    ),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Caller is' + userMotion!,
+                                          style: const TextStyle(
+                                              fontSize: 15),
+                                        ),
+                                        const Icon(
+                                            FlutterRemix.walk_fill),
+                                        Text(
+                                          userMotion!,
+                                          style: const TextStyle(
+                                              fontSize: 15),
+                                        ),
+                                      ],
+                                    ),
+                                    CaseBasic(
+                                        type: callType,
+                                        phone: callerId,
+                                        emergencyContactNumberString:
+                                        emergencyContactNumberString,
+                                        emergencyHealthCardNumberString:
+                                        emergencyHealthCardNumberString,
+                                        personalHealthCardString:
+                                        personalHealthCardString,
+                                        urlPMR: urlPMR,
+                                        urlECMR: urlECMR),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          )),
+
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.01,
+                      ), // SPACING
+
+                      Container // CHAT BOX
+                        (
+                          height:
+                          MediaQuery.of(context).size.height * 0.44,
+                          width:
+                          MediaQuery.of(context).size.width * 0.25,
+                          decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: Colors.white, width: 1)),
+                          child: Row(
+                              mainAxisAlignment:
+                              MainAxisAlignment.center,
+                              crossAxisAlignment:
+                              CrossAxisAlignment.center,
                               children: [
-                                Expanded(child: RTCVideoView(_remoteRenderer!)),
-                              ],
-                            ),
-                          ),
-                        ]),
-                      ]))
+                                Column(
+                                  mainAxisAlignment:
+                                  MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    SizedBox // SMS Area
+                                      (
+                                      height: MediaQuery.of(context)
+                                          .size
+                                          .height *
+                                          0.28,
+                                      width: MediaQuery.of(context)
+                                          .size
+                                          .width *
+                                          0.24,
+                                      child: Row(
+                                          mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                          crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                          children: [
+                                            // This is the chat
+                                            SizedBox(
+                                                height: MediaQuery.of(
+                                                    context)
+                                                    .size
+                                                    .height *
+                                                    0.29,
+                                                width: MediaQuery.of(
+                                                    context)
+                                                    .size
+                                                    .width *
+                                                    0.24,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .center,
+                                                  crossAxisAlignment:
+                                                  CrossAxisAlignment
+                                                      .center,
+                                                  children: [
+                                                    Expanded(
+                                                        child: StreamBuilder<
+                                                            QuerySnapshot>(
+                                                            stream:
+                                                            messages,
+                                                            builder: (
+                                                                BuildContext
+                                                                context,
+                                                                AsyncSnapshot<
+                                                                    QuerySnapshot>
+                                                                snapshot,
+                                                                ) {
+                                                              if (snapshot
+                                                                  .hasError) {
+                                                                return const Text(
+                                                                    'Something went wrong');
+                                                              }
+
+                                                              if (snapshot
+                                                                  .connectionState ==
+                                                                  ConnectionState
+                                                                      .waiting) {
+                                                                return const Text(
+                                                                    'Loading');
+                                                              }
+
+                                                              final data =
+                                                                  snapshot
+                                                                      .requireData;
+
+                                                              return ListView.builder(
+                                                                  itemCount: data.size,
+                                                                  shrinkWrap: true,
+                                                                  reverse: false,
+                                                                  itemBuilder: (context, index) {
+                                                                    Color
+                                                                    c;
+                                                                    Alignment
+                                                                    a;
+                                                                    if (data.docs[index]['SAdmin'] ==
+                                                                        false) {
+                                                                      c = Colors.black38;
+                                                                      a = Alignment.centerLeft;
+                                                                    } else {
+                                                                      // dispatcher
+                                                                      c = Colors.blue;
+                                                                      a = Alignment.centerRight;
+                                                                    }
+
+                                                                    var nonceString =
+                                                                    data.docs[index]['nonce'];
+                                                                    var cipherString =
+                                                                    data.docs[index]['cipher'];
+                                                                    var macString =
+                                                                    data.docs[index]['mac'];
+
+                                                                    var macBytes =
+                                                                    (jsonDecode(macString) as List<dynamic>).cast<int>();
+                                                                    Mac macFinal =
+                                                                    Mac(macBytes);
+                                                                    List<int>
+                                                                    nonceInt =
+                                                                    (jsonDecode(nonceString) as List<dynamic>).cast<int>();
+                                                                    List<int>
+                                                                    cipherInt =
+                                                                    (jsonDecode(cipherString) as List<dynamic>).cast<int>();
+                                                                    SecretBox
+                                                                    newBox =
+                                                                    SecretBox(cipherInt, nonce: nonceInt, mac: macFinal);
+                                                                    messagesList.add(Message(
+                                                                        secretBox: newBox,
+                                                                        aesSecretKey: aesSecretKey,
+                                                                        alignment: a,
+                                                                        color: c));
+                                                                    return messagesList[index];
+                                                                  });
+                                                            })),
+                                                  ],
+                                                )),
+                                          ]),
+                                    ),
+                                    Container // Reply button area
+                                      (
+                                        height: 70,
+                                        constraints:
+                                        const BoxConstraints(
+                                          maxHeight:
+                                          double.infinity,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[100],
+                                          borderRadius:
+                                          BorderRadius.circular(
+                                              35.0),
+                                        ),
+                                        padding:
+                                        const EdgeInsets.all(
+                                            10.0),
+                                        margin:
+                                        const EdgeInsets.all(
+                                            20.0),
+                                        child: SizedBox(
+                                          height:
+                                          MediaQuery.of(context)
+                                              .size
+                                              .height,
+                                          width:
+                                          MediaQuery.of(context)
+                                              .size
+                                              .width *
+                                              0.20,
+                                          child: Row(
+                                            children: [
+                                              Expanded(
+                                                child: TextField(
+                                                  controller:
+                                                  sentText,
+                                                  style: const TextStyle(
+                                                      color: Colors
+                                                          .black),
+                                                  decoration: const InputDecoration(
+                                                      hintText:
+                                                      "Type Something...",
+                                                      hintStyle: TextStyle(
+                                                          color: Colors
+                                                              .black),
+                                                      border:
+                                                      InputBorder
+                                                          .none),
+                                                ),
+                                              ),
+                                              IconButton(
+                                                icon: const Icon(
+                                                    FlutterRemix
+                                                        .send_plane_fill,
+                                                    color: Colors
+                                                        .blue),
+                                                onPressed: () {
+                                                  String text =
+                                                      sentText.text;
+                                                  if (text != '') {
+                                                    encryptTextAndSend(
+                                                        text);
+                                                    sentText.text =
+                                                    '';
+                                                  }
+                                                },
+                                              )
+                                            ],
+                                          ),
+                                        )),
+                                  ],
+                                ),
+                              ])),
+                    ]),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.01,
+                    ),
+                    Column // VIDEO COLUMN
+                      (children: [
+                      Container(
+                        height: MediaQuery.of(context).size.height * 0.90,
+                        width: MediaQuery.of(context).size.width * 0.30,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.rectangle,
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.white,
+                            border:
+                            Border.all(color: Colors.white, width: 1)),
+                        child: Row(
+                          children: [
+                            Expanded(child: RTCVideoView(_remoteRenderer!)),
+                          ],
+                        ),
+                      ),
+                    ]),
+                  ]))
             ]));
   }
 }
@@ -1210,7 +1101,7 @@ class _StreetMapState extends State<StreetMap> {
     refresh();
     try{
       myLatlng = previousLocations![0];
-    // ignore: empty_catches
+      // ignore: empty_catches
     } catch(e){
 
     }
