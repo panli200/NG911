@@ -20,7 +20,7 @@ class MapsHomePage extends StatefulWidget {
 class _MapsHomePageState extends State<MapsHomePage> {
   Future<crypto.AsymmetricKeyPair>? futureKeyPair;
   crypto.AsymmetricKeyPair?
-      keyPair; //to store the KeyPair once we get data from our future
+  keyPair; //to store the KeyPair once we get data from our future
   late var publicKey;
   late var privKey;
   late String publicKeyString;
@@ -56,7 +56,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
   }
 
   final Stream<QuerySnapshot> waitingList =
-      FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
+  FirebaseFirestore.instance.collection('SOSEmergencies').snapshots();
   @override
   Widget build(BuildContext context) => Scaffold(
       backgroundColor: Colors.grey[100],
@@ -75,8 +75,8 @@ class _MapsHomePageState extends State<MapsHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
               SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.01,
-                ), 
+                width: MediaQuery.of(context).size.width * 0.01,
+              ),
 
               Container(
                 height: MediaQuery.of(context).size.height * 0.9,
@@ -107,7 +107,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
                   children: <Widget>[
                     SizedBox(
                       height: MediaQuery.of(context).size.height * 0.01,
-                    ), 
+                    ),
 
                     const Text(
                       'Index',
@@ -119,8 +119,8 @@ class _MapsHomePageState extends State<MapsHomePage> {
                     ),
 
                     SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ), 
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
 
                     const Divider(
                       height: 5,
@@ -129,164 +129,164 @@ class _MapsHomePageState extends State<MapsHomePage> {
                     ),
 
                     SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ), 
+                      height: MediaQuery.of(context).size.height * 0.01,
+                    ),
 
                     Row
-                    (
+                      (
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: 
+                      children:
                       [
                         Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                          const Text(
-                            'Waiting List',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              const Text(
+                                'Waiting List',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
 
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.01,
-                          ), 
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height * 0.01,
+                              ),
 
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.68,
-                              width: MediaQuery.of(context).size.width * 0.18,
-                              // height: 200.0,
-                              child: StreamBuilder<
+                              SizedBox(
+                                  height: MediaQuery.of(context).size.height * 0.68,
+                                  width: MediaQuery.of(context).size.width * 0.18,
+                                  // height: 200.0,
+                                  child: StreamBuilder<
                                       QuerySnapshot> // This will read the Waiting list from Firebase (SOSEmergencies)
-                                  (
-                                  stream: waitingList,
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                                    if (snapshot.hasError) {
-                                      return Text(
-                                          'Something went wrong  ${snapshot.error}');
-                                    }
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Text('Loading');
-                                    }
+                                    (
+                                      stream: waitingList,
+                                      builder: (BuildContext context,
+                                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                                        if (snapshot.hasError) {
+                                          return Text(
+                                              'Something went wrong  ${snapshot.error}');
+                                        }
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          return const Text('Loading');
+                                        }
 
-                                    final data = snapshot.requireData;
-                                    return ListView.builder(
-                                        itemCount: data.size,
-                                        itemBuilder: (context, index) {
-                                          void getTimeWaited(String? phone) async {
-                                            WidgetsFlutterBinding
-                                                .ensureInitialized();
-                                            fbdb.DatabaseReference ref = fbdb
-                                                .FirebaseDatabase.instance
-                                                .ref();
-                                            ref
-                                                .child('sensors')
-                                                .child(phone!)
-                                                .child('Timer')
-                                                .onValue
-                                                .listen((event) async {
-                                              timeWaited =
-                                                  event.snapshot.value!.toString();
+                                        final data = snapshot.requireData;
+                                        return ListView.builder(
+                                            itemCount: data.size,
+                                            itemBuilder: (context, index) {
+                                              void getTimeWaited(String? phone) async {
+                                                WidgetsFlutterBinding
+                                                    .ensureInitialized();
+                                                fbdb.DatabaseReference ref = fbdb
+                                                    .FirebaseDatabase.instance
+                                                    .ref();
+                                                ref
+                                                    .child('sensors')
+                                                    .child(phone!)
+                                                    .child('Timer')
+                                                    .onValue
+                                                    .listen((event) async {
+                                                  timeWaited =
+                                                      event.snapshot.value!.toString();
 
-                                              if (timeWaited != null) {
-                                                timeWaitedString = timeWaited!;
-                                                Future.delayed(Duration.zero, () {
-                                                  setState(() {});
+                                                  if (timeWaited != null) {
+                                                    timeWaitedString = timeWaited!;
+                                                    Future.delayed(Duration.zero, () {
+                                                      setState(() {});
+                                                    });
+                                                  }
                                                 });
                                               }
-                                            });
-                                          }
 
-                                          String phone = "";
-                                          int? type = 5;
-                                          var id = data.docs[index].id;
-                                          phone =
-                                              data.docs[index]['Phone'].toString();
-                                          type = data.docs[index]['type'];
-                                          if (data.docs[index]['Waiting']) {
-                                            getTimeWaited(data.docs[index].id);
-                                            return Material(
-                                              color: Colors.white,
-                                              child: Container(
-                                                color: Colors.white,
-                                                margin: const EdgeInsets.all(10.0),
-                                                child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                  ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty.all<
-                                                              Color>(Colors.red),
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  CallControlPanel(
-                                                                    CallerId: id,
-                                                                    Snapshot:
-                                                                        data.docs[
-                                                                            index],
-                                                                    type: type,
-                                                                    name: name,
-                                                                    publicKey:
-                                                                        publicKeyString,
-                                                                    privateKey:
-                                                                        privKey,  
-                                                                  )));
-                                                    },
-                                                    child: 
-                                                      Column
-                                                      (
-                                                        children: [
-                                                          Row
-                                                          (
-                                                            children:
-                                                            [
-                                                              const Icon(FlutterRemix.hotspot_line),
+                                              String phone = "";
+                                              int? type = 5;
+                                              var id = data.docs[index].id;
+                                              phone =
+                                                  data.docs[index]['Phone'].toString();
+                                              type = data.docs[index]['type'];
+                                              if (data.docs[index]['Waiting']) {
+                                                getTimeWaited(data.docs[index].id);
+                                                return Material(
+                                                  color: Colors.white,
+                                                  child: Container(
+                                                    color: Colors.white,
+                                                    margin: const EdgeInsets.all(10.0),
+                                                    child: Row(
+                                                        mainAxisAlignment: MainAxisAlignment.center,
+                                                        children: <Widget>[
+                                                          ElevatedButton(
+                                                              style: ButtonStyle(
+                                                                backgroundColor:
+                                                                MaterialStateProperty.all<
+                                                                    Color>(Colors.red),
+                                                              ),
+                                                              onPressed: () {
+                                                                Navigator.push(
+                                                                    context,
+                                                                    MaterialPageRoute(
+                                                                        builder: (context) =>
+                                                                            CallControlPanel(
+                                                                              CallerId: id,
+                                                                              Snapshot:
+                                                                              data.docs[
+                                                                              index],
+                                                                              type: type,
+                                                                              name: name,
+                                                                              publicKey:
+                                                                              publicKeyString,
+                                                                              privateKey:
+                                                                              privKey,
+                                                                            )));
+                                                              },
+                                                              child:
+                                                              Column
+                                                                (
+                                                                children: [
+                                                                  Row
+                                                                    (
+                                                                      children:
+                                                                      [
+                                                                        const Icon(FlutterRemix.hotspot_line),
 
-                                                              Text(' ${" " + phone}'),
-                                                            ]
+                                                                        Text(' ${" " + phone}'),
+                                                                      ]
+                                                                  ),
+
+                                                                  SizedBox(height: MediaQuery.of(context).size.height * 0.001),
+
+                                                                  const Text("Time waited", textAlign: TextAlign.center),
+
+                                                                  Text(' ${timeWaitedString + ""}'),
+                                                                ],
+                                                              )
                                                           ),
-
-                                                          SizedBox(height: MediaQuery.of(context).size.height * 0.001),
-
-                                                          const Text("Time waited", textAlign: TextAlign.center),
-
-                                                          Text(' ${timeWaitedString + ""}'),
-                                                        ],
-                                                      )
+                                                        ]),
                                                   ),
-                                                ]),
-                                              ),
-                                            );
-                                          } else {
-                                            return const Material( /*child: Text('test'),*/);
-                                          }
-                                        });
-                                  }))
-                        ]),
+                                                );
+                                              } else {
+                                                return const Material( /*child: Text('test'),*/);
+                                              }
+                                            });
+                                      }))
+                            ]),
 
 
                         Column // This will read the Online list from Firebase (SOSEmergencies)
-                        (children: <Widget>[
+                          (children: <Widget>[
                           const Text('Online List',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 20),
-                            textAlign: TextAlign.center),
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 20),
+                              textAlign: TextAlign.center),
 
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.01,
-                          ), 
+                          ),
 
                           SizedBox(
-                              // height: 200.0,
+                            // height: 200.0,
                               height: MediaQuery.of(context).size.height * 0.68,
                               width: MediaQuery.of(context).size.width * 0.18,
                               child: StreamBuilder<QuerySnapshot>(
@@ -314,31 +314,29 @@ class _MapsHomePageState extends State<MapsHomePage> {
                                                 color: Colors.white,
                                                 margin: const EdgeInsets.all(10.0),
                                                 child: Row(
-                                                  mainAxisAlignment: MainAxisAlignment.center,
-                                                  children: <Widget>[
-                                                  ElevatedButton(
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty.all<
-                                                              Color>(Colors.blue),
-                                                    ),
-                                                    onPressed: () {},
-                                                    child: 
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: <Widget>[
+                                                      ElevatedButton(
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                            MaterialStateProperty.all<
+                                                                Color>(Colors.blue),
+                                                          ),
+                                                          onPressed: () {},
+                                                          child:
+                                                          Column
+                                                            (
+                                                            children: [
+                                                              const Icon(FlutterRemix.hotspot_fill),
 
-                                                    Column
-                                                      (
-                                                        children: 
-                                                        [
-                                                          const Icon(FlutterRemix.hotspot_fill),
+                                                              SizedBox(height: MediaQuery.of(context).size.height * 0.001),
 
-                                                          SizedBox(height: MediaQuery.of(context).size.height * 0.001),
+                                                              Text('${data.docs[index]['Phone']}'),
+                                                            ],
+                                                          )
 
-                                                          Text('${data.docs[index]['Phone']}'),
-                                                        ],
-                                                      )
-                                                    
-                                                  ),
-                                                ]),
+                                                      ),
+                                                    ]),
                                               ),
                                             );
                                           } else {
@@ -355,7 +353,7 @@ class _MapsHomePageState extends State<MapsHomePage> {
 
               SizedBox(
                 width: MediaQuery.of(context).size.width * 0.01,
-              ), 
+              ),
             ],
           ),
         ],
