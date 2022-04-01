@@ -549,17 +549,16 @@ class _CallControlPanelState extends State<CallControlPanel> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              SizedBox // First Column (Contains Map and End Call Button)
+              SizedBox // First Column (Contains Emergency user information and End Call Button)
                 (
                   height: MediaQuery.of(context).size.height * 0.9,
                   child: Row(children: <Widget>[
                     Column(children: <Widget>[
-                      Row //THE MAP
+                      Row // Emergency user Information
                         (children: <Widget>[
                         Container(
-                            height:
-                            MediaQuery.of(context).size.height * 0.74,
-                            width: MediaQuery.of(context).size.width * 0.43,
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            width: MediaQuery.of(context).size.width * 0.25,
                             padding: const EdgeInsets.all(10.0),
                             decoration: BoxDecoration(
                                 shape: BoxShape.rectangle,
@@ -567,7 +566,313 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                 color: Colors.white,
                                 border: Border.all(
                                     color: Colors.white, width: 1)),
-                            child: StreamBuilder<QuerySnapshot>(
+                            child: 
+                            Column
+                            (
+                              children:
+                              [
+                                const Text(
+                                                'User Information',
+                                                style: TextStyle(fontSize: 25),
+                                                textAlign: TextAlign.center,
+                                              ),
+
+                                        SizedBox // SPACING
+                                        (
+                                          height: MediaQuery.of(context).size.height * 0.02,
+                                        ),
+
+                                        const Divider(
+                                          height: 5,
+                                          thickness: 3,
+                                          color: Colors.black12,
+                                        ),
+
+                                        SizedBox // SPACING
+                                        (
+                                          height: MediaQuery.of(context).size.height * 0.02,
+                                        ),
+
+                                         Container
+                                          (
+                                              color: Colors.white,
+
+                                              child: Column
+                                              (
+                                                children: 
+                                                [
+                                                  Row
+                                                  (
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: 
+                                                    [
+                                                      const Icon(FlutterRemix.smartphone_line),
+
+                                                      const Text(' Device', style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
+                                                    ],
+                                                  ),
+
+                                                  SizedBox // SPACING
+                                                  (
+                                                    height: MediaQuery.of(context).size.height * 0.01,
+                                                  ),
+
+                                                  Text(
+                                                        mobileChargeString + '%',
+                                                        style:
+                                                            const TextStyle(fontSize: 15), textAlign: TextAlign.center,
+                                                      ),
+
+                                                  Text(
+                                                        'Phone #: ${snapshot['Phone']}',
+                                                        style:
+                                                            const TextStyle(fontSize: 15), textAlign: TextAlign.center,
+                                                      ),
+                                                ]
+                                              ),
+                                            ),
+
+                                            SizedBox // SPACING
+                                            (
+                                              height: MediaQuery.of(context).size.height * 0.03,
+                                            ),
+
+                                            // const Divider(
+                                            //   height: 5,
+                                            //   thickness: 3,
+                                            //   color: Colors.black12,
+                                            // ),
+
+                                            // SizedBox // SPACING
+                                            // (
+                                            //   height: MediaQuery.of(context).size.height * 0.01,
+                                            // ),
+
+                                            Container
+                                            (
+                                              color: Colors.white,
+
+                                              child: Column
+                                              (
+                                                children: 
+                                                [
+                                                  Row
+                                                  (
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: 
+                                                    [
+                                                      const Icon(FlutterRemix.celsius_line),
+
+                                                      const Text(' Weather', style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
+                                                    ],
+                                                  ),
+
+                                                  SizedBox // SPACING
+                                                  (
+                                                    height: MediaQuery.of(context).size.height * 0.01,
+                                                  ),
+
+                                                  Text(
+                                                        'Weather: ' +
+                                                            temperature!.toString() +
+                                                            '° ' +
+                                                            weatherDescription!,
+                                                        style:
+                                                            const TextStyle(fontSize: 15), textAlign: TextAlign.center,
+                                                      ),
+
+                                                  Text(
+                                                        'Humidity: ' +
+                                                            humidity!.toString(),
+                                                        style:
+                                                            const TextStyle(fontSize: 15), textAlign: TextAlign.center,
+                                                      ),
+
+                                                  Text(
+                                                        'Wind Speed: ' +
+                                                            windSpeed!.toString(),
+                                                        style:
+                                                            const TextStyle(fontSize: 15), textAlign: TextAlign.center,
+                                                      ),
+                                                ]
+                                              ),
+                                            ),
+
+                                            SizedBox // SPACING
+                                            (
+                                              height: MediaQuery.of(context).size.height * 0.03,
+                                            ),
+
+                                            // const Divider(
+                                            //   height: 5,
+                                            //   thickness: 3,
+                                            //   color: Colors.black12,
+                                            // ),
+
+                                            // SizedBox // SPACING
+                                            // (
+                                            //   height: MediaQuery.of(context).size.height * 0.01,
+                                            // ),
+
+                                            Container
+                                            (
+                                              color: Colors.white,
+
+                                              child: Column
+                                              (
+                                                children: 
+                                                [
+                                                  Row
+                                                  (
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: 
+                                                    [
+                                                      const Icon(FlutterRemix.map_pin_line),
+
+                                                      const Text(' Location', style: TextStyle(fontSize: 20), textAlign: TextAlign.center),
+                                                    ],
+                                                  ),
+
+                                                  SizedBox // SPACING
+                                                  (
+                                                    height: MediaQuery.of(context).size.height * 0.01,
+                                                  ),
+
+                                                  Row
+                                                  (
+                                                    mainAxisAlignment: MainAxisAlignment.center,
+                                                    children: const 
+                                                    [ 
+                                                      Text('At Moment of Connection',style:TextStyle(fontSize: 15)),
+                                                    ],
+                                                  ),
+
+                                                  Row
+                                                  (
+                                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                                    children: 
+                                                    [
+                                                      Column
+                                                      (
+                                                        children: 
+                                                        [
+                                                          const Text('Latitude', style: TextStyle(fontSize: 15), textAlign: TextAlign.center),
+                                                          Text(startLan + '°', style: const TextStyle(fontSize: 15), textAlign: TextAlign.center),
+                                                        ],
+                                                      ),
+
+                                                      Column
+                                                      (
+                                                        children: 
+                                                        [
+                                                          const Text('Longitude', style: TextStyle(fontSize: 15), textAlign: TextAlign.center),
+                                                          Text(startLon + '°', style: const TextStyle(fontSize: 15), textAlign: TextAlign.center),
+                                                        ],
+                                                      )
+                                                    ],
+                                                  )
+                                                  
+                                                ]
+                                              ),
+                                            ),
+
+                                            SizedBox // SPACING
+                                            (
+                                              height: MediaQuery.of(context).size.height * 0.03,
+                                            ),
+
+                                        CaseBasic(
+                                                  type: callType,
+                                                  phone: callerId,
+                                                  emergencyContactNumberString:
+                                                      emergencyContactNumberString,
+                                                  emergencyHealthCardNumberString:
+                                                      emergencyHealthCardNumberString,
+                                                  personalHealthCardString:
+                                                      personalHealthCardString,
+                                                  urlPMR: urlPMR,
+                                                  urlECMR: urlECMR),
+                              ]
+                            )
+                        )]),
+                      SizedBox // SPACING
+                        (
+                        height: MediaQuery.of(context).size.height * 0.05,
+                        width: MediaQuery.of(context).size.width * 0.25,
+                      ),
+
+                      Container
+                      (
+                        height: MediaQuery.of(context).size.height * 0.15,
+                        width: MediaQuery.of(context).size.width * 0.25,
+
+                        child: 
+                        Row //END CONNECTION BUTTON
+                        (
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: <Widget>[
+                            SizedBox(
+                              height:
+                              MediaQuery.of(context).size.height * 0.1,
+                              width:
+                              MediaQuery.of(context).size.width * 0.25,
+                              child: ElevatedButton(
+                                  child: const Text("End Connection"),
+                                  onPressed: () async {
+                                    signaling.hangUp(roomId, callerId);
+                                    FbDb.DatabaseReference real = FbDb
+                                        .FirebaseDatabase.instance
+                                        .ref();
+                                    final databaseReal = real
+                                        .child('sensors')
+                                        .child(callerId);
+
+                                    await databaseReal.update(
+                                        {'Online': false, 'Ended': true});
+
+                                    // End the call
+                                    _EndCall();
+
+                                    // Going back to maps home page
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                MapsHomePage(
+                                                  name: name,
+                                                )));
+                                    // this will the method for your rejected Button
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Colors.red,
+                                  )),
+                            )
+                          ])
+                      ),
+
+                      
+                    ]),
+
+
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.01,
+                    ),
+                    Column(children: [
+                      Container // Second Column (Contains the map and chat box)
+                        (
+                          
+                          height:
+                          MediaQuery.of(context).size.height * 0.44,
+                          width: MediaQuery.of(context).size.width * 0.43,
+                          
+                          padding: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              borderRadius: BorderRadius.circular(12),
+                              color: Colors.white,
+                              border: Border.all(
+                                  color: Colors.white, width: 1)),
+                          child: StreamBuilder<QuerySnapshot>(
                                 stream: locationsHistory,
                                 builder: (
                                     BuildContext context,
@@ -613,197 +918,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                   }
 
                                   return StreetMap();
-                                }))
-                      ]),
-                      SizedBox // SPACING
-                        (
-                        height: MediaQuery.of(context).size.height * 0.1,
-                        width: MediaQuery.of(context).size.width * 0.25,
-                      ),
-                      Row //END CONNECTION BUTTON
-                        (
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceAround,
-                          children: <Widget>[
-                            SizedBox(
-                              height:
-                              MediaQuery.of(context).size.height * 0.06,
-                              width:
-                              MediaQuery.of(context).size.width * 0.25,
-                              child: ElevatedButton(
-                                  child: const Text("End Connection"),
-                                  onPressed: () async {
-                                    signaling.hangUp(roomId, callerId);
-                                    FbDb.DatabaseReference real = FbDb
-                                        .FirebaseDatabase.instance
-                                        .ref();
-                                    final databaseReal = real
-                                        .child('sensors')
-                                        .child(callerId);
-
-                                    await databaseReal.update(
-                                        {'Online': false, 'Ended': true});
-
-                                    // End the call
-                                    _EndCall();
-
-                                    // Going back to maps home page
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                MapsHomePage(
-                                                  name: name,
-                                                )));
-                                    // this will the method for your rejected Button
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.red,
-                                  )),
-                            )
-                          ])
-                    ]),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.01,
-                    ),
-                    Column(children: [
-                      Container // Second Column (Contains the user info and chat box)
-                        (
-                          height:
-                          MediaQuery.of(context).size.height * 0.44,
-                          width:
-                          MediaQuery.of(context).size.width * 0.25,
-                          padding: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              borderRadius: BorderRadius.circular(12),
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: Colors.white, width: 1)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment:
-                            CrossAxisAlignment.center,
-                            children: [
-                              SingleChildScrollView(
-                                child: Column(
-                                  mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text(
-                                      'Caller Information',
-                                      style: TextStyle(fontSize: 25),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(FlutterRemix
-                                            .battery_2_charge_line),
-                                        Text(
-                                          mobileChargeString,
-                                          style:
-                                          const TextStyle(fontSize: 15),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(FlutterRemix
-                                            .smartphone_line),
-                                        Text(
-                                          'Phone: ${snapshot['Phone']}',
-                                          style:
-                                          const TextStyle(fontSize: 15),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                            FlutterRemix.celsius_line),
-                                        Text(
-                                          'Weather: ' +
-                                              temperature!.toString() +
-                                              '° ' +
-                                              weatherDescription!,
-                                          style:
-                                          const TextStyle(fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(FlutterRemix
-                                            .contrast_drop_2_line),
-                                        Text(
-                                          'Humidity: ' +
-                                              humidity!.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: [
-                                        const Icon(
-                                            FlutterRemix.windy_line),
-                                        Text(
-                                          'Wind Speed: ' +
-                                              windSpeed!.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                    Row(
-                                      children: const [
-                                        Icon(FlutterRemix.map_pin_line),
-                                        Text(
-                                          'Location of the call: ———',
-                                          style:
-                                          TextStyle(fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                    Text(
-                                      'Latitude: ' + startLan + '°',
-                                    ),
-                                    Text(
-                                      'Longitude: ' + startLon + '°',
-                                    ),
-                                    Row(
-                                      children: [
-                                        Text(
-                                          'Caller is' + userMotion!,
-                                          style: const TextStyle(
-                                              fontSize: 15),
-                                        ),
-                                        const Icon(
-                                            FlutterRemix.walk_fill),
-                                        Text(
-                                          userMotion!,
-                                          style: const TextStyle(
-                                              fontSize: 15),
-                                        ),
-                                      ],
-                                    ),
-                                    CaseBasic(
-                                        type: callType,
-                                        phone: callerId,
-                                        emergencyContactNumberString:
-                                        emergencyContactNumberString,
-                                        emergencyHealthCardNumberString:
-                                        emergencyHealthCardNumberString,
-                                        personalHealthCardString:
-                                        personalHealthCardString,
-                                        urlPMR: urlPMR,
-                                        urlECMR: urlECMR),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )),
+                                }),
+                          ),
 
                       SizedBox(
                         height: MediaQuery.of(context).size.height * 0.01,
@@ -814,7 +930,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                           height:
                           MediaQuery.of(context).size.height * 0.44,
                           width:
-                          MediaQuery.of(context).size.width * 0.25,
+                          MediaQuery.of(context).size.width * 0.43,
                           decoration: BoxDecoration(
                               shape: BoxShape.rectangle,
                               borderRadius: BorderRadius.circular(12),
@@ -840,7 +956,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                       width: MediaQuery.of(context)
                                           .size
                                           .width *
-                                          0.24,
+                                          0.35,
                                       child: Row(
                                           mainAxisAlignment:
                                           MainAxisAlignment.center,
@@ -858,7 +974,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                                     context)
                                                     .size
                                                     .width *
-                                                    0.24,
+                                                    0.35,
                                                 child: Row(
                                                   mainAxisAlignment:
                                                   MainAxisAlignment
@@ -977,7 +1093,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
                                           MediaQuery.of(context)
                                               .size
                                               .width *
-                                              0.20,
+                                              0.30,
                                           child: Row(
                                             children: [
                                               Expanded(
