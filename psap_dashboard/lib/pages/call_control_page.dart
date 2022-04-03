@@ -579,7 +579,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
                                         SizedBox // SPACING
                                         (
-                                          height: MediaQuery.of(context).size.height * 0.02,
+                                          height: MediaQuery.of(context).size.height * 0.015,
                                         ),
 
                                         const Divider(
@@ -590,7 +590,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
                                         SizedBox // SPACING
                                         (
-                                          height: MediaQuery.of(context).size.height * 0.02,
+                                          height: MediaQuery.of(context).size.height * 0.015,
                                         ),
 
                                          Container
@@ -634,7 +634,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
                                             SizedBox // SPACING
                                             (
-                                              height: MediaQuery.of(context).size.height * 0.03,
+                                              height: MediaQuery.of(context).size.height * 0.02,
                                             ),
 
                                             // const Divider(
@@ -700,7 +700,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
                                             SizedBox // SPACING
                                             (
-                                              height: MediaQuery.of(context).size.height * 0.03,
+                                              height: MediaQuery.of(context).size.height * 0.02,
                                             ),
 
                                             // const Divider(
@@ -778,7 +778,7 @@ class _CallControlPanelState extends State<CallControlPanel> {
 
                                             SizedBox // SPACING
                                             (
-                                              height: MediaQuery.of(context).size.height * 0.03,
+                                              height: MediaQuery.of(context).size.height * 0.02,
                                             ),
 
                                         CaseBasic(
