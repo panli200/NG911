@@ -1,14 +1,10 @@
-<div align="center">
-  <img src="Documentation/Poster/NG911_Poster_FINAL_WEB.png" alt="NG911Poster">
+<img src="Documentation/Poster/NG911_Poster_FINAL_WEB.png" alt="NG911Poster">
 
-  <h1 align="center">
-  Next Generation 911
-</h1>
+<h1 align="center"> Next Generation 911 </h1>
 
-  <center>
-    Next generation 911 (NG911) is a Software Systems Engineering Capstone (2021/2022) project by Team Bugs (:octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha) :octocat:[Li Pan](https://github.com/panli200) :octocat:[Renz Rivero](https://github.com/renzrivero))
-  </center>
-</div>
+<center>
+    Next generation 911 (NG911) is a Software Systems Engineering Capstone (2021/2022) project by Team Bugs (:octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha) : octocat:[Li Pan](https://github.com/panli200) :octocat:[Renz Rivero](https://github.com/renzrivero))
+</center>
 
 ---
 
@@ -47,5 +43,5 @@ Hi-fidelity Prototypes - Made in Adobe XD
 ---
 
 ### Bazaar Days
-1. January 25, 2022 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar#1/Capstone-Bazaar%231-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar#1/Capstone-Bazaar%231-Slide.pdf)
-2. March 1, 2022 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar#2/Capstone-Bazaar%231-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar#2/Capstone-Bazaar%231-Slide.pdf)
+1. January 25, 2022 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%231/Capstone-Bazaar%231-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%231/Capstone-Bazaar%231-Slide.pdf)
+2. March 1, 2022 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%232/Capstone-Bazaar%232-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%232/Capstone-Bazaar%232-Slide.pdf)
