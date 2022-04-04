@@ -1,14 +1,19 @@
 <img src="Documentation/Poster/NG911_Poster_FINAL_WEB.png" alt="NG911Poster">
 
 <h1 align="center"> Next Generation 911 </h1>
-  
-Next generation 911 (NG911) is a Software Systems Engineering Capstone (2021/2022) project by group #7 — Team Bugs (:octocat: [Abdelrahman Rabaa](https://github.com/Rabaa-basha) :octocat: [Li Pan](https://github.com/panli200) :octocat: [Renz Rivero](https://github.com/renzrivero))
+
+Next generation 911 (NG911) is a Software Systems Engineering Capstone (2021/2022) project by group 7 — Team Bugs (:octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha), :octocat:[Li Pan](https://github.com/panli200), :octocat:[Renz Rivero](https://github.com/renzrivero))
 
 ---
 
-## Design Documentation
-### Prototypes
-[Prototypes](https://github.com/panli200/NG911/tree/main/Documentation/Design-Prototypes)
+## Purpose & Objectives
+It is estimated that a NG911 infrastructure is to be implemented across Canada around the year of 2024. The objectivve is to bring about an inspiration for this upcoming infrastructure by delivering two applications:
+1. [A mobile application for reporting emergenices](https://github.com/panli200/NG911/tree/main/sos_app#readme)
+2. [An emergency dashboard wewb application for responding  to emergencies](https://github.com/panli200/NG911/tree/main/psap_dashboard#readme)
+
+---
+
+## Prototypes
 
 Lo-fidelity Prototypes — Handrawn
 - [Mobile Application Lo-fidelity Prototypes](https://github.com/panli200/NG911/tree/main/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes)
@@ -20,7 +25,7 @@ Hi-fidelity Prototypes - Made in Adobe XD
 
 ---
 
-### Vlogs
+## Vlogs
 1. Team and Project Introduction — [Vlog](https://youtu.be/ziVtzf-9uPU) (September 17, 2021)
 2. Project Update — [Vlog](https://youtu.be/kcOifqv1obA) (October 15, 2021)
 3. Needed dispatcher dashboard complementary application with our original idea — [Vlog](https://youtu.be/2lo1vUUzE8Y) (December 3, 2021)
@@ -29,7 +34,7 @@ Hi-fidelity Prototypes - Made in Adobe XD
 
 ---
 
-### Scrums
+## Scrums
 1. September 24, 2021 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%231-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%231-Slide.pdf)
 2. October 8, 2021 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%232-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%232-Slide.pdf)
 3. October 22, 2021 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Scripts/Scrum%233-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Scrums/Scrum-Slides/Capstone-Scrum%233-Slide.pdf)
@@ -40,6 +45,6 @@ Hi-fidelity Prototypes - Made in Adobe XD
 
 ---
 
-### Bazaar Days
+## Bazaar Days
 1. January 25, 2022 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%231/Capstone-Bazaar%231-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%231/Capstone-Bazaar%231-Slide.pdf)
 2. March 1, 2022 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%232/Capstone-Bazaar%232-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%232/Capstone-Bazaar%232-Slide.pdf)
