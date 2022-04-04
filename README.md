@@ -1,10 +1,8 @@
 <img src="Documentation/Poster/NG911_Poster_FINAL_WEB.png" alt="NG911Poster">
 
 <h1 align="center"> Next Generation 911 </h1>
-
-<center>
-    Next generation 911 (NG911) is a Software Systems Engineering Capstone (2021/2022) project by Team Bugs (:octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha) : octocat:[Li Pan](https://github.com/panli200) :octocat:[Renz Rivero](https://github.com/renzrivero))
-</center>
+  
+Next generation 911 (NG911) is a Software Systems Engineering Capstone (2021/2022) project by group #7 — Team Bugs (:octocat: [Abdelrahman Rabaa](https://github.com/Rabaa-basha) :octocat: [Li Pan](https://github.com/panli200) :octocat: [Renz Rivero](https://github.com/renzrivero))
 
 ---
 
