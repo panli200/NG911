@@ -153,8 +153,8 @@ class _CallControlPanelState extends State<CallControlPanel> {
     await user.doc(callerId).collection('Emergencies').add({
       'StartTime': startTime,
       'EndTime': FieldValue.serverTimestamp(),
-      'EndPointLatitude': latitudePassed,
-      'EndPointLongitude': longitudePassed
+      'EndPointLatitude': startLan,
+      'EndPointLongitude': startLon
     });
 
     // End records messages
