@@ -7,15 +7,15 @@ Next generation 911 (NG911) is a Software Systems Engineering Capstone (2021/202
 ---
 
 ## Purpose & Objectives
-It is estimated that a NG911 infrastructure is to be implemented across Canada around the year of 2024. The objectivve is to bring about an inspiration for this upcoming infrastructure by delivering two applications:
-1. [A mobile application for reporting emergenices](https://github.com/panli200/NG911/tree/main/sos_app#readme)
-2. [An emergency dashboard wewb application for responding  to emergencies](https://github.com/panli200/NG911/tree/main/psap_dashboard#readme)
+It is estimated that a NG911 infrastructure is to be implemented across Canada around the year of 2024. The objective is to bring about an inspiration for this upcoming infrastructure by delivering two applications:
+1. [A mobile application for reporting emergencies](https://github.com/panli200/NG911/tree/main/sos_app#readme)
+2. [An emergency dashboard web application for responding  to emergencies](https://github.com/panli200/NG911/tree/main/psap_dashboard#readme)
 
 ---
 
 ## Prototypes
 
-Lo-fidelity Prototypes — Handrawn
+Lo-fidelity Prototypes — Hand drawn
 - [Mobile Application Lo-fidelity Prototypes](https://github.com/panli200/NG911/tree/main/Documentation/Design-Prototypes/User-Client-Side/Lofi-Prototypes)
 - [Dispatcher Dashboard Application Lo-fidelity Prototypes](https://github.com/panli200/NG911/tree/main/Documentation/Design-Prototypes/PSAP-Admin-Side/Lofi-Prototypes)
 
