@@ -11,7 +11,8 @@ It is estimated that a NG911 infrastructure is to be implemented across Canada a
 1. [A mobile application for reporting emergencies](https://github.com/panli200/NG911/tree/main/sos_app#readme)
 2. [An emergency dashboard web application for responding to emergencies](https://github.com/panli200/NG911/tree/main/psap_dashboard#readme)
 
----
+[![Project Commercial Placeholder]()](https://drive.google.com/file/d/1j6DiJJEX1o6jt7J-reRlOQOjgnOCCQMV/view?usp=sharing)
+
 
 ## How to Clone the NG911 Repository
 
