@@ -1,6 +1,6 @@
 # sos_app
 
-An application that connects users with the 911 dashboard.
+One of two NG911 systems. An application that connects users with the 911 dashboard.
 
 ## How to get it?
 Android
