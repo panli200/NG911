@@ -17,5 +17,5 @@ iOS
 2. Open the application and type in your phone number.
 3. Wait for an SMS with the one time password, then use it to login.
 
-If any issues or problems faced, contact us: beborabaa@gmail.com
+If any issues or problems faced, contact us: beborabaa at gmail.com
 
