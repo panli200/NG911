@@ -2,15 +2,30 @@
 
 <h1 align="center"> Next Generation 911 </h1>
 
-Next generation 911 (NG911) is a Software Systems Engineering Capstone (2021/2022) project by group 7 — Team Bugs (:octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha), :octocat:[Li Pan](https://github.com/panli200), :octocat:[Renz Rivero](https://github.com/renzrivero))
+Next generation 911 (NG911) is a Software Systems Engineering Capstone (2021/2022) project based on Google-backed development tools ([Flutter](https://flutter.dev/), [Firebase](https://firebase.google.com/), [Google Map](https://developers.google.com/maps)) by group 7 — Team Bugs (:octocat:[Abdelrahman Rabaa](https://github.com/Rabaa-basha), :octocat:[Li Pan](https://github.com/panli200), :octocat:[Renz Rivero](https://github.com/renzrivero))
 
 ---
 
 ## Purpose & Objectives
 It is estimated that a NG911 infrastructure is to be implemented across Canada around the year of 2024. The objective is to bring about an inspiration for this upcoming infrastructure by delivering two applications:
 1. [A mobile application for reporting emergencies](https://github.com/panli200/NG911/tree/main/sos_app#readme)
-2. [An emergency dashboard web application for responding  to emergencies](https://github.com/panli200/NG911/tree/main/psap_dashboard#readme)
+2. [An emergency dashboard web application for responding to emergencies](https://github.com/panli200/NG911/tree/main/psap_dashboard#readme)
 
+---
+
+## How to Clone the NG911 Repository
+
+<b> Prerequisites </b>
+1. Download and install an IDE ([VS Code](https://code.visualstudio.com/download), [Android Studio](https://developer.android.com/studio/install))
+2. Download and install the [Flutter SDK](https://docs.flutter.dev/get-started/install)
+3. Download and install [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+   
+<b> Cloning </b>
+1. Open your terminal and clone the project with  Git
+    ```git clone https://github.com/panli200/NG911.git```
+2. Open the project in your chosen IDE and get the packages
+    ```flutter clean```
+    ```flutter pub get```
 ---
 
 ## Prototypes
@@ -48,3 +63,9 @@ Hi-fidelity Prototypes - Made in Adobe XD
 ## Bazaar Days
 1. January 25, 2022 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%231/Capstone-Bazaar%231-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%231/Capstone-Bazaar%231-Slide.pdf)
 2. March 1, 2022 — [Script](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%232/Capstone-Bazaar%232-Script.pdf) | [Slide](https://github.com/panli200/NG911/blob/main/Presentations/Bazaar/Bazaar%232/Capstone-Bazaar%232-Slide.pdf)
+
+---
+
+Browse the [Wiki](https://github.com/panli200/NG911/wiki) for behind the scenes stakeholder meeting notes
+
+Got questions? Contact our team by email: Abdelrahman Rabaa — [beborabaa@gmail.com](mailto:beborabaa@gmail.com), Li Pan — [panli200@uregina.ca](mailto:panli200@uregina.ca), Renz Rivero — [rivero2r@uregina.ca](mailto:rivero2r@uregina.ca)
