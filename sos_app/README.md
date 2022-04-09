@@ -16,6 +16,7 @@ iOS
 1. Make sure all the permissions are granted {Location, Microphone, Camera, Contacts}.
 2. Open the application and type in your phone number.
 3. Wait for an SMS with the one time password, then use it to login.
+4. [Watch our walkthrough](https://youtu.be/2vbHNFYtHnI)
 
 If any issues or problems faced, contact us: beborabaa at gmail.com
 
