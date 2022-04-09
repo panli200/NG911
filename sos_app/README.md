@@ -1,16 +1,21 @@
 # sos_app
 
-A new Flutter project.
+An application that connects users with the 911 dashboard.
 
-## Getting Started
+## How to get it?
+Android
+1. Navigate to github using your device and click on release "1.0" and download the file "app-release.apk".
+2. If android didn't allow, you will have the option to navigate to the settings on your android device and allow app installation.
 
-This project is a starting point for a Flutter application.
+iOS
+1. Install flutter.
+2. Clone the main branch.
+3. Run in debug mode.
 
-A few resources to get you started if this is your first Flutter project:
+## How to operate?
+1. Make sure all the permissions are granted {Location, Microphone, Camera, Contacts}.
+2. Open the application and type in your phone number.
+3. Wait for an SMS with the one time password, then use it to login.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+If any issues or problems faced, contact us: beborabaa@gmail.com
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
