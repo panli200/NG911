@@ -1,4 +1,4 @@
-<img src="Documentation/Poster/NG911_Poster_FINAL_WEB.png" alt="NG911Poster">
+<img src="Documentation/Poster/NG911-Poster-FINAL-WEB.png" alt="NG911Poster">
 
 <h1 align="center"> Next Generation 911 </h1>
 
@@ -13,7 +13,6 @@ It is estimated that a NG911 infrastructure is to be implemented across Canada a
 
 [![Project Commercial Placeholder](Documentation/Poster/Project-Commercial-Placeholder.PNG)](https://drive.google.com/file/d/1j6DiJJEX1o6jt7J-reRlOQOjgnOCCQMV/view?usp=sharing)
 <center> <i>  Project Commercial </i> </center>
-
 
 ## How to Clone the NG911 Repository
 
